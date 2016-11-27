@@ -1,0 +1,24 @@
+[
+    {
+        "modid": "omlib",
+        "name": "OpenModularLib",
+        "description": "Lib for OMT and its companion mods!",
+        "version": "${version}",
+        "mcversion": "${mcversion}",
+        "credits": "Poenjabiesous",
+        "logoFile": "/mods/thermalexpansion/textures/logo.png",
+        "url": "",
+        "updateUrl": "",
+        "authors": [
+            "Poenjabiesous", "Keridos"
+        ],
+        "parent":"",
+        "screenshots": [],
+        "requiredMods": [
+            "MinecraftForge"
+        ],
+        "dependencies": [
+            "MinecraftForge"
+        ]
+    }
+]
