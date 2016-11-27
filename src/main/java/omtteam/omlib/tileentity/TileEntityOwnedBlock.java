@@ -1,8 +1,7 @@
 package omtteam.omlib.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
-
-import java.util.logging.Logger;
+import omtteam.omlib.handler.ConfigHandler;
 
 import static omtteam.omlib.util.PlayerUtil.*;
 
@@ -15,6 +14,7 @@ public class TileEntityOwnedBlock extends TileEntityBase {
 
     protected String owner = "";
     protected String ownerName = "";
+    protected boolean dropMachine = false;
 
 
     public TileEntityOwnedBlock() {
@@ -40,16 +40,13 @@ public class TileEntityOwnedBlock extends TileEntityBase {
             this.owner = getPlayerUIDUnstable(nbtTagCompound.getString("owner")).toString();
         } else if (getPlayerUUID(nbtTagCompound.getString("owner")) != null) {
             this.owner = getPlayerUUID(nbtTagCompound.getString("owner")).toString();
-        } else {
-            Logger.getGlobal().info("Found non existent owner: " + nbtTagCompound.getString(
-                    "owner") + "at coordinates: " + this.pos.getX() + "," + this.pos.getY() + "," + this.pos.getZ() + ". Dropping Turretbase");
-            worldObj.destroyBlock(this.pos, false);
-            return;
         }
         if (nbtTagCompound.hasKey("ownerName")) {
             this.ownerName = nbtTagCompound.getString("ownerName");
         }
-
+        if ((owner == null && !ConfigHandler.offlineModeSupport) || (ConfigHandler.offlineModeSupport && ownerName == null)){
+            dropMachine=true;
+        }
     }
 
     public String getOwner() {
