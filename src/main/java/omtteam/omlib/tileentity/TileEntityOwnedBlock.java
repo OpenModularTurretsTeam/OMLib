@@ -1,7 +1,6 @@
 package omtteam.omlib.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 
 import java.util.logging.Logger;
 
@@ -12,7 +11,7 @@ import static omtteam.omlib.util.PlayerUtil.*;
  * Created by Keridos on 24/11/16.
  * This Class
  */
-public class TileEntityOwnedBlock extends TileEntity {
+public class TileEntityOwnedBlock extends TileEntityBase {
 
     protected String owner = "";
     protected String ownerName = "";

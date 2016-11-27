@@ -31,8 +31,7 @@ import static omtteam.omlib.util.PlayerUtil.getPlayerUUID;
 
 public abstract class TileEntityMachine extends TileEntityContainer implements IEnergyReceiver, IEnergySink {
 
-
-    private EnergyStorage storage = new EnergyStorage(10, 10);
+    private EnergyStorage storage;
     private Object teslaContainer;
     private double storageEU;
     private boolean wasAddedToEnergyNet = false;
@@ -237,32 +236,7 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
     }
 
     @Override
-    public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-        return true;
-    }
-
-
-    @Override
     public boolean canConnectEnergy(EnumFacing from) {
-        return true;
-    }
-
-    @SuppressWarnings("NullableProblems")
-    @Override
-    public int[] getSlotsForFace(EnumFacing side) {
-        return new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8};
-    }
-
-
-    @SuppressWarnings("NullableProblems")
-    @Override
-    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
-        return isItemValidForSlot(index, itemStackIn);
-    }
-
-    @SuppressWarnings("NullableProblems")
-    @Override
-    public boolean canExtractItem(int index, ItemStack itemStackIn, EnumFacing direction) {
         return true;
     }
 
@@ -292,7 +266,7 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
     }
 
     @Optional.Method(modid = "IC2")
-    private void addToIc2EnergyNetwork() {
+    protected void addToIc2EnergyNetwork() {
         if (!worldObj.isRemote) {
             EnergyTileLoadEvent event = new EnergyTileLoadEvent(this);
             MinecraftForge.EVENT_BUS.post(event);
