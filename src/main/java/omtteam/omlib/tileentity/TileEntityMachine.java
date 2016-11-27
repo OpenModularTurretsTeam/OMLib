@@ -15,6 +15,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.Optional;
 import omtteam.omlib.capabilities.BaseOMTeslaContainer;
+import omtteam.omlib.handler.ConfigHandler;
+import omtteam.omlib.util.MathUtil;
 import omtteam.omlib.util.TrustedPlayer;
 
 import java.util.ArrayList;
@@ -256,6 +258,16 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
     @Optional.Method(modid = "IC2")
     @Override
     public double getDemandedEnergy() {
+        if (ConfigHandler.EUSupport) {
+            if (storage.getMaxEnergyStored() != storage.getEnergyStored() && storageEU > 0) {
+                storage.modifyEnergyStored(MathUtil.truncateDoubleToInt(
+                        Math.min(storage.getMaxEnergyStored() - storage.getEnergyStored(),
+                                storageEU * ConfigHandler.EUtoRFRatio)));
+                storageEU -= Math.min(
+                        (storage.getMaxEnergyStored() - storage.getEnergyStored()) / ConfigHandler.EUtoRFRatio,
+                        storageEU * ConfigHandler.EUtoRFRatio);
+            }
+        }
         return Math.max(4000D - storageEU, 0.0D);
     }
 
