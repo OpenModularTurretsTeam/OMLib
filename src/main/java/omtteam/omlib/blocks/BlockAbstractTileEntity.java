@@ -1,6 +1,5 @@
 package omtteam.omlib.blocks;
 
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
@@ -20,12 +19,19 @@ import java.util.Random;
  * Created by Keridos on 05/12/2015.
  * This Class
  */
-public abstract class BlockAbstractTileEntity extends BlockContainer {
+public abstract class BlockAbstractTileEntity extends BlockAbstract {
     protected BlockAbstractTileEntity(Material material) {
         super(material);
     }
 
-    public abstract TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_);
+    @Override
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
+
+    @Override
+    public abstract TileEntity createTileEntity(World world, IBlockState state);
+
 
     @Override
     public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
@@ -51,8 +57,8 @@ public abstract class BlockAbstractTileEntity extends BlockContainer {
                     float rz = rand.nextFloat() * 0.8F + 0.1F;
 
                     EntityItem entityItem = new EntityItem(worldIn, pos.getX() + rx, pos.getY() + ry, pos.getZ() + rz,
-                                                           new ItemStack(item.getItem(), item.stackSize,
-                                                                         item.getItemDamage()));
+                            new ItemStack(item.getItem(), item.stackSize,
+                                    item.getItemDamage()));
 
                     if (item.hasTagCompound()) {
                         entityItem.getEntityItem().setTagCompound((NBTTagCompound) item.getTagCompound().copy());
