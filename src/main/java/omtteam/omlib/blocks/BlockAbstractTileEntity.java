@@ -20,8 +20,8 @@ import java.util.Random;
  * Created by Keridos on 05/12/2015.
  * This Class
  */
-public abstract class BlockAbstractContainer extends BlockContainer {
-    protected BlockAbstractContainer(Material material) {
+public abstract class BlockAbstractTileEntity extends BlockContainer {
+    protected BlockAbstractTileEntity(Material material) {
         super(material);
     }
 
