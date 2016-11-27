@@ -14,7 +14,7 @@ public class TileEntityOwnedBlock extends TileEntityBase {
 
     protected String owner = "";
     protected String ownerName = "";
-    protected boolean dropBlock = false;
+    protected boolean dropMachine = false;
 
 
     public TileEntityOwnedBlock() {
@@ -45,7 +45,7 @@ public class TileEntityOwnedBlock extends TileEntityBase {
             this.ownerName = nbtTagCompound.getString("ownerName");
         }
         if ((owner == null && !ConfigHandler.offlineModeSupport) || (ConfigHandler.offlineModeSupport && ownerName == null)){
-            dropBlock=true;
+            dropMachine=true;
         }
     }
 
