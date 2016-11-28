@@ -8,6 +8,7 @@ package omtteam.omlib.util;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.UsernameCache;
 import omtteam.omlib.tileentity.TileEntityMachine;
+import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 
 import java.util.Map;
 import java.util.UUID;
@@ -50,8 +51,8 @@ public class PlayerUtil {
         }
     }
 
-    public static boolean isPlayerOwner(EntityPlayer player,TileEntityMachine machine, boolean offlineModeSupport) {
-        return (machine.getOwner().equals(player.getUniqueID().toString()) ||
-                (offlineModeSupport && machine.getOwnerName().equals(player.getName())));
+    public static boolean isPlayerOwner(EntityPlayer player, TileEntityOwnedBlock ownedBlock, boolean offlineModeSupport) {
+        return (ownedBlock.getOwner().equals(player.getUniqueID().toString()) ||
+                (offlineModeSupport && ownedBlock.getOwnerName().equals(player.getName())));
     }
 }
