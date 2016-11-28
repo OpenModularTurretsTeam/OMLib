@@ -13,6 +13,8 @@ import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 import java.util.Map;
 import java.util.UUID;
 
+import static omtteam.omlib.handler.ConfigHandler.offlineModeSupport;
+
 public class PlayerUtil {
     public static UUID getPlayerUUID(String username) {
         for (Map.Entry<UUID, String> entry : UsernameCache.getMap().entrySet()) {
@@ -43,7 +45,7 @@ public class PlayerUtil {
         return UsernameCache.getLastKnownUsername(UUID.fromString(possibleUUID));
     }
 
-    public static TrustedPlayer getTrustedPlayer(EntityPlayer player, TileEntityMachine machine, boolean offlineModeSupport) {
+    public static TrustedPlayer getTrustedPlayer(EntityPlayer player, TileEntityMachine machine) {
         if (machine.getTrustedPlayer(player.getUniqueID()) != null || (offlineModeSupport && machine.getTrustedPlayer(player.getName()) != null)) {
             return (machine.getTrustedPlayer(player.getUniqueID()) == null ? machine.getTrustedPlayer(player.getName()) : machine.getTrustedPlayer(player.getUniqueID()));
         } else {
@@ -51,7 +53,7 @@ public class PlayerUtil {
         }
     }
 
-    public static boolean isPlayerOwner(EntityPlayer player, TileEntityOwnedBlock ownedBlock, boolean offlineModeSupport) {
+    public static boolean isPlayerOwner(EntityPlayer player, TileEntityOwnedBlock ownedBlock) {
         return (ownedBlock.getOwner().equals(player.getUniqueID().toString()) ||
                 (offlineModeSupport && ownedBlock.getOwnerName().equals(player.getName())));
     }
