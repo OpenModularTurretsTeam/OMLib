@@ -1,7 +1,7 @@
 [
     {
         "modid": "omlib",
-        "name": "OpenModularLib",
+        "name": "OMLib",
         "description": "Lib for OMT and its companion mods!",
         "version": "${version}",
         "mcversion": "${mcversion}",
