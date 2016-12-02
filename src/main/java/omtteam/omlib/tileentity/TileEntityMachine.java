@@ -36,9 +36,9 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
     protected EnergyStorage storage;
     protected Object teslaContainer;
     protected double storageEU;
-    private boolean active;
-    private boolean inverted;
-    private boolean redstone;
+    protected boolean active;
+    protected boolean inverted;
+    protected boolean redstone;
     protected boolean wasAddedToEnergyNet = false;
     protected List<TrustedPlayer> trustedPlayers;
     //private float amountOfPotentia = 0F;
@@ -185,6 +185,28 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
         } else {
             storageEU = 0;
         }
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    private boolean getInverted() {
+        return this.inverted;
+    }
+
+    private void setInverted(boolean inverted) {
+        this.inverted = inverted;
+        this.active = redstone ^ this.inverted;
+    }
+
+    private boolean getRedstone() {
+        return this.redstone;
+    }
+
+    public void setRedstone(boolean redstone) {
+        this.redstone = redstone;
+        this.active = this.redstone ^ inverted;
     }
 
     /*
