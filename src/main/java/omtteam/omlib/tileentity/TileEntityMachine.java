@@ -191,16 +191,16 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
         return active;
     }
 
-    private boolean getInverted() {
+    protected boolean getInverted() {
         return this.inverted;
     }
 
-    private void setInverted(boolean inverted) {
+    protected void setInverted(boolean inverted) {
         this.inverted = inverted;
         this.active = redstone ^ this.inverted;
     }
 
-    private boolean getRedstone() {
+    protected boolean getRedstone() {
         return this.redstone;
     }
 
