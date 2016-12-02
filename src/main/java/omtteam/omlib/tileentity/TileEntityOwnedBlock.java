@@ -12,14 +12,9 @@ import static omtteam.omlib.util.PlayerUtil.*;
  */
 public abstract class TileEntityOwnedBlock extends TileEntityBase {
 
-    protected String owner = "";
-    protected String ownerName = "";
+    protected String owner;
+    protected String ownerName;
     protected boolean dropBlock = false;
-
-
-    public TileEntityOwnedBlock() {
-        super();
-    }
 
 
     @Override
@@ -44,7 +39,7 @@ public abstract class TileEntityOwnedBlock extends TileEntityBase {
         if (nbtTagCompound.hasKey("ownerName")) {
             this.ownerName = nbtTagCompound.getString("ownerName");
         }
-        if ((owner == null && !ConfigHandler.offlineModeSupport) || (ConfigHandler.offlineModeSupport && ownerName == null)){
+        if (((owner == null || owner.equals("")) && !ConfigHandler.offlineModeSupport) || (ConfigHandler.offlineModeSupport && ownerName == null)){
             dropBlock =true;
         }
     }
