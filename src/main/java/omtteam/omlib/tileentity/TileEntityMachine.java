@@ -33,12 +33,11 @@ import static omtteam.omlib.util.PlayerUtil.getPlayerUUID;
 
 public abstract class TileEntityMachine extends TileEntityContainer implements IEnergyReceiver, IEnergySink {
 
-    private EnergyStorage storage;
-    private Object teslaContainer;
-    private double storageEU;
-    private boolean wasAddedToEnergyNet = false;
-    private List<TrustedPlayer> trustedPlayers;
-    protected boolean dropMachine = false;
+    protected EnergyStorage storage;
+    protected Object teslaContainer;
+    protected double storageEU;
+    protected boolean wasAddedToEnergyNet = false;
+    protected List<TrustedPlayer> trustedPlayers;
 
     public TileEntityMachine() {
         super();

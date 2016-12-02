@@ -32,7 +32,6 @@ public abstract class BlockAbstractTileEntity extends BlockAbstract {
     @Override
     public abstract TileEntity createTileEntity(World world, IBlockState state);
 
-
     @Override
     public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
         return false;
