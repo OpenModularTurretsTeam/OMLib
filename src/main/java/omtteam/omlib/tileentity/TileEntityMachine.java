@@ -36,14 +36,21 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
     protected EnergyStorage storage;
     protected Object teslaContainer;
     protected double storageEU;
+    private boolean active;
+    private boolean inverted;
+    private boolean redstone;
     protected boolean wasAddedToEnergyNet = false;
     protected List<TrustedPlayer> trustedPlayers;
+    //private float amountOfPotentia = 0F;
+    //private final float maxAmountOfPotentia = ConfigHandler.getPotentiaAddonCapacity();
 
     public TileEntityMachine() {
         super();
         this.trustedPlayers = new ArrayList<>();
         this.inventory = new ItemStack[13];
         this.storage = new EnergyStorage(10, 10);
+        this.inverted = true;
+        this.active = true;
     }
 
     public boolean addTrustedPlayer(String name) {
@@ -154,6 +161,9 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
         nbtTagCompound.setInteger("maxIO", this.storage.getMaxReceive());
         nbtTagCompound.setTag("trustedPlayers", getTrustedPlayersAsNBT());
         nbtTagCompound.setDouble("storageEU", storageEU);
+        nbtTagCompound.setBoolean("active", active);
+        nbtTagCompound.setBoolean("inverted", inverted);
+        nbtTagCompound.setBoolean("redstone", redstone);
 
         return nbtTagCompound;
     }
@@ -164,11 +174,12 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
         this.storage.setCapacity(nbtTagCompound.getInteger("maxStorage"));
         this.storage.setEnergyStored(nbtTagCompound.getInteger("energyStored"));
         this.storage.setMaxReceive(nbtTagCompound.getInteger("maxIO"));
-
-        buildTrustedPlayersFromNBT(nbtTagCompound.getTagList("trustedPlayers", 10));
-        if (trustedPlayers.size() == 0) {
-            buildTrustedPlayersFromNBT(nbtTagCompound.getTagList("trustedPlayers", 8));
+        this.active = !nbtTagCompound.hasKey("active") || nbtTagCompound.getBoolean("active");
+        this.inverted = !nbtTagCompound.hasKey("inverted") || nbtTagCompound.getBoolean("inverted");
+        if (nbtTagCompound.hasKey("redstone")) {
+            this.redstone = nbtTagCompound.getBoolean("redstone");
         }
+        buildTrustedPlayersFromNBT(nbtTagCompound.getTagList("trustedPlayers", 10));
         if (nbtTagCompound.hasKey("storageEU")) {
             this.storageEU = nbtTagCompound.getDouble("storageEU");
         } else {
