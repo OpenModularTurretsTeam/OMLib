@@ -25,8 +25,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-import static omtteam.omlib.compatability.ModCompatibility.TeslaLoaded;
-import static omtteam.omlib.handler.ConfigHandler.EUSupport;
 import static omtteam.omlib.util.PlayerUtil.getPlayerUIDUnstable;
 import static omtteam.omlib.util.PlayerUtil.getPlayerUUID;
 
@@ -377,7 +375,7 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
         // side can be used, for example only allow power input through the back, that could be
         // done here.
         if (capability == TeslaCapabilities.CAPABILITY_CONSUMER || capability == TeslaCapabilities.CAPABILITY_HOLDER) {
-            if (TeslaLoaded) {
+            if (ModCompatibility.TeslaLoaded) {
                 moveEnergyFromTeslaToRF();
                 this.markDirty();
                 return (T) getTeslaContainer(this.teslaContainer);
@@ -385,6 +383,21 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
         }
 
         return super.getCapability(capability, facing);
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+
+        // This method replaces the instanceof checks that would be used in an interface based
+        // system. It can be used by other things to see if the TileEntity uses a capability or
+        // not. This example is a Consumer, Producer and Holder, so we return true for all
+        // three. This can also be used to restrict access on certain sides, for example if you
+        // only accept power input from the bottom of the block, you would only return true for
+        // Consumer if the facing parameter was down.
+        if (capability == TeslaCapabilities.CAPABILITY_CONSUMER || capability == TeslaCapabilities.CAPABILITY_HOLDER)
+            return true;
+
+        return super.hasCapability(capability, facing);
     }
     
     /*
