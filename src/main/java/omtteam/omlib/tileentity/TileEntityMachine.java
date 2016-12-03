@@ -198,6 +198,7 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
     protected void setInverted(boolean inverted) {
         this.inverted = inverted;
         this.active = redstone ^ this.inverted;
+        this.markDirty();
     }
 
     protected boolean getRedstone() {
@@ -207,6 +208,7 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
     public void setRedstone(boolean redstone) {
         this.redstone = redstone;
         this.active = this.redstone ^ inverted;
+        this.markDirty();
     }
 
     /*
@@ -252,6 +254,7 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
 
     @Override
     public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
+        this.markDirty();
         return storage.receiveEnergy(maxReceive, simulate);
     }
 
@@ -267,6 +270,7 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
 
     public void setEnergyStored(int energy) {
         storage.setEnergyStored(energy);
+        this.markDirty();
     }
 
     @Override
@@ -278,6 +282,7 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
     @Override
     public double injectEnergy(EnumFacing facing, double v, double v1) {
         storageEU += v;
+        this.markDirty();
         return 0.0D;
     }
 
@@ -361,6 +366,7 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
         if (capability == TeslaCapabilities.CAPABILITY_CONSUMER || capability == TeslaCapabilities.CAPABILITY_HOLDER) {
             if (TeslaLoaded) {
                 moveEnergyFromTeslaToRF();
+                this.markDirty();
                 return (T) getTeslaContainer(this.teslaContainer);
             }
         }
