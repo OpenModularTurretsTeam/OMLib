@@ -18,7 +18,18 @@ public class ModCompatibility {
     public static void checkForMods() {
 
         IC2Loaded = Loader.isModLoaded("IC2");
+        fixIC2Loading();
         TeslaLoaded = Loader.isModLoaded("tesla");
+    }
+
+    public static void fixIC2Loading() {
+        if (IC2Loaded) {
+            try {
+                Class.forName("ic2.api.energy.tile.IEnergySink", false, ClassLoader.getSystemClassLoader());
+            } catch (ClassNotFoundException e) {
+                IC2Loaded = false;
+            }
+        }
     }
 
     private static void addVersionCheckerInfo() {
