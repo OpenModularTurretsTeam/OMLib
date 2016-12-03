@@ -356,7 +356,7 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
 
     @Optional.Method(modid = "tesla")
     private void moveEnergyFromTeslaToRF() {
-        if (teslaContainer instanceof BaseOMTeslaContainer) {
+        if (getTeslaContainer(teslaContainer) != null) {
             int energyNeeded = storage.getEnergyStored() - storage.getMaxEnergyStored();
             if (energyNeeded > 0) {
                 storage.modifyEnergyStored((int) ((BaseOMTeslaContainer) teslaContainer).takePower(energyNeeded, false));
