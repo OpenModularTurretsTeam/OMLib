@@ -15,6 +15,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.Optional;
 import omtteam.omlib.capabilities.BaseOMTeslaContainer;
+import omtteam.omlib.compatability.ModCompatibility;
 import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.util.MathUtil;
 import omtteam.omlib.util.TrustedPlayer;
@@ -25,6 +26,7 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 import static omtteam.omlib.compatability.ModCompatibility.TeslaLoaded;
+import static omtteam.omlib.handler.ConfigHandler.EUSupport;
 import static omtteam.omlib.util.PlayerUtil.getPlayerUIDUnstable;
 import static omtteam.omlib.util.PlayerUtil.getPlayerUUID;
 
@@ -323,12 +325,23 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
     }
 
     @Optional.Method(modid = "IC2")
+    protected void removeFromIc2EnergyNetwork() {
+        MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
+    }
+
     @Override
     public void invalidate() {
         super.invalidate();
-        if (!worldObj.isRemote) {
-            EnergyTileUnloadEvent event = new EnergyTileUnloadEvent(this);
-            MinecraftForge.EVENT_BUS.post(event);
+        onChunkUnload();
+    }
+
+    @Override
+    public void onChunkUnload() {
+        if (wasAddedToEnergyNet &&
+                ModCompatibility.IC2Loaded) {
+            removeFromIc2EnergyNetwork();
+
+            wasAddedToEnergyNet = false;
         }
     }
 
