@@ -4,6 +4,8 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+import java.util.logging.Logger;
+
 /**
  * Created by Keridos on 03/12/16.
  * This Class contains a modified version of the mergeItemStack so that it respect slot.getItemStackLimit(stack) and
@@ -37,7 +39,8 @@ public class InvUtil {
                 {
                     int j = itemstack.stackSize + stack.stackSize;
 
-                    if (j <= Math.min(stack.getMaxStackSize(), slot.getItemStackLimit(stack) - itemstack.stackSize))
+                    Logger.getGlobal().info (" stacklimit: "+slot.getItemStackLimit(stack));
+                    if (j <= Math.min(stack.getMaxStackSize(), slot.getItemStackLimit(stack)))
                     {
                         stack.stackSize = 0;
                         itemstack.stackSize = j;
