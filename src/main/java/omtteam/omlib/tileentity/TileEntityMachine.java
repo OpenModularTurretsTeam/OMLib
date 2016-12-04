@@ -374,11 +374,9 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
         // not care about which side is being accessed, however if you wanted to restrict which
         // side can be used, for example only allow power input through the back, that could be
         // done here.
-        if (capability == TeslaCapabilities.CAPABILITY_CONSUMER || capability == TeslaCapabilities.CAPABILITY_HOLDER) {
-            if (ModCompatibility.TeslaLoaded) {
-                moveEnergyFromTeslaToRF();
-                this.markDirty();
-                return (T) getTeslaContainer(this.teslaContainer);
+        if (ModCompatibility.TeslaLoaded) {
+            if (getTeslaCapability(capability, facing) != null) {
+                return getTeslaCapability(capability, facing);
             }
         }
 
@@ -394,10 +392,29 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
         // three. This can also be used to restrict access on certain sides, for example if you
         // only accept power input from the bottom of the block, you would only return true for
         // Consumer if the facing parameter was down.
-        if (capability == TeslaCapabilities.CAPABILITY_CONSUMER || capability == TeslaCapabilities.CAPABILITY_HOLDER)
-            return true;
+        if (ModCompatibility.TeslaLoaded) {
+            if (hasTeslaCapability(capability, facing)) {
+                return true;
+            }
+        }
 
         return super.hasCapability(capability, facing);
+    }
+
+    @Optional.Method(modid = "tesla")
+    private boolean hasTeslaCapability(Capability<?> capability, EnumFacing facing) {
+        return (capability == TeslaCapabilities.CAPABILITY_CONSUMER || capability == TeslaCapabilities.CAPABILITY_HOLDER);
+    }
+
+    @Optional.Method(modid = "tesla")
+    @SuppressWarnings("unchecked")
+    private <T> T getTeslaCapability(Capability<T> capability, EnumFacing facing) {
+        if (capability == TeslaCapabilities.CAPABILITY_CONSUMER || capability == TeslaCapabilities.CAPABILITY_HOLDER) {
+            moveEnergyFromTeslaToRF();
+            this.markDirty();
+            return (T) getTeslaContainer(this.teslaContainer);
+        }
+        return null;
     }
     
     /*
