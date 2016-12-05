@@ -12,7 +12,7 @@ public class MathUtil {
         return (int) Math.floor(number);
     }
 
-    public static AxisAlignedBB rorateAABB(AxisAlignedBB box, EnumFacing facing){
+    public static AxisAlignedBB rotateAABB(AxisAlignedBB box, EnumFacing facing){
         switch (facing) {
             case NORTH:
                 return box;
