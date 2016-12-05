@@ -15,19 +15,18 @@ public class MathUtil {
     public static AxisAlignedBB rotateAABB(AxisAlignedBB box, EnumFacing facing){
         switch (facing) {
             case NORTH:
-                return box;
+                return box.offset(0F,0F,0.625F);
             case EAST:
                 return new AxisAlignedBB(box.minZ, box.minY, box.minX, box.maxZ, box.maxY, box.maxX);
             case SOUTH:
-                return box.offset(0F,0F,0.625);
+                return box;
             case WEST:
                 return new AxisAlignedBB(box.minZ, box.minY, box.minX, box.maxZ, box.maxY, box.maxX).offset(0.625F,0F,0F);
             case UP:
                 return new AxisAlignedBB(box.minY, box.minZ, box.minX, box.maxY, box.maxZ, box.maxX);
             case DOWN:
-                return new AxisAlignedBB(box.minY, box.minZ, box.minX, box.maxY, box.maxZ, box.maxX).offset(0F,-0.625F,0F);
-            default:
-                return box;
+                return new AxisAlignedBB(box.minY, box.minZ, box.minX, box.maxY, box.maxZ, box.maxX).offset(0F,0.625F,0F);
         }
+        return box;
     }
 }
