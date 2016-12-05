@@ -344,20 +344,20 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
     }
 
     @Optional.Method(modid = "tesla")
-    private BaseOMTeslaContainer getTeslaContainer(Object container) {
-        if (container instanceof BaseOMTeslaContainer) {
-            return (BaseOMTeslaContainer) container;
+    private BaseOMTeslaContainer getTeslaContainer() {
+        if (teslaContainer instanceof BaseOMTeslaContainer) {
+            return (BaseOMTeslaContainer) teslaContainer;
         } else {
-            container = new BaseOMTeslaContainer();
-            return (BaseOMTeslaContainer) container;
+            teslaContainer = new BaseOMTeslaContainer();
+            return (BaseOMTeslaContainer) teslaContainer;
         }
 
     }
 
     @Optional.Method(modid = "tesla")
     private void moveEnergyFromTeslaToRF() {
-        if (getTeslaContainer(teslaContainer) != null) {
-            int energyNeeded = storage.getEnergyStored() - storage.getMaxEnergyStored();
+        if (getTeslaContainer() != null) {
+            int energyNeeded = storage.getMaxEnergyStored() - storage.getEnergyStored();
             if (energyNeeded > 0) {
                 storage.modifyEnergyStored((int) ((BaseOMTeslaContainer) teslaContainer).takePower(energyNeeded, false));
             }
@@ -411,8 +411,7 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
     private <T> T getTeslaCapability(Capability<T> capability, EnumFacing facing) {
         if (capability == TeslaCapabilities.CAPABILITY_CONSUMER || capability == TeslaCapabilities.CAPABILITY_HOLDER) {
             moveEnergyFromTeslaToRF();
-            this.markDirty();
-            return (T) getTeslaContainer(this.teslaContainer);
+            return (T) getTeslaContainer();
         }
         return null;
     }
