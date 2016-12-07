@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
  * Created by Keridos on 27/11/16.
  * This Class
  */
-public class TileEntityBase extends TileEntity {
+public abstract class TileEntityBase extends TileEntity {
     @Nullable
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {

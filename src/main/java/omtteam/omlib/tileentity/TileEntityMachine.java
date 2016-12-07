@@ -268,6 +268,10 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
         return storage.getMaxEnergyStored();
     }
 
+    public void setMaxEnergyStored(int maxStorage) {
+        storage.setCapacity(maxStorage);
+    }
+
     public void setEnergyStored(int energy) {
         storage.setEnergyStored(energy);
         this.markDirty();
