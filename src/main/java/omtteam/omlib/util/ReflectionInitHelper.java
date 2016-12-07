@@ -52,7 +52,7 @@ public class ReflectionInitHelper {
                 try {
                     SoundEvent soundEvent = (SoundEvent) field.get(null);
                     if (soundEvent != null) {
-                        SoundEvent.REGISTRY.register(size, soundEvent.getSoundName(), soundEvent);
+                        SoundEvent.REGISTRY.register(size, soundEvent.getRegistryName(), soundEvent);
                         size++;
                     }
                 } catch (Exception e) {
