@@ -105,7 +105,7 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
         this.trustedPlayers = list;
     }
 
-    private NBTTagList getTrustedPlayersAsNBT() {
+    protected NBTTagList getTrustedPlayersAsNBT() {
         NBTTagList nbt = new NBTTagList();
         for (TrustedPlayer trustedPlayer : trustedPlayers) {
             NBTTagCompound nbtPlayer = new NBTTagCompound();
@@ -123,7 +123,7 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
         return nbt;
     }
 
-    private void buildTrustedPlayersFromNBT(NBTTagList nbt) {
+    protected void buildTrustedPlayersFromNBT(NBTTagList nbt) {
         trustedPlayers.clear();
         for (int i = 0; i < nbt.tagCount(); i++) {
             if (!nbt.getCompoundTagAt(i).getString("name").equals("")) {

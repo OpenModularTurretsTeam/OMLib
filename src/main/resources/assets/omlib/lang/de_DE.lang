@@ -1,0 +1,12 @@
+gui.omtteam.omlib:owner=Besitzer
+gui.omtteam.omlib:invert=Invertiert
+gui.omtteam.omlib:active=Aktiv
+gui.omtteam.omlib:mode=Modus
+gui.omtteam.omlib:true=wahr
+gui.omtteam.omlib:false=falsch
+gui.omtteam.omlib:yes=ja
+gui.omtteam.omlib:no=nein
+gui.omtteam.omlib:trusted_players=Vertraute Spieler
+gui.omtteam.omlib:attack_mobs=Attackiert Mobs
+gui.omtteam.omlib:attack_neutrals=Attackiert Neutrale
+gui.omtteam.omlib:attack_players=Attackiert Spieler
