@@ -4,7 +4,7 @@ package omtteam.omlib.reference;
  * Created by Keridos on 17.05.2015.
  * This Class
  */
-public class Names {
+public class OMLibNames {
     public static class Localizations {
         public static final String OWNER = "gui.omtteam.omlib:owner";
         public static final String INVERT = "gui.omtteam.omlib:invert";

@@ -10,3 +10,4 @@ gui.omtteam.omlib:trusted_players=Trusted Players
 gui.omtteam.omlib:attack_mobs=Attack Mobs
 gui.omtteam.omlib:attack_neutrals=Attack Neutrals
 gui.omtteam.omlib:attack_players=Attack Players
+gui.omtteam.omlib:multi_targeting=Multi Targeting
