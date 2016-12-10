@@ -12,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.UsernameCache;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.Optional;
 import omtteam.omlib.capabilities.BaseOMTeslaContainer;
@@ -22,6 +23,7 @@ import omtteam.omlib.util.TrustedPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -56,12 +58,52 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
     public boolean addTrustedPlayer(String name) {
         TrustedPlayer trustedPlayer = new TrustedPlayer(name);
         trustedPlayer.uuid = getPlayerUUID(name);
-        if (trustedPlayer.uuid != null) {
-            for (TrustedPlayer player : trustedPlayers) {
-                if (player.getName().toLowerCase().equals(name.toLowerCase()) || trustedPlayer.uuid.toString().equals(
-                        owner)) {
-                    return true;
+
+        if (!worldObj.isRemote) {
+            boolean foundPlayer = false;
+            for (Map.Entry<UUID, String> servername : UsernameCache.getMap().entrySet()) {
+                if (name.equals(servername.getValue())) {
+                    foundPlayer = true;
+                    break;
                 }
+            }
+
+            if (foundPlayer == false) {
+                return false;
+            }
+        }
+
+        if(trustedPlayer.uuid == null)
+        {
+            return false;
+        }
+
+        if (ConfigHandler.offlineModeSupport) {
+            if (trustedPlayer.getName().equals(getOwner())) {
+                return false;
+            }
+
+        } else {
+            if (trustedPlayer.uuid.toString().equals(getOwner())) {
+                return false;
+            }
+        }
+
+        if (trustedPlayer.uuid != null || ConfigHandler.offlineModeSupport) {
+            for (TrustedPlayer player : trustedPlayers) {
+                if (ConfigHandler.offlineModeSupport) {
+                    if (player.getName().toLowerCase().equals(name.toLowerCase()) || player.getName().equals(getOwner())) {
+                        return false;
+                    }
+                } else {
+                    if (player.getName().toLowerCase().equals(name.toLowerCase()) || trustedPlayer.uuid.toString().equals(
+                            owner)) {
+                        return false;
+                    }
+                }
+            }
+            if (ConfigHandler.offlineModeSupport) {
+
             }
             trustedPlayers.add(trustedPlayer);
             return true;
