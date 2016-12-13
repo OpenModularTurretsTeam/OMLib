@@ -1,5 +1,6 @@
 package omtteam.omlib.tileentity;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -8,14 +9,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
  * Created by Keridos on 27/11/16.
  * This Class
  */
+@MethodsReturnNonnullByDefault
 public abstract class TileEntityBase extends TileEntity {
-    @Nullable
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound nbtTagCompound = new NBTTagCompound();
@@ -29,6 +30,7 @@ public abstract class TileEntityBase extends TileEntity {
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void handleUpdateTag(NBTTagCompound tag) {
         super.handleUpdateTag(tag);
     }
@@ -39,6 +41,7 @@ public abstract class TileEntityBase extends TileEntity {
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
         return oldState.getBlock() != newState.getBlock();
     }
