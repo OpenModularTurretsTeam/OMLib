@@ -1,5 +1,6 @@
 package omtteam.omlib.tileentity;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.nbt.NBTTagCompound;
 import omtteam.omlib.handler.ConfigHandler;
 
@@ -10,6 +11,7 @@ import static omtteam.omlib.util.PlayerUtil.*;
  * Created by Keridos on 24/11/16.
  * This Class
  */
+@MethodsReturnNonnullByDefault
 public abstract class TileEntityOwnedBlock extends TileEntityBase {
 
     protected String owner = "";
@@ -27,6 +29,7 @@ public abstract class TileEntityOwnedBlock extends TileEntityBase {
         return nbtTagCompound;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
         super.readFromNBT(nbtTagCompound);

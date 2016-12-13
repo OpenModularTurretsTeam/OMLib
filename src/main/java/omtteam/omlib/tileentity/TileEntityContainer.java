@@ -7,6 +7,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.text.ITextComponent;
 
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 /**
  * Created by Keridos on 05/12/2015.
  * This Class
@@ -14,6 +17,7 @@ import net.minecraft.util.text.ITextComponent;
 public abstract class TileEntityContainer extends TileEntityOwnedBlock implements ISidedInventory {
     protected ItemStack[] inventory;
 
+    @SuppressWarnings("NullableProblems")
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
         super.writeToNBT(nbtTagCompound);
@@ -35,9 +39,9 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock implement
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound par1) {
-        super.readFromNBT(par1);
-        NBTTagList tagList = par1.getTagList("Inventory", 10);
+    public void readFromNBT(NBTTagCompound nbtTagCompound) {
+        super.readFromNBT(nbtTagCompound);
+        NBTTagList tagList = nbtTagCompound.getTagList("Inventory", 10);
 
         for (int i = 0; i < tagList.tagCount(); i++) {
             NBTTagCompound tag = tagList.getCompoundTagAt(i);
@@ -90,6 +94,7 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock implement
 
 
     @Override
+    @ParametersAreNonnullByDefault
     public boolean isUseableByPlayer(EntityPlayer player) {
         return worldObj.getTileEntity(pos) == this && player.getDistanceSq(this.pos.getX()  + 0.5,
                 this.pos.getY() + 0.5,
@@ -97,7 +102,8 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock implement
     }
 
     @Override
-    public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
+    @ParametersAreNonnullByDefault
+    public boolean isItemValidForSlot(int slot, @Nullable ItemStack stack) {
         return false;
     }
 
@@ -123,22 +129,26 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock implement
         return itemstack;
     }
 
+    @SuppressWarnings("NullableProblems")
     @Override
     public String getName() {
         return null;
     }
 
+    @SuppressWarnings("NullableProblems")
     @Override
     public ITextComponent getDisplayName() {
         return null;
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void openInventory(EntityPlayer player) {
 
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void closeInventory(EntityPlayer player) {
 
     }
