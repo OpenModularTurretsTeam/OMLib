@@ -68,12 +68,12 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
                 }
             }
 
-            if (foundPlayer == false) {
+            if (!foundPlayer) {
                 return false;
             }
         }
 
-        if(trustedPlayer.uuid == null)
+        if(trustedPlayer.uuid == null && !ConfigHandler.offlineModeSupport)
         {
             return false;
         }
