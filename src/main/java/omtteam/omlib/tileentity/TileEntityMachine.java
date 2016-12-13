@@ -21,6 +21,7 @@ import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.util.MathUtil;
 import omtteam.omlib.util.TrustedPlayer;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,11 +37,11 @@ import static omtteam.omlib.util.PlayerUtil.getPlayerUUID;
 public abstract class TileEntityMachine extends TileEntityContainer implements IEnergyReceiver, IEnergySink {
 
     protected EnergyStorage storage;
-    protected Object teslaContainer;
+    private Object teslaContainer;
     protected double storageEU;
-    protected boolean active;
+    private boolean active;
     protected boolean inverted;
-    protected boolean redstone;
+    private boolean redstone;
     protected boolean wasAddedToEnergyNet = false;
     protected List<TrustedPlayer> trustedPlayers;
     //private float amountOfPotentia = 0F;
@@ -73,18 +74,13 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
             }
         }
 
-        if(trustedPlayer.uuid == null && !ConfigHandler.offlineModeSupport)
-        {
-            return false;
-        }
-
         if (ConfigHandler.offlineModeSupport) {
             if (trustedPlayer.getName().equals(getOwner())) {
                 return false;
             }
 
         } else {
-            if (trustedPlayer.uuid.toString().equals(getOwner())) {
+            if (trustedPlayer.uuid == null || trustedPlayer.uuid.toString().equals(getOwner())) {
                 return false;
             }
         }
@@ -101,9 +97,6 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
                         return false;
                     }
                 }
-            }
-            if (ConfigHandler.offlineModeSupport) {
-
             }
             trustedPlayers.add(trustedPlayer);
             return true;
@@ -147,6 +140,7 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
         this.trustedPlayers = list;
     }
 
+    @SuppressWarnings("ConstantConditions")
     protected NBTTagList getTrustedPlayersAsNBT() {
         NBTTagList nbt = new NBTTagList();
         for (TrustedPlayer trustedPlayer : trustedPlayers) {
@@ -369,7 +363,7 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
     }
 
     @Optional.Method(modid = "IC2")
-    protected void removeFromIc2EnergyNetwork() {
+    private void removeFromIc2EnergyNetwork() {
         MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
     }
 
@@ -411,7 +405,8 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @ParametersAreNonnullByDefault
+    @SuppressWarnings({"unchecked", "NullableProblems"})
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 
         // This method is where other things will try to access your TileEntity's Tesla
@@ -430,6 +425,7 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 
         // This method replaces the instanceof checks that would be used in an interface based
@@ -447,13 +443,14 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
         return super.hasCapability(capability, facing);
     }
 
+    @SuppressWarnings("unused")
     @Optional.Method(modid = "tesla")
     private boolean hasTeslaCapability(Capability<?> capability, EnumFacing facing) {
         return (capability == TeslaCapabilities.CAPABILITY_CONSUMER || capability == TeslaCapabilities.CAPABILITY_HOLDER);
     }
 
     @Optional.Method(modid = "tesla")
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "unused"})
     private <T> T getTeslaCapability(Capability<T> capability, EnumFacing facing) {
         if (capability == TeslaCapabilities.CAPABILITY_CONSUMER || capability == TeslaCapabilities.CAPABILITY_HOLDER) {
             moveEnergyFromTeslaToRF();
