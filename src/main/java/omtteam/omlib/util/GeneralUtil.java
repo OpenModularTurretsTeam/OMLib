@@ -10,7 +10,9 @@ import omtteam.omlib.reference.OMLibNames;
  * Created by Keridos on 17.05.2015.
  * This Class
  */
+@SuppressWarnings({"deprecation", "unused"})
 public class GeneralUtil {
+    @SuppressWarnings("unused")
     public static Item getMinecraftItem(String name) {
         Item item;
         item = GameData.getItemRegistry().getObject(new ResourceLocation("minecraft:" + name));
@@ -25,6 +27,7 @@ public class GeneralUtil {
         }
     }
 
+    @SuppressWarnings("unused")
     public static String getBooleanLocalization(boolean bool) {
         String localization = (bool ? OMLibNames.Localizations.TRUE : OMLibNames.Localizations.FALSE);
         if (!I18n.translateToLocal(localization).equals(localization)) {
@@ -34,6 +37,7 @@ public class GeneralUtil {
         }
     }
 
+    @SuppressWarnings("unused")
     public static String getColoredBooleanLocalization(boolean bool) {
         String localization = (bool ? OMLibNames.Localizations.TRUE : OMLibNames.Localizations.FALSE);
         if (!I18n.translateToLocal(localization).equals(localization)) {

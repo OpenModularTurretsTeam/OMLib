@@ -11,6 +11,7 @@ import static omtteam.omlib.util.PlayerUtil.*;
  * Created by Keridos on 24/11/16.
  * This Class
  */
+@SuppressWarnings({"WeakerAccess", "unused"})
 @MethodsReturnNonnullByDefault
 public abstract class TileEntityOwnedBlock extends TileEntityBase {
 
