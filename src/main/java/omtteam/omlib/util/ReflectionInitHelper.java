@@ -11,6 +11,7 @@ import java.lang.reflect.Field;
  * Created by Keridos on 07/12/16.
  * This Class
  */
+@SuppressWarnings("unused")
 public class ReflectionInitHelper {
     public static void registerBlocks(Class clazz) {
         for (Field field : clazz.getDeclaredFields()) {

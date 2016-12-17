@@ -1,7 +1,9 @@
 package omtteam.omlib.util;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 public class TrustedPlayer {
     public String name = "";
     public boolean canOpenGUI = false;
@@ -9,6 +11,7 @@ public class TrustedPlayer {
     public boolean admin = false;
     public UUID uuid;
 
+    @ParametersAreNonnullByDefault
     public TrustedPlayer(String name) {
         this.name = name;
     }

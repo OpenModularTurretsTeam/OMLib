@@ -12,6 +12,7 @@ import java.util.ArrayList;
  * Created by Keridos on 20/07/16.
  * This Class
  */
+@SuppressWarnings("unused")
 public class WorldUtil {
     public static ArrayList<TileEntity> getTouchingTileEntities(World world, BlockPos pos){
         ArrayList<TileEntity> list = new ArrayList<>();
@@ -21,6 +22,7 @@ public class WorldUtil {
         return list;
     }
 
+    @SuppressWarnings("unused")
     public static ArrayList<IBlockState> getTouchingBlockStates(World world, BlockPos pos){
         ArrayList<IBlockState> list = new ArrayList<>();
         for (EnumFacing facing: EnumFacing.VALUES) {

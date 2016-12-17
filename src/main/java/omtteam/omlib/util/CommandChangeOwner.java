@@ -10,22 +10,30 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 /**
  * Created by nico on 6/4/15.
+ * Command for changing owners of an owned block
  */
 
 public class CommandChangeOwner extends CommandBase {
     @Override
+    @Nonnull
     public String getCommandName() {
         return "omtchangeowner";
     }
 
     @Override
+    @Nonnull
+    @ParametersAreNonnullByDefault
     public String getCommandUsage(ICommandSender sender) {
         return "<dimension> <x> <y> <z> <new owner>";
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void execute(MinecraftServer server, ICommandSender sender, String[] params) {
         if (params.length != 5) {
             sender.addChatMessage(new TextComponentString(getCommandUsage(sender)));

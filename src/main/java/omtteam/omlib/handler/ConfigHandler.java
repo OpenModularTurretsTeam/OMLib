@@ -9,6 +9,7 @@ public class ConfigHandler {
     public static boolean offlineModeSupport;
     public static boolean EUSupport;
     public static double EUtoRFRatio;
+    @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private static int potentiaToRFRatio;
 
     public static void init(File configFile) {

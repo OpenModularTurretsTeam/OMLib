@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
  * This Class contains a modified version of the mergeItemStack so that it respect slot.getItemStackLimit(stack) and
  * the retuired areItemStacksEqual
  */
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class InvUtil {
 
     public static boolean areItemStacksEqual(ItemStack stackA, ItemStack stackB)
@@ -30,7 +31,7 @@ public class InvUtil {
         {
             while (stack.stackSize > 0 && (!reverseDirection && i < endIndex || reverseDirection && i >= startIndex))
             {
-                Slot slot = (Slot)container.inventorySlots.get(i);
+                Slot slot = container.inventorySlots.get(i);
                 ItemStack itemstack = slot.getStack();
 
                 if (itemstack != null && areItemStacksEqual(stack, itemstack))
@@ -77,7 +78,7 @@ public class InvUtil {
 
             while (!reverseDirection && i < endIndex || reverseDirection && i >= startIndex)
             {
-                Slot slot1 = (Slot)container.inventorySlots.get(i);
+                Slot slot1 = container.inventorySlots.get(i);
                 ItemStack itemstack1 = slot1.getStack();
 
                 if (itemstack1 == null && slot1.isItemValid(stack)) // Forge: Make sure to respect isItemValid in the slot.

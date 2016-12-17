@@ -9,11 +9,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 
 /**
  * Created by Keridos on 05/12/2015.
  * This Class
  */
+@SuppressWarnings("unused")
 public abstract class BlockAbstractMiscPane extends BlockPane {
     protected BlockAbstractMiscPane(String par1, String par2, Material material, boolean par4) {
         super(material, par4);
@@ -25,9 +29,12 @@ public abstract class BlockAbstractMiscPane extends BlockPane {
     }
 
     @Override
+    @Nonnull
+    @ParametersAreNonnullByDefault
     public abstract TileEntity createTileEntity(World world, IBlockState state);
 
     @Override
+    @ParametersAreNonnullByDefault
     public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
         return false;
     }
