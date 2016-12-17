@@ -10,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
  * implementations do not need to use all three. The INBTSerializable interface is also
  * optional.
  */
+@SuppressWarnings("WeakerAccess")
 public class BaseOMTeslaContainer implements ITeslaConsumer, ITeslaProducer, ITeslaHolder {
 
     /**
@@ -49,7 +50,7 @@ public class BaseOMTeslaContainer implements ITeslaConsumer, ITeslaProducer, ITe
      * @param input The maximum rate of power that can be accepted at a time.
      * @param output The maximum rate of power that can be extracted at a time.
      */
-    public BaseOMTeslaContainer(long capacity, long input, long output) {
+    public BaseOMTeslaContainer(@SuppressWarnings("SameParameterValue") long capacity, @SuppressWarnings("SameParameterValue") long input, @SuppressWarnings("SameParameterValue") long output) {
 
         this(0, capacity, input, output);
     }
@@ -62,7 +63,7 @@ public class BaseOMTeslaContainer implements ITeslaConsumer, ITeslaProducer, ITe
      * @param input The maximum rate of power that can be accepted at a time.
      * @param output The maximum rate of power that can be extracted at a time.
      */
-    public BaseOMTeslaContainer(long power, long capacity, long input, long output) {
+    public BaseOMTeslaContainer(@SuppressWarnings("SameParameterValue") long power, long capacity, long input, long output) {
 
         this.stored = power;
         this.capacity = capacity;
@@ -78,6 +79,7 @@ public class BaseOMTeslaContainer implements ITeslaConsumer, ITeslaProducer, ITe
      *
      * @param dataTag The NBTCompoundTag to read the important data from.
      */
+    @SuppressWarnings("unused")
     public BaseOMTeslaContainer(NBTTagCompound dataTag) {
 
         this.deserializeNBT(dataTag);
@@ -117,6 +119,7 @@ public class BaseOMTeslaContainer implements ITeslaConsumer, ITeslaProducer, ITe
         return this.capacity;
     }
 
+    @SuppressWarnings("unused")
     public NBTTagCompound serializeNBT (NBTTagCompound dataTag) {
 
         dataTag.setLong("TeslaPower", this.stored);
@@ -151,6 +154,7 @@ public class BaseOMTeslaContainer implements ITeslaConsumer, ITeslaProducer, ITe
      * @param capacity The new capacity for the container.
      * @return The instance of the container being updated.
      */
+    @SuppressWarnings("unused")
     public BaseOMTeslaContainer setCapacity (long capacity) {
 
         this.capacity = capacity;
@@ -177,6 +181,7 @@ public class BaseOMTeslaContainer implements ITeslaConsumer, ITeslaProducer, ITe
      * @param rate The amount of Tesla power to accept at a time.
      * @return The instance of the container being updated.
      */
+    @SuppressWarnings("UnusedReturnValue")
     public BaseOMTeslaContainer setInputRate (long rate) {
 
         this.inputRate = rate;
@@ -199,6 +204,7 @@ public class BaseOMTeslaContainer implements ITeslaConsumer, ITeslaProducer, ITe
      * @param rate The amount of Tesla power that can be extracted.
      * @return The instance of the container being updated.
      */
+    @SuppressWarnings("UnusedReturnValue")
     public BaseOMTeslaContainer setOutputRate (long rate) {
 
         this.outputRate = rate;
@@ -212,6 +218,7 @@ public class BaseOMTeslaContainer implements ITeslaConsumer, ITeslaProducer, ITe
      * @param rate The input/output rate for the Tesla container.
      * @return The instance of the container being updated.
      */
+    @SuppressWarnings("unused")
     public BaseOMTeslaContainer setTransferRate (long rate) {
 
         this.setInputRate(rate);

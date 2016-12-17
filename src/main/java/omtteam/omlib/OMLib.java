@@ -18,26 +18,32 @@ import static omtteam.omlib.compatability.ModCompatibility.performModCompat;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, acceptedMinecraftVersions = "1.7.10", dependencies = Reference.DEPENDENCIES)
 public class OMLib {
+    @SuppressWarnings("unused")
     @Mod.Instance(Reference.MOD_ID)
     public static OMLib instance;
 
+    @SuppressWarnings("unused")
     @SidedProxy(clientSide = "omtteam.omlib.proxy.ClientProxy", serverSide = "omtteam.omlib.proxy" + "" + ".CommonProxy")
     private static CommonProxy proxy;
 
+    @SuppressWarnings("unused")
     public static CreativeTabs modularTurretsTab;
 
 
+    @SuppressWarnings("unused")
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         ConfigHandler.init(event.getSuggestedConfigurationFile());
         checkForMods();
     }
 
+    @SuppressWarnings("unused")
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         performModCompat();
     }
 
+    @SuppressWarnings("unused")
     @Mod.EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
         event.registerServerCommand(new CommandChangeOwner());

@@ -15,6 +15,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * Created by Keridos on 27/11/16.
  * This Class
  */
+@SuppressWarnings({"EmptyMethod", "WeakerAccess"})
 @MethodsReturnNonnullByDefault
 public abstract class TileEntityBase extends TileEntity {
     @Override

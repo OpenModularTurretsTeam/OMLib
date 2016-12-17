@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 import static omtteam.omlib.util.PlayerUtil.getPlayerUIDUnstable;
 import static omtteam.omlib.util.PlayerUtil.getPlayerUUID;
 
+@SuppressWarnings({"WeakerAccess", "CanBeFinal", "unused"})
 @Optional.InterfaceList({
         @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySink", modid = "IC2")})
 
@@ -56,14 +57,15 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
         this.active = true;
     }
 
+    @ParametersAreNonnullByDefault
     public boolean addTrustedPlayer(String name) {
         TrustedPlayer trustedPlayer = new TrustedPlayer(name);
         trustedPlayer.uuid = getPlayerUUID(name);
 
         if (!worldObj.isRemote) {
             boolean foundPlayer = false;
-            for (Map.Entry<UUID, String> servername : UsernameCache.getMap().entrySet()) {
-                if (name.equals(servername.getValue())) {
+            for (Map.Entry<UUID, String> serverName : UsernameCache.getMap().entrySet()) {
+                if (name.equals(serverName.getValue())) {
                     foundPlayer = true;
                     break;
                 }

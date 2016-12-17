@@ -3,15 +3,19 @@ package omtteam.omlib.util;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 /**
  * Created by Keridos on 01/10/2015.
  * This Class
  */
+@SuppressWarnings({"unused", "SuspiciousNameCombination"})
 public class MathUtil {
     public static int truncateDoubleToInt(double number) {
         return (int) Math.floor(number);
     }
 
+    @ParametersAreNonnullByDefault
     public static AxisAlignedBB rotateAABB(AxisAlignedBB box, EnumFacing facing){
         switch (facing) {
             case NORTH:

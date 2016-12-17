@@ -9,10 +9,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 /**
  * Created by Keridos on 28/11/16.
  * This Class
  */
+@SuppressWarnings("unused")
 public abstract class BlockAbstractMiscWall extends BlockWall {
     protected BlockAbstractMiscWall() {
         super(Blocks.STONE);
@@ -24,9 +28,12 @@ public abstract class BlockAbstractMiscWall extends BlockWall {
     }
 
     @Override
+    @Nonnull
+    @ParametersAreNonnullByDefault
     public abstract TileEntity createTileEntity(World world, IBlockState state);
 
     @Override
+    @ParametersAreNonnullByDefault
     public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
         return false;
     }

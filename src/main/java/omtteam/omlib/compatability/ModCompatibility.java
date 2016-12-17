@@ -5,15 +5,13 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import omtteam.omlib.reference.Reference;
 
-import java.util.logging.Logger;
-
 /**
  * Created by Keridos on 23/01/2015. This Class
  */
+@SuppressWarnings("WeakerAccess")
 public class ModCompatibility {
     public static boolean IC2Loaded = false;
     public static boolean TeslaLoaded = false;
-    private static Logger logger;
 
     public static void checkForMods() {
 
