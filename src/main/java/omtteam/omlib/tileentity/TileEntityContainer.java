@@ -14,6 +14,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * Created by Keridos on 05/12/2015.
  * This Class
  */
+@SuppressWarnings("WeakerAccess")
 public abstract class TileEntityContainer extends TileEntityOwnedBlock implements ISidedInventory {
     protected ItemStack[] inventory;
 
