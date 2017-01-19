@@ -1,7 +1,9 @@
 package omtteam.omlib.util;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.UsernameCache;
+import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.tileentity.TileEntityMachine;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 
@@ -20,6 +22,11 @@ import static omtteam.omlib.handler.ConfigHandler.offlineModeSupport;
 
 @SuppressWarnings("unused")
 public class PlayerUtil {
+
+    public static boolean isPlayerOP(EntityPlayerMP player){
+           return player.getServer().getPlayerList().getOppedPlayers().getEntry(player.getGameProfile()) != null;
+    }
+
     @Nullable
     public static UUID getPlayerUUID(String username) {
         for (Map.Entry<UUID, String> entry : UsernameCache.getMap().entrySet()) {
@@ -67,6 +74,7 @@ public class PlayerUtil {
     @ParametersAreNonnullByDefault
     public static boolean isPlayerOwner(EntityPlayer player, TileEntityOwnedBlock ownedBlock) {
         return (ownedBlock.getOwner().equals(player.getUniqueID().toString()) ||
-                (offlineModeSupport && ownedBlock.getOwnerName().equals(player.getName())));
+                (offlineModeSupport && ownedBlock.getOwnerName().equals(player.getName())) ||
+                (ConfigHandler.canOPAccessOwnedBlocks && (player.getServer().getPlayerList().getOppedPlayers().getEntry(player.getGameProfile()) != null)));
     }
 }
