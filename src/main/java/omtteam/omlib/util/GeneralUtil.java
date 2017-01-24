@@ -12,10 +12,9 @@ import omtteam.omlib.reference.OMLibNames;
  */
 @SuppressWarnings({"deprecation", "unused"})
 public class GeneralUtil {
-    @SuppressWarnings("unused")
-    public static Item getMinecraftItem(String name) {
+    public static Item getItem(String modid, String name) {
         Item item;
-        item = GameData.getItemRegistry().getObject(new ResourceLocation("minecraft:" + name));
+        item = GameData.getItemRegistry().getObject(new ResourceLocation(modid + ":" + name));
         return item;
     }
 
@@ -46,6 +45,7 @@ public class GeneralUtil {
             return (bool ? "\u00A72" : "\u00A74") + I18n.translateToFallback(localization);
         }
     }
+
     public static String getColoredBooleanLocalizationYesNo(boolean bool) {
         String localization = (bool ? OMLibNames.Localizations.YES : OMLibNames.Localizations.NO);
         if (!I18n.translateToLocal(localization).equals(localization)) {
