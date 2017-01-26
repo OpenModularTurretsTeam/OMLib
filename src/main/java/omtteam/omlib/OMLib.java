@@ -11,6 +11,7 @@ import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.proxy.CommonProxy;
 import omtteam.omlib.reference.Reference;
 import omtteam.omlib.util.CommandChangeOwner;
+import omtteam.omlib.util.RandomUtil;
 
 import static omtteam.omlib.compatability.ModCompatibility.checkForMods;
 import static omtteam.omlib.compatability.ModCompatibility.performModCompat;
@@ -35,6 +36,7 @@ public class OMLib {
     public void preInit(FMLPreInitializationEvent event) {
         ConfigHandler.init(event.getSuggestedConfigurationFile());
         checkForMods();
+        RandomUtil.init();
     }
 
     @SuppressWarnings("unused")
