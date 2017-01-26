@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
  * This Class contains a modified version of the mergeItemStack so that it respect slot.getItemStackLimit(stack) and
  * the retuired areItemStacksEqual
  */
-@SuppressWarnings({"WeakerAccess", "unused"})
+@SuppressWarnings({"WeakerAccess"})
 public class InvUtil {
 
     public static boolean areItemStacksEqual(ItemStack stackA, ItemStack stackB)
