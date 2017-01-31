@@ -65,7 +65,7 @@ public abstract class CamoBakedModel implements IBakedModel {
 
     @Override
     public boolean isBuiltInRenderer() {
-        return false;
+        return true;
     }
 
     @Override

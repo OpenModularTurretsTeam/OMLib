@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
 public class CamoBlockColor implements IBlockColor {
     @Override
     public int colorMultiplier(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) {
-        if (worldIn.getTileEntity(pos) instanceof ICamoSupport) {
+        if (worldIn.getTileEntity(pos) instanceof ICamoSupport && state != ((ICamoSupport) worldIn.getTileEntity(pos)).getCamoState()) {
             IBlockState camoState = ((ICamoSupport) worldIn.getTileEntity(pos)).getCamoState();
                 return Minecraft.getMinecraft().getBlockColors().colorMultiplier(camoState, worldIn, pos, tintIndex);
         }
