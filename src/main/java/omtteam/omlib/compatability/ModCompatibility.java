@@ -33,9 +33,9 @@ public class ModCompatibility {
 
     private static void addVersionCheckerInfo() {
         NBTTagCompound versionchecker = new NBTTagCompound();
-        versionchecker.setString("curseProjectName", "224663-omtteam.openmodularturrets");
+        versionchecker.setString("curseProjectName", "omlib");
         versionchecker.setString("curseFilenameParser", "OMLib-1.10.2-[].jar");
-        versionchecker.setString("modDisplayName", "OpenModularTurrets");
+        versionchecker.setString("modDisplayName", "OMLib");
         versionchecker.setString("oldVersion", Reference.VERSION);
         FMLInterModComms.sendRuntimeMessage("omtteam/omlib", "VersionChecker", "addCurseCheck", versionchecker);
     }
@@ -43,5 +43,4 @@ public class ModCompatibility {
     public static void performModCompat() {
         addVersionCheckerInfo();
     }
-
 }
