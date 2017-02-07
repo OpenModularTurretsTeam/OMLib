@@ -6,10 +6,7 @@ import net.minecraft.util.math.MathHelper;
  * Created by Keridos on 07/02/17.
  * This Class
  */
-public class MathTools extends MathHelper {
-    public MathTools() {
-    }
-
+public class MathTools {
     public static int floor(float value) {
         int i = (int) value;
         return value < i ? i - 1 : i;
