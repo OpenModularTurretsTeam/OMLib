@@ -19,84 +19,104 @@ public class ItemStackTools {
      * If the number of items drops below 0 then null will be returned on 1.10 and the
      * 'null' itemstack on 1.11. Otherwise the same modified stack is returned.
      */
-    @Nonnull
+    @Nullable
     public static ItemStack incStackSize(@Nonnull ItemStack stack, int amount) {
-        stack.grow(amount);
+        stack.stackSize += amount;
+        if (stack.stackSize <= 0) {
+            return null;
+        }
         return stack;
     }
 
     /**
      * Make a safe copy of an itemstack
      */
-    @Nonnull
-    public static ItemStack safeCopy(@Nonnull ItemStack stack) {
-        return stack.copy();
+    @Nullable
+    public static ItemStack safeCopy(@Nullable ItemStack stack) {
+        if (stack == null) {
+            return null;
+        }
+        stack = stack.copy();
+        // Safety
+        if (stack.stackSize == 0) {
+            stack.stackSize = 1;
+        }
+        return stack;
     }
+
 
     /**
      * Get the stacksize from a stack
      */
-    public static int getStackSize(@Nonnull ItemStack stack) {
-        return stack.getCount();
+    public static int getStackSize(@Nullable ItemStack stack) {
+        if (stack == null) {
+            return 0;
+        }
+        return stack.stackSize;
     }
 
     /**
      * Set the stacksize on a stack. Returns the same stack or null if the new
-     * amount was 0. On 1.11 it will return the 'null' itemstack
+     * amount was 0. On 1.11 it will return the 'null' itemstack.
      * Note that this will modify the stack also if amount == 0. On 1.10
      * the stacksize will be set to 0 and on 1.11 the stack will become the EMPTY
      * stack.
      */
-    @Nonnull
+    @Nullable
     public static ItemStack setStackSize(@Nonnull ItemStack stack, int amount) {
         if (amount <= 0) {
-            stack.setCount(0);
-            return ItemStack.EMPTY;
+            stack.stackSize = 0;
+            return null;
         }
-        stack.setCount(amount);
+        stack.stackSize = amount;
         return stack;
     }
 
     /**
      * Check if this is a valid stack. Tests for null on 1.10.
      */
-    public static boolean isValid(@Nonnull ItemStack stack) {
-        return !stack.isEmpty();
+    public static boolean isValid(@Nullable ItemStack stack) {
+        if (stack == null) {
+            return false;
+        }
+        return stack.stackSize > 0;
     }
 
     /**
      * Check if this is an empty stack. Tests for null on 1.10.
      */
-    public static boolean isEmpty(@Nonnull ItemStack stack) {
-        return stack.isEmpty();
+    public static boolean isEmpty(@Nullable ItemStack stack) {
+        if (stack == null) {
+            return true;
+        }
+        return stack.stackSize <= 0;
     }
 
     public static void makeEmpty(@Nonnull ItemStack stack) {
-        stack.setCount(0);
+        stack.stackSize = 0;
     }
 
     /**
      * Load an ItemStack from NBT.
      */
-    @Nonnull
+    @Nullable
     public static ItemStack loadFromNBT(@Nonnull NBTTagCompound nbt) {
-        return new ItemStack(nbt);
+        return ItemStack.loadItemStackFromNBT(nbt);
     }
 
-    @Nonnull
+    @Nullable
     public static ItemStack getEmptyStack() {
-        return ItemStack.EMPTY;
+        return null;
     }
 
     /**
      * Extract itemstack out of a slot and return a new stack.
      * Supports both IItemHandler as IInventory
-     *
      * @param tileEntity
      * @param slot
      * @param amount
      */
-    @Nonnull
+    @Nullable
     public static ItemStack extractItem(@Nullable TileEntity tileEntity, int slot, int amount) {
         if (tileEntity != null && tileEntity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
             IItemHandler capability = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
@@ -111,11 +131,10 @@ public class ItemStackTools {
     /**
      * Get an item from an inventory
      * Supports both IItemHandler as IInventory
-     *
      * @param tileEntity
      * @param slot
      */
-    @Nonnull
+    @Nullable
     public static ItemStack getStack(@Nullable TileEntity tileEntity, int slot) {
         if (tileEntity != null && tileEntity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
             IItemHandler capability = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
@@ -130,16 +149,17 @@ public class ItemStackTools {
     /**
      * Set a stack in a specific slot. This will totally replace whatever was in the slot before
      * Supports both IItemHandler as IInventory. Does not check for failure
-     *
      * @param tileEntity
      * @param slot
      * @param stack
      */
-    public static void setStack(@Nullable TileEntity tileEntity, int slot, @Nonnull ItemStack stack) {
+    public static void setStack(@Nullable TileEntity tileEntity, int slot, @Nullable ItemStack stack) {
         if (tileEntity != null && tileEntity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
             IItemHandler capability = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
             capability.extractItem(slot, 64, false);        // Clear slot
-            capability.insertItem(slot, stack, false);
+            if (stack != null) {
+                capability.insertItem(slot, stack, false);
+            }
         } else if (tileEntity instanceof IInventory) {
             IInventory inventory = (IInventory) tileEntity;
             inventory.setInventorySlotContents(slot, stack);

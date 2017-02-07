@@ -32,11 +32,11 @@ public class MathTools extends MathHelper {
     }
 
     public static double abs_max(double p_76132_0_, double p_76132_2_) {
-        return absMax(p_76132_0_, p_76132_2_);
+        return MathHelper.abs_max(p_76132_0_, p_76132_2_);
     }
 
-    public static double sqrt_double(double p_76132_0_) {
-        return sqrt(p_76132_0_);
+    public static float sqrt_double(double p_76132_0_) {
+        return MathHelper.sqrt_double(p_76132_0_);
     }
 
     public static int floor_double(double p_76132_0_) {
