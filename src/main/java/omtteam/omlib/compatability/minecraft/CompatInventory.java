@@ -1,4 +1,4 @@
-package omtteam.omlib.inventory;
+package omtteam.omlib.compatability.minecraft;
 
 import net.minecraft.inventory.IInventory;
 

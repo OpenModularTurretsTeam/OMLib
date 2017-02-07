@@ -17,7 +17,7 @@ import static omtteam.omlib.compatability.ModCompatibility.checkForMods;
 import static omtteam.omlib.compatability.ModCompatibility.performModCompat;
 
 
-@Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, acceptedMinecraftVersions = "1.7.10", dependencies = Reference.DEPENDENCIES)
+@Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, acceptedMinecraftVersions = "1.11.2", dependencies = Reference.DEPENDENCIES)
 public class OMLib {
     @SuppressWarnings("unused")
     @Mod.Instance(Reference.MOD_ID)
