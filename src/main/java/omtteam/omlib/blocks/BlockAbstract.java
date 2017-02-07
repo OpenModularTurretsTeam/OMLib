@@ -1,6 +1,5 @@
 package omtteam.omlib.blocks;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
@@ -14,7 +13,7 @@ import javax.annotation.ParametersAreNullableByDefault;
  * This Class
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
-public abstract class BlockAbstract extends Block {
+public abstract class BlockAbstract extends CompatBlock {
     BlockAbstract(Material material) {
         super(material);
     }

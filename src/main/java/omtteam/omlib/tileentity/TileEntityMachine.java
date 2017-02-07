@@ -7,7 +7,6 @@ import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergySink;
 import net.darkhax.tesla.capability.TeslaCapabilities;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
@@ -51,7 +50,6 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
     public TileEntityMachine() {
         super();
         this.trustedPlayers = new ArrayList<>();
-        this.inventory = new ItemStack[13];
         this.storage = new EnergyStorage(10, 10);
         this.inverted = true;
         this.active = true;

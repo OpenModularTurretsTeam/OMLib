@@ -25,3 +25,4 @@ out/
 # Other Stuff
 Thumbs.db
 *.hprof
+settings.gradle
