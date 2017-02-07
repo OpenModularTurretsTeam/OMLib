@@ -7,6 +7,8 @@ import net.minecraft.util.math.MathHelper;
  * This Class
  */
 public class MathTools extends MathHelper {
+    public MathTools() {
+    }
 
     public static int floor(float value) {
         int i = (int) value;
