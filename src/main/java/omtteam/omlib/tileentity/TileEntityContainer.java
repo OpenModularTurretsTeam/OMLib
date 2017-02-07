@@ -1,21 +1,25 @@
 package omtteam.omlib.tileentity;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.text.ITextComponent;
+import omtteam.omlib.inventory.CompatSidedInventory;
+import omtteam.omlib.util.ItemStackUtil;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import static omtteam.omlib.util.ItemStackUtil.loadFromNBT;
+import static omtteam.omlib.util.ItemStackUtil.setStackSize;
+
 /**
  * Created by Keridos on 05/12/2015.
- * This Class
+ * This Class is the abstract class handling SidedInventory.
  */
 @SuppressWarnings("WeakerAccess")
-public abstract class TileEntityContainer extends TileEntityOwnedBlock implements ISidedInventory {
+public abstract class TileEntityContainer extends TileEntityOwnedBlock implements CompatSidedInventory {
     protected ItemStack[] inventory;
 
     @SuppressWarnings("NullableProblems")
@@ -28,7 +32,7 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock implement
         for (int i = 0; i < this.inventory.length; i++) {
             ItemStack stack = this.getStackInSlot(i);
 
-            if (stack != null) {
+            if (stack != ItemStackUtil.getEmptyStack()) {
                 NBTTagCompound tag = new NBTTagCompound();
                 tag.setByte("Slot", (byte) i);
                 stack.writeToNBT(tag);
@@ -48,7 +52,7 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock implement
             NBTTagCompound tag = tagList.getCompoundTagAt(i);
             byte slot = tag.getByte("Slot");
             if (slot >= 0 && slot < inventory.length) {
-                inventory[slot] = ItemStack.loadItemStackFromNBT(tag);
+                inventory[slot] = loadFromNBT(tag);
             }
         }
     }
@@ -57,13 +61,13 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock implement
     public ItemStack decrStackSize(int slot, int amt) {
         ItemStack stack = getStackInSlot(slot);
 
-        if (stack != null) {
+        if (stack != ItemStackUtil.getEmptyStack()) {
             if (stack.stackSize <= amt) {
-                setInventorySlotContents(slot, null);
+                setInventorySlotContents(slot, ItemStackUtil.getEmptyStack());
             } else {
                 stack = stack.splitStack(amt);
                 if (stack.stackSize == 0) {
-                    setInventorySlotContents(slot, null);
+                    setInventorySlotContents(slot, ItemStackUtil.getEmptyStack());
                 }
             }
         }
@@ -73,8 +77,8 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock implement
     @Override
     public void setInventorySlotContents(int slot, ItemStack stack) {
         inventory[slot] = stack;
-        if (stack != null && stack.stackSize > getInventoryStackLimit()) {
-            stack.stackSize = getInventoryStackLimit();
+        if (stack != ItemStackUtil.getEmptyStack() && ItemStackUtil.getStackSize(stack) > getInventoryStackLimit()) {
+            setStackSize(stack, getInventoryStackLimit());
         }
     }
 
@@ -92,7 +96,6 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock implement
     public int getInventoryStackLimit() {
         return 64;
     }
-
 
     @Override
     @ParametersAreNonnullByDefault
@@ -126,7 +129,7 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock implement
     @Override
     public ItemStack removeStackFromSlot(int slot) {
         ItemStack itemstack = getStackInSlot(slot);
-        setInventorySlotContents(slot, null);
+        setInventorySlotContents(slot, ItemStackUtil.getEmptyStack());
         return itemstack;
     }
 
