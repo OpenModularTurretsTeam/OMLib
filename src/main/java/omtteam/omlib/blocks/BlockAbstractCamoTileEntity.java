@@ -48,6 +48,4 @@ public abstract class BlockAbstractCamoTileEntity extends BlockAbstractTileEntit
         ICamoSupport camoTE = (ICamoSupport) world.getTileEntity(pos);
         return ((IExtendedBlockState) state).withProperty(RENDERBLOCKSTATE, new RenderBlockStateContainer(camoTE.getCamoState()));
     }
-
-
 }
