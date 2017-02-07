@@ -20,6 +20,7 @@ import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.util.MathUtil;
 import omtteam.omlib.util.TrustedPlayer;
 
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
@@ -186,7 +187,6 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
             }
         }
     }
-
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
@@ -426,7 +426,7 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
 
     @Override
     @ParametersAreNonnullByDefault
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
 
         // This method replaces the instanceof checks that would be used in an interface based
         // system. It can be used by other things to see if the TileEntity uses a capability or
