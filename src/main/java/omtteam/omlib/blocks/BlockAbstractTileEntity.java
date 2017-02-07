@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import omtteam.omlib.tileentity.TileEntityContainer;
+import omtteam.omlib.util.compat.ItemStackTools;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -47,7 +48,6 @@ public abstract class BlockAbstractTileEntity extends BlockAbstract {
         return EnumBlockRenderType.MODEL;
     }
 
-
     @SuppressWarnings("ConstantConditions")
     protected void dropItems(World worldIn, BlockPos pos) {
         if (worldIn.getTileEntity(pos) instanceof TileEntityContainer) {
@@ -56,13 +56,13 @@ public abstract class BlockAbstractTileEntity extends BlockAbstract {
             for (int i = 0; i < entity.getSizeInventory(); i++) {
                 ItemStack item = entity.getStackInSlot(i);
 
-                if (item != null && item.stackSize > 0) {
+                if (item != null && ItemStackTools.getStackSize(item) > 0) {
                     float rx = rand.nextFloat() * 0.8F + 0.1F;
                     float ry = rand.nextFloat() * 0.8F + 0.1F;
                     float rz = rand.nextFloat() * 0.8F + 0.1F;
 
                     EntityItem entityItem = new EntityItem(worldIn, pos.getX() + rx, pos.getY() + ry, pos.getZ() + rz,
-                            new ItemStack(item.getItem(), item.stackSize,
+                            new ItemStack(item.getItem(), ItemStackTools.getStackSize(item),
                                     item.getItemDamage()));
 
                     if (item.hasTagCompound()) {
@@ -73,8 +73,8 @@ public abstract class BlockAbstractTileEntity extends BlockAbstract {
                     entityItem.motionX = rand.nextGaussian() * factor;
                     entityItem.motionY = rand.nextGaussian() * factor + 0.2F;
                     entityItem.motionZ = rand.nextGaussian() * factor;
-                    worldIn.spawnEntityInWorld(entityItem);
-                    item.stackSize = 0;
+                    worldIn.spawnEntity(entityItem);
+                    ItemStackTools.setStackSize(item, 0);
                 }
             }
         }

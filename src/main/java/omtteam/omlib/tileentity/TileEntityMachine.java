@@ -2,22 +2,16 @@ package omtteam.omlib.tileentity;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyReceiver;
-import ic2.api.energy.event.EnergyTileLoadEvent;
-import ic2.api.energy.event.EnergyTileUnloadEvent;
-import ic2.api.energy.tile.IEnergyEmitter;
-import ic2.api.energy.tile.IEnergySink;
 import net.darkhax.tesla.capability.TeslaCapabilities;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.UsernameCache;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.Optional;
 import omtteam.omlib.capabilities.BaseOMTeslaContainer;
 import omtteam.omlib.compatability.ModCompatibility;
 import omtteam.omlib.handler.ConfigHandler;
-import omtteam.omlib.util.MathUtil;
 import omtteam.omlib.util.TrustedPlayer;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -34,7 +28,7 @@ import static omtteam.omlib.util.PlayerUtil.getPlayerUUID;
 @Optional.InterfaceList({
         @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySink", modid = "IC2")})
 
-public abstract class TileEntityMachine extends TileEntityContainer implements IEnergyReceiver, IEnergySink {
+public abstract class TileEntityMachine extends TileEntityContainer implements IEnergyReceiver /*, IEnergySink*/ {
 
     protected EnergyStorage storage;
     private Object teslaContainer;
@@ -60,7 +54,7 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
         TrustedPlayer trustedPlayer = new TrustedPlayer(name);
         trustedPlayer.uuid = getPlayerUUID(name);
 
-        if (!worldObj.isRemote) {
+        if (!this.getWorld().isRemote) {
             boolean foundPlayer = false;
             for (Map.Entry<UUID, String> serverName : UsernameCache.getMap().entrySet()) {
                 if (name.equals(serverName.getValue())) {
@@ -318,7 +312,7 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
         return true;
     }
 
-    @Optional.Method(modid = "IC2")
+    /*@Optional.Method(modid = "IC2")
     @Override
     public double injectEnergy(EnumFacing facing, double v, double v1) {
         storageEU += v;
@@ -381,7 +375,7 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
 
             wasAddedToEnergyNet = false;
         }
-    }
+    }     */
 
     @Optional.Method(modid = "tesla")
     private BaseOMTeslaContainer getTeslaContainer() {
