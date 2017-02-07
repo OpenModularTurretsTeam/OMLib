@@ -1,6 +1,5 @@
 package omtteam.omlib.blocks;
 
-import net.minecraft.block.BlockWall;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
@@ -17,7 +16,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * This Class
  */
 @SuppressWarnings("unused")
-public abstract class BlockAbstractMiscWall extends BlockWall {
+public abstract class BlockAbstractMiscWall extends CompatWall {
     protected BlockAbstractMiscWall() {
         super(Blocks.STONE);
     }
