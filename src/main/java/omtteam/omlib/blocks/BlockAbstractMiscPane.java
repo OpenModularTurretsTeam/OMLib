@@ -1,6 +1,5 @@
 package omtteam.omlib.blocks;
 
-import net.minecraft.block.BlockPane;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
@@ -18,7 +17,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * This Class
  */
 @SuppressWarnings("unused")
-public abstract class BlockAbstractMiscPane extends BlockPane {
+public abstract class BlockAbstractMiscPane extends CompatPane {
     protected BlockAbstractMiscPane(String par1, String par2, Material material, boolean par4) {
         super(material, par4);
     }
