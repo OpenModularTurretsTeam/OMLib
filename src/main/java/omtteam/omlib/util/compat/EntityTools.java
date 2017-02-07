@@ -3,85 +3,48 @@ package omtteam.omlib.util.compat;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.MoverType;
-import net.minecraft.entity.monster.EntityStray;
-import net.minecraft.entity.monster.EntityWitherSkeleton;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.monster.EntityPigZombie;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.SkeletonType;
 import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.datafix.fixes.EntityId;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Set;
 import java.util.stream.Stream;
 
 public class EntityTools {
-
-    private static final EntityId FIXER = new EntityId();
 
     /**
      * This method attempts to fix an old-style (1.10.2) entity Id and convert it to the
      * string representation of the new ResourceLocation. The 1.10 version of this function will just return
      * the given id
      * This does not work for modded entities.
-     *
      * @param id an old-style entity id as used in 1.10
      * @return
      */
     public static String fixEntityId(String id) {
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setString("id", id);
-        nbt = FIXER.fixTagCompound(nbt);
-        return nbt.getString("id");
+        return id;
     }
+
 
     /**
      * On 1.11: return the string representation of the ResourceLocation that belongs with the entity class
      * On 1.10: return the entity name
      */
     public static String findEntityIdByClass(Class<? extends Entity> clazz) {
-        ResourceLocation key = EntityList.getKey(clazz);
-        return key == null ? null : key.toString();
+        return EntityList.CLASS_TO_NAME.get(clazz);
     }
 
     /**
      * Return the unlocalized name based by class.
      */
     public static String findEntityUnlocNameByClass(Class<? extends Entity> clazz) {
-        ResourceLocation key = EntityList.getKey(clazz);
-        if (key == null) {
-            return null;
-        }
-        EntityEntry value = ForgeRegistries.ENTITIES.getValue(key);
-        if (value == null) {
-            return null;
-        }
-        return value.getName();
-    }
-
-    /**
-     * Return the entity name (localized name)
-     */
-    public static String getEntityName(Entity entity) {
-        return entity.getName();
-    }
-
-    /**
-     * Get the localized name of an entity based on class
-     */
-    public static String findEntityLocNameByClass(Class<? extends Entity> clazz) {
-        String nameByClass = findEntityIdByClass(clazz);
-        if (nameByClass == null) {
-            return null;
-        }
-        return I18n.translateToLocal(nameByClass);
+        return EntityList.CLASS_TO_NAME.get(clazz);
     }
 
     /**
@@ -89,8 +52,30 @@ public class EntityTools {
      * of the resource location on 1.11 and entity names on 1.10.
      */
     public static Stream<String> getEntities() {
-        Set<ResourceLocation> keys = ForgeRegistries.ENTITIES.getKeys();
-        return keys.stream().map(s -> s.toString());
+        return EntityList.NAME_TO_CLASS.keySet().stream();
+    }
+
+    /**
+     * Get the localized name of an entity based on class
+     */
+    public static String findEntityLocNameByClass(Class<? extends Entity> clazz) {
+        return I18n.translateToLocal(EntityList.CLASS_TO_NAME.get(clazz));
+    }
+
+    /**
+     * Return the entity name (localized name)
+     */
+    public static String getEntityName(Entity entity) {
+        if (entity instanceof EntitySkeleton && ((EntitySkeleton) entity).getSkeletonType() == SkeletonType.WITHER) {
+            return "Wither Skeleton";
+        }
+        if (entity instanceof EntitySkeleton && ((EntitySkeleton) entity).getSkeletonType() == SkeletonType.STRAY) {
+            return "Stray Skeleton";
+        }
+        if (entity instanceof EntityPigZombie) {
+            return "Zombie Pigman";
+        }
+        return entity.getName();
     }
 
 
@@ -101,8 +86,7 @@ public class EntityTools {
      * should work as input.
      */
     public static Class<? extends Entity> findClassById(String id) {
-        EntityEntry entry = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(id));
-        return entry == null ? null : entry.getEntityClass();
+        return EntityList.NAME_TO_CLASS.get(id);
     }
 
     /**
@@ -113,11 +97,11 @@ public class EntityTools {
     public static EntityLiving createEntity(World world, String mobId) {
         Class<? extends Entity> clazz;
         if ("WitherSkeleton".equals(mobId)) {
-            clazz = EntityWitherSkeleton.class;
+            clazz = EntitySkeleton.class;
         } else if ("StraySkeleton".equals(mobId)) {
-            clazz = EntityStray.class;
+            clazz = EntitySkeleton.class;
         } else {
-            clazz = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(mobId)).getEntityClass();
+            clazz = findClassById(mobId);
         }
         EntityLiving entityLiving = null;
         try {
@@ -131,6 +115,14 @@ public class EntityTools {
         } catch (NoSuchMethodException e) {
             return null;
         }
+        if ("WitherSkeleton".equals(mobId)) {
+            ((EntitySkeleton) entityLiving).setSkeletonType(SkeletonType.WITHER);
+        } else if ("StraySkeleton".equals(mobId)) {
+            ((EntitySkeleton) entityLiving).setSkeletonType(SkeletonType.STRAY);
+        } else if (entityLiving instanceof EntitySkeleton) {
+            // Force non-wither otherwise
+            ((EntitySkeleton) entityLiving).setSkeletonType(SkeletonType.NORMAL);
+        }
         return entityLiving;
     }
 
@@ -139,31 +131,37 @@ public class EntityTools {
      * works with wither and stray skeletons by using the provided entity
      */
     public static String findId(Class<? extends Entity> clazz, Entity entity) {
-        return EntityList.getKey(clazz).toString();
-    }
-
-    public static void moveEntity(Entity entity, double x, double y, double z) {
-        entity.move(MoverType.SELF, x, y, z);
+        if (entity instanceof EntitySkeleton) {
+            EntitySkeleton skeleton = (EntitySkeleton) entity;
+            if (skeleton.getSkeletonType() == SkeletonType.WITHER) {
+                return "WitherSkeleton";
+            } else if (skeleton.getSkeletonType() == SkeletonType.STRAY) {
+                return "StraySkeleton";
+            }
+        }
+        return EntityList.CLASS_TO_NAME.get(clazz);
     }
 
     /**
      * Set the type of mob on a spawner. The 1.10 version uses entityName. The 1.11 version uses the resource location
-     *
      * @param resourceLocation
      * @param entityName
      */
     public static void setSpawnerEntity(@Nonnull World world, @Nonnull TileEntityMobSpawner spawner, @Nonnull ResourceLocation resourceLocation, @Nonnull String entityName) {
         MobSpawnerBaseLogic mobspawnerbaselogic = spawner.getSpawnerBaseLogic();
-        mobspawnerbaselogic.setEntityId(resourceLocation);
+        mobspawnerbaselogic.setEntityName(entityName);
         spawner.markDirty();
     }
 
+    public static void moveEntity(Entity entity, double x, double y, double z) {
+        entity.moveEntity(x, y, z);
+    }
 
     public static void registerModEntity(ResourceLocation resourceLocation, Class<? extends Entity> entityClass, String entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
-        EntityRegistry.registerModEntity(resourceLocation, entityClass, entityName, id, mod, trackingRange, updateFrequency, sendsVelocityUpdates);
+        EntityRegistry.registerModEntity(entityClass, entityName, id, mod, trackingRange, updateFrequency, sendsVelocityUpdates);
     }
 
     public static void registerModEntity(ResourceLocation resourceLocation, Class<? extends Entity> entityClass, String entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, int eggPrimary, int eggSecondary) {
-        EntityRegistry.registerModEntity(resourceLocation, entityClass, entityName, id, mod, trackingRange, updateFrequency, sendsVelocityUpdates, eggPrimary, eggSecondary);
+        EntityRegistry.registerModEntity(entityClass, entityName, id, mod, trackingRange, updateFrequency, sendsVelocityUpdates, eggPrimary, eggSecondary);
     }
 }

@@ -7,10 +7,10 @@ import net.minecraft.client.multiplayer.WorldClient;
 public class MinecraftTools {
 
     public static EntityPlayerSP getPlayer(Minecraft mc) {
-        return mc.player;
+        return mc.thePlayer;
     }
 
     public static WorldClient getWorld(Minecraft mc) {
-        return mc.world;
+        return mc.theWorld;
     }
 }

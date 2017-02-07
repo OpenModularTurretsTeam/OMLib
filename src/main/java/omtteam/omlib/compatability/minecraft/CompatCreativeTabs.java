@@ -2,7 +2,6 @@ package omtteam.omlib.compatability.minecraft;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 public abstract class CompatCreativeTabs extends CreativeTabs {
 
@@ -13,7 +12,7 @@ public abstract class CompatCreativeTabs extends CreativeTabs {
     protected abstract Item getItem();
 
     @Override
-    public ItemStack getTabIconItem() {
-        return new ItemStack(getItem());
+    public Item getTabIconItem() {
+        return getItem();
     }
 }

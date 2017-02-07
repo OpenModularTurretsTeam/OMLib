@@ -17,6 +17,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Random;
 
+import static omtteam.omlib.util.compat.WorldTools.spawnEntity;
+
 /**
  * Created by Keridos on 05/12/2015.
  * This Class
@@ -73,7 +75,7 @@ public abstract class BlockAbstractTileEntity extends BlockAbstract {
                     entityItem.motionX = rand.nextGaussian() * factor;
                     entityItem.motionY = rand.nextGaussian() * factor + 0.2F;
                     entityItem.motionZ = rand.nextGaussian() * factor;
-                    worldIn.spawnEntity(entityItem);
+                    spawnEntity(worldIn, entityItem);
                     ItemStackTools.setStackSize(item, 0);
                 }
             }

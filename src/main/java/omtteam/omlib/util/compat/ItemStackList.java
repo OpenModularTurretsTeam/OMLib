@@ -1,30 +1,53 @@
 package omtteam.omlib.util.compat;
-
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
-import org.apache.commons.lang3.Validate;
 
-import javax.annotation.Nullable;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ItemStackList extends NonNullList<ItemStack> {
+public class ItemStackList extends AbstractList<ItemStack> {
 
     public static final ItemStackList EMPTY = ItemStackList.create(0);
 
-    public static ItemStackList create(int size) {
-        Validate.notNull(ItemStackTools.getEmptyStack());
-        ItemStack[] aobject = new ItemStack[size];
-        Arrays.fill(aobject, ItemStackTools.getEmptyStack());
-        return new ItemStackList(Arrays.asList(aobject), ItemStackTools.getEmptyStack());
-    }
+    private final List<ItemStack> delegate;
 
     public static ItemStackList create() {
-        return new ItemStackList(new ArrayList<>(), ItemStackTools.getEmptyStack());
+        return new ItemStackList();
     }
 
-    public ItemStackList(List<ItemStack> delegateIn, @Nullable ItemStack stack) {
-        super(delegateIn, stack);
+    public static ItemStackList create(int size) {
+        ItemStack[] aobject = new ItemStack[size];
+        Arrays.fill(aobject, null);
+        return new ItemStackList(Arrays.asList(aobject));
     }
+
+    protected ItemStackList() {
+        this(new ArrayList<>());
+    }
+
+    protected ItemStackList(List<ItemStack> delegateIn) {
+        this.delegate = delegateIn;
+    }
+
+    public ItemStack get(int idx) {
+        return this.delegate.get(idx);
+    }
+
+    public ItemStack set(int idx, ItemStack stack) {
+        return this.delegate.set(idx, stack);
+    }
+
+    public void add(int idx, ItemStack stack) {
+        this.delegate.add(idx, stack);
+    }
+
+    public ItemStack remove(int idx) {
+        return this.delegate.remove(idx);
+    }
+
+    public int size() {
+        return this.delegate.size();
+    }
+
 }

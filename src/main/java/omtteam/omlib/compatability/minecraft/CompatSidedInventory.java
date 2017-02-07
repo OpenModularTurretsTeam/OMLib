@@ -8,13 +8,7 @@ public interface CompatSidedInventory extends ISidedInventory {
     boolean isUsable(EntityPlayer player);
 
     @Override
-    default boolean isUsableByPlayer(EntityPlayer player) {
+    default boolean isUseableByPlayer(EntityPlayer player) {
         return isUsable(player);
     }
-
-    @Override
-    default boolean isEmpty() {
-        return false;
-    }
-
 }
