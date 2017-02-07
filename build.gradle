@@ -14,8 +14,8 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'maven-publish'
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 // define the properties file
 ext.configFile = file "project.properties"
@@ -47,8 +47,9 @@ minecraft {
     // stable_#            stables are built at the discretion of the MCP team.
     // Use non-default mappings at your own risk. they may not always work.
     // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings = "snapshot_20160518"
+    mappings = "snapshot_20161227"
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+    useDepAts = true
 }
 
 
@@ -99,8 +100,7 @@ repositories {
 
 dependencies {
     deobfCompile "mezz.jei:jei_${config.minecraft_version}:${config.jei_version}"
-    compile "net.industrial-craft:industrialcraft-2:${config.ic2_version}:dev"
-    compile "net.darkhax.tesla:Tesla:${config.minecraft_version}-${config.tesla_version}"
+    compile "net.darkhax.tesla:Tesla:${config.minecraft_version_short}-${config.tesla_version}"
 }
 
 

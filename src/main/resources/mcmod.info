@@ -5,7 +5,7 @@
         "description": "Lib for OMT and its companion mods!",
         "version": "${version}",
         "mcversion": "${mcversion}",
-        "credits": "Poenjabiesous",
+	  "credits": "Keridos",
         "logoFile": "/mods/thermalexpansion/textures/logo.png",
         "url": "",
         "updateUrl": "",
