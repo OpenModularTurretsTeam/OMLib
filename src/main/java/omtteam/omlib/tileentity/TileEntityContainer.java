@@ -99,7 +99,6 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock implement
     }
 
     @Override
-    @ParametersAreNonnullByDefault
     public boolean isUsable(EntityPlayer player) {
         return this.getWorld().getTileEntity(pos) == this && player.getDistanceSq(this.pos.getX() + 0.5,
                 this.pos.getY() + 0.5,

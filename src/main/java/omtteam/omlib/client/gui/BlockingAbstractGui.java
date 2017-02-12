@@ -1,7 +1,6 @@
 package omtteam.omlib.client.gui;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.inventory.Container;
+import net.minecraft.client.gui.Gui;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -12,9 +11,9 @@ import java.util.ArrayList;
  * Abstract class for all blocking UIs.
  */
 
-public abstract class BlockingAbstractGui extends GuiContainer {
-    public BlockingAbstractGui(Container inventorySlotsIn) {
-        super(inventorySlotsIn);
+public abstract class BlockingAbstractGui extends Gui {
+    public BlockingAbstractGui() {
+        super();
     }
 
     public abstract ArrayList<Rectangle> getBlockingAreas();
