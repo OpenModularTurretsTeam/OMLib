@@ -4,7 +4,6 @@ import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyReceiver;
 import net.darkhax.tesla.capability.TeslaCapabilities;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.UsernameCache;
 import net.minecraftforge.common.capabilities.Capability;
@@ -14,21 +13,20 @@ import omtteam.omlib.compatability.ModCompatibility;
 import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.util.TrustedPlayer;
 
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Logger;
 
-import static omtteam.omlib.util.PlayerUtil.getPlayerUIDUnstable;
 import static omtteam.omlib.util.PlayerUtil.getPlayerUUID;
 
 @SuppressWarnings({"WeakerAccess", "CanBeFinal", "unused"})
 @Optional.InterfaceList({
         @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySink", modid = "IC2")})
 
-public abstract class TileEntityMachine extends TileEntityContainer implements IEnergyReceiver /*, IEnergySink*/ {
+public abstract class TileEntityMachine extends TileEntityContainer implements IEnergyReceiver, /*IEnergySink,*/ ITrustedPlayersManager {
 
     protected EnergyStorage storage;
     private Object teslaContainer;
@@ -49,6 +47,7 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
         this.active = true;
     }
 
+    @Override
     @ParametersAreNonnullByDefault
     public boolean addTrustedPlayer(String name) {
         TrustedPlayer trustedPlayer = new TrustedPlayer(name);
@@ -98,6 +97,7 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
         return false;
     }
 
+    @Override
     public boolean removeTrustedPlayer(String name) {
         for (TrustedPlayer player : trustedPlayers) {
             if (player.getName().equals(name)) {
@@ -108,79 +108,16 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
         return false;
     }
 
+    @Override
     public List<TrustedPlayer> getTrustedPlayers() {
         return trustedPlayers;
     }
 
-    public TrustedPlayer getTrustedPlayer(String name) {
-        for (TrustedPlayer trustedPlayer : trustedPlayers) {
-            if (trustedPlayer.name.equals(name)) {
-                return trustedPlayer;
-            }
-        }
-        return null;
-    }
 
-    public TrustedPlayer getTrustedPlayer(UUID uuid) {
-        for (TrustedPlayer trustedPlayer : trustedPlayers) {
-            if (trustedPlayer.uuid.equals(uuid)) {
-                return trustedPlayer;
-            }
-        }
-        return null;
-    }
 
     public void setTrustedPlayers(List<TrustedPlayer> list) {
         this.trustedPlayers = list;
     }
-
-    @SuppressWarnings("ConstantConditions")
-    protected NBTTagList getTrustedPlayersAsNBT() {
-        NBTTagList nbt = new NBTTagList();
-        for (TrustedPlayer trustedPlayer : trustedPlayers) {
-            NBTTagCompound nbtPlayer = new NBTTagCompound();
-            nbtPlayer.setString("name", trustedPlayer.name);
-            nbtPlayer.setBoolean("canOpenGUI", trustedPlayer.canOpenGUI);
-            nbtPlayer.setBoolean("canChangeTargeting", trustedPlayer.canChangeTargeting);
-            nbtPlayer.setBoolean("admin", trustedPlayer.admin);
-            if (trustedPlayer.uuid != null) {
-                nbtPlayer.setString("UUID", trustedPlayer.uuid.toString());
-            } else if (getPlayerUUID(trustedPlayer.name) != null) {
-                nbtPlayer.setString("UUID", getPlayerUUID(trustedPlayer.name).toString());
-            }
-            nbt.appendTag(nbtPlayer);
-        }
-        return nbt;
-    }
-
-    protected void buildTrustedPlayersFromNBT(NBTTagList nbt) {
-        trustedPlayers.clear();
-        for (int i = 0; i < nbt.tagCount(); i++) {
-            if (!nbt.getCompoundTagAt(i).getString("name").equals("")) {
-                NBTTagCompound nbtPlayer = nbt.getCompoundTagAt(i);
-                TrustedPlayer trustedPlayer = new TrustedPlayer(nbtPlayer.getString("name"));
-                trustedPlayer.canOpenGUI = nbtPlayer.getBoolean("canOpenGUI");
-                trustedPlayer.canChangeTargeting = nbtPlayer.getBoolean("canChangeTargeting");
-                trustedPlayer.admin = nbtPlayer.getBoolean("admin");
-                if (nbtPlayer.hasKey("UUID")) {
-                    trustedPlayer.uuid = getPlayerUIDUnstable(nbtPlayer.getString("UUID"));
-                } else {
-                    trustedPlayer.uuid = getPlayerUUID(trustedPlayer.name);
-                }
-                if (trustedPlayer.uuid != null) {
-                    trustedPlayers.add(trustedPlayer);
-                }
-            } else if (nbt.getCompoundTagAt(i).getString("name").equals("")) {
-                TrustedPlayer trustedPlayer = new TrustedPlayer(nbt.getStringTagAt(i));
-                Logger.getGlobal().info("found legacy trusted Player: " + nbt.getStringTagAt(i));
-                trustedPlayer.uuid = getPlayerUUID(trustedPlayer.name);
-                if (trustedPlayer.uuid != null) {
-                    trustedPlayers.add(trustedPlayer);
-                }
-            }
-        }
-    }
-
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
@@ -375,7 +312,7 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
 
             wasAddedToEnergyNet = false;
         }
-    }     */
+    } */
 
     @Optional.Method(modid = "tesla")
     private BaseOMTeslaContainer getTeslaContainer() {
@@ -420,7 +357,7 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
 
     @Override
     @ParametersAreNonnullByDefault
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
 
         // This method replaces the instanceof checks that would be used in an interface based
         // system. It can be used by other things to see if the TileEntity uses a capability or
