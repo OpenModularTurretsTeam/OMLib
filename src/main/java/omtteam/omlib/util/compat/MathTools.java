@@ -30,15 +30,15 @@ public class MathTools {
         return slide < 0.0D ? lowerBnd : (slide > 1.0D ? upperBnd : lowerBnd + (upperBnd - lowerBnd) * slide);
     }
 
-    public static double abs_max(double p_76132_0_, double p_76132_2_) {
-        return MathHelper.abs_max(p_76132_0_, p_76132_2_);
+    public static double abs_max(double max1, double max2) {
+        return MathHelper.abs_max(max1, max2);
     }
 
-    public static float sqrt_double(double p_76132_0_) {
-        return MathHelper.sqrt_double(p_76132_0_);
+    public static float sqrt_double(double sqrt) {
+        return MathHelper.sqrt_double(sqrt);
     }
 
-    public static int floor_double(double p_76132_0_) {
-        return floor(p_76132_0_);
+    public static int floor_double(double floor) {
+        return floor(floor);
     }
 }
