@@ -15,7 +15,7 @@ import javax.annotation.ParametersAreNullableByDefault;
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
 public abstract class BlockAbstract extends CompatBlock {
-    BlockAbstract(Material material) {
+    protected BlockAbstract(Material material) {
         super(material);
     }
 
