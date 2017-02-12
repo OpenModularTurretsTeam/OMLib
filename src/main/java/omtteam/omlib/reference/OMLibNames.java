@@ -10,5 +10,6 @@ public class OMLibNames {
         public static final String FALSE = "gui.omtteam.omlib:false";
         public static final String YES = "gui.omtteam.omlib:yes";
         public static final String NO = "gui.omtteam.omlib:no";
+        public static final String FACING = "gui.omtteam.omlib:facing";
     }
 }
