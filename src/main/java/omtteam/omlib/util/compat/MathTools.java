@@ -37,7 +37,7 @@ public class MathTools {
         return MathHelper.absMax(max1, max2);
     }
 
-    public static double sqrt_double(double sqrt) {
+    public static float sqrt_double(double sqrt) {
         return MathHelper.sqrt(sqrt);
     }
 
