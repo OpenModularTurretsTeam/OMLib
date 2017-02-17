@@ -119,8 +119,6 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
         return trustedPlayers;
     }
 
-
-
     public void setTrustedPlayers(List<TrustedPlayer> list) {
         this.trustedPlayers = list;
     }
