@@ -13,7 +13,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.UsernameCache;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.Optional;
-import omtteam.omlib.capabilities.BaseOMTeslaContainer;
+import omtteam.omlib.capabilities.BaseOMTeslaContainerWrapper;
 import omtteam.omlib.compatability.ModCompatibility;
 import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.util.MathUtil;
@@ -319,24 +319,14 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
     }
 
     @Optional.Method(modid = "tesla")
-    private BaseOMTeslaContainer getTeslaContainer() {
-        if (teslaContainer instanceof BaseOMTeslaContainer) {
-            return (BaseOMTeslaContainer) teslaContainer;
+    private BaseOMTeslaContainerWrapper getTeslaContainer() {
+        if (teslaContainer instanceof BaseOMTeslaContainerWrapper) {
+            return (BaseOMTeslaContainerWrapper) teslaContainer;
         } else {
-            teslaContainer = new BaseOMTeslaContainer();
-            return (BaseOMTeslaContainer) teslaContainer;
+            teslaContainer = new BaseOMTeslaContainerWrapper(this, EnumFacing.DOWN);
+            return (BaseOMTeslaContainerWrapper) teslaContainer;
         }
 
-    }
-
-    @Optional.Method(modid = "tesla")
-    private void moveEnergyFromTeslaToRF() {
-        if (getTeslaContainer() != null) {
-            int energyNeeded = storage.getMaxEnergyStored() - storage.getEnergyStored();
-            if (energyNeeded > 0) {
-                storage.modifyEnergyStored((int) ((BaseOMTeslaContainer) teslaContainer).takePower(energyNeeded, false));
-            }
-        }
     }
 
     @Override
@@ -381,14 +371,13 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
     @SuppressWarnings("unused")
     @Optional.Method(modid = "tesla")
     private boolean hasTeslaCapability(Capability<?> capability, EnumFacing facing) {
-        return (capability == TeslaCapabilities.CAPABILITY_CONSUMER || capability == TeslaCapabilities.CAPABILITY_HOLDER);
+        return (capability == TeslaCapabilities.CAPABILITY_CONSUMER);
     }
 
     @Optional.Method(modid = "tesla")
     @SuppressWarnings({"unchecked", "unused"})
     private <T> T getTeslaCapability(Capability<T> capability, EnumFacing facing) {
-        if (capability == TeslaCapabilities.CAPABILITY_CONSUMER || capability == TeslaCapabilities.CAPABILITY_HOLDER) {
-            moveEnergyFromTeslaToRF();
+        if (capability == TeslaCapabilities.CAPABILITY_CONSUMER) {
             return (T) getTeslaContainer();
         }
         return null;
