@@ -73,7 +73,7 @@ public abstract class BlockAbstractTileEntity extends BlockAbstract {
                     entityItem.motionX = rand.nextGaussian() * factor;
                     entityItem.motionY = rand.nextGaussian() * factor + 0.2F;
                     entityItem.motionZ = rand.nextGaussian() * factor;
-                    worldIn.spawnEntityInWorld(entityItem);
+                    worldIn.spawnEntity(entityItem);
                     ItemStackTools.setStackSize(item, 0);
                 }
             }
