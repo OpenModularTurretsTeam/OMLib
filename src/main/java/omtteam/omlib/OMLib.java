@@ -13,11 +13,13 @@ import omtteam.omlib.reference.Reference;
 import omtteam.omlib.util.CommandChangeOwner;
 import omtteam.omlib.util.RandomUtil;
 
+import java.util.logging.Logger;
+
 import static omtteam.omlib.compatability.ModCompatibility.checkForMods;
 import static omtteam.omlib.compatability.ModCompatibility.performModCompat;
 
 
-@Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, acceptedMinecraftVersions = "1.11.2", dependencies = Reference.DEPENDENCIES)
+@Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, acceptedMinecraftVersions = "1.10.2", dependencies = Reference.DEPENDENCIES)
 public class OMLib {
     @SuppressWarnings("unused")
     @Mod.Instance(Reference.MOD_ID)
@@ -29,11 +31,16 @@ public class OMLib {
 
     @SuppressWarnings("unused")
     public static CreativeTabs modularTurretsTab;
+    private static Logger logger;
 
+    public static Logger getLogger() {
+        return logger;
+    }
 
     @SuppressWarnings("unused")
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        logger = Logger.getLogger("OMLib");
         ConfigHandler.init(event.getSuggestedConfigurationFile());
         checkForMods();
         RandomUtil.init();
