@@ -1,6 +1,5 @@
 package omtteam.omlib.tileentity;
 
-import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyReceiver;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
@@ -12,8 +11,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.UsernameCache;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.common.Optional;
-import omtteam.omlib.capabilities.BaseOMTeslaContainerWrapper;
+import omtteam.omlib.power.OMEnergyStorage;
+import omtteam.omlib.power.tesla.BaseOMTeslaContainerWrapper;
 import omtteam.omlib.compatability.ModCompatibility;
 import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.util.MathUtil;
@@ -34,7 +35,7 @@ import static omtteam.omlib.util.PlayerUtil.getPlayerUUID;
 
 public abstract class TileEntityMachine extends TileEntityContainer implements IEnergyReceiver, IEnergySink, ITrustedPlayersManager {
 
-    protected EnergyStorage storage;
+    protected OMEnergyStorage storage;
     private Object teslaContainer;
     protected double storageEU;
     private boolean active;
@@ -48,7 +49,7 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
     public TileEntityMachine() {
         super();
         this.trustedPlayers = new ArrayList<>();
-        this.storage = new EnergyStorage(10, 10);
+        this.storage = new OMEnergyStorage(10, 10);
         this.inverted = true;
         this.active = true;
     }
@@ -215,7 +216,7 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
     private int drawEssentia() {
         IEssentiaTransport ic = getConnectableTileWithoutOrientation();
         if (ic != null) {
-            if (ic.takeEssentia(Aspect.ENERGY, 1, ForgeDirection.UP) == 1) {
+            if (ic.takeEssentia(Aspect.ENERGY, 1, caForgeDirection.UP) == 1) {
                 return 1;
             }
         }
@@ -341,9 +342,11 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
         // side can be used, for example only allow power input through the back, that could be
         // done here.
         if (ModCompatibility.TeslaLoaded) {
-            if (getTeslaCapability(capability, facing) != null) {
+            if (capability == TeslaCapabilities.CAPABILITY_CONSUMER && getTeslaCapability(capability, facing) != null) {
                 return getTeslaCapability(capability, facing);
             }
+        } else if (capability instanceof IEnergyStorage) {
+            return (T) storage;
         }
 
         return super.getCapability(capability, facing);
@@ -363,6 +366,10 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
             if (hasTeslaCapability(capability, facing)) {
                 return true;
             }
+        }
+
+        if (capability instanceof IEnergyStorage) {
+            return true;
         }
 
         return super.hasCapability(capability, facing);
