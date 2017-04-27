@@ -1,15 +1,14 @@
 package omtteam.omlib.power.forge;
 
 import net.minecraft.util.EnumFacing;
-import omtteam.omlib.tileentity.TileEntityMachine;
+import omtteam.omlib.tileentity.TileEntityElectric;
 
 public class InternalRecieverTileWrapper {
 
-
-    private final TileEntityMachine tile;
+    private final TileEntityElectric tile;
     private final EnumFacing facing;
 
-    public InternalRecieverTileWrapper(TileEntityMachine tile, EnumFacing facing) {
+    public InternalRecieverTileWrapper(TileEntityElectric tile, EnumFacing facing) {
         this.tile = tile;
         this.facing = facing;
     }

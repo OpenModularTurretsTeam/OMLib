@@ -2,6 +2,7 @@ package omtteam.omlib.power;
 
 import net.minecraftforge.energy.IEnergyStorage;
 
+@SuppressWarnings({"WeakerAccess", "CanBeFinal", "unused"})
 public class OMEnergyStorage implements IEnergyStorage {
     protected int energy;
     protected int capacity;
@@ -71,11 +72,11 @@ public class OMEnergyStorage implements IEnergyStorage {
     }
 
     public void setEnergyStored(int stored) {
-        energy = stored;
+        energy = stored > 0 ? Math.min(stored, capacity) : 0;
     }
 
     public void modifyEnergyStored(int change) {
-        energy += change;
+        energy = energy - change > 0 ? energy - Math.min(change, capacity - energy) : 0;
     }
 
     @Override

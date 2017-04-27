@@ -20,7 +20,7 @@ import static omtteam.omlib.util.compat.ItemStackTools.setStackSize;
  * This Class is the abstract class handling SidedInventory.
  */
 @SuppressWarnings("WeakerAccess")
-public abstract class TileEntityContainer extends TileEntityOwnedBlock implements CompatSidedInventory {
+public abstract class TileEntityContainer extends TileEntityElectric implements CompatSidedInventory {
     protected ItemStackList inventory = ItemStackList.create();
 
     @SuppressWarnings("NullableProblems")
