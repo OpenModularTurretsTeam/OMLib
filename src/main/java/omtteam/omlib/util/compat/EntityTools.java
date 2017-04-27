@@ -66,10 +66,10 @@ public class EntityTools {
      * Return the entity name (localized name)
      */
     public static String getEntityName(Entity entity) {
-        if (entity instanceof EntitySkeleton && ((EntitySkeleton) entity).getSkeletonType() == SkeletonType.WITHER) {
+        if (entity instanceof EntitySkeleton && ((EntitySkeleton) entity).func_189771_df() == SkeletonType.WITHER) {
             return "Wither Skeleton";
         }
-        if (entity instanceof EntitySkeleton && ((EntitySkeleton) entity).getSkeletonType() == SkeletonType.STRAY) {
+        if (entity instanceof EntitySkeleton && ((EntitySkeleton) entity).func_189771_df() == SkeletonType.STRAY) {
             return "Stray Skeleton";
         }
         if (entity instanceof EntityPigZombie) {
@@ -116,12 +116,12 @@ public class EntityTools {
             return null;
         }
         if ("WitherSkeleton".equals(mobId)) {
-            ((EntitySkeleton) entityLiving).setSkeletonType(SkeletonType.WITHER);
+            ((EntitySkeleton) entityLiving).func_189768_a(SkeletonType.WITHER);
         } else if ("StraySkeleton".equals(mobId)) {
-            ((EntitySkeleton) entityLiving).setSkeletonType(SkeletonType.STRAY);
+            ((EntitySkeleton) entityLiving).func_189768_a(SkeletonType.STRAY);
         } else if (entityLiving instanceof EntitySkeleton) {
             // Force non-wither otherwise
-            ((EntitySkeleton) entityLiving).setSkeletonType(SkeletonType.NORMAL);
+            ((EntitySkeleton) entityLiving).func_189768_a(SkeletonType.NORMAL);
         }
         return entityLiving;
     }
@@ -133,9 +133,9 @@ public class EntityTools {
     public static String findId(Class<? extends Entity> clazz, Entity entity) {
         if (entity instanceof EntitySkeleton) {
             EntitySkeleton skeleton = (EntitySkeleton) entity;
-            if (skeleton.getSkeletonType() == SkeletonType.WITHER) {
+            if (skeleton.func_189771_df() == SkeletonType.WITHER) {
                 return "WitherSkeleton";
-            } else if (skeleton.getSkeletonType() == SkeletonType.STRAY) {
+            } else if (skeleton.func_189771_df() == SkeletonType.STRAY) {
                 return "StraySkeleton";
             }
         }
