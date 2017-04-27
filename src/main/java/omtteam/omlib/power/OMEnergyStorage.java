@@ -2,33 +2,29 @@ package omtteam.omlib.power;
 
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class OMEnergyStorage implements IEnergyStorage
-{
+@SuppressWarnings({"WeakerAccess", "CanBeFinal", "unused"})
+public class OMEnergyStorage implements IEnergyStorage {
     protected int energy;
     protected int capacity;
     protected int maxReceive;
     protected int maxExtract;
 
-    public OMEnergyStorage(int capacity)
-    {
+    public OMEnergyStorage(int capacity) {
         this(capacity, capacity, capacity);
     }
 
-    public OMEnergyStorage(int capacity, int maxTransfer)
-    {
+    public OMEnergyStorage(int capacity, int maxTransfer) {
         this(capacity, maxTransfer, maxTransfer);
     }
 
-    public OMEnergyStorage(int capacity, int maxReceive, int maxExtract)
-    {
+    public OMEnergyStorage(int capacity, int maxReceive, int maxExtract) {
         this.capacity = capacity;
         this.maxReceive = maxReceive;
         this.maxExtract = maxExtract;
     }
 
     @Override
-    public int receiveEnergy(int maxReceive, boolean simulate)
-    {
+    public int receiveEnergy(int maxReceive, boolean simulate) {
         if (!canReceive())
             return 0;
 
@@ -39,8 +35,7 @@ public class OMEnergyStorage implements IEnergyStorage
     }
 
     @Override
-    public int extractEnergy(int maxExtract, boolean simulate)
-    {
+    public int extractEnergy(int maxExtract, boolean simulate) {
         if (!canExtract())
             return 0;
 
@@ -51,14 +46,12 @@ public class OMEnergyStorage implements IEnergyStorage
     }
 
     @Override
-    public int getEnergyStored()
-    {
+    public int getEnergyStored() {
         return energy;
     }
 
     @Override
-    public int getMaxEnergyStored()
-    {
+    public int getMaxEnergyStored() {
         return capacity;
     }
 
@@ -77,23 +70,22 @@ public class OMEnergyStorage implements IEnergyStorage
     public void setCapacity(int max) {
         capacity = max;
     }
+
     public void setEnergyStored(int stored) {
-        energy = stored;
+        energy = stored > 0 ? Math.min(stored, capacity) : 0;
     }
 
     public void modifyEnergyStored(int change) {
-        energy += change;
+        energy = energy - change > 0 ? energy - Math.min(change, capacity - energy) : 0;
     }
 
     @Override
-    public boolean canExtract()
-    {
+    public boolean canExtract() {
         return this.maxExtract > 0;
     }
 
     @Override
-    public boolean canReceive()
-    {
+    public boolean canReceive() {
         return this.maxReceive > 0;
     }
 }
