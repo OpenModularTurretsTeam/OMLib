@@ -1,6 +1,8 @@
 package omtteam.omlib.power.forge;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.energy.CapabilityEnergy;
+import omtteam.omlib.power.OMEnergyStorage;
 import omtteam.omlib.tileentity.TileEntityElectric;
 
 public class InternalRecieverTileWrapper {
@@ -14,7 +16,11 @@ public class InternalRecieverTileWrapper {
     }
 
     public int receiveEnergy(int maxReceive, boolean simulate) {
-        return tile.receiveEnergy(facing, maxReceive, simulate);
+        OMEnergyStorage storage = (OMEnergyStorage) tile.getCapability(CapabilityEnergy.ENERGY, facing);
+        if (storage != null) {
+            return storage.receiveEnergy(maxReceive, simulate);
+        }
+        return 0;
     }
 
     public int extractEnergy(int maxExtract, boolean simulate) {
@@ -24,5 +30,4 @@ public class InternalRecieverTileWrapper {
     public boolean canReceive() {
         return true;
     }
-
 }
