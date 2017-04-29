@@ -1,7 +1,6 @@
 package omtteam.omlib.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.UsernameCache;
 import net.minecraftforge.fml.common.Optional;
 import omtteam.omlib.handler.ConfigHandler;
@@ -107,26 +106,16 @@ public abstract class TileEntityMachine extends TileEntityContainer implements I
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
         super.writeToNBT(nbtTagCompound);
-
-        nbtTagCompound.setInteger("maxStorage", this.storage.getMaxEnergyStored());
-        nbtTagCompound.setInteger("energyStored", this.getEnergyStored(EnumFacing.DOWN));
-        nbtTagCompound.setInteger("maxIO", this.storage.getMaxReceive());
-        nbtTagCompound.setDouble("storageEU", storageEU);
-        nbtTagCompound.setTag("trustedPlayers", getTrustedPlayersAsNBT());
         nbtTagCompound.setBoolean("active", active);
         nbtTagCompound.setBoolean("inverted", inverted);
         nbtTagCompound.setBoolean("redstone", redstone);
-
+        nbtTagCompound.setTag("trustedPlayers", getTrustedPlayersAsNBT());
         return nbtTagCompound;
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
         super.readFromNBT(nbtTagCompound);
-        this.storage.setCapacity(nbtTagCompound.getInteger("maxStorage"));
-        this.storage.setEnergyStored(nbtTagCompound.getInteger("energyStored"));
-        this.storage.setMaxReceive(nbtTagCompound.getInteger("maxIO"));
-        this.storageEU = nbtTagCompound.getDouble("storageEU");
         this.active = !nbtTagCompound.hasKey("active") || nbtTagCompound.getBoolean("active");
         this.inverted = !nbtTagCompound.hasKey("inverted") || nbtTagCompound.getBoolean("inverted");
         this.redstone = nbtTagCompound.getBoolean("redstone");
