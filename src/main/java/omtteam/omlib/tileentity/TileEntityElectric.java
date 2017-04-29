@@ -234,7 +234,7 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
         // side can be used, for example only allow power input through the back, that could be
         // done here.
         if (ModCompatibility.TeslaLoaded) {
-            if (getTeslaCapability(capability, facing) != null) {
+            if (hasTeslaCapability(capability, facing) && getTeslaCapability(capability, facing) != null) {
                 return getTeslaCapability(capability, facing);
             }
         }
