@@ -1,5 +1,6 @@
 package omtteam.omlib.tileentity;
 
+
 import cofh.api.energy.IEnergyReceiver;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
@@ -11,7 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.common.Optional;
 import omtteam.omlib.compatability.ModCompatibility;
 import omtteam.omlib.handler.ConfigHandler;
@@ -29,7 +30,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @SuppressWarnings({"WeakerAccess", "CanBeFinal", "unused"})
 @Optional.InterfaceList({
-        @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySink", modid = "IC2")})
+        @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySink", modid = "IC2"),
+        @Optional.Interface(iface = "cofh.api.energy.IEnergyReceiver", modid = "CoFHAPI")})
+
 @MethodsReturnNonnullByDefault
 public abstract class TileEntityElectric extends TileEntityOwnedBlock implements IEnergyReceiver, IEnergySink {
     protected OMEnergyStorage storage;
@@ -43,12 +46,10 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
         super.writeToNBT(nbtTagCompound);
-
         nbtTagCompound.setInteger("maxStorage", this.storage.getMaxEnergyStored());
-        nbtTagCompound.setInteger("energyStored", this.getEnergyStored(EnumFacing.DOWN));
+        nbtTagCompound.setInteger("energyStored", this.storage.getEnergyStored());
         nbtTagCompound.setInteger("maxIO", this.storage.getMaxReceive());
         nbtTagCompound.setDouble("storageEU", storageEU);
-
         return nbtTagCompound;
     }
 
@@ -102,20 +103,36 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
         return 0;
     }*/
 
-
+    @Optional.Method(modid = "CoFHAPI")
     @Override
     public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
         this.markDirty();
         return storage.receiveEnergy(maxReceive, simulate);
     }
 
+    @Optional.Method(modid = "CoFHAPI")
     @Override
     public int getEnergyStored(EnumFacing from) {
         return storage.getEnergyStored();
     }
 
+    @Optional.Method(modid = "CoFHAPI")
     @Override
     public int getMaxEnergyStored(EnumFacing from) {
+        return storage.getMaxEnergyStored();
+    }
+
+    @Optional.Method(modid = "CoFHAPI")
+    @Override
+    public boolean canConnectEnergy(EnumFacing from) {
+        return true;
+    }
+
+    public int getEnergyLevel(EnumFacing from) {
+        return storage.getEnergyStored();
+    }
+
+    public int getMaxEnergyLevel(EnumFacing from) {
         return storage.getMaxEnergyStored();
     }
 
@@ -126,11 +143,6 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
     public void setEnergyStored(int energy) {
         storage.setEnergyStored(energy);
         this.markDirty();
-    }
-
-    @Override
-    public boolean canConnectEnergy(EnumFacing from) {
-        return true;
     }
 
     @Optional.Method(modid = "IC2")
@@ -209,9 +221,10 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
 
     }
 
+    @SuppressWarnings({"ConstantConditions", "unchecked"})
     @Override
     @ParametersAreNonnullByDefault
-    @SuppressWarnings({"unchecked", "NullableProblems", "ConstantConditions"})
+    @Nullable
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 
         // This method is where other things will try to access your TileEntity's Tesla
@@ -224,7 +237,8 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
             if (getTeslaCapability(capability, facing) != null) {
                 return getTeslaCapability(capability, facing);
             }
-        } else if (capability instanceof IEnergyStorage) {
+        }
+        if (capability == CapabilityEnergy.ENERGY) {
             return (T) storage;
         }
 
@@ -245,7 +259,8 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
             if (hasTeslaCapability(capability, facing)) {
                 return true;
             }
-        } else if (capability instanceof IEnergyStorage) {
+        }
+        if (capability == CapabilityEnergy.ENERGY) {
             return true;
         }
 
