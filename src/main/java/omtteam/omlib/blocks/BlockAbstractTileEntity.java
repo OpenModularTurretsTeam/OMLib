@@ -10,7 +10,7 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import omtteam.omlib.tileentity.TileEntityContainer;
+import omtteam.omlib.tileentity.TileEntityContainerElectric;
 import omtteam.omlib.util.compat.ItemStackTools;
 
 import javax.annotation.Nonnull;
@@ -52,8 +52,8 @@ public abstract class BlockAbstractTileEntity extends BlockAbstract {
 
     @SuppressWarnings("ConstantConditions")
     protected void dropItems(World worldIn, BlockPos pos) {
-        if (worldIn.getTileEntity(pos) instanceof TileEntityContainer) {
-            TileEntityContainer entity = (TileEntityContainer) worldIn.getTileEntity(pos);
+        if (worldIn.getTileEntity(pos) instanceof TileEntityContainerElectric) {
+            TileEntityContainerElectric entity = (TileEntityContainerElectric) worldIn.getTileEntity(pos);
             Random rand = new Random();
             for (int i = 0; i < entity.getSizeInventory(); i++) {
                 ItemStack item = entity.getStackInSlot(i);
