@@ -9,6 +9,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.common.Optional;
 import omtteam.omlib.compatability.ModCompatibility;
+import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.power.OMEnergyStorage;
 import omtteam.omlib.power.tesla.BaseOMTeslaContainerWrapper;
 
@@ -28,7 +29,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 public abstract class TileEntityElectric extends TileEntityOwnedBlock implements IEnergyReceiver/*, IEnergySink*/ {
     protected OMEnergyStorage storage;
     protected Object teslaContainer;
-    protected double storageEU;
+    protected double storageEU = 0D;
     //private float amountOfPotentia = 0F;
     //private final float maxAmountOfPotentia = ConfigHandler.getPotentiaAddonCapacity();
 
@@ -136,6 +137,17 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
     public void setEnergyStored(int energy) {
         storage.setEnergyStored(energy);
         this.markDirty();
+    }
+
+    public void moveEnergyFromIC2ToStorage() {
+        double requiredEnergy = (storage.getMaxEnergyStored() - storage.getEnergyStored()) / ConfigHandler.EUtoRFRatio;
+        if (storageEU >= requiredEnergy) {
+            storageEU -= requiredEnergy;
+            storage.modifyEnergyStored((int) (requiredEnergy * ConfigHandler.EUtoRFRatio));
+        } else {
+            storage.modifyEnergyStored((int) (storageEU * ConfigHandler.EUtoRFRatio));
+            storageEU = 0D;
+        }
     }
     /*
     @Optional.Method(modid = "IC2")
