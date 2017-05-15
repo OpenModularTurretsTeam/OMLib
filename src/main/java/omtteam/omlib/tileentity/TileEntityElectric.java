@@ -145,6 +145,17 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
         this.markDirty();
     }
 
+    public void moveEnergyFromIC2ToStorage() {
+        double requiredEnergy = (storage.getMaxEnergyStored() - storage.getEnergyStored()) / ConfigHandler.EUtoRFRatio;
+        if (storageEU >= requiredEnergy) {
+            storageEU -= requiredEnergy;
+            storage.modifyEnergyStored((int) (requiredEnergy * ConfigHandler.EUtoRFRatio));
+        } else {
+            storage.modifyEnergyStored((int) (storageEU * ConfigHandler.EUtoRFRatio));
+            storageEU = 0D;
+        }
+    }
+
     @Optional.Method(modid = "IC2")
     @Override
     public double injectEnergy(EnumFacing facing, double v, double v1) {
