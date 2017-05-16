@@ -1,11 +1,16 @@
 package omtteam.omlib.tileentity;
 
 import cofh.api.energy.IEnergyReceiver;
+import ic2.api.energy.event.EnergyTileLoadEvent;
+import ic2.api.energy.event.EnergyTileUnloadEvent;
+import ic2.api.energy.tile.IEnergyEmitter;
+import ic2.api.energy.tile.IEnergySink;
 import mcp.MethodsReturnNonnullByDefault;
 import net.darkhax.tesla.capability.TeslaCapabilities;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.common.Optional;
@@ -31,7 +36,7 @@ import static omtteam.omlib.handler.ConfigHandler.EUSupport;
         @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySink", modid = "IC2"),
         @Optional.Interface(iface = "cofh.api.energy.IEnergyReceiver", modid = "CoFHAPI")})
 @MethodsReturnNonnullByDefault
-public abstract class TileEntityElectric extends TileEntityOwnedBlock implements IEnergyReceiver, ITickable/*, IEnergySink*/ {
+public abstract class TileEntityElectric extends TileEntityOwnedBlock implements IEnergyReceiver, ITickable, IEnergySink {
     protected OMEnergyStorage storage;
     protected Object teslaContainer;
     protected double storageEU = 0D;
@@ -64,13 +69,13 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
 
     @Override
     public void update() {
-        /*if (IC2Loaded && EUSupport && !wasAddedToEnergyNet && !this.getWorld().isRemote) {
+        if (IC2Loaded && EUSupport && !wasAddedToEnergyNet && !this.getWorld().isRemote) {
             addToIc2EnergyNetwork();
             wasAddedToEnergyNet = true;
         }
         if (!this.getWorld().isRemote && IC2Loaded && this.getWorld().getWorldTime() % 20 == 1) {
             moveEnergyFromIC2ToStorage();
-        }*/
+        }
     }
 
     /*
@@ -160,19 +165,17 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
         if (storageEU >= requiredEnergy) {
             storageEU -= requiredEnergy;
             storage.modifyEnergyStored(MathUtil.truncateDoubleToInt((requiredEnergy * ConfigHandler.EUtoRFRatio)));
-        } else{
+        } else {
             storage.modifyEnergyStored(MathUtil.truncateDoubleToInt(storageEU * ConfigHandler.EUtoRFRatio));
             storageEU = 0D;
         }
         this.markDirty();
     }
 
-    /*
     @Optional.Method(modid = "IC2")
     @Override
     public double injectEnergy(EnumFacing facing, double v, double v1) {
         storageEU += v;
-        this.markDirty();
         return 0.0D;
     }
 
@@ -186,16 +189,9 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
     @Override
     public double getDemandedEnergy() {
         if (ConfigHandler.EUSupport) {
-            if (storage.getMaxEnergyStored() != storage.getEnergyStored() && storageEU > 0) {
-                storage.modifyEnergyStored(MathUtil.truncateDoubleToInt(
-                        Math.min(storage.getMaxEnergyStored() - storage.getEnergyStored(),
-                                storageEU * ConfigHandler.EUtoRFRatio)));
-                storageEU -= Math.min(
-                        (storage.getMaxEnergyStored() - storage.getEnergyStored()) / ConfigHandler.EUtoRFRatio,
-                        storageEU * ConfigHandler.EUtoRFRatio);
-            }
+            return Math.max(4000D - storageEU, 0.0D);
         }
-        return Math.max(4000D - storageEU, 0.0D);
+        return 0;
     }
 
     @Optional.Method(modid = "IC2")
@@ -206,7 +202,7 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
 
     @Optional.Method(modid = "IC2")
     protected void addToIc2EnergyNetwork() {
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             EnergyTileLoadEvent event = new EnergyTileLoadEvent(this);
             MinecraftForge.EVENT_BUS.post(event);
         }
@@ -232,7 +228,8 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
             wasAddedToEnergyNet = false;
         }
     }
-    */
+
+
     @Optional.Method(modid = "tesla")
     private BaseOMTeslaContainerWrapper getTeslaContainer() {
         if (teslaContainer instanceof BaseOMTeslaContainerWrapper) {
