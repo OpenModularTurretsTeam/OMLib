@@ -24,6 +24,8 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import static omtteam.omlib.compatability.ModCompatibility.IC2Loaded;
+import static omtteam.omlib.compatability.ModCompatibility.IC2ModId;
+import static omtteam.omlib.compatability.ModCompatibility.TeslaModId;
 import static omtteam.omlib.handler.ConfigHandler.EUSupport;
 
 /**
@@ -33,7 +35,7 @@ import static omtteam.omlib.handler.ConfigHandler.EUSupport;
 
 @SuppressWarnings({"WeakerAccess", "CanBeFinal", "unused"})
 @Optional.InterfaceList({
-        @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySink", modid = "IC2"),
+        @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySink", modid = IC2ModId),
         @Optional.Interface(iface = "cofh.api.energy.IEnergyReceiver", modid = "CoFHAPI")})
 @MethodsReturnNonnullByDefault
 public abstract class TileEntityElectric extends TileEntityOwnedBlock implements IEnergyReceiver, ITickable, IEnergySink {
@@ -172,20 +174,20 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
         this.markDirty();
     }
 
-    @Optional.Method(modid = "IC2")
+    @Optional.Method(modid = IC2ModId)
     @Override
     public double injectEnergy(EnumFacing facing, double v, double v1) {
         storageEU += v;
         return 0.0D;
     }
 
-    @Optional.Method(modid = "IC2")
+    @Optional.Method(modid = IC2ModId)
     @Override
     public int getSinkTier() {
         return 4;
     }
 
-    @Optional.Method(modid = "IC2")
+    @Optional.Method(modid = IC2ModId)
     @Override
     public double getDemandedEnergy() {
         if (ConfigHandler.EUSupport) {
@@ -194,13 +196,13 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
         return 0;
     }
 
-    @Optional.Method(modid = "IC2")
+    @Optional.Method(modid = IC2ModId)
     @Override
     public boolean acceptsEnergyFrom(IEnergyEmitter tileEntity, EnumFacing facing) {
         return true;
     }
 
-    @Optional.Method(modid = "IC2")
+    @Optional.Method(modid = IC2ModId)
     protected void addToIc2EnergyNetwork() {
         if (!world.isRemote) {
             EnergyTileLoadEvent event = new EnergyTileLoadEvent(this);
@@ -208,7 +210,7 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
         }
     }
 
-    @Optional.Method(modid = "IC2")
+    @Optional.Method(modid = IC2ModId)
     private void removeFromIc2EnergyNetwork() {
         MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
     }
@@ -230,7 +232,7 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
     }
 
 
-    @Optional.Method(modid = "tesla")
+    @Optional.Method(modid = TeslaModId)
     private BaseOMTeslaContainerWrapper getTeslaContainer() {
         if (teslaContainer instanceof BaseOMTeslaContainerWrapper) {
             return (BaseOMTeslaContainerWrapper) teslaContainer;
@@ -288,12 +290,12 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
     }
 
     @SuppressWarnings("unused")
-    @Optional.Method(modid = "tesla")
+    @Optional.Method(modid = TeslaModId)
     private boolean hasTeslaCapability(Capability<?> capability, EnumFacing facing) {
         return (capability == TeslaCapabilities.CAPABILITY_CONSUMER);
     }
 
-    @Optional.Method(modid = "tesla")
+    @Optional.Method(modid = TeslaModId)
     @SuppressWarnings({"unchecked", "unused"})
     @Nullable
     private <T> T getTeslaCapability(Capability<T> capability, EnumFacing facing) {
