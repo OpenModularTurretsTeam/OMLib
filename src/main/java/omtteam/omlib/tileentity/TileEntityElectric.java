@@ -23,9 +23,7 @@ import omtteam.omlib.util.MathUtil;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static omtteam.omlib.compatability.ModCompatibility.IC2Loaded;
-import static omtteam.omlib.compatability.ModCompatibility.IC2ModId;
-import static omtteam.omlib.compatability.ModCompatibility.TeslaModId;
+import static omtteam.omlib.compatability.ModCompatibility.*;
 import static omtteam.omlib.handler.ConfigHandler.EUSupport;
 
 /**
@@ -36,7 +34,7 @@ import static omtteam.omlib.handler.ConfigHandler.EUSupport;
 @SuppressWarnings({"WeakerAccess", "CanBeFinal", "unused"})
 @Optional.InterfaceList({
         @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySink", modid = IC2ModId),
-        @Optional.Interface(iface = "cofh.api.energy.IEnergyReceiver", modid = "CoFHAPI")})
+        @Optional.Interface(iface = "cofh.api.energy.IEnergyReceiver", modid = CoFHApiModId)})
 @MethodsReturnNonnullByDefault
 public abstract class TileEntityElectric extends TileEntityOwnedBlock implements IEnergyReceiver, ITickable, IEnergySink {
     protected OMEnergyStorage storage;
@@ -120,26 +118,26 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
         return 0;
     }*/
 
-    @Optional.Method(modid = "CoFHAPI")
+    @Optional.Method(modid = CoFHApiModId)
     @Override
     public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
         this.markDirty();
         return storage.receiveEnergy(maxReceive, simulate);
     }
 
-    @Optional.Method(modid = "CoFHAPI")
+    @Optional.Method(modid = CoFHApiModId)
     @Override
     public int getEnergyStored(EnumFacing from) {
         return storage.getEnergyStored();
     }
 
-    @Optional.Method(modid = "CoFHAPI")
+    @Optional.Method(modid = CoFHApiModId)
     @Override
     public int getMaxEnergyStored(EnumFacing from) {
         return storage.getMaxEnergyStored();
     }
 
-    @Optional.Method(modid = "CoFHAPI")
+    @Optional.Method(modid = CoFHApiModId)
     @Override
     public boolean canConnectEnergy(EnumFacing from) {
         return true;
