@@ -102,6 +102,7 @@ dependencies {
     deobfCompile "mezz.jei:jei_${config.minecraft_version}:${config.jei_version}"
     compile "net.darkhax.tesla:Tesla:${config.minecraft_version_short}-${config.tesla_version}"
     compile "net.industrial-craft:industrialcraft-2:${config.ic2_version}:dev"
+    runtimeOnly "omtteam:openmodularturrets:1.10.2-${config.omt_version}:dev"
 }
 
 
