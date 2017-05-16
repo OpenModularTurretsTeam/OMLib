@@ -5,6 +5,7 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.darkhax.tesla.capability.TeslaCapabilities;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.common.Optional;
@@ -12,9 +13,13 @@ import omtteam.omlib.compatability.ModCompatibility;
 import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.power.OMEnergyStorage;
 import omtteam.omlib.power.tesla.BaseOMTeslaContainerWrapper;
+import omtteam.omlib.util.MathUtil;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+
+import static omtteam.omlib.compatability.ModCompatibility.IC2Loaded;
+import static omtteam.omlib.handler.ConfigHandler.EUSupport;
 
 /**
  * Created by Keridos on 27/04/17.
@@ -26,7 +31,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
         @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySink", modid = "IC2"),
         @Optional.Interface(iface = "cofh.api.energy.IEnergyReceiver", modid = "CoFHAPI")})
 @MethodsReturnNonnullByDefault
-public abstract class TileEntityElectric extends TileEntityOwnedBlock implements IEnergyReceiver/*, IEnergySink*/ {
+public abstract class TileEntityElectric extends TileEntityOwnedBlock implements IEnergyReceiver, ITickable/*, IEnergySink*/ {
     protected OMEnergyStorage storage;
     protected Object teslaContainer;
     protected double storageEU = 0D;
@@ -55,6 +60,17 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
         this.storage.setMaxReceive(nbtTagCompound.getInteger("maxIO"));
         this.storageEU = nbtTagCompound.getDouble("storageEU");
 
+    }
+
+    @Override
+    public void update() {
+        /*if (IC2Loaded && EUSupport && !wasAddedToEnergyNet && !this.getWorld().isRemote) {
+            addToIc2EnergyNetwork();
+            wasAddedToEnergyNet = true;
+        }
+        if (!this.getWorld().isRemote && IC2Loaded && this.getWorld().getWorldTime() % 20 == 1) {
+            moveEnergyFromIC2ToStorage();
+        }*/
     }
 
     /*
@@ -143,12 +159,14 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
         double requiredEnergy = (storage.getMaxEnergyStored() - storage.getEnergyStored()) / ConfigHandler.EUtoRFRatio;
         if (storageEU >= requiredEnergy) {
             storageEU -= requiredEnergy;
-            storage.modifyEnergyStored((int) (requiredEnergy * ConfigHandler.EUtoRFRatio));
-        } else {
-            storage.modifyEnergyStored((int) (storageEU * ConfigHandler.EUtoRFRatio));
+            storage.modifyEnergyStored(MathUtil.truncateDoubleToInt((requiredEnergy * ConfigHandler.EUtoRFRatio)));
+        } else{
+            storage.modifyEnergyStored(MathUtil.truncateDoubleToInt(storageEU * ConfigHandler.EUtoRFRatio));
             storageEU = 0D;
         }
+        this.markDirty();
     }
+
     /*
     @Optional.Method(modid = "IC2")
     @Override
