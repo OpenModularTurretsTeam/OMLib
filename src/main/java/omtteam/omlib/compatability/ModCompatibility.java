@@ -13,11 +13,15 @@ public class ModCompatibility {
     public static boolean IC2Loaded = false;
     public static boolean TeslaLoaded = false;
 
+    public static final String IC2ModId = "IC2";
+    public static final String TeslaModId = "tesla";
+    public static final String CoFHApiModId = "CoFHAPI";
+
     public static void checkForMods() {
 
-        IC2Loaded = Loader.isModLoaded("IC2");
+        IC2Loaded = Loader.isModLoaded(IC2ModId);
         fixIC2Loading();
-        TeslaLoaded = Loader.isModLoaded("tesla");
+        TeslaLoaded = Loader.isModLoaded(TeslaModId);
     }
 
     public static void fixIC2Loading() {
