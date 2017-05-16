@@ -76,7 +76,11 @@ public class OMEnergyStorage implements IEnergyStorage {
     }
 
     public void modifyEnergyStored(int change) {
-        energy = energy - change > 0 ? energy - Math.min(change, capacity - energy) : 0;
+        if (change >= 0) {
+            energy = Math.min(energy + change, capacity);
+        } else {
+            energy = Math.max(energy - change, 0);
+        }
     }
 
     @Override
