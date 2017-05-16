@@ -15,7 +15,7 @@ public class ModCompatibility {
 
     public static void checkForMods() {
 
-        IC2Loaded = Loader.isModLoaded("IC2");
+        IC2Loaded = Loader.isModLoaded("ic2");
         fixIC2Loading();
         TeslaLoaded = Loader.isModLoaded("tesla");
     }
