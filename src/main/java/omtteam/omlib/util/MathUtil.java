@@ -21,17 +21,17 @@ public class MathUtil {
     public static AxisAlignedBB rotateAABB(AxisAlignedBB box, EnumFacing facing) {
         switch (facing) {
             case NORTH:
-                return box.offset(0F, 0F, 0.625F);
+                return new AxisAlignedBB(box.minX, box.minY, box.maxZ, box.maxX, box.maxY, box.minZ);
             case EAST:
                 return new AxisAlignedBB(box.minZ, box.minY, box.minX, box.maxZ, box.maxY, box.maxX);
             case SOUTH:
                 return box;
             case WEST:
-                return new AxisAlignedBB(box.minZ, box.minY, box.minX, box.maxZ, box.maxY, box.maxX).offset(0.625F, 0F, 0F);
+                return new AxisAlignedBB(box.minZ, box.minY, box.maxX, box.maxZ, box.maxY, box.minX);
             case UP:
                 return new AxisAlignedBB(box.minY, box.minZ, box.minX, box.maxY, box.maxZ, box.maxX);
             case DOWN:
-                return new AxisAlignedBB(box.minY, box.minZ, box.minX, box.maxY, box.maxZ, box.maxX).offset(0F, 0.625F, 0F);
+                return new AxisAlignedBB(box.maxY, box.minZ, box.minX, box.minY, box.maxZ, box.maxX);
         }
         return box;
     }
