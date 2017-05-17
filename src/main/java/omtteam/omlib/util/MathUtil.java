@@ -36,7 +36,6 @@ public class MathUtil {
         return box;
     }
 
-
     public static Vec3d getVectorFromYawPitch(float yaw, float pitch) {
         float f = MathHelper.cos(-yaw * 0.017453292F - (float) Math.PI);
         float f1 = MathHelper.sin(-yaw * 0.017453292F - (float) Math.PI);

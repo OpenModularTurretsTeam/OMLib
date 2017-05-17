@@ -41,7 +41,7 @@ public abstract class CamoBakedModel implements IBakedModel {
      *
      * @param   list    the list of available models
      * @param   state   the state to get the model for
-     * @return          the correct model for the give state
+     * @return the correct model for the given state
      */
     protected abstract IBakedModel getModel(List<IBakedModel> list, IBlockState state);
 
