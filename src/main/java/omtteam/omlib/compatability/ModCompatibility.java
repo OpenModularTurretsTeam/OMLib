@@ -16,6 +16,7 @@ public class ModCompatibility {
     public static final String IC2ModId = "ic2";
     public static final String TeslaModId = "tesla";
     public static final String CoFHApiModId = "CoFHAPI";
+    public static final String OCModID = "opencomputers";
 
     public static void checkForMods() {
 
