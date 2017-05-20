@@ -1,8 +1,10 @@
 package omtteam.omlib.compatability;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
+import omtteam.omlib.OMLib;
 import omtteam.omlib.reference.Reference;
 
 /**
@@ -12,6 +14,8 @@ import omtteam.omlib.reference.Reference;
 public class ModCompatibility {
     public static boolean IC2Loaded = false;
     public static boolean TeslaLoaded = false;
+    public static boolean CoFHApiLoaded = false;
+    public static boolean OpenComputersLoaded = false;
 
     public static final String IC2ModId = "IC2";
     public static final String TeslaModId = "tesla";
@@ -19,10 +23,19 @@ public class ModCompatibility {
     public static final String OCModID = "OpenComputers";
 
     public static void checkForMods() {
-
         IC2Loaded = Loader.isModLoaded(IC2ModId);
         fixIC2Loading();
         TeslaLoaded = Loader.isModLoaded(TeslaModId);
+        printDetectedMods();
+    }
+
+    private static void printDetectedMods() {
+        String foundMods = "Found the following mods: ";
+        foundMods += IC2Loaded ? "IC2 " : "";
+        foundMods += TeslaLoaded ? "Tesla " : "";
+        foundMods += CoFHApiLoaded ? "CoFHApi " : "";
+        foundMods += OpenComputersLoaded ? "OpenComputers " : "";
+        OMLib.getLogger().info(foundMods);
     }
 
     public static void fixIC2Loading() {
