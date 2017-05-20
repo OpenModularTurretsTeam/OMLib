@@ -34,67 +34,6 @@ public abstract class TileEntityMachine extends TileEntityContainerElectric impl
     }
 
     @Override
-    @ParametersAreNonnullByDefault
-    public boolean addTrustedPlayer(String name) {
-        TrustedPlayer trustedPlayer = new TrustedPlayer(name);
-        trustedPlayer.uuid = getPlayerUUID(name);
-
-        if (!this.getWorld().isRemote) {
-            boolean foundPlayer = false;
-            for (Map.Entry<UUID, String> serverName : UsernameCache.getMap().entrySet()) {
-                if (name.equals(serverName.getValue())) {
-                    foundPlayer = true;
-                    break;
-                }
-            }
-
-            if (!foundPlayer) {
-                return false;
-            }
-        }
-
-        if (ConfigHandler.offlineModeSupport) {
-            if (trustedPlayer.getName().equals(getOwner())) {
-                return false;
-            }
-
-        } else {
-            if (trustedPlayer.uuid == null || trustedPlayer.uuid.toString().equals(getOwner())) {
-                return false;
-            }
-        }
-
-        if (trustedPlayer.uuid != null || ConfigHandler.offlineModeSupport) {
-            for (TrustedPlayer player : trustedPlayers) {
-                if (ConfigHandler.offlineModeSupport) {
-                    if (player.getName().toLowerCase().equals(name.toLowerCase()) || player.getName().equals(getOwner())) {
-                        return false;
-                    }
-                } else {
-                    if (player.getName().toLowerCase().equals(name.toLowerCase()) || trustedPlayer.uuid.toString().equals(
-                            owner)) {
-                        return false;
-                    }
-                }
-            }
-            trustedPlayers.add(trustedPlayer);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean removeTrustedPlayer(String name) {
-        for (TrustedPlayer player : trustedPlayers) {
-            if (player.getName().equals(name)) {
-                trustedPlayers.remove(player);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
     public List<TrustedPlayer> getTrustedPlayers() {
         return trustedPlayers;
     }

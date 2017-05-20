@@ -72,7 +72,7 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
             addToIc2EnergyNetwork();
             wasAddedToEnergyNet = true;
         }
-        if (!this.getWorld().isRemote && IC2Loaded && this.getWorld().getWorldTime() % 20 == 1) {
+        if (!this.getWorld().isRemote && IC2Loaded && this.getWorld().getWorldTime() % 5 == 1) {
             moveEnergyFromIC2ToStorage();
         }
     }
@@ -188,7 +188,7 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
     @Override
     public double getDemandedEnergy() {
         if (ConfigHandler.EUSupport) {
-            return Math.max(4000D - storageEU, 0.0D);
+            return Math.max(80000D - storageEU, 0.0D);
         }
         return 0;
     }
