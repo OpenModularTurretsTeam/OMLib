@@ -26,6 +26,7 @@ public class Player extends Object {
     }
 
     public boolean equals(Player player) {
-        return (offlineModeSupport ^ this.uuid == player.getUuid()) && this.name.equals(player.getName());
+        return (offlineModeSupport ^ this.uuid.equals(player.getUuid()) ||
+                offlineModeSupport && this.name.equals(player.getName()));
     }
 }

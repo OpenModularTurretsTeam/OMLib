@@ -24,7 +24,9 @@ import static omtteam.omlib.handler.ConfigHandler.offlineModeSupport;
 public class PlayerUtil {
 
     public static boolean isPlayerOP(EntityPlayer player) {
-        return player.getServer() != null && player.getServer().getPlayerList().getOppedPlayers().getEntry(player.getGameProfile()).getPermissionLevel() == 4;
+        return player.getServer() != null &&
+                player.getServer().getPlayerList().getOppedPlayers().getEntry(player.getGameProfile()) != null &&
+                player.getServer().getPlayerList().getOppedPlayers().getEntry(player.getGameProfile()).getPermissionLevel() == 4;
     }
 
     @Nullable

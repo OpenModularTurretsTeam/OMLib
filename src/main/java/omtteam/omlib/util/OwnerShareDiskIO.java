@@ -43,12 +43,14 @@ public class OwnerShareDiskIO {
     }
 
     public static HashMap<Player, ArrayList<Player>> loadFromDisk() {
-        HashMap<Player, ArrayList<Player>> input = null;
+        HashMap<Player, ArrayList<Player>> input = new HashMap<>();
         try {
             Path fullpath = Paths.get(DimensionManager.getCurrentSaveRootDirectory().toString() + "/omlib/OwnerShare.sav");
             FileInputStream saveFile = new FileInputStream(fullpath.toFile());
             ObjectInputStream save = new ObjectInputStream(saveFile);
-            input = (HashMap<Player, ArrayList<Player>>) save.readObject();
+            if (save.readObject() instanceof HashMap) {
+                input = (HashMap<Player, ArrayList<Player>>) save.readObject();
+            }
             save.close();
             saveFile.close();
         } catch (Exception e) {

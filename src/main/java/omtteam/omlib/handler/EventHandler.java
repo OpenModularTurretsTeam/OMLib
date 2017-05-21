@@ -10,7 +10,7 @@ import static omtteam.omlib.util.OwnerShareDiskIO.saveToDisk;
 
 /**
  * Created by Keridos on 17/05/17.
- * This Class
+ * This Class is the EventHandler for OMLib
  */
 public class EventHandler {
 
