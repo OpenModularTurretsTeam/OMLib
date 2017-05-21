@@ -16,7 +16,7 @@ public class OwnerShareHandler implements Serializable {
     private static OwnerShareHandler instance;
     private HashMap<Player, ArrayList<Player>> ownerShareMap;
 
-    public OwnerShareHandler() {
+    private OwnerShareHandler() {
         ownerShareMap = new HashMap<>();
     }
 
@@ -31,8 +31,10 @@ public class OwnerShareHandler implements Serializable {
         return ownerShareMap;
     }
 
-    public void setOwnerShareMap(HashMap<Player, ArrayList<Player>> ownerShareMap) {
-        this.ownerShareMap = ownerShareMap;
+    void setOwnerShareMap(@Nullable HashMap<Player, ArrayList<Player>> ownerShareMap) {
+        if (ownerShareMap != null) {
+            this.ownerShareMap = ownerShareMap;
+        }
     }
 
     @Nullable
@@ -57,6 +59,9 @@ public class OwnerShareHandler implements Serializable {
 
     public void addSharePlayer(Player owner, Player sharePlayer) {
         Map.Entry<Player, ArrayList<Player>> entryFound = null;
+        if (owner.equals(sharePlayer)) {
+            return;
+        }
         for (Map.Entry<Player, ArrayList<Player>> entry : ownerShareMap.entrySet()) {
             if (entry.getKey().equals(owner)) {
                 entryFound = entry;
@@ -75,6 +80,9 @@ public class OwnerShareHandler implements Serializable {
 
     public void removeSharePlayer(Player owner, Player sharePlayer) {
         Map.Entry<Player, ArrayList<Player>> entryFound = null;
+        if (owner.equals(sharePlayer)) {
+            return;
+        }
         for (Map.Entry<Player, ArrayList<Player>> entry : ownerShareMap.entrySet()) {
             if (entry.getKey().equals(owner)) {
                 entryFound = entry;
