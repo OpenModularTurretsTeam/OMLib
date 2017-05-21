@@ -2,9 +2,14 @@ package omtteam.omlib.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.world.World;
+import net.minecraftforge.common.UsernameCache;
+import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.util.TrustedPlayer;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -17,9 +22,69 @@ import static omtteam.omlib.util.PlayerUtil.getPlayerUUID;
  */
 public interface ITrustedPlayersManager {
 
-    boolean addTrustedPlayer(String name);
+    String getOwner();
 
-    boolean removeTrustedPlayer(String name);
+    World getWorld();
+
+    @ParametersAreNonnullByDefault
+    default boolean addTrustedPlayer(String name) {
+        TrustedPlayer trustedPlayer = new TrustedPlayer(name);
+        trustedPlayer.uuid = getPlayerUUID(name);
+
+        if (!this.getWorld().isRemote) {
+            boolean foundPlayer = false;
+            for (Map.Entry<UUID, String> serverName : UsernameCache.getMap().entrySet()) {
+                if (name.equals(serverName.getValue())) {
+                    foundPlayer = true;
+                    break;
+                }
+            }
+
+            if (!foundPlayer) {
+                return false;
+            }
+        }
+
+        if (ConfigHandler.offlineModeSupport) {
+            if (trustedPlayer.getName().equals(getOwner())) {
+                return false;
+            }
+
+        } else {
+            if (trustedPlayer.uuid == null || trustedPlayer.uuid.toString().equals(getOwner())) {
+                return false;
+            }
+        }
+
+        if (trustedPlayer.uuid != null || ConfigHandler.offlineModeSupport) {
+            for (TrustedPlayer player : getTrustedPlayers()) {
+                if (ConfigHandler.offlineModeSupport) {
+                    if (player.getName().toLowerCase().equals(name.toLowerCase()) || player.getName().equals(getOwner())) {
+                        return false;
+                    }
+                } else {
+                    if (player.getName().toLowerCase().equals(name.toLowerCase()) || trustedPlayer.uuid.toString().equals(
+                            getOwner())) {
+                        return false;
+                    }
+                }
+            }
+            getTrustedPlayers().add(trustedPlayer);
+            return true;
+        }
+        return false;
+    }
+
+
+    default boolean removeTrustedPlayer(String name) {
+        for (TrustedPlayer player : getTrustedPlayers()) {
+            if (player.getName().equals(name)) {
+                getTrustedPlayers().remove(player);
+                return true;
+            }
+        }
+        return false;
+    }
 
     default TrustedPlayer getTrustedPlayer(String name) {
         for (TrustedPlayer trustedPlayer : getTrustedPlayers()) {

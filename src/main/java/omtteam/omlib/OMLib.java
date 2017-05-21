@@ -13,6 +13,8 @@ import omtteam.omlib.reference.Reference;
 import omtteam.omlib.util.CommandChangeOwner;
 import omtteam.omlib.util.RandomUtil;
 
+import java.util.logging.Logger;
+
 import static omtteam.omlib.compatability.ModCompatibility.checkForMods;
 import static omtteam.omlib.compatability.ModCompatibility.performModCompat;
 
@@ -29,11 +31,16 @@ public class OMLib {
 
     @SuppressWarnings("unused")
     public static CreativeTabs modularTurretsTab;
+    private static Logger logger;
 
+    public static Logger getLogger() {
+        return logger;
+    }
 
     @SuppressWarnings("unused")
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        logger = Logger.getLogger("OMLib");
         ConfigHandler.init(event.getSuggestedConfigurationFile());
         checkForMods();
         RandomUtil.init();
