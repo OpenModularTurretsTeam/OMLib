@@ -189,7 +189,7 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
     @Override
     public double getDemandedEnergy() {
         if (ConfigHandler.EUSupport) {
-            return Math.max(4000D - storageEU, 0.0D);
+            return Math.max(80000D - storageEU, 0.0D);
         }
         return 0;
     }
