@@ -10,20 +10,20 @@ import static omtteam.omlib.util.OwnerShareDiskIO.saveToDisk;
 
 /**
  * Created by Keridos on 17/05/17.
- * This Class
+ * This Class is the EventHandler for OMLib
  */
 public class EventHandler {
 
     @SubscribeEvent
-    public void worldLoadEvent(WorldEvent.Load event){
+    public void worldLoadEvent(WorldEvent.Load event) {
         OwnerShareHandler.getInstance().setOwnerShareMap(loadFromDisk());
-        if (OwnerShareHandler.getInstance().getOwnerShareMap() == null){
+        if (OwnerShareHandler.getInstance().getOwnerShareMap() == null) {
             OwnerShareHandler.getInstance().setOwnerShareMap(new HashMap<>());
         }
     }
 
     @SubscribeEvent
-    public void worldUnloadEvent(WorldEvent.Unload event){
+    public void worldUnloadEvent(WorldEvent.Unload event) {
         saveToDisk(OwnerShareHandler.getInstance());
     }
 }
