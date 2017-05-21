@@ -31,7 +31,7 @@ public class CommandShareOwner extends CompatCommandBase {
     @Nonnull
     @ParametersAreNonnullByDefault
     public String getUsage(ICommandSender sender) {
-        return "<add|del> <name to share>";
+        return "'<add|del> <name to share>' or list";
     }
 
     @Override
@@ -44,24 +44,30 @@ public class CommandShareOwner extends CompatCommandBase {
         try {
             String shareName = params[1];
             String command = params[0];
-            if (command.equals("add")){
-                if (!offlineModeSupport && getPlayerUUID(shareName) != null){
+            if (command.equals("add")) {
+                if (!offlineModeSupport && getPlayerUUID(shareName) != null) {
                     Player sharePlayer = new Player(getPlayerUUID(shareName), shareName);
                     Player owner = new Player(getPlayerUUID(sender.getName()), sender.getName());
-                    OwnerShareHandler.getInstance().addSharePlayer(owner, sharePlayer);
+                    OwnerShareHandler.getInstance().addSharePlayer(owner, sharePlayer, sender);
                 }
-            }
-            if (command.equals("add")){
-                if (!offlineModeSupport && getPlayerUUID(shareName) != null){
+            } else if (command.equals("add")) {
+                if (!offlineModeSupport && getPlayerUUID(shareName) != null) {
                     Player sharePlayer = new Player(getPlayerUUID(shareName), shareName);
                     Player owner = new Player(getPlayerUUID(sender.getName()), sender.getName());
-                    OwnerShareHandler.getInstance().removeSharePlayer(owner, sharePlayer);
+                    OwnerShareHandler.getInstance().removeSharePlayer(owner, sharePlayer, sender);
                 }
+            } else if (command.equals("list")){
+                Player owner = new Player(getPlayerUUID(sender.getName()), sender.getName());
+                OwnerShareHandler.getInstance().printSharePlayers(owner, sender);
             }
-
         } catch (NumberFormatException e) {
-            addChatMessage((EntityPlayer) sender, new TextComponentString("Please supply a valid name"));
+            addChatMessage((EntityPlayer) sender, new TextComponentString("Please supply a valid name and command"));
         }
+    }
+
+    @Override
+    public int getRequiredPermissionLevel() {
+        return 0;
     }
 }
 
