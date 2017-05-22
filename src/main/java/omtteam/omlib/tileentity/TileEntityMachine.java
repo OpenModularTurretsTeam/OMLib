@@ -1,6 +1,7 @@
 package omtteam.omlib.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.common.UsernameCache;
 import net.minecraftforge.fml.common.Optional;
 import omtteam.omlib.handler.ConfigHandler;
@@ -16,9 +17,6 @@ import java.util.UUID;
 import static omtteam.omlib.util.PlayerUtil.getPlayerUUID;
 
 @SuppressWarnings({"WeakerAccess", "CanBeFinal", "unused"})
-@Optional.InterfaceList({
-        @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySink", modid = "IC2")})
-
 public abstract class TileEntityMachine extends TileEntityContainerElectric implements ITrustedPlayersManager {
     private boolean active;
     protected boolean inverted;
