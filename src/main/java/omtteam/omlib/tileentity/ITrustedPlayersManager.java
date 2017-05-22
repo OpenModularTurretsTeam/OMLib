@@ -40,37 +40,38 @@ public interface ITrustedPlayersManager {
                 }
             }
 
-            if (!foundPlayer) {
-                return false;
-            }
-        }
-
-        if (ConfigHandler.offlineModeSupport) {
-            if (trustedPlayer.getName().equals(getOwner())) {
+            if (!foundPlayer && !ConfigHandler.offlineModeSupport) {
                 return false;
             }
 
-        } else {
-            if (trustedPlayer.uuid == null || trustedPlayer.uuid.toString().equals(getOwner())) {
-                return false;
-            }
-        }
 
-        if (trustedPlayer.uuid != null || ConfigHandler.offlineModeSupport) {
-            for (TrustedPlayer player : getTrustedPlayers()) {
-                if (ConfigHandler.offlineModeSupport) {
-                    if (player.getName().toLowerCase().equals(name.toLowerCase()) || player.getName().equals(getOwner())) {
-                        return false;
-                    }
-                } else {
-                    if (player.getName().toLowerCase().equals(name.toLowerCase()) || trustedPlayer.uuid.toString().equals(
-                            getOwner())) {
-                        return false;
-                    }
+            if (ConfigHandler.offlineModeSupport) {
+                if (trustedPlayer.getName().equals(getOwner())) {
+                    return false;
+                }
+
+            } else {
+                if (trustedPlayer.uuid == null || trustedPlayer.uuid.toString().equals(getOwner())) {
+                    return false;
                 }
             }
-            getTrustedPlayers().add(trustedPlayer);
-            return true;
+
+            if (trustedPlayer.uuid != null || ConfigHandler.offlineModeSupport) {
+                for (TrustedPlayer player : getTrustedPlayers()) {
+                    if (ConfigHandler.offlineModeSupport) {
+                        if (player.getName().toLowerCase().equals(name.toLowerCase()) || player.getName().equals(getOwner())) {
+                            return false;
+                        }
+                    } else {
+                        if (player.getName().toLowerCase().equals(name.toLowerCase()) || trustedPlayer.uuid.toString().equals(
+                                getOwner())) {
+                            return false;
+                        }
+                    }
+                }
+                getTrustedPlayers().add(trustedPlayer);
+                return true;
+            }
         }
         return false;
     }
