@@ -2,7 +2,6 @@ package omtteam.omlib.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.world.World;
 import net.minecraftforge.common.UsernameCache;
 import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.util.TrustedPlayer;
@@ -21,17 +20,12 @@ import static omtteam.omlib.util.PlayerUtil.getPlayerUUID;
  * This Class
  */
 public interface ITrustedPlayersManager {
-
-    String getOwner();
-
-    World getWorld();
-
     @ParametersAreNonnullByDefault
     default boolean addTrustedPlayer(String name) {
         TrustedPlayer trustedPlayer = new TrustedPlayer(name);
         trustedPlayer.uuid = getPlayerUUID(name);
 
-        if (!this.getWorld().isRemote) {
+        if (!((TileEntityOwnedBlock) this).getWorld().isRemote) {
             boolean foundPlayer = false;
             for (Map.Entry<UUID, String> serverName : UsernameCache.getMap().entrySet()) {
                 if (name.equals(serverName.getValue())) {
@@ -46,12 +40,12 @@ public interface ITrustedPlayersManager {
 
 
             if (ConfigHandler.offlineModeSupport) {
-                if (trustedPlayer.getName().equals(getOwner())) {
+                if (trustedPlayer.getName().equals(((TileEntityOwnedBlock) this).getOwner())) {
                     return false;
                 }
 
             } else {
-                if (trustedPlayer.uuid == null || trustedPlayer.uuid.toString().equals(getOwner())) {
+                if (trustedPlayer.uuid == null || trustedPlayer.uuid.toString().equals(((TileEntityOwnedBlock) this).getOwner())) {
                     return false;
                 }
             }
@@ -59,12 +53,12 @@ public interface ITrustedPlayersManager {
             if (trustedPlayer.uuid != null || ConfigHandler.offlineModeSupport) {
                 for (TrustedPlayer player : getTrustedPlayers()) {
                     if (ConfigHandler.offlineModeSupport) {
-                        if (player.getName().toLowerCase().equals(name.toLowerCase()) || player.getName().equals(getOwner())) {
+                        if (player.getName().toLowerCase().equals(name.toLowerCase()) || player.getName().equals(((TileEntityOwnedBlock) this).getOwner())) {
                             return false;
                         }
                     } else {
                         if (player.getName().toLowerCase().equals(name.toLowerCase()) || trustedPlayer.uuid.toString().equals(
-                                getOwner())) {
+                                ((TileEntityOwnedBlock) this).getOwner())) {
                             return false;
                         }
                     }
