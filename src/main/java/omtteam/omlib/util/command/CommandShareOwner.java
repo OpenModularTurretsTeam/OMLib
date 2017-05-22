@@ -1,4 +1,4 @@
-package omtteam.omlib.util;
+package omtteam.omlib.util.command;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -6,6 +6,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
 import omtteam.omlib.compatability.minecraft.CompatCommandBase;
 import omtteam.omlib.handler.OwnerShareHandler;
+import omtteam.omlib.util.Player;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -23,7 +24,7 @@ public class CommandShareOwner extends CompatCommandBase {
     @Override
     @Nonnull
     public String getName() {
-        return "omtshareowner";
+        return "omshareowner";
     }
 
 
@@ -56,7 +57,7 @@ public class CommandShareOwner extends CompatCommandBase {
                     Player owner = new Player(getPlayerUUID(sender.getName()), sender.getName());
                     OwnerShareHandler.getInstance().removeSharePlayer(owner, sharePlayer, sender);
                 }
-            } else if (command.equals("list")){
+            } else if (command.equals("list")) {
                 Player owner = new Player(getPlayerUUID(sender.getName()), sender.getName());
                 OwnerShareHandler.getInstance().printSharePlayers(owner, sender);
             }
