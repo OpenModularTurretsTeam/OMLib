@@ -73,7 +73,7 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
             addToIc2EnergyNetwork();
             wasAddedToEnergyNet = true;
         }
-        if (!this.getWorld().isRemote && IC2Loaded && this.getWorld().getWorldTime() % 20 == 1) {
+        if (!this.getWorld().isRemote && IC2Loaded && this.getWorld().getTotalWorldTime() % 5 == 1) {
             moveEnergyFromIC2ToStorage();
         }
     }
