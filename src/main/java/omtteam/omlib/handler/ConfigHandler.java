@@ -10,6 +10,7 @@ public class ConfigHandler {
     public static boolean EUSupport;
     public static double EUtoRFRatio;
     public static boolean canOPAccessOwnedBlocks;
+    public static boolean doDebugChat;
     @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private static int potentiaToRFRatio;
 
@@ -22,6 +23,7 @@ public class ConfigHandler {
         offlineModeSupport = config.get("General", "Enable offline mode support?(warning, makes turrets fairly unsafe)", false).getBoolean();
         canOPAccessOwnedBlocks = config.get("General", "Enable OPs to access all owned blocks.", false).getBoolean();
         EUtoRFRatio = config.get("ModCompatibility", "EU to RF Ratio", 4.0D).getDouble();
+        doDebugChat = config.get("General", "Do debug Chat?", false).getBoolean();
 
         if (config.hasChanged()) {
             config.save();
