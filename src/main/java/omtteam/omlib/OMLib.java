@@ -10,9 +10,10 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.proxy.CommonProxy;
 import omtteam.omlib.reference.Reference;
-import omtteam.omlib.util.CommandChangeOwner;
-import omtteam.omlib.util.CommandShareOwner;
+import omtteam.omlib.util.command.CommandChangeOwner;
+import omtteam.omlib.util.command.CommandShareOwner;
 import omtteam.omlib.util.RandomUtil;
+import omtteam.omlib.util.command.CommandToggleDebug;
 
 import java.util.logging.Logger;
 
@@ -58,5 +59,6 @@ public class OMLib {
     public void serverStarting(FMLServerStartingEvent event) {
         event.registerServerCommand(new CommandChangeOwner());
         event.registerServerCommand(new CommandShareOwner());
+        event.registerServerCommand(new CommandToggleDebug());
     }
 }
