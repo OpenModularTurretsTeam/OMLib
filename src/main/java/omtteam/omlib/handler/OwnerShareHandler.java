@@ -1,7 +1,7 @@
 package omtteam.omlib.handler;
 
 import net.minecraft.command.ICommandSender;
-import omtteam.omlib.util.CommandTextComponent;
+import net.minecraft.util.text.TextComponentString;
 import omtteam.omlib.util.Player;
 
 import javax.annotation.Nullable;
@@ -73,14 +73,14 @@ public class OwnerShareHandler implements Serializable {
             ArrayList<Player> list = new ArrayList<>();
             list.add(sharePlayer);
             if (sender != null) {
-                sender.addChatMessage(new CommandTextComponent("Added player " + sharePlayer.getName() + " to your Share List!"));
+                sender.addChatMessage(new TextComponentString("Added player " + sharePlayer.getName() + " to your Share List!"));
             }
             ownerShareMap.put(owner, list);
         } else {
             if (!entryFound.getValue().contains(sharePlayer)) {
                 entryFound.getValue().add(sharePlayer);
                 if (sender != null) {
-                    sender.addChatMessage(new CommandTextComponent("Added player " + sharePlayer.getName() + " to your Share List!"));
+                    sender.addChatMessage(new TextComponentString("Added player " + sharePlayer.getName() + " to your Share List!"));
                 }
             }
         }
@@ -90,7 +90,7 @@ public class OwnerShareHandler implements Serializable {
         Map.Entry<Player, ArrayList<Player>> entryFound = null;
         if (owner.equals(sharePlayer)) {
             if (sender != null) {
-                sender.addChatMessage(new CommandTextComponent("You cannot add/remove yourself to/from your Share List!"));
+                sender.addChatMessage(new TextComponentString("You cannot add/remove yourself to/from your Share List!"));
             }
             return;
         }
@@ -103,12 +103,12 @@ public class OwnerShareHandler implements Serializable {
             if (entryFound.getValue().contains(sharePlayer)) {
                 entryFound.getValue().remove(sharePlayer);
                 if (sender != null) {
-                    sender.addChatMessage(new CommandTextComponent("Removed player " + sharePlayer.getName() + " from your Share List!"));
+                    sender.addChatMessage(new TextComponentString("Removed player " + sharePlayer.getName() + " from your Share List!"));
                 }
             }
         } else {
             if (sender != null) {
-                sender.addChatMessage(new CommandTextComponent("Could not remove player " + sharePlayer.getName() + " from your Share List!"));
+                sender.addChatMessage(new TextComponentString("Could not remove player " + sharePlayer.getName() + " from your Share List!"));
             }
         }
     }
@@ -133,7 +133,7 @@ public class OwnerShareHandler implements Serializable {
                 }
             }
         }
-        sender.addChatMessage(new CommandTextComponent("Players on your share list: " + playerList.toString()));
+        sender.addChatMessage(new TextComponentString("Players on your share list: " + playerList.toString()));
     }
 
     public boolean isPlayerSharedOwner(Player owner, Player shareCheck) {
