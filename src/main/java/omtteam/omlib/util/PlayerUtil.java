@@ -1,9 +1,9 @@
 package omtteam.omlib.util;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.UsernameCache;
 import omtteam.omlib.handler.ConfigHandler;
+import omtteam.omlib.handler.OwnerShareHandler;
 import omtteam.omlib.tileentity.TileEntityMachine;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 
@@ -23,8 +23,10 @@ import static omtteam.omlib.handler.ConfigHandler.offlineModeSupport;
 @SuppressWarnings("unused")
 public class PlayerUtil {
 
-    public static boolean isPlayerOP(EntityPlayerMP player){
-           return player.getServer().getPlayerList().getOppedPlayers().getEntry(player.getGameProfile()) != null;
+    public static boolean isPlayerOP(EntityPlayer player) {
+        return player.getServer() != null &&
+                player.getServer().getPlayerList().getOppedPlayers().getEntry(player.getGameProfile()) != null &&
+                player.getServer().getPlayerList().getOppedPlayers().getEntry(player.getGameProfile()).getPermissionLevel() == 4;
     }
 
     @Nullable
@@ -72,9 +74,17 @@ public class PlayerUtil {
     }
 
     @ParametersAreNonnullByDefault
-    public static boolean isPlayerOwner(EntityPlayer player, TileEntityOwnedBlock ownedBlock) {
-        return (ownedBlock.getOwner().equals(player.getUniqueID().toString()) ||
-                (offlineModeSupport && ownedBlock.getOwnerName().equals(player.getName())) ||
-                (ConfigHandler.canOPAccessOwnedBlocks && (player.getServer().getPlayerList().getOppedPlayers().getEntry(player.getGameProfile()) != null)));
+    public static boolean isPlayerOwner(EntityPlayer checkPlayer, TileEntityOwnedBlock ownedBlock) {
+        Player owner = new Player(getPlayerUIDUnstable(ownedBlock.getOwner()), ownedBlock.getOwnerName());
+        Player player = new Player(checkPlayer.getGameProfile().getId(), checkPlayer.getName());
+        boolean allowed;
+        allowed = (player.equals(owner));
+        if (!allowed && (ConfigHandler.canOPAccessOwnedBlocks && isPlayerOP(checkPlayer))) {
+            allowed = true;
+        } else if (!allowed && OwnerShareHandler.getInstance().isPlayerSharedOwner(owner, player)) {
+            allowed = true;
+        }
+
+        return allowed;
     }
 }
