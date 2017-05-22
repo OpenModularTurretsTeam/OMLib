@@ -1,8 +1,6 @@
 package omtteam.omlib.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.Optional;
 import omtteam.omlib.power.OMEnergyStorage;
 import omtteam.omlib.util.TrustedPlayer;
 
@@ -10,9 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({"WeakerAccess", "CanBeFinal", "unused"})
-@Optional.InterfaceList({
-        @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySink", modid = "IC2")})
-
 public abstract class TileEntityMachine extends TileEntityContainerElectric implements ITrustedPlayersManager {
     private boolean active;
     protected boolean inverted;
@@ -35,17 +30,6 @@ public abstract class TileEntityMachine extends TileEntityContainerElectric impl
     public void setTrustedPlayers(List<TrustedPlayer> list) {
         this.trustedPlayers = list;
     }
-
-    @Override
-    public World getWorld() {
-        return super.getWorld();
-    }
-
-    @Override
-    public String getOwner() {
-        return super.getOwner();
-    }
-
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {

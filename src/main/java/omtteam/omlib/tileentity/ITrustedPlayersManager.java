@@ -4,6 +4,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.UsernameCache;
 import omtteam.omlib.handler.ConfigHandler;
+import omtteam.omlib.util.DebugHandler;
 import omtteam.omlib.util.TrustedPlayer;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -20,6 +21,8 @@ import static omtteam.omlib.util.PlayerUtil.getPlayerUUID;
  * This Class
  */
 public interface ITrustedPlayersManager {
+
+
     @ParametersAreNonnullByDefault
     default boolean addTrustedPlayer(String name) {
         TrustedPlayer trustedPlayer = new TrustedPlayer(name);
@@ -35,17 +38,20 @@ public interface ITrustedPlayersManager {
             }
 
             if (!foundPlayer && !ConfigHandler.offlineModeSupport) {
+                DebugHandler.getInstance().sendMessageToDebugChat("Did not find player named " + name + "in the username cache.");
                 return false;
             }
 
 
             if (ConfigHandler.offlineModeSupport) {
                 if (trustedPlayer.getName().equals(((TileEntityOwnedBlock) this).getOwner())) {
+                    DebugHandler.getInstance().sendMessageToDebugChat("You cannot add yourself!");
                     return false;
                 }
 
             } else {
                 if (trustedPlayer.uuid == null || trustedPlayer.uuid.toString().equals(((TileEntityOwnedBlock) this).getOwner())) {
+                    DebugHandler.getInstance().sendMessageToDebugChat("You cannot add yourself!");
                     return false;
                 }
             }
@@ -54,6 +60,7 @@ public interface ITrustedPlayersManager {
                 for (TrustedPlayer player : getTrustedPlayers()) {
                     if (ConfigHandler.offlineModeSupport) {
                         if (player.getName().toLowerCase().equals(name.toLowerCase()) || player.getName().equals(((TileEntityOwnedBlock) this).getOwner())) {
+                            DebugHandler.getInstance().sendMessageToDebugChat("Already on trust list!");
                             return false;
                         }
                     } else {
@@ -63,6 +70,7 @@ public interface ITrustedPlayersManager {
                         }
                     }
                 }
+                DebugHandler.getInstance().sendMessageToDebugChat("Sucessfully added " + name + ".");
                 getTrustedPlayers().add(trustedPlayer);
                 return true;
             }
@@ -75,9 +83,11 @@ public interface ITrustedPlayersManager {
         for (TrustedPlayer player : getTrustedPlayers()) {
             if (player.getName().equals(name)) {
                 getTrustedPlayers().remove(player);
+                DebugHandler.getInstance().sendMessageToDebugChat("Sucessfully removed " + name + ".");
                 return true;
             }
         }
+        DebugHandler.getInstance().sendMessageToDebugChat("Could not remove " + name + ".");
         return false;
     }
 

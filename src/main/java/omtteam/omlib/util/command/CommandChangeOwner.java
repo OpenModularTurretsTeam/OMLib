@@ -1,7 +1,6 @@
-package omtteam.omlib.util;
+package omtteam.omlib.util.command;
 
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -25,7 +24,7 @@ public class CommandChangeOwner extends CompatCommandBase {
     @Override
     @Nonnull
     public String getName() {
-        return "omtchangeowner";
+        return "omchangeowner";
     }
 
 
@@ -40,7 +39,7 @@ public class CommandChangeOwner extends CompatCommandBase {
     @ParametersAreNonnullByDefault
     public void execute(MinecraftServer server, ICommandSender sender, String[] params) {
         if (params.length != 5) {
-            addChatMessage((EntityPlayer) sender, new TextComponentString(getUsage(sender)));
+            addChatMessage(sender, new TextComponentString(getUsage(sender)));
             return;
         }
         try {
@@ -50,7 +49,7 @@ public class CommandChangeOwner extends CompatCommandBase {
             int z = Integer.parseInt(params[3]);
             String ownerName = params[4];
             if (DimensionManager.getWorld(dimension) == null) {
-                addChatMessage((EntityPlayer) sender, new TextComponentString("Invalid dimension"));
+                addChatMessage(sender, new TextComponentString("Invalid dimension"));
                 return;
             }
             WorldServer worldserver = server.worldServerForDimension(dimension);
@@ -59,12 +58,12 @@ public class CommandChangeOwner extends CompatCommandBase {
             if (tileEntity instanceof TileEntityOwnedBlock) {
                 TileEntityOwnedBlock turret = (TileEntityOwnedBlock) tileEntity;
                 turret.setOwner(ownerName);
-                addChatMessage((EntityPlayer) sender, new TextComponentString("Block ownership has been updated"));
+                addChatMessage(sender, new TextComponentString("Block ownership has been updated"));
             } else {
-                addChatMessage((EntityPlayer) sender, new TextComponentString("No ownable block was found at that location"));
+                addChatMessage(sender, new TextComponentString("No ownable block was found at that location"));
             }
         } catch (NumberFormatException e) {
-            addChatMessage((EntityPlayer) sender, new TextComponentString("Dimension and coordinates must be numbers"));
+            addChatMessage(sender, new TextComponentString("Dimension and coordinates must be numbers"));
         }
     }
 }
