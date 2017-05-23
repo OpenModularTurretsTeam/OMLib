@@ -1,7 +1,6 @@
 package omtteam.omlib.util.command;
 
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
 import omtteam.omlib.compatability.minecraft.CompatCommandBase;
@@ -39,7 +38,7 @@ public class CommandShareOwner extends CompatCommandBase {
     @ParametersAreNonnullByDefault
     public void execute(MinecraftServer server, ICommandSender sender, String[] params) {
         if (params.length != 2) {
-            addChatMessage((EntityPlayer) sender, new TextComponentString(getUsage(sender)));
+            addChatMessage(sender, new TextComponentString(getUsage(sender)));
             return;
         }
         try {
@@ -51,7 +50,7 @@ public class CommandShareOwner extends CompatCommandBase {
                     Player owner = new Player(getPlayerUUID(sender.getName()), sender.getName());
                     OwnerShareHandler.getInstance().addSharePlayer(owner, sharePlayer, sender);
                 }
-            } else if (command.equals("add")) {
+            } else if (command.equals("del")) {
                 if (!offlineModeSupport && getPlayerUUID(shareName) != null) {
                     Player sharePlayer = new Player(getPlayerUUID(shareName), shareName);
                     Player owner = new Player(getPlayerUUID(sender.getName()), sender.getName());
@@ -62,7 +61,7 @@ public class CommandShareOwner extends CompatCommandBase {
                 OwnerShareHandler.getInstance().printSharePlayers(owner, sender);
             }
         } catch (NumberFormatException e) {
-            addChatMessage((EntityPlayer) sender, new TextComponentString("Please supply a valid name and command"));
+            addChatMessage(sender, new TextComponentString("Please supply a valid name and command"));
         }
     }
 

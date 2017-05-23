@@ -87,4 +87,16 @@ public class PlayerUtil {
 
         return allowed;
     }
+
+    @ParametersAreNonnullByDefault
+    public static boolean isPlayerOwner(Player player, TileEntityOwnedBlock ownedBlock) {
+        Player owner = new Player(getPlayerUIDUnstable(ownedBlock.getOwner()), ownedBlock.getOwnerName());
+        boolean allowed;
+        allowed = (player.equals(owner));
+        if (!allowed && OwnerShareHandler.getInstance().isPlayerSharedOwner(owner, player)) {
+            allowed = true;
+        }
+
+        return allowed;
+    }
 }
