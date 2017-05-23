@@ -2,13 +2,17 @@ package omtteam.omlib.handler;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.common.DimensionManager;
+import omtteam.omlib.network.messages.MessageSetSharePlayerList;
 import omtteam.omlib.util.Player;
 
 import javax.annotation.Nullable;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * Created by Keridos on 17/05/17.
@@ -33,7 +37,7 @@ public class OwnerShareHandler implements Serializable {
         return ownerShareMap;
     }
 
-    void setOwnerShareMap(@Nullable HashMap<Player, ArrayList<Player>> ownerShareMap) {
+    public void setOwnerShareMap(@Nullable HashMap<Player, ArrayList<Player>> ownerShareMap) {
         if (ownerShareMap != null) {
             this.ownerShareMap = ownerShareMap;
         }
@@ -84,6 +88,7 @@ public class OwnerShareHandler implements Serializable {
                 }
             }
         }
+        OMLibNetworkingHandler.sendMessgeToAllPlayers(new MessageSetSharePlayerList(this));
     }
 
     public void removeSharePlayer(Player owner, Player sharePlayer, @Nullable ICommandSender sender) {
@@ -100,17 +105,20 @@ public class OwnerShareHandler implements Serializable {
             }
         }
         if (entryFound != null) {
-            if (entryFound.getValue().contains(sharePlayer)) {
-                entryFound.getValue().remove(sharePlayer);
-                if (sender != null) {
+            int sizeBefore = entryFound.getValue().size();
+            Predicate<Player> predicate = p -> p.equals(sharePlayer);
+            entryFound.getValue().removeIf(predicate);
+            if (sender != null) {
+                if (entryFound.getValue().size() < sizeBefore) {
                     sender.addChatMessage(new TextComponentString("Removed player " + sharePlayer.getName() + " from your Share List!"));
+                } else {
+                    sender.addChatMessage(new TextComponentString("Could not remove player " + sharePlayer.getName() + " from your Share List!"));
                 }
             }
-        } else {
-            if (sender != null) {
-                sender.addChatMessage(new TextComponentString("Could not remove player " + sharePlayer.getName() + " from your Share List!"));
-            }
+        } else if (sender != null) {
+            sender.addChatMessage(new TextComponentString("Could not remove player " + sharePlayer.getName() + " from your Share List!"));
         }
+        OMLibNetworkingHandler.sendMessgeToAllPlayers(new MessageSetSharePlayerList(this));
     }
 
     public void printSharePlayers(Player owner, ICommandSender sender) {
@@ -146,5 +154,47 @@ public class OwnerShareHandler implements Serializable {
             }
         }
         return false;
+    }
+
+    static void saveToDisk() {
+        Path path = Paths.get(DimensionManager.getCurrentSaveRootDirectory().toString() + "/omlib/");
+        Path fullpath = Paths.get(DimensionManager.getCurrentSaveRootDirectory().toString() + "/omlib/OwnerShare.sav");
+        try {
+            if (Files.notExists(path)) {
+                if (path.toFile().mkdir()) {
+                    throw new Exception("Failed to create dir");
+                }
+            }
+            FileOutputStream saveFile = new FileOutputStream(fullpath.toFile());
+            ObjectOutputStream save = new ObjectOutputStream(saveFile);
+            save.writeObject(getInstance().getOwnerShareMap());
+            save.close();
+            saveFile.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                Files.deleteIfExists(fullpath);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        }
+    }
+
+    static void loadFromDisk() {
+        HashMap<Player, ArrayList<Player>> input = new HashMap<>();
+        try {
+            Path fullpath = Paths.get(DimensionManager.getCurrentSaveRootDirectory().toString() + "/omlib/OwnerShare.sav");
+            FileInputStream saveFile = new FileInputStream(fullpath.toFile());
+            ObjectInputStream save = new ObjectInputStream(saveFile);
+            Object object = save.readObject();
+            if (object instanceof HashMap) {
+                input = (HashMap<Player, ArrayList<Player>>) object;
+            }
+            getInstance().setOwnerShareMap(input);
+            save.close();
+            saveFile.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

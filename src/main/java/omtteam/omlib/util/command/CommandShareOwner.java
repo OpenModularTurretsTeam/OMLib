@@ -38,12 +38,16 @@ public class CommandShareOwner extends CompatCommandBase {
     @Override
     @ParametersAreNonnullByDefault
     public void execute(MinecraftServer server, ICommandSender sender, String[] params) {
-        if (params.length != 2) {
-            addChatMessage((EntityPlayer) sender, new TextComponentString(getUsage(sender)));
+        if ((params.length == 1 && params[0].equals("list")) == (params.length == 2)) {
+            addChatMessage(sender, new TextComponentString(getUsage(sender)));
             return;
         }
         try {
-            String shareName = params[1];
+
+            String shareName = "";
+            if (params.length > 1) {
+                shareName = params[1];
+            }
             String command = params[0];
             if (command.equals("add")) {
                 if (!offlineModeSupport && getPlayerUUID(shareName) != null) {
@@ -51,7 +55,7 @@ public class CommandShareOwner extends CompatCommandBase {
                     Player owner = new Player(getPlayerUUID(sender.getName()), sender.getName());
                     OwnerShareHandler.getInstance().addSharePlayer(owner, sharePlayer, sender);
                 }
-            } else if (command.equals("add")) {
+            } else if (command.equals("del")) {
                 if (!offlineModeSupport && getPlayerUUID(shareName) != null) {
                     Player sharePlayer = new Player(getPlayerUUID(shareName), shareName);
                     Player owner = new Player(getPlayerUUID(sender.getName()), sender.getName());
@@ -62,7 +66,7 @@ public class CommandShareOwner extends CompatCommandBase {
                 OwnerShareHandler.getInstance().printSharePlayers(owner, sender);
             }
         } catch (NumberFormatException e) {
-            addChatMessage((EntityPlayer) sender, new TextComponentString("Please supply a valid name and command"));
+            addChatMessage(sender, new TextComponentString("Please supply a valid name and command"));
         }
     }
 
