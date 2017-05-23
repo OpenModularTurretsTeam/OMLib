@@ -1,4 +1,4 @@
-package omtteam.omlib.util;
+package omtteam.omlib.api;
 
 /**
  * Created by Keridos on 17/05/17.

@@ -11,3 +11,6 @@ gui.omtteam.omlib:attack_mobs=Attack Mobs
 gui.omtteam.omlib:attack_neutrals=Attack Neutrals
 gui.omtteam.omlib:attack_players=Attack Players
 gui.omtteam.omlib:multi_targeting=Multi Targeting
+gui.omtteam.omlib:facing=Facing
+
+item.debug_tool.name=Debug Tool

@@ -14,8 +14,7 @@ import omtteam.omlib.util.RandomUtil;
 import omtteam.omlib.util.command.CommandChangeOwner;
 import omtteam.omlib.util.command.CommandShareOwner;
 import omtteam.omlib.util.command.CommandToggleDebug;
-
-import java.util.logging.Logger;
+import org.apache.logging.log4j.Logger;
 
 import static omtteam.omlib.compatability.ModCompatibility.checkForMods;
 import static omtteam.omlib.compatability.ModCompatibility.performModCompat;
@@ -42,16 +41,18 @@ public class OMLib {
     @SuppressWarnings("unused")
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        logger = Logger.getLogger("OMLib");
+        logger = event.getModLog();
         ConfigHandler.init(event.getSuggestedConfigurationFile());
         checkForMods();
         RandomUtil.init();
+        proxy.preInit();
     }
 
     @SuppressWarnings("unused")
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         performModCompat();
+        proxy.init();
     }
 
     @SuppressWarnings("unused")

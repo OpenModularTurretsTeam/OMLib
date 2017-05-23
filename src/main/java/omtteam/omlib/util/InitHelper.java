@@ -5,6 +5,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import omtteam.omlib.api.IHasItemBlock;
 
 /**
  * Created by Keridos on 07/12/16.
