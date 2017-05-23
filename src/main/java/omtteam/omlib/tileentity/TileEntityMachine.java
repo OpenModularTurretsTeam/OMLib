@@ -1,26 +1,17 @@
 package omtteam.omlib.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraftforge.common.UsernameCache;
-import net.minecraftforge.fml.common.Optional;
-import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.power.OMEnergyStorage;
 import omtteam.omlib.util.TrustedPlayer;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import static omtteam.omlib.util.PlayerUtil.getPlayerUUID;
 
 @SuppressWarnings({"WeakerAccess", "CanBeFinal", "unused"})
 public abstract class TileEntityMachine extends TileEntityContainerElectric implements ITrustedPlayersManager {
-    private boolean active;
-    protected boolean inverted;
-    private boolean redstone;
+    private boolean active = false;
+    protected boolean inverted = false;
+    private boolean redstone = false;
     protected List<TrustedPlayer> trustedPlayers;
 
     public TileEntityMachine() {
@@ -63,7 +54,7 @@ public abstract class TileEntityMachine extends TileEntityContainerElectric impl
         return active;
     }
 
-    protected boolean getInverted() {
+    public boolean getInverted() {
         return this.inverted;
     }
 
@@ -73,7 +64,7 @@ public abstract class TileEntityMachine extends TileEntityContainerElectric impl
         this.markDirty();
     }
 
-    protected boolean getRedstone() {
+    public boolean getRedstone() {
         return this.redstone;
     }
 
