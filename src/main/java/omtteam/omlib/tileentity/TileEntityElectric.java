@@ -160,6 +160,10 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
         this.markDirty();
     }
 
+    public double getStorageEU() {
+        return storageEU;
+    }
+
     public void moveEnergyFromIC2ToStorage() {
         double requiredEnergy = (storage.getMaxEnergyStored() - storage.getEnergyStored()) / ConfigHandler.EUtoRFRatio;
         if (storageEU >= requiredEnergy) {
@@ -228,7 +232,6 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
             wasAddedToEnergyNet = false;
         }
     }
-
 
     @Optional.Method(modid = TeslaModId)
     private BaseOMTeslaContainerWrapper getTeslaContainer() {

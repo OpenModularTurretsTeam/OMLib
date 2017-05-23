@@ -54,7 +54,7 @@ public abstract class TileEntityMachine extends TileEntityContainerElectric impl
         return active;
     }
 
-    protected boolean getInverted() {
+    public boolean getInverted() {
         return this.inverted;
     }
 
@@ -64,7 +64,7 @@ public abstract class TileEntityMachine extends TileEntityContainerElectric impl
         this.markDirty();
     }
 
-    protected boolean getRedstone() {
+    public boolean getRedstone() {
         return this.redstone;
     }
 
