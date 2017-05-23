@@ -5,6 +5,10 @@ package omtteam.omlib.reference;
  * This Class
  */
 public class OMLibNames {
+    public static class Items {
+        public static final String debugTool = "debug_tool";
+
+    }
     public static class Localizations {
         public static final String TRUE = "gui.omtteam.omlib:true";
         public static final String FALSE = "gui.omtteam.omlib:false";
