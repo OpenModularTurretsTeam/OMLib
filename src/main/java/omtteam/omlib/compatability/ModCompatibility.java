@@ -1,7 +1,6 @@
 package omtteam.omlib.compatability;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import omtteam.omlib.OMLib;
