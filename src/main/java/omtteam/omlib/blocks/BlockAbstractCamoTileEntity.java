@@ -19,7 +19,7 @@ public abstract class BlockAbstractCamoTileEntity extends BlockAbstractTileEntit
     public static final IUnlistedProperty<RenderBlockStateContainer> RENDERBLOCKSTATE = new IUnlistedProperty<RenderBlockStateContainer>() {
 
         public String getName() {
-            return "openmodularturrets:camo_property";
+            return "omlib:camo_property";
         }
 
         @Override
