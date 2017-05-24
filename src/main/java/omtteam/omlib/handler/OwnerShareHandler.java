@@ -159,27 +159,30 @@ public class OwnerShareHandler implements Serializable {
     }
 
     static void saveToDisk() {
-        Path path = Paths.get(DimensionManager.getCurrentSaveRootDirectory().toString() + "/omlib/");
-        Path fullpath = Paths.get(DimensionManager.getCurrentSaveRootDirectory().toString() + "/omlib/OwnerShare.sav");
-        try {
-            if (Files.notExists(path)) {
-                if (path.toFile().mkdir()) {
-                    throw new Exception("Failed to create dir");
-                }
-            }
-            if (getInstance() != null && getInstance().getOwnerShareMap() != null) {
-                FileOutputStream saveFile = new FileOutputStream(fullpath.toFile());
-                ObjectOutputStream save = new ObjectOutputStream(saveFile);
-                save.writeObject(getInstance().getOwnerShareMap());
-                save.close();
-                saveFile.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        File saveRoot = DimensionManager.getCurrentSaveRootDirectory();
+        if (saveRoot != null) {
+            Path path = Paths.get(saveRoot.toString() + "/omlib/");
+            Path fullpath = Paths.get(saveRoot.toString() + "/omlib/OwnerShare.sav");
             try {
-                Files.deleteIfExists(fullpath);
-            } catch (Exception exception) {
-                exception.printStackTrace();
+                if (Files.notExists(path)) {
+                    if (path.toFile().mkdir()) {
+                        throw new Exception("Failed to create dir");
+                    }
+                }
+                if (getInstance() != null && getInstance().getOwnerShareMap() != null) {
+                    FileOutputStream saveFile = new FileOutputStream(fullpath.toFile());
+                    ObjectOutputStream save = new ObjectOutputStream(saveFile);
+                    save.writeObject(getInstance().getOwnerShareMap());
+                    save.close();
+                    saveFile.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                try {
+                    Files.deleteIfExists(fullpath);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
             }
         }
     }
