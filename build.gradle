@@ -26,6 +26,7 @@ configFile.withReader {
     prop.load(it)
     project.ext.config = new ConfigSlurper().parse prop
 }
+config = project.ext.config
 
 version = "${config.minecraft_version}-${config.mod_version}"
 if (hasProperty('appendBuildNumber')) {
