@@ -167,11 +167,13 @@ public class OwnerShareHandler implements Serializable {
                     throw new Exception("Failed to create dir");
                 }
             }
-            FileOutputStream saveFile = new FileOutputStream(fullpath.toFile());
-            ObjectOutputStream save = new ObjectOutputStream(saveFile);
-            save.writeObject(getInstance().getOwnerShareMap());
-            save.close();
-            saveFile.close();
+            if (getInstance() != null && getInstance().getOwnerShareMap() != null) {
+                FileOutputStream saveFile = new FileOutputStream(fullpath.toFile());
+                ObjectOutputStream save = new ObjectOutputStream(saveFile);
+                save.writeObject(getInstance().getOwnerShareMap());
+                save.close();
+                saveFile.close();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             try {
