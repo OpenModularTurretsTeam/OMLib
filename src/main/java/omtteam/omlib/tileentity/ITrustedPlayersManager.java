@@ -68,7 +68,7 @@ public interface ITrustedPlayersManager {
                             return false;
                         }
                     } else {
-                        if (existPlayer.getName().toLowerCase().equals(name.toLowerCase()) || trustedPlayer.uuid.equals(player.getUuid())) {
+                        if (existPlayer.getName().toLowerCase().equals(name.toLowerCase()) || trustedPlayer.uuid.equals(existPlayer.uuid)) {
                             return false;
                         }
                     }
