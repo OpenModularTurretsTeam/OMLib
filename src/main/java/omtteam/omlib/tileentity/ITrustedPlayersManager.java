@@ -14,9 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-import static omtteam.omlib.util.PlayerUtil.getPlayerUIDUnstable;
-import static omtteam.omlib.util.PlayerUtil.getPlayerUUID;
-import static omtteam.omlib.util.PlayerUtil.isPlayerOwner;
+import static omtteam.omlib.util.PlayerUtil.*;
 
 /**
  * Created by Keridos on 09/02/17.
@@ -54,10 +52,13 @@ public interface ITrustedPlayersManager {
                     DebugHandler.getInstance().sendMessageToDebugChat("You cannot add an owner!");
                     return false;
                 }
-
             } else {
                 if (trustedPlayer.uuid == null || isPlayerOwner(player, (TileEntityOwnedBlock) this)) {
-                    DebugHandler.getInstance().sendMessageToDebugChat("You cannot add an owner!");
+                    if (trustedPlayer.uuid != null) {
+                        DebugHandler.getInstance().sendMessageToDebugChat("You cannot add an owner!");
+                    } else {
+                        DebugHandler.getInstance().sendMessageToDebugChat("Did not find player named " + name + "in the username cache.");
+                    }
                     return false;
                 }
             }
@@ -70,7 +71,7 @@ public interface ITrustedPlayersManager {
                             return false;
                         }
                     } else {
-                        if (existPlayer.getName().toLowerCase().equals(name.toLowerCase()) || trustedPlayer.uuid.equals(player.getUuid())) {
+                        if (existPlayer.getName().toLowerCase().equals(name.toLowerCase()) || trustedPlayer.uuid.equals(existPlayer.uuid)) {
                             return false;
                         }
                     }
