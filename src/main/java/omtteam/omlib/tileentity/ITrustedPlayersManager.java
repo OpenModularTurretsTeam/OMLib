@@ -40,12 +40,10 @@ public interface ITrustedPlayersManager {
                 player = new Player(null, name);
             }
 
-
             if (!foundPlayer && !ConfigHandler.offlineModeSupport) {
                 DebugHandler.getInstance().sendMessageToDebugChat("Did not find player named " + name + "in the username cache.");
                 return false;
             }
-
 
             if (ConfigHandler.offlineModeSupport) {
                 if (isPlayerOwner(player, (TileEntityOwnedBlock) this)) {
