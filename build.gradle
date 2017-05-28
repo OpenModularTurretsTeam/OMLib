@@ -117,6 +117,7 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             groupId config.group_prefix
+            version config.minecraft_version + "-" + config.mod_version
             artifactId config.mod_id
             artifact jar
             artifact sourceJar
@@ -124,6 +125,6 @@ publishing {
         }
     }
     repositories {
-            mavenLocal()
+        mavenLocal()
     }
 }
