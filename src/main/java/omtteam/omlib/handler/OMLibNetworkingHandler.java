@@ -19,7 +19,7 @@ public class OMLibNetworkingHandler {
                 Side.CLIENT);
     }
 
-    public static void sendMessgeToAllPlayers(IMessage message) {
+    public static void sendMessageToAllPlayers(IMessage message) {
         INSTANCE.sendToAll(message);
     }
 
