@@ -1,5 +1,8 @@
 gui.omtteam.omlib:owner=Besitzer
-gui.omtteam.omlib:invert=Invertiert
+gui.omtteam.omlib:inverted=Invertiert
+gui.omtteam.omlib:noninverted=Nicht invertiert
+gui.omtteam.omlib:always_on=Immer an
+gui.omtteam.omlib:always_off=Immer aus
 gui.omtteam.omlib:active=Aktiv
 gui.omtteam.omlib:mode=Modus
 gui.omtteam.omlib:true=wahr

@@ -4,12 +4,14 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.UUID;
 
+import static omtteam.omlib.handler.ConfigHandler.offlineModeSupport;
+
 /**
  * Created by Keridos on 17/05/17.
- * This Class
+ * This Class is a wrapper for a player in SMP.
  */
 public class Player {
-    private UUID uuid;
+    private final UUID uuid;
     private String name;
 
     public Player(UUID uuid, String name) {
@@ -32,8 +34,8 @@ public class Player {
 
         Player player = (Player) o;
 
-        if (getUuid() != null ? !getUuid().equals(player.getUuid()) : player.getUuid() != null) return false;
-        return getName().toLowerCase().equals(player.getName().toLowerCase());
+        return (!offlineModeSupport ? getUuid().equals(player.getUuid())
+                : getName().toLowerCase().equals(player.getName().toLowerCase()));
     }
 
     @Override
