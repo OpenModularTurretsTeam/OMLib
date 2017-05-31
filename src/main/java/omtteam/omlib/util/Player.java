@@ -5,14 +5,12 @@ import io.netty.buffer.ByteBuf;
 import java.io.Serializable;
 import java.util.UUID;
 
-import static omtteam.omlib.handler.ConfigHandler.offlineModeSupport;
-
 /**
  * Created by Keridos on 17/05/17.
  * This Class
  */
 public class Player implements Serializable {
-    private UUID uuid;
+    private final UUID uuid;
     private String name;
 
     public Player(UUID uuid, String name) {

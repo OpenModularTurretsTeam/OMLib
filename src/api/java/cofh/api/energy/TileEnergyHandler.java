@@ -14,7 +14,7 @@ import net.minecraft.util.EnumFacing;
  */
 public class TileEnergyHandler extends TileEntity implements IEnergyReceiver, IEnergyProvider {
 
-	protected EnergyStorage storage = new EnergyStorage(32000);
+    protected final EnergyStorage storage = new EnergyStorage(32000);
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {

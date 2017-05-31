@@ -10,6 +10,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class RenderUtil {
 
+    @SuppressWarnings("SameParameterValue")
     @SideOnly(Side.CLIENT)
     public static void drawHighlightBox(VertexBuffer vertexBuffer, double x, double y, double z, double x1, double y1, double z1, float red, float green, float blue, float alpha) {
         vertexBuffer.pos(x, y, z).color(red, green, blue, 0.0F).endVertex();

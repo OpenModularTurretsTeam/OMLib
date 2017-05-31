@@ -28,6 +28,7 @@ import java.util.List;
  */
 public class CompatWall extends BlockWall {
 
+    @SuppressWarnings("SameParameterValue")
     public CompatWall(Block block) {
         super(block);
     }
