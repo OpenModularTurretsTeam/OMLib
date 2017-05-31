@@ -30,9 +30,7 @@ public class MessageSetSharePlayerList implements IMessage {
         @SuppressWarnings("deprecation")
         public IMessage onMessage(MessageSetSharePlayerList messageIn, MessageContext ctx) {
             final MessageSetSharePlayerList message = messageIn;
-            Minecraft.getMinecraft().addScheduledTask(() -> {
-                OwnerShareHandler.getInstance().setOwnerShareMap(messageIn.ownerShareMap);
-            });
+            Minecraft.getMinecraft().addScheduledTask(() -> OwnerShareHandler.getInstance().setOwnerShareMap(messageIn.ownerShareMap));
             return null;
         }
 

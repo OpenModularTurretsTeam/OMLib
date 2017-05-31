@@ -16,6 +16,10 @@ import omtteam.omlib.tileentity.TileEntityElectric;
 import omtteam.omlib.tileentity.TileEntityMachine;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 
+import java.util.List;
+
+import static omtteam.omlib.util.GeneralUtil.safeLocalize;
+
 /**
  * Created by nico on 23/05/17.
  */
@@ -35,20 +39,21 @@ public class ItemDebugTool extends CompatItem {
             if (tileEntity != null) {
                 if (tileEntity instanceof TileEntityOwnedBlock) {
                     TileEntityOwnedBlock te = (TileEntityOwnedBlock) tileEntity;
-                    playerIn.sendMessage(new TextComponentString("Owner name: " + te.getOwnerName() + " and UUID is" + te.getOwner()));
+                    playerIn.sendMessage(new TextComponentString("Owner name is \"" + te.getOwnerName() + "\" and UUID is " + te.getOwner()));
                 }
                 if (tileEntity instanceof TileEntityElectric) {
                     TileEntityElectric te = (TileEntityElectric) tileEntity;
-                    playerIn.sendMessage(new TextComponentString("Stored Energy:" + te.getEnergyLevel(EnumFacing.DOWN) + "/" + te.getMaxEnergyLevel(EnumFacing.DOWN)));
-                    playerIn.sendMessage(new TextComponentString("Stored EU:" + te.getStorageEU()));
+                    playerIn.sendMessage(new TextComponentString("Stored Energy: " + te.getEnergyLevel(EnumFacing.DOWN) + "/" + te.getMaxEnergyLevel(EnumFacing.DOWN)));
+                    playerIn.sendMessage(new TextComponentString("Stored EU: " + te.getStorageEU()));
                 }
                 if (tileEntity instanceof TileEntityMachine) {
                     TileEntityMachine te = (TileEntityMachine) tileEntity;
-                    playerIn.sendMessage(new TextComponentString("Active:" + te.isActive() + ", Inverted: " + te.getInverted() + ", Redstone: " + te.getRedstone()));
+                    playerIn.sendMessage(new TextComponentString("Active: " + te.isActive() + ", Redstone: "
+                            + te.getRedstone() + ", Mode: " + safeLocalize(TileEntityMachine.getModeAsLocString(te.getMode()))));
                 }
                 if (tileEntity instanceof IDebugTile) {
-                    String[] debugInfo = ((IDebugTile) tileEntity).getDebugInfo();
-                    if (debugInfo.length >= 1) {
+                    List<String> debugInfo = ((IDebugTile) tileEntity).getDebugInfo();
+                    if (debugInfo.size() >= 1) {
                         for (String debug : debugInfo) {
                             playerIn.sendMessage(new TextComponentString(debug));
                         }
