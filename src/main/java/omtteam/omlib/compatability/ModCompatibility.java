@@ -13,8 +13,8 @@ import omtteam.omlib.reference.Reference;
 public class ModCompatibility {
     public static boolean IC2Loaded = false;
     public static boolean TeslaLoaded = false;
-    public static final boolean CoFHApiLoaded = false;
-    public static final boolean OpenComputersLoaded = false;
+    public static boolean CoFHApiLoaded = false;
+    public static boolean OpenComputersLoaded = false;
 
     public static final String IC2ModId = "IC2";
     public static final String TeslaModId = "tesla";

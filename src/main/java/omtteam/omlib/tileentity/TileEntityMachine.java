@@ -2,6 +2,7 @@ package omtteam.omlib.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
 import omtteam.omlib.power.OMEnergyStorage;
+import omtteam.omlib.reference.OMLibNames;
 import omtteam.omlib.util.TrustedPlayer;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.List;
 public abstract class TileEntityMachine extends TileEntityContainerElectric implements ITrustedPlayersManager {
     protected boolean active = false;
     protected boolean redstone = false;
+    protected EnumMachineMode mode;
     protected List<TrustedPlayer> trustedPlayers;
 
     public TileEntityMachine() {
@@ -18,6 +20,54 @@ public abstract class TileEntityMachine extends TileEntityContainerElectric impl
         this.trustedPlayers = new ArrayList<>();
         this.storage = new OMEnergyStorage(10, 10);
         this.active = true;
+        this.mode = EnumMachineMode.INVERTED;
+    }
+
+    public void toggleMode() {
+        if (mode.ordinal() < EnumMachineMode.values().length) {
+            mode = EnumMachineMode.values()[mode.ordinal() + 1];
+        } else {
+            mode = EnumMachineMode.values()[0];
+        }
+        refreshActive();
+    }
+
+    private void refreshActive() {
+        switch (mode) {
+            case INVERTED:
+                this.active = !redstone;
+                break;
+            case NONINVERTED:
+                this.active = redstone;
+                break;
+            case ALWAYS_ON:
+                this.active = true;
+                break;
+            case ALWAYS_OFF:
+                this.active = false;
+        }
+    }
+
+    public EnumMachineMode getMode() {
+        return mode;
+    }
+
+    public void setMode(EnumMachineMode mode) {
+        this.mode = mode;
+    }
+
+    public static String getModeAsLocString(EnumMachineMode mode) {
+        switch (mode) {
+            case INVERTED:
+                return OMLibNames.Localizations.GUI.INVERTED;
+            case NONINVERTED:
+                return OMLibNames.Localizations.GUI.NONINVERTED;
+            case ALWAYS_ON:
+                return OMLibNames.Localizations.GUI.ALWAYS_ON;
+            case ALWAYS_OFF:
+                return OMLibNames.Localizations.GUI.ALWAYS_OFF;
+        }
+        return null;
     }
 
     @Override
@@ -56,7 +106,6 @@ public abstract class TileEntityMachine extends TileEntityContainerElectric impl
 
     public void setRedstone(boolean redstone) {
         this.redstone = redstone;
-        this.active = !this.redstone;
-        this.markDirty();
+        refreshActive();
     }
 }
