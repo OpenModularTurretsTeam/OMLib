@@ -46,7 +46,6 @@ public class OMLib {
         checkForMods();
         RandomUtil.init();
         proxy.preInit();
-        ;
     }
 
     @SuppressWarnings("unused")
