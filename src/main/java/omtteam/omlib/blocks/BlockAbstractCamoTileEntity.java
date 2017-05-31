@@ -2,14 +2,17 @@ package omtteam.omlib.blocks;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import omtteam.omlib.render.RenderBlockStateContainer;
 import omtteam.omlib.tileentity.ICamoSupport;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
  * Created by Keridos on 31/01/17.
@@ -38,14 +41,21 @@ public abstract class BlockAbstractCamoTileEntity extends BlockAbstractTileEntit
         }
     };
 
+    @SuppressWarnings("SameParameterValue")
     protected BlockAbstractCamoTileEntity(Material material) {
         super(material);
     }
 
     @Override
     @Nonnull
-    public IBlockState getExtendedState(@Nonnull IBlockState state, IBlockAccess world, BlockPos pos) {
+    @ParametersAreNonnullByDefault
+    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
         ICamoSupport camoTE = (ICamoSupport) world.getTileEntity(pos);
-        return ((IExtendedBlockState) state).withProperty(RENDERBLOCKSTATE, new RenderBlockStateContainer(camoTE.getCamoState()));
+        if (camoTE != null) {
+            return ((IExtendedBlockState) state).withProperty(RENDERBLOCKSTATE, new RenderBlockStateContainer(camoTE.getCamoState()));
+        } else {
+            return ForgeRegistries.BLOCKS.getValue(
+                    new ResourceLocation("minecraft:grass")).getDefaultState();
+        }
     }
 }

@@ -30,7 +30,7 @@ import static omtteam.omlib.blocks.BlockAbstractCamoTileEntity.RENDERBLOCKSTATE;
  */
 public abstract class CamoBakedModel implements IBakedModel {
     protected static ResourceLocation FAKE_LOCATION;
-    private List<IBakedModel> defaultModels;
+    private final List<IBakedModel> defaultModels;
 
     public CamoBakedModel(List<IBakedModel> list) {
         defaultModels = list;

@@ -17,7 +17,8 @@ public interface IEnergyHandler extends IEnergyConnection {
 	/**
 	 * Returns the amount of energy currently stored.
 	 */
-	int getEnergyStored(EnumFacing from);
+    @SuppressWarnings("SameParameterValue")
+    int getEnergyStored(EnumFacing from);
 
 	/**
 	 * Returns the maximum amount of energy that can be stored.
