@@ -135,7 +135,7 @@ public class OwnerShareHandler implements Serializable {
             ArrayList<Player> list = entryFound.getValue();
             for (int i = 0; i < list.size(); i++) {
                 Player player = list.get(i);
-                if (i <= list.size() - 1) {
+                if (i < list.size() - 1) {
                     playerList.append(player.getName());
                     playerList.append(", ");
                 } else {
