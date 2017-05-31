@@ -90,7 +90,7 @@ public class OwnerShareHandler implements Serializable {
                 }
             }
         }
-        OMLibNetworkingHandler.sendMessgeToAllPlayers(new MessageSetSharePlayerList(this));
+        OMLibNetworkingHandler.sendMessageToAllPlayers(new MessageSetSharePlayerList(this));
     }
 
     public void removeSharePlayer(Player owner, Player sharePlayer, @Nullable ICommandSender sender) {
@@ -120,7 +120,7 @@ public class OwnerShareHandler implements Serializable {
         } else if (sender != null) {
             sender.sendMessage(new TextComponentString("Could not remove player " + sharePlayer.getName() + " from your Share List!"));
         }
-        OMLibNetworkingHandler.sendMessgeToAllPlayers(new MessageSetSharePlayerList(this));
+        OMLibNetworkingHandler.sendMessageToAllPlayers(new MessageSetSharePlayerList(this));
     }
 
     public void printSharePlayers(Player owner, ICommandSender sender) {
