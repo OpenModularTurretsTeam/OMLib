@@ -30,5 +30,6 @@ public interface ICamoSupport {
      *
      * @return          the default blockstate to be rendered (without camo)
      */
+    @Nonnull
     IBlockState getDefaultCamoState();
 }
