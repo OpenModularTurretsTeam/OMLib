@@ -157,6 +157,7 @@ public class EntityTools {
         entity.moveEntity(x, y, z);
     }
 
+    @SuppressWarnings("SameParameterValue")
     public static void registerModEntity(ResourceLocation resourceLocation, Class<? extends Entity> entityClass, String entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
         EntityRegistry.registerModEntity(entityClass, entityName, id, mod, trackingRange, updateFrequency, sendsVelocityUpdates);
     }

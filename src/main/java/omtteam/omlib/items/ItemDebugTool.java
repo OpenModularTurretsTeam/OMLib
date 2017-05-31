@@ -46,7 +46,7 @@ public class ItemDebugTool extends CompatItem {
                 }
                 if (tileEntity instanceof TileEntityMachine) {
                     TileEntityMachine te = (TileEntityMachine) tileEntity;
-                    playerIn.addChatMessage(new TextComponentString("Active: " + te.isActive() + ", Inverted: " + te.getInverted() + ", Redstone: " + te.getRedstone()));
+                    playerIn.addChatMessage(new TextComponentString("Active: " + te.isActive() + ", Redstone: " + te.getRedstone()));
                 }
                 if (tileEntity instanceof IDebugTile) {
                     List<String> debugInfo = ((IDebugTile) tileEntity).getDebugInfo();
