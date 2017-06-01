@@ -11,7 +11,9 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Predicate;
 
 /**
@@ -88,7 +90,7 @@ public class OwnerShareHandler implements Serializable {
                 }
             }
         }
-        OMLibNetworkingHandler.sendMessgeToAllPlayers(new MessageSetSharePlayerList(this));
+        OMLibNetworkingHandler.sendMessageToAllPlayers(new MessageSetSharePlayerList(this));
     }
 
     public void removeSharePlayer(Player owner, Player sharePlayer, @Nullable ICommandSender sender) {
@@ -118,7 +120,7 @@ public class OwnerShareHandler implements Serializable {
         } else if (sender != null) {
             sender.addChatMessage(new TextComponentString("Could not remove player " + sharePlayer.getName() + " from your Share List!"));
         }
-        OMLibNetworkingHandler.sendMessgeToAllPlayers(new MessageSetSharePlayerList(this));
+        OMLibNetworkingHandler.sendMessageToAllPlayers(new MessageSetSharePlayerList(this));
     }
 
     public void printSharePlayers(Player owner, ICommandSender sender) {
@@ -133,7 +135,7 @@ public class OwnerShareHandler implements Serializable {
             ArrayList<Player> list = entryFound.getValue();
             for (int i = 0; i < list.size(); i++) {
                 Player player = list.get(i);
-                if (i <= list.size() - 1) {
+                if (i < list.size() - 1) {
                     playerList.append(player.getName());
                     playerList.append(", ");
                 } else {
