@@ -15,16 +15,21 @@ public class ModCompatibility {
     public static boolean TeslaLoaded = false;
     public static boolean CoFHApiLoaded = false;
     public static boolean OpenComputersLoaded = false;
+    public static boolean ComputerCraftLoaded = false;
 
     public static final String IC2ModId = "IC2";
     public static final String TeslaModId = "tesla";
     public static final String CoFHApiModId = "CoFHAPI";
     public static final String OCModID = "OpenComputers";
+    public static final String CCModID = "ComputerCraft";
 
     public static void checkForMods() {
         IC2Loaded = Loader.isModLoaded(IC2ModId);
-        fixIC2Loading();
         TeslaLoaded = Loader.isModLoaded(TeslaModId);
+        OpenComputersLoaded = Loader.isModLoaded(OCModID);
+        ComputerCraftLoaded = Loader.isModLoaded(CCModID);
+        fixIC2Loading();
+
         printDetectedMods();
     }
 
@@ -54,7 +59,7 @@ public class ModCompatibility {
         versionchecker.setString("curseFilenameParser", "OMLib-1.10.2-[].jar");
         versionchecker.setString("modDisplayName", "OMLib");
         versionchecker.setString("oldVersion", Reference.VERSION);
-        FMLInterModComms.sendRuntimeMessage("omtteam/omlib", "VersionChecker", "addCurseCheck", versionchecker);
+        FMLInterModComms.sendRuntimeMessage("omlib", "VersionChecker", "addCurseCheck", versionchecker);
     }
 
     public static void performModCompat() {
