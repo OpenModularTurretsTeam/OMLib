@@ -15,26 +15,30 @@ public class ModCompatibility {
     public static boolean TeslaLoaded = false;
     public static boolean CoFHApiLoaded = false;
     public static boolean OpenComputersLoaded = false;
+    public static boolean ComputerCraftLoaded = false;
 
     public static final String IC2ModId = "ic2";
     public static final String TeslaModId = "tesla";
-    public static final String CoFHApiModId = "CoFHAPI";
-    public static final String OCModID = "CurrentlyDisabled";
+    public static final String CoFHApiModId = "cofhapi";
+    public static final String OCModID = "opencomputers";
+    public static final String CCModID = "computercraft";
 
     public static void checkForMods() {
-
         IC2Loaded = Loader.isModLoaded(IC2ModId);
-        fixIC2Loading();
         TeslaLoaded = Loader.isModLoaded(TeslaModId);
+        OpenComputersLoaded = Loader.isModLoaded(OCModID);
+        ComputerCraftLoaded = Loader.isModLoaded(CCModID);
+        fixIC2Loading();
+
         printDetectedMods();
     }
 
-    private static void printDetectedMods(){
+    private static void printDetectedMods() {
         String foundMods = "Found the following mods: ";
-        foundMods += IC2Loaded ? "IC2 ": "";
-        foundMods += TeslaLoaded ? "Tesla ": "";
-        foundMods += CoFHApiLoaded ? "CoFHApi ": "";
-        foundMods += OpenComputersLoaded ? "OpenComputers ": "";
+        foundMods += IC2Loaded ? "IC2 " : "";
+        foundMods += TeslaLoaded ? "Tesla " : "";
+        foundMods += CoFHApiLoaded ? "CoFHApi " : "";
+        foundMods += OpenComputersLoaded ? "OpenComputers " : "";
         OMLib.getLogger().info(foundMods);
     }
 
