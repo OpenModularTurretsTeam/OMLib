@@ -50,9 +50,12 @@ public abstract class CamoBakedModel implements IBakedModel {
     @SideOnly(Side.CLIENT)
     public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
         IExtendedBlockState extendedState = (IExtendedBlockState) state;
-        IBlockState camoState = extendedState.getValue(RENDERBLOCKSTATE).getRenderState();
+        IBlockState camoState = null;
+        if (extendedState != null) {
+            camoState = extendedState.getValue(RENDERBLOCKSTATE).getRenderState();
+        }
 
-        if (camoState.getBlock() instanceof BlockAbstractCamoTileEntity && state != null) {
+        if (camoState != null && camoState.getBlock() instanceof BlockAbstractCamoTileEntity) {
             return getModel(defaultModels, state).getQuads(state, side, rand);
 
         } else {
@@ -76,17 +79,14 @@ public abstract class CamoBakedModel implements IBakedModel {
     }
 
     @Override
-    public TextureAtlasSprite getParticleTexture() {
-        return null;
-    }
+    @Nonnull
+    public abstract TextureAtlasSprite getParticleTexture();
 
     @Override
-    public ItemCameraTransforms getItemCameraTransforms() {
-        return null;
-    }
+    @Nonnull
+    public abstract ItemCameraTransforms getItemCameraTransforms();
 
     @Override
-    public ItemOverrideList getOverrides() {
-        return null;
-    }
+    @Nonnull
+    public abstract ItemOverrideList getOverrides();
 }
