@@ -22,6 +22,10 @@ public class ModCompatibility {
     public static final String CoFHApiModId = "cofhapi";
     public static final String OCModID = "opencomputers";
     public static final String CCModID = "computercraft";
+    public static final String MekModID = "mekanism";
+    public static final String TEModID = "thermalexpansion";
+    public static final String EIOModID = "enderio";
+    public static final String TCModID = "thaumcraft";
 
     public static void checkForMods() {
         IC2Loaded = Loader.isModLoaded(IC2ModId);
