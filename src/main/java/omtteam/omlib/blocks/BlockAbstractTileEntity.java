@@ -1,5 +1,6 @@
 package omtteam.omlib.blocks;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
@@ -22,6 +23,7 @@ import java.util.Random;
  * This Class
  */
 @SuppressWarnings({"deprecation", "unused"})
+@MethodsReturnNonnullByDefault
 public abstract class BlockAbstractTileEntity extends BlockAbstract {
     protected BlockAbstractTileEntity(Material material) {
         super(material);
@@ -43,7 +45,6 @@ public abstract class BlockAbstractTileEntity extends BlockAbstract {
     }
 
     @Override
-    @Nonnull
     public EnumBlockRenderType getRenderType(IBlockState state) {
         return EnumBlockRenderType.MODEL;
     }

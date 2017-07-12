@@ -93,6 +93,10 @@ repositories {
     maven {
         url "http://maven.ironhide.de/"
     }
+    maven {
+        name  "OC repo"
+        url  "http://maven.cil.li/"
+    }
     ivy {
         url "http://ae-mod.info/builds"
         layout "pattern", {
@@ -101,34 +105,13 @@ repositories {
     }
 }
 
-def omt_local = false
-configure(allprojects.findAll {it.name == 'OpenModularTurrets'}) {
-    omt_local = true
-}
-
-def ompd_local = false
-configure(allprojects.findAll {it.name == 'OpenModularPassiveDefense'}) {
-    ompd_local = true
-}
-
-def omtc_local = false
-configure(allprojects.findAll {it.name == 'OMTControl'}) {
-    omtc_local = true
-}
 
 dependencies {
     deobfCompile "mezz.jei:jei_${config.minecraft_version}:${config.jei_version}"
     compile "net.darkhax.tesla:Tesla:${config.minecraft_version_short}-${config.tesla_version}"
     compile "net.industrial-craft:industrialcraft-2:${config.ic2_version}:dev"
-    if (omt_local) {
-        runtime project(':OpenModularTurrets')
-    }
-    if (ompd_local) {
-        runtime project(':OpenModularPassiveDefense')
-    }
-    if (omtc_local) {
-        runtime project(':OMTControl')
-    }
+    runtime "omtteam:openmodularturrets:1.10.2-${config.omt_version}:dev"
+    deobfCompile "li.cil.oc:OpenComputers:MC${config.minecraft_version}-${config.oc_version}"
 }
 
 

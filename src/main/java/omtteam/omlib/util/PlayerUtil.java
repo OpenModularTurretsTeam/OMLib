@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.UsernameCache;
 import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.handler.OwnerShareHandler;
+import omtteam.omlib.tileentity.ITrustedPlayersManager;
 import omtteam.omlib.tileentity.TileEntityMachine;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 
@@ -71,6 +72,18 @@ public class PlayerUtil {
         } else {
             return null;
         }
+    }
+
+    @ParametersAreNonnullByDefault
+    public static boolean isPlayerTrusted(EntityPlayer entityPlayer, ITrustedPlayersManager trustedPlayersManager) {
+        Player player = new Player(entityPlayer.getUniqueID(), entityPlayer.getName());
+        return isPlayerTrusted(player, trustedPlayersManager);
+    }
+
+    @ParametersAreNonnullByDefault
+    public static boolean isPlayerTrusted(Player player, ITrustedPlayersManager trustedPlayersManager) {
+        return (offlineModeSupport ? trustedPlayersManager.getTrustedPlayer(player.getName()) != null :
+                trustedPlayersManager.getTrustedPlayer(player.getUuid()) != null);
     }
 
     @ParametersAreNonnullByDefault
