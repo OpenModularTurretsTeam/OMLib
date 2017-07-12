@@ -41,6 +41,7 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
     protected OMEnergyStorage storage;
     protected Object teslaContainer;
     protected double storageEU;
+    protected double maxStorageEU = 40000D;
     //private float amountOfPotentia = 0F;
     //private final float maxAmountOfPotentia = ConfigHandler.getPotentiaAddonCapacity();
 
@@ -163,6 +164,10 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
         return storageEU;
     }
 
+    public double getMaxStorageEU() {
+        return maxStorageEU;
+    }
+
     public void moveEnergyFromIC2ToStorage() {
         double requiredEnergy = (storage.getMaxEnergyStored() - storage.getEnergyStored()) / ConfigHandler.EUtoRFRatio;
         if (storageEU >= requiredEnergy) {
@@ -192,7 +197,7 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
     @Override
     public double getDemandedEnergy() {
         if (ConfigHandler.EUSupport) {
-            return Math.max(80000D - storageEU, 0.0D);
+            return Math.max(maxStorageEU - storageEU, 0.0D);
         }
         return 0;
     }
