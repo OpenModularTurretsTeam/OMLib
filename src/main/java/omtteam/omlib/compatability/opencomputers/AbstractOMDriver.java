@@ -9,18 +9,30 @@ import net.minecraft.world.World;
 /**
  * Created by nico on 09/06/17.
  */
-public abstract class AbstractOMDriver extends DriverSidedTileEntity {
-    @Override
-    public Class<?> getTileEntityClass() {
-        return clGetTileEntityClass();
+public abstract class AbstractOMDriver {
+    private static DriverSidedTEWrapper wrapper;
+
+    private class DriverSidedTEWrapper extends DriverSidedTileEntity {
+        @Override
+        public Class<?> getTileEntityClass() {
+            return clGetTileEntityClass();
+        }
+
+        @Override
+        public ManagedEnvironment createEnvironment(World world, BlockPos pos, EnumFacing side) {
+            return clCreateEnvironment(world, pos, side);
+        }
+
     }
 
     protected abstract Class<?> clGetTileEntityClass();
 
-    @Override
-    public ManagedEnvironment createEnvironment(World world, BlockPos pos, EnumFacing side) {
-        return clCreateEnvironment(world, pos, side);
-    }
-
     protected abstract ManagedEnvironment clCreateEnvironment(World world, BlockPos pos, EnumFacing side);
+
+    public DriverSidedTEWrapper getWrapper() {
+        if (wrapper == null) {
+            wrapper = new AbstractOMDriver.DriverSidedTEWrapper();
+        }
+        return wrapper;
+    }
 }
