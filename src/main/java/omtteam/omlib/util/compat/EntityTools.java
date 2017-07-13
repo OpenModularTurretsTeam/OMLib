@@ -66,10 +66,10 @@ public class EntityTools {
      * Return the entity name (localized name)
      */
     public static String getEntityName(Entity entity) {
-        if (entity instanceof EntitySkeleton && ((EntitySkeleton) entity).func_189771_df() == SkeletonType.WITHER) {
+        if (entity instanceof EntitySkeleton && ((EntitySkeleton) entity).getSkeletonType() == SkeletonType.WITHER) {
             return "Wither Skeleton";
         }
-        if (entity instanceof EntitySkeleton && ((EntitySkeleton) entity).func_189771_df() == SkeletonType.STRAY) {
+        if (entity instanceof EntitySkeleton && ((EntitySkeleton) entity).getSkeletonType() == SkeletonType.STRAY) {
             return "Stray Skeleton";
         }
         if (entity instanceof EntityPigZombie) {
@@ -116,12 +116,12 @@ public class EntityTools {
             return null;
         }
         if ("WitherSkeleton".equals(mobId)) {
-            ((EntitySkeleton) entityLiving).func_189768_a(SkeletonType.WITHER);
+            ((EntitySkeleton) entityLiving).setSkeletonType(SkeletonType.WITHER);
         } else if ("StraySkeleton".equals(mobId)) {
-            ((EntitySkeleton) entityLiving).func_189768_a(SkeletonType.STRAY);
+            ((EntitySkeleton) entityLiving).setSkeletonType(SkeletonType.STRAY);
         } else if (entityLiving instanceof EntitySkeleton) {
             // Force non-wither otherwise
-            ((EntitySkeleton) entityLiving).func_189768_a(SkeletonType.NORMAL);
+            ((EntitySkeleton) entityLiving).setSkeletonType(SkeletonType.NORMAL);
         }
         return entityLiving;
     }
@@ -133,9 +133,9 @@ public class EntityTools {
     public static String findId(Class<? extends Entity> clazz, Entity entity) {
         if (entity instanceof EntitySkeleton) {
             EntitySkeleton skeleton = (EntitySkeleton) entity;
-            if (skeleton.func_189771_df() == SkeletonType.WITHER) {
+            if (skeleton.getSkeletonType() == SkeletonType.WITHER) {
                 return "WitherSkeleton";
-            } else if (skeleton.func_189771_df() == SkeletonType.STRAY) {
+            } else if (skeleton.getSkeletonType() == SkeletonType.STRAY) {
                 return "StraySkeleton";
             }
         }
@@ -157,7 +157,6 @@ public class EntityTools {
         entity.moveEntity(x, y, z);
     }
 
-    @SuppressWarnings("SameParameterValue")
     public static void registerModEntity(ResourceLocation resourceLocation, Class<? extends Entity> entityClass, String entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
         EntityRegistry.registerModEntity(entityClass, entityName, id, mod, trackingRange, updateFrequency, sendsVelocityUpdates);
     }
