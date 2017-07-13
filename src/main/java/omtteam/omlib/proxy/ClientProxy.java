@@ -8,6 +8,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import omtteam.omlib.init.OMLibItems;
+import omtteam.omlib.reference.OMLibNames;
 import omtteam.omlib.reference.Reference;
 import omtteam.omlib.util.compat.MinecraftTools;
 
@@ -23,7 +24,7 @@ public class ClientProxy extends CommonProxy {
     public void preInit() {
         super.preInit();
 
-        registerItemModel(OMLibItems.debugTool, 0, OMLibItems.debugTool.getRegistryName().toString(), true);
+        registerItemModel(OMLibItems.debugTool, 0, OMLibNames.Items.debugTool, true);
     }
 
     @Override
