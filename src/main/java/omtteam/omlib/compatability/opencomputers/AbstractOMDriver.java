@@ -1,5 +1,6 @@
 package omtteam.omlib.compatability.opencomputers;
 
+import li.cil.oc.api.Driver;
 import li.cil.oc.api.network.ManagedEnvironment;
 import li.cil.oc.api.prefab.DriverSidedTileEntity;
 import net.minecraft.util.EnumFacing;
@@ -29,10 +30,10 @@ public abstract class AbstractOMDriver {
 
     protected abstract ManagedEnvironment clCreateEnvironment(World world, BlockPos pos, EnumFacing side);
 
-    public DriverSidedTEWrapper getWrapper() {
+    public void registerWrapper() {
         if (wrapper == null) {
             wrapper = new AbstractOMDriver.DriverSidedTEWrapper();
         }
-        return wrapper;
+        Driver.add(wrapper);
     }
 }
