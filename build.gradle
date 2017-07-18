@@ -106,6 +106,7 @@ dependencies {
     deobfCompile "mezz.jei:jei_${config.minecraft_version}:${config.jei_version}"
     compile "net.industrial-craft:industrialcraft-2:${config.ic2_version}:dev"
     compile "net.darkhax.tesla:Tesla:${config.minecraft_version}-${config.tesla_version}"
+    deobfCompile "mcjty.theoneprobe:TheOneProbe:${config.minecraft_version_short}-${config.top_version}"
     deobfCompile "li.cil.oc:OpenComputers:MC${config.minecraft_version}-${config.oc_version}"
 }
 

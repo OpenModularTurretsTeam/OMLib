@@ -5,7 +5,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import omtteam.omlib.compatability.minecraft.CompatBlock;
+import omtteam.omlib.compatibility.minecraft.CompatBlock;
 
 import javax.annotation.ParametersAreNullableByDefault;
 
