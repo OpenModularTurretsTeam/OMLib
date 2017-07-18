@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.text.ITextComponent;
-import omtteam.omlib.compatability.minecraft.CompatSidedInventory;
+import omtteam.omlib.compatibility.minecraft.CompatSidedInventory;
 import omtteam.omlib.util.compat.ItemStackList;
 import omtteam.omlib.util.compat.ItemStackTools;
 

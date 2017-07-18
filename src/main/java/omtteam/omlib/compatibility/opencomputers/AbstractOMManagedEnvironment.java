@@ -1,4 +1,4 @@
-package omtteam.omlib.compatability.opencomputers;
+package omtteam.omlib.compatibility.opencomputers;
 
 import li.cil.oc.api.prefab.ManagedEnvironment;
 
