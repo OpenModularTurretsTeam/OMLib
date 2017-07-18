@@ -6,12 +6,12 @@ import li.cil.oc.api.prefab.DriverSidedTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import omtteam.omlib.OMLib;
 
 /**
  * Created by nico on 09/06/17.
  */
 public abstract class AbstractOMDriver {
-    private static DriverSidedTEWrapper wrapper;
 
     private class DriverSidedTEWrapper extends DriverSidedTileEntity {
         @Override
@@ -23,17 +23,16 @@ public abstract class AbstractOMDriver {
         public ManagedEnvironment createEnvironment(World world, BlockPos pos, EnumFacing side) {
             return clCreateEnvironment(world, pos, side);
         }
-
     }
 
     protected abstract Class<?> clGetTileEntityClass();
 
     protected abstract ManagedEnvironment clCreateEnvironment(World world, BlockPos pos, EnumFacing side);
 
+    protected abstract String getName();
+
     public void registerWrapper() {
-        if (wrapper == null) {
-            wrapper = new AbstractOMDriver.DriverSidedTEWrapper();
-        }
-         Driver.add(wrapper);
+        Driver.add(new DriverSidedTEWrapper());
+        OMLib.getLogger().info("Registered OC Driver: " + this.getName());
     }
 }
