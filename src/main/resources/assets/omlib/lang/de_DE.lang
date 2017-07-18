@@ -1,3 +1,4 @@
+gui.omtteam.omlib:base=Basis
 gui.omtteam.omlib:owner=Besitzer
 gui.omtteam.omlib:inverted=Invertiert
 gui.omtteam.omlib:noninverted=Nicht invertiert

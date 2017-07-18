@@ -9,7 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import omtteam.omlib.api.IDebugTile;
-import omtteam.omlib.compatability.minecraft.CompatItem;
+import omtteam.omlib.compatibility.minecraft.CompatItem;
 import omtteam.omlib.reference.OMLibNames;
 import omtteam.omlib.reference.Reference;
 import omtteam.omlib.tileentity.TileEntityElectric;

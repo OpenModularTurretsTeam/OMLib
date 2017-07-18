@@ -15,7 +15,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.common.Optional;
-import omtteam.omlib.compatability.ModCompatibility;
+import omtteam.omlib.compatibility.ModCompatibility;
 import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.power.OMEnergyStorage;
 import omtteam.omlib.power.tesla.BaseOMTeslaContainerWrapper;
@@ -24,7 +24,7 @@ import omtteam.omlib.util.MathUtil;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static omtteam.omlib.compatability.ModCompatibility.*;
+import static omtteam.omlib.compatibility.ModCompatibility.*;
 import static omtteam.omlib.handler.ConfigHandler.EUSupport;
 
 /**
