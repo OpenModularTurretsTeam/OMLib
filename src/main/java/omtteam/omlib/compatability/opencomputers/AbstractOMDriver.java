@@ -11,7 +11,6 @@ import net.minecraft.world.World;
  * Created by nico on 09/06/17.
  */
 public abstract class AbstractOMDriver {
-    private static DriverSidedTEWrapper wrapper;
 
     private class DriverSidedTEWrapper extends DriverSidedTileEntity {
         @Override
@@ -31,9 +30,6 @@ public abstract class AbstractOMDriver {
     protected abstract ManagedEnvironment clCreateEnvironment(World world, BlockPos pos, EnumFacing side);
 
     public void registerWrapper() {
-        if (wrapper == null) {
-            wrapper = new AbstractOMDriver.DriverSidedTEWrapper();
-        }
-        Driver.add(wrapper);
+        Driver.add(new DriverSidedTEWrapper());
     }
 }
