@@ -1,9 +1,10 @@
-package omtteam.omlib.compatability;
+package omtteam.omlib.compatibility;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import omtteam.omlib.OMLib;
+import omtteam.omlib.compatibility.theoneprobe.TOPCompatibility;
 import omtteam.omlib.reference.Reference;
 
 /**
@@ -16,22 +17,25 @@ public class ModCompatibility {
     public static boolean CoFHApiLoaded = false;
     public static boolean OpenComputersLoaded = false;
     public static boolean ComputerCraftLoaded = false;
+    public static boolean TOPLoaded = false;
 
-    public static final String IC2ModId = "ic2";
+    public static final String IC2ModId = "IC2";
     public static final String TeslaModId = "tesla";
-    public static final String CoFHApiModId = "cofhapi";
-    public static final String OCModID = "opencomputers";
-    public static final String CCModID = "computercraft";
-    public static final String MekModID = "mekanism";
-    public static final String TEModID = "thermalexpansion";
-    public static final String EIOModID = "enderio";
-    public static final String TCModID = "thaumcraft";
+    public static final String CoFHApiModId = "CoFHAPI";
+    public static final String OCModID = "OpenComputers";
+    public static final String CCModID = "ComputerCraft";
+    public static final String MekModID = "Mekanism";
+    public static final String TEModID = "ThermalExpansion";
+    public static final String EIOModID = "EnderIO";
+    public static final String TCModID = "Thaumcraft";
+    public static final String TOPModID = "theoneprobe";
 
     public static void checkForMods() {
         IC2Loaded = Loader.isModLoaded(IC2ModId);
         TeslaLoaded = Loader.isModLoaded(TeslaModId);
         OpenComputersLoaded = Loader.isModLoaded(OCModID);
         ComputerCraftLoaded = Loader.isModLoaded(CCModID);
+        TOPLoaded = Loader.isModLoaded(TOPModID);
         fixIC2Loading();
 
         printDetectedMods();
@@ -43,6 +47,7 @@ public class ModCompatibility {
         foundMods += TeslaLoaded ? "Tesla " : "";
         foundMods += CoFHApiLoaded ? "CoFHApi " : "";
         foundMods += OpenComputersLoaded ? "OpenComputers " : "";
+        foundMods += TOPLoaded ? "The One Probe " : "";
         OMLib.getLogger().info(foundMods);
     }
 
@@ -68,5 +73,8 @@ public class ModCompatibility {
 
     public static void performModCompat() {
         addVersionCheckerInfo();
+        if (TOPLoaded) {
+            TOPCompatibility.register();
+        }
     }
 }

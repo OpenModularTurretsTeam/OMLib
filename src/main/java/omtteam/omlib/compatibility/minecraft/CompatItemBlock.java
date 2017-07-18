@@ -1,4 +1,4 @@
-package omtteam.omlib.compatability.minecraft;
+package omtteam.omlib.compatibility.minecraft;
 
 /**
  * Created by Keridos on 07/02/17.

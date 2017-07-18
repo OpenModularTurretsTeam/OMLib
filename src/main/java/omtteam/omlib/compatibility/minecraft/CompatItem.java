@@ -1,4 +1,4 @@
-package omtteam.omlib.compatability.minecraft;
+package omtteam.omlib.compatibility.minecraft;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
