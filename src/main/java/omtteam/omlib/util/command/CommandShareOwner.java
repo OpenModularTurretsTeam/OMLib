@@ -1,10 +1,9 @@
 package omtteam.omlib.util.command;
 
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
-import omtteam.omlib.compatability.minecraft.CompatCommandBase;
+import omtteam.omlib.compatibility.minecraft.CompatCommandBase;
 import omtteam.omlib.handler.OwnerShareHandler;
 import omtteam.omlib.util.Player;
 

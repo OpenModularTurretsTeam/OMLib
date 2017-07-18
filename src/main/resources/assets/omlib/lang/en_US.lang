@@ -4,6 +4,7 @@ gui.omtteam.omlib:inverted=Inverted
 gui.omtteam.omlib:noninverted=Noninverted
 gui.omtteam.omlib:always_on=Always on
 gui.omtteam.omlib:always_off=Always off
+gui.omtteam.omlib:mode=Mode
 gui.omtteam.omlib:active=Active
 gui.omtteam.omlib:true=true
 gui.omtteam.omlib:false=false
