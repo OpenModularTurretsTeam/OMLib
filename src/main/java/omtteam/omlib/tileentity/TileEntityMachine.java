@@ -54,6 +54,7 @@ public abstract class TileEntityMachine extends TileEntityContainerElectric impl
 
     public void setMode(EnumMachineMode mode) {
         this.mode = mode;
+        this.refreshActive();
     }
 
     public static String getModeAsLocString(EnumMachineMode mode) {
