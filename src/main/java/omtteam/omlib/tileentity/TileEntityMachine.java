@@ -24,7 +24,7 @@ public abstract class TileEntityMachine extends TileEntityContainerElectric impl
     }
 
     public void toggleMode() {
-        if (mode.ordinal() < EnumMachineMode.values().length) {
+        if (mode.ordinal() < EnumMachineMode.values().length - 1) {
             mode = EnumMachineMode.values()[mode.ordinal() + 1];
         } else {
             mode = EnumMachineMode.values()[0];
@@ -54,6 +54,7 @@ public abstract class TileEntityMachine extends TileEntityContainerElectric impl
 
     public void setMode(EnumMachineMode mode) {
         this.mode = mode;
+        this.refreshActive();
     }
 
     public static String getModeAsLocString(EnumMachineMode mode) {
