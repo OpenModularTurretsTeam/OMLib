@@ -5,6 +5,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.GameData;
 import omtteam.omlib.reference.OMLibNames;
+import omtteam.omlib.tileentity.EnumMachineMode;
 
 import javax.annotation.Nullable;
 import java.util.regex.Pattern;
@@ -68,6 +69,18 @@ public class GeneralUtil {
             return (bool ? "\u00A72" : "\u00A74") + I18n.translateToLocal(localization);
         } else {
             return (bool ? "\u00A72" : "\u00A74") + I18n.translateToFallback(localization);
+        }
+    }
+
+    public static String getMachineModeLocalization(EnumMachineMode mode) {
+        String localization = (mode == EnumMachineMode.ALWAYS_OFF ? OMLibNames.Localizations.GUI.ALWAYS_OFF
+                : mode == EnumMachineMode.ALWAYS_ON ? OMLibNames.Localizations.GUI.ALWAYS_ON
+                : mode == EnumMachineMode.INVERTED ? OMLibNames.Localizations.GUI.INVERTED
+                : OMLibNames.Localizations.GUI.NONINVERTED);
+        if (!I18n.translateToLocal(localization).equals(localization)) {
+            return I18n.translateToLocal(localization);
+        } else {
+            return I18n.translateToFallback(localization);
         }
     }
 

@@ -5,7 +5,6 @@ import net.minecraftforge.common.UsernameCache;
 import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.handler.OwnerShareHandler;
 import omtteam.omlib.tileentity.ITrustedPlayersManager;
-import omtteam.omlib.tileentity.TileEntityMachine;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 
 import javax.annotation.Nullable;
@@ -66,7 +65,7 @@ public class PlayerUtil {
 
     @Nullable
     @ParametersAreNonnullByDefault
-    public static TrustedPlayer getTrustedPlayer(EntityPlayer player, TileEntityMachine machine) {
+    public static TrustedPlayer getTrustedPlayer(EntityPlayer player, ITrustedPlayersManager machine) {
         if (machine.getTrustedPlayer(player.getUniqueID()) != null || (offlineModeSupport && machine.getTrustedPlayer(player.getName()) != null)) {
             return (machine.getTrustedPlayer(player.getUniqueID()) == null ? machine.getTrustedPlayer(player.getName()) : machine.getTrustedPlayer(player.getUniqueID()));
         } else {
