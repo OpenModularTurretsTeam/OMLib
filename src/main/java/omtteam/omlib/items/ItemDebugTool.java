@@ -18,7 +18,7 @@ import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 
 import java.util.List;
 
-import static omtteam.omlib.util.GeneralUtil.safeLocalize;
+import static omtteam.omlib.util.GeneralUtil.getMachineModeLocalization;
 
 /**
  * Created by nico on 23/05/17.
@@ -49,7 +49,7 @@ public class ItemDebugTool extends CompatItem {
                 if (tileEntity instanceof TileEntityMachine) {
                     TileEntityMachine te = (TileEntityMachine) tileEntity;
                     playerIn.addChatMessage(new TextComponentString("Active: " + te.isActive() + ", Redstone: "
-                            + te.getRedstone() + ", Mode: " + safeLocalize(TileEntityMachine.getModeAsLocString(te.getMode()))));
+                            + te.getRedstone() + ", Mode: " + getMachineModeLocalization(te.getMode())));
                 }
                 if (tileEntity instanceof IDebugTile) {
                     List<String> debugInfo = ((IDebugTile) tileEntity).getDebugInfo();
