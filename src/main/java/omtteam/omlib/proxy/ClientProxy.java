@@ -43,7 +43,7 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void init() {
-
+        super.init();
     }
 
     public static World getWorld(Minecraft mc) {
