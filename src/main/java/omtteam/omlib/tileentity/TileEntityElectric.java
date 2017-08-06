@@ -161,6 +161,11 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
         this.markDirty();
     }
 
+    public void removeEnergy(int energy) {
+        storage.extractEnergy(energy, false);
+        this.markDirty();
+    }
+    
     public double getStorageEU() {
         return storageEU;
     }
