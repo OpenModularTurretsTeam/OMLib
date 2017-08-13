@@ -48,19 +48,11 @@ public class MathUtil {
         return getVectorFromYawPitch(yaw, pitch).scale(velocity);
     }
 
-    public static float getYawFromXYXZ(float rotationXY, float rotationXZ) {
-        return (float)(rotationXZ * 90F / (Math.PI / 2F));
-    }
-
-    public static float getPitchFromXYXZ(float rotationXY, float rotationXZ) {
-        return (float)(rotationXY * 90F / (Math.PI / 2F));
-    }
-
     public static float getRotationXYFromYawPitch(float yaw, float pitch) {
-        return (float)(pitch / 90 * (Math.PI / 2F));
+        return (float) ((pitch + 270F) / 90F * (Math.PI / 2F));
     }
 
     public static float getRotationXZFromYawPitch(float yaw, float pitch) {
-        return (float)(yaw / 90 *(Math.PI / 2F));
+        return (float) ((yaw - 90F) / 90F * (Math.PI / 2F));
     }
 }
