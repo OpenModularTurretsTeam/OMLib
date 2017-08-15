@@ -111,7 +111,7 @@ dependencies {
     compile "net.darkhax.tesla:Tesla:${config.minecraft_version_short}-${config.tesla_version}"
     compile "net.industrial-craft:industrialcraft-2:${config.ic2_version}:dev"
     deobfCompile "mcjty.theoneprobe:TheOneProbe:1.1x-${config.top_version}"
-    runtime "omtteam:openmodularturrets:1.10.2-${config.omt_version}:dev"
+    //runtime "omtteam:openmodularturrets:1.10.2-${config.omt_version}:dev"
     deobfCompile "li.cil.oc:OpenComputers:MC${config.minecraft_version}-${config.oc_version}"
 }
 

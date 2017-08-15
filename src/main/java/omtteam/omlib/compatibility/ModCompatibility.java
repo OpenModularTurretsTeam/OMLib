@@ -19,15 +19,15 @@ public class ModCompatibility {
     public static boolean ComputerCraftLoaded = false;
     public static boolean TOPLoaded = false;
 
-    public static final String IC2ModId = "IC2";
+    public static final String IC2ModId = "ic2";
     public static final String TeslaModId = "tesla";
-    public static final String CoFHApiModId = "CoFHAPI";
-    public static final String OCModID = "OpenComputers";
-    public static final String CCModID = "ComputerCraft";
-    public static final String MekModID = "Mekanism";
-    public static final String TEModID = "ThermalExpansion";
-    public static final String EIOModID = "EnderIO";
-    public static final String TCModID = "Thaumcraft";
+    public static final String CoFHApiModId = "cofhapi";
+    public static final String OCModID = "opencomputers";
+    public static final String CCModID = "computercraft";
+    public static final String MekModID = "mekanism";
+    public static final String TEModID = "thermalexpansion";
+    public static final String EIOModID = "enderio";
+    public static final String TCModID = "thaumcraft";
     public static final String TOPModID = "theoneprobe";
 
     public static void checkForMods() {
@@ -65,7 +65,7 @@ public class ModCompatibility {
     private static void addVersionCheckerInfo() {
         NBTTagCompound versionchecker = new NBTTagCompound();
         versionchecker.setString("curseProjectName", "omlib");
-        versionchecker.setString("curseFilenameParser", "OMLib-1.10.2-[].jar");
+        versionchecker.setString("curseFilenameParser", "OMLib-1.11.2-[].jar");
         versionchecker.setString("modDisplayName", "OMLib");
         versionchecker.setString("oldVersion", Reference.VERSION);
         FMLInterModComms.sendRuntimeMessage("omlib", "VersionChecker", "addCurseCheck", versionchecker);
