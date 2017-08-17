@@ -25,10 +25,10 @@ public abstract class TileEntityMachine extends TileEntityContainerElectric {
         } else {
             mode = EnumMachineMode.values()[0];
         }
-        refreshActive();
+        refreshActive(this.mode);
     }
 
-    private void refreshActive() {
+    protected void refreshActive(EnumMachineMode mode) {
         switch (mode) {
             case INVERTED:
                 this.active = !redstone;
@@ -50,7 +50,7 @@ public abstract class TileEntityMachine extends TileEntityContainerElectric {
 
     public void setMode(EnumMachineMode mode) {
         this.mode = mode;
-        this.refreshActive();
+        this.refreshActive(this.mode);
     }
 
     @Override
@@ -78,6 +78,6 @@ public abstract class TileEntityMachine extends TileEntityContainerElectric {
 
     public void setRedstone(boolean redstone) {
         this.redstone = redstone;
-        refreshActive();
+        refreshActive(this.mode);
     }
 }
