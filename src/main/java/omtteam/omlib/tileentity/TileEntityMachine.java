@@ -2,7 +2,6 @@ package omtteam.omlib.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
 import omtteam.omlib.power.OMEnergyStorage;
-import omtteam.omlib.reference.OMLibNames;
 
 /**
  * Created by Keridos on 27/07/17.
@@ -26,10 +25,10 @@ public abstract class TileEntityMachine extends TileEntityContainerElectric {
         } else {
             mode = EnumMachineMode.values()[0];
         }
-        refreshActive();
+        refreshActive(this.mode);
     }
 
-    private void refreshActive() {
+    protected void refreshActive(EnumMachineMode mode) {
         switch (mode) {
             case INVERTED:
                 this.active = !redstone;
@@ -51,23 +50,8 @@ public abstract class TileEntityMachine extends TileEntityContainerElectric {
 
     public void setMode(EnumMachineMode mode) {
         this.mode = mode;
-        this.refreshActive();
+        this.refreshActive(this.mode);
     }
-
-    public static String getModeAsLocString(EnumMachineMode mode) {
-        switch (mode) {
-            case INVERTED:
-                return OMLibNames.Localizations.GUI.INVERTED;
-            case NONINVERTED:
-                return OMLibNames.Localizations.GUI.NONINVERTED;
-            case ALWAYS_ON:
-                return OMLibNames.Localizations.GUI.ALWAYS_ON;
-            case ALWAYS_OFF:
-                return OMLibNames.Localizations.GUI.ALWAYS_OFF;
-        }
-        return null;
-    }
-
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
@@ -94,6 +78,6 @@ public abstract class TileEntityMachine extends TileEntityContainerElectric {
 
     public void setRedstone(boolean redstone) {
         this.redstone = redstone;
-        refreshActive();
+        refreshActive(this.mode);
     }
 }
