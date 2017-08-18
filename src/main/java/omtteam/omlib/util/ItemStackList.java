@@ -1,4 +1,4 @@
-package omtteam.omlib.util.compat;
+package omtteam.omlib.util;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -14,14 +14,14 @@ public class ItemStackList extends NonNullList<ItemStack> {
     public static final ItemStackList EMPTY = ItemStackList.create(0);
 
     public static ItemStackList create(int size) {
-        Validate.notNull(ItemStackTools.getEmptyStack());
+        Validate.notNull(ItemStack.EMPTY);
         ItemStack[] aobject = new ItemStack[size];
-        Arrays.fill(aobject, ItemStackTools.getEmptyStack());
-        return new ItemStackList(Arrays.asList(aobject), ItemStackTools.getEmptyStack());
+        Arrays.fill(aobject, ItemStack.EMPTY);
+        return new ItemStackList(Arrays.asList(aobject), ItemStack.EMPTY);
     }
 
     public static ItemStackList create() {
-        return new ItemStackList(new ArrayList<>(), ItemStackTools.getEmptyStack());
+        return new ItemStackList(new ArrayList<>(), ItemStack.EMPTY);
     }
 
     public ItemStackList(List<ItemStack> delegateIn, @Nullable ItemStack stack) {

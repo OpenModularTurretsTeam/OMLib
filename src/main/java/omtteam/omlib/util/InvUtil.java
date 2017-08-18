@@ -3,10 +3,9 @@ package omtteam.omlib.util;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import omtteam.omlib.util.compat.ItemStackTools;
 
-import static omtteam.omlib.util.compat.ItemStackTools.getStackSize;
-import static omtteam.omlib.util.compat.ItemStackTools.setStackSize;
+import javax.annotation.Nonnull;
+
 
 /**
  * Created by Keridos on 03/12/16.
@@ -33,7 +32,7 @@ public class InvUtil {
                 Slot slot = container.inventorySlots.get(i);
                 ItemStack itemStackSlot = slot.getStack();
 
-                if (itemStackSlot != ItemStackTools.getEmptyStack() && areItemStacksEqual(itemStackExt, itemStackSlot)) {
+                if (itemStackSlot != ItemStack.EMPTY  && areItemStacksEqual(itemStackExt, itemStackSlot)) {
                     int j = getStackSize(itemStackSlot) + getStackSize(itemStackExt);
 
                     if (j <= Math.min(itemStackExt.getMaxStackSize(), slot.getItemStackLimit(itemStackExt))) {
@@ -69,7 +68,7 @@ public class InvUtil {
                 Slot slot1 = container.inventorySlots.get(i);
                 ItemStack itemstack1 = slot1.getStack();
 
-                if (itemstack1 == ItemStackTools.getEmptyStack() && slot1.isItemValid(itemStackExt)) // Forge: Make sure to respect isItemValid in the slot.
+                if (itemstack1 == ItemStack.EMPTY && slot1.isItemValid(itemStackExt)) // Forge: Make sure to respect isItemValid in the slot.
                 {
                     ItemStack itemStackToPut = new ItemStack(itemStackExt.getItem(), Math.min(slot1.getItemStackLimit(itemStackExt), getStackSize(itemStackExt)), itemStackExt.getItemDamage());
                     setStackSize(itemStackExt, getStackSize(itemStackExt) - getStackSize(itemStackToPut));
@@ -90,5 +89,19 @@ public class InvUtil {
         }
 
         return flag;
+    }
+
+    public static int getStackSize(@Nonnull ItemStack stack) {
+        return stack.getCount();
+    }
+
+    @Nonnull
+    public static ItemStack setStackSize(@Nonnull ItemStack stack, int amount) {
+        if (amount <= 0) {
+            stack.setCount(0);
+            return ItemStack.EMPTY;
+        }
+        stack.setCount(amount);
+        return stack;
     }
 }

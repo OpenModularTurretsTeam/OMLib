@@ -1,5 +1,6 @@
 package omtteam.omlib.util.command;
 
+import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
@@ -7,20 +8,19 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
-import omtteam.omlib.compatability.minecraft.CompatCommandBase;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static omtteam.omlib.util.compat.ChatTools.addChatMessage;
+import static omtteam.omlib.util.PlayerUtil.addChatMessage;
 
 /**
  * Created by nico on 6/4/15.
  * Command for changing owners of an owned block
  */
 
-public class CommandChangeOwner extends CompatCommandBase {
+public class CommandChangeOwner extends CommandBase {
     @Override
     @Nonnull
     public String getName() {
@@ -52,7 +52,7 @@ public class CommandChangeOwner extends CompatCommandBase {
                 addChatMessage(sender, new TextComponentString("Invalid dimension"));
                 return;
             }
-            WorldServer worldserver = server.worldServerForDimension(dimension);
+            WorldServer worldserver = server.getWorld(dimension);
 
             TileEntity tileEntity = worldserver.getTileEntity(new BlockPos(x, y, z));
             if (tileEntity instanceof TileEntityOwnedBlock) {

@@ -1,22 +1,22 @@
 package omtteam.omlib.util.command;
 
+import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
-import omtteam.omlib.compatability.minecraft.CompatCommandBase;
 import omtteam.omlib.handler.ConfigHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static omtteam.omlib.util.compat.ChatTools.addChatMessage;
+import static omtteam.omlib.util.PlayerUtil.addChatMessage;
 
 /**
  * Created by nico on 6/4/15.
  * Command for changing owners of an owned block
  */
 
-public class CommandToggleDebug extends CompatCommandBase {
+public class CommandToggleDebug extends CommandBase {
     @Override
     @Nonnull
     public String getName() {
