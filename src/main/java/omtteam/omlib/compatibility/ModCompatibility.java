@@ -1,4 +1,4 @@
-package omtteam.omlib.compatability;
+package omtteam.omlib.compatibility;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.Loader;

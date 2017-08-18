@@ -10,7 +10,7 @@ public interface IHasTooltips {
     void drawTooltips();
 
     default boolean isMouseOverTextField(GuiTextField guiTextField, int x, int y) {
-        return (x >= guiTextField.xPosition && x <= guiTextField.xPosition + guiTextField.width
-                && y >= guiTextField.yPosition && y <= guiTextField.yPosition + guiTextField.height);
+        return (x >= guiTextField.x && x <= guiTextField.x + guiTextField.width
+                && y >= guiTextField.y && y <= guiTextField.y + guiTextField.height);
     }
 }
