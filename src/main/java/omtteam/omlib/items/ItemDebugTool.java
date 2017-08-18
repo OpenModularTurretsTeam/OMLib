@@ -1,6 +1,7 @@
 package omtteam.omlib.items;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -9,7 +10,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import omtteam.omlib.api.IDebugTile;
-import omtteam.omlib.compatability.minecraft.CompatItem;
 import omtteam.omlib.reference.OMLibNames;
 import omtteam.omlib.reference.Reference;
 import omtteam.omlib.tileentity.TileEntityElectric;
@@ -23,7 +23,7 @@ import static omtteam.omlib.util.GeneralUtil.safeLocalize;
 /**
  * Created by nico on 23/05/17.
  */
-public class ItemDebugTool extends CompatItem {
+public class ItemDebugTool extends Item {
     public ItemDebugTool() {
         super();
 
@@ -32,8 +32,10 @@ public class ItemDebugTool extends CompatItem {
         this.setUnlocalizedName(OMLibNames.Items.debugTool);
     }
 
+
+
     @Override
-    protected EnumActionResult clOnItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!worldIn.isRemote) {
             TileEntity tileEntity = worldIn.getTileEntity(pos);
             if (tileEntity != null) {

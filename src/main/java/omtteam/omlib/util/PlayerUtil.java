@@ -1,12 +1,15 @@
 package omtteam.omlib.util;
 
+import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.UsernameCache;
 import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.handler.OwnerShareHandler;
 import omtteam.omlib.tileentity.TileEntityMachine;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.annotation.ParametersAreNullableByDefault;
@@ -98,5 +101,13 @@ public class PlayerUtil {
         }
 
         return allowed;
+    }
+
+    public static void addChatMessage(@Nonnull ICommandSender sender, @Nonnull ITextComponent component) {
+        if (sender instanceof EntityPlayer) {
+            ((EntityPlayer) sender).sendStatusMessage(component, false);
+        } else {
+            sender.sendMessage(component);
+        }
     }
 }

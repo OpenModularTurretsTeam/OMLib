@@ -3,7 +3,7 @@ package omtteam.omlib.util;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
-import net.minecraftforge.fml.common.registry.GameData;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import omtteam.omlib.reference.OMLibNames;
 
 import javax.annotation.Nullable;
@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 public class GeneralUtil {
     public static Item getItem(String modid, String name) {
         Item item;
-        item = GameData.getItemRegistry().getObject(new ResourceLocation(modid + ":" + name));
+        item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(modid + ":" + name));
         return item;
     }
 

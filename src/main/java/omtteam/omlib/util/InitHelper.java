@@ -4,7 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import omtteam.omlib.api.IHasItemBlock;
 
 /**
@@ -14,17 +14,18 @@ import omtteam.omlib.api.IHasItemBlock;
 @SuppressWarnings("unused")
 public class InitHelper {
     public static Block registerBlock(Block block) {
-        GameRegistry.register(block);
+        ForgeRegistries.BLOCKS.register(block);
         if (block instanceof IHasItemBlock) {
-            GameRegistry.register(((IHasItemBlock) block).getItemBlock(block));
+            ForgeRegistries.ITEMS.register(((IHasItemBlock) block).getItemBlock(block));
         } else {
-            GameRegistry.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
+            ForgeRegistries.ITEMS.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
         }
         return block;
     }
 
     public static Item registerItem(Item item) {
-        return GameRegistry.register(item);
+        ForgeRegistries.ITEMS.register(item);
+        return item;
     }
 
     public static SoundEvent registerSound(SoundEvent soundEvent) {

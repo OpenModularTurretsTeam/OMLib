@@ -9,7 +9,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import omtteam.omlib.init.OMLibItems;
 import omtteam.omlib.reference.Reference;
-import omtteam.omlib.util.compat.MinecraftTools;
 
 @SuppressWarnings({"WeakerAccess", "EmptyMethod", "unused"})
 @SideOnly(Side.CLIENT)
@@ -37,6 +36,6 @@ public class ClientProxy extends CommonProxy {
     }
 
     public static World getWorld(Minecraft mc) {
-        return MinecraftTools.getWorld(mc);
+        return mc.world;
     }
 }
