@@ -11,7 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import omtteam.omlib.tileentity.TileEntityContainerElectric;
-import omtteam.omlib.util.compat.ItemStackTools;
+import omtteam.omlib.util.InvUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -56,17 +56,17 @@ public abstract class BlockAbstractTileEntity extends BlockAbstract {
             for (int i = 0; i < entity.getSizeInventory(); i++) {
                 ItemStack item = entity.getStackInSlot(i);
 
-                if (item != null && ItemStackTools.getStackSize(item) > 0) {
+                if (item != null && InvUtil.getStackSize(item) > 0) {
                     float rx = rand.nextFloat() * 0.8F + 0.1F;
                     float ry = rand.nextFloat() * 0.8F + 0.1F;
                     float rz = rand.nextFloat() * 0.8F + 0.1F;
 
                     EntityItem entityItem = new EntityItem(worldIn, pos.getX() + rx, pos.getY() + ry, pos.getZ() + rz,
-                            new ItemStack(item.getItem(), ItemStackTools.getStackSize(item),
+                            new ItemStack(item.getItem(), InvUtil.getStackSize(item),
                                     item.getItemDamage()));
 
                     if (item.hasTagCompound()) {
-                        entityItem.getEntityItem().setTagCompound(item.getTagCompound().copy());
+                        entityItem.getItem().setTagCompound(item.getTagCompound().copy());
                     }
 
                     float factor = 0.05F;
@@ -74,7 +74,7 @@ public abstract class BlockAbstractTileEntity extends BlockAbstract {
                     entityItem.motionY = rand.nextGaussian() * factor + 0.2F;
                     entityItem.motionZ = rand.nextGaussian() * factor;
                     worldIn.spawnEntity(entityItem);
-                    ItemStackTools.setStackSize(item, 0);
+                    InvUtil.setStackSize(item, 0);
                 }
             }
         }

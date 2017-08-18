@@ -1,26 +1,23 @@
 package omtteam.omlib.tileentity;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.text.ITextComponent;
-import omtteam.omlib.compatability.minecraft.CompatSidedInventory;
-import omtteam.omlib.util.compat.ItemStackList;
-import omtteam.omlib.util.compat.ItemStackTools;
+import omtteam.omlib.util.InvUtil;
+import omtteam.omlib.util.ItemStackList;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-
-import static omtteam.omlib.util.compat.ItemStackTools.loadFromNBT;
-import static omtteam.omlib.util.compat.ItemStackTools.setStackSize;
 
 /**
  * Created by Keridos on 05/12/2015.
  * This Class is the abstract class handling SidedInventory.
  */
 @SuppressWarnings("WeakerAccess")
-public abstract class TileEntityContainer extends TileEntityOwnedBlock implements CompatSidedInventory {
+public abstract class TileEntityContainer extends TileEntityOwnedBlock implements ISidedInventory {
     protected ItemStackList inventory = ItemStackList.create();
 
     @SuppressWarnings("NullableProblems")
@@ -28,47 +25,30 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock implement
     public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
         super.writeToNBT(nbtTagCompound);
 
-        NBTTagList itemList = new NBTTagList();
-
-        for (int i = 0; i < this.inventory.size(); i++) {
-            ItemStack stack = this.getStackInSlot(i);
-
-            if (stack != ItemStackTools.getEmptyStack()) {
-                NBTTagCompound tag = new NBTTagCompound();
-                tag.setByte("Slot", (byte) i);
-                stack.writeToNBT(tag);
-                itemList.appendTag(tag);
-            }
-        }
-        nbtTagCompound.setTag("Inventory", itemList);
+        NBTTagCompound inv = new NBTTagCompound();
+        ItemStackHelper.saveAllItems(inv, inventory);
+        nbtTagCompound.setTag("Inventory", inv);
         return nbtTagCompound;
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
         super.readFromNBT(nbtTagCompound);
-        NBTTagList tagList = nbtTagCompound.getTagList("Inventory", 10);
-
-        for (int i = 0; i < tagList.tagCount(); i++) {
-            NBTTagCompound tag = tagList.getCompoundTagAt(i);
-            byte slot = tag.getByte("Slot");
-            if (slot >= 0 && slot < inventory.size()) {
-                inventory.set(slot, loadFromNBT(tag));
-            }
-        }
+        NBTTagCompound inv = nbtTagCompound.getCompoundTag("Inventory");
+        ItemStackHelper.loadAllItems(inv, inventory);
     }
 
     @Override
     public ItemStack decrStackSize(int slot, int amt) {
         ItemStack stack = getStackInSlot(slot);
 
-        if (stack != ItemStackTools.getEmptyStack()) {
-            if (ItemStackTools.getStackSize(stack) <= amt) {
-                setInventorySlotContents(slot, ItemStackTools.getEmptyStack());
+        if (stack != ItemStack.EMPTY) {
+            if (InvUtil.getStackSize(stack) <= amt) {
+                setInventorySlotContents(slot, ItemStack.EMPTY);
             } else {
                 stack = stack.splitStack(amt);
-                if (ItemStackTools.getStackSize(stack) == 0) {
-                    setInventorySlotContents(slot, ItemStackTools.getEmptyStack());
+                if (InvUtil.getStackSize(stack) == 0) {
+                    setInventorySlotContents(slot, ItemStack.EMPTY);
                 }
             }
         }
@@ -78,8 +58,8 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock implement
     @Override
     public void setInventorySlotContents(int slot, ItemStack stack) {
         inventory.set(slot, stack);
-        if (stack != ItemStackTools.getEmptyStack() && ItemStackTools.getStackSize(stack) > getInventoryStackLimit()) {
-            setStackSize(stack, getInventoryStackLimit());
+        if (stack != ItemStack.EMPTY && InvUtil.getStackSize(stack) > getInventoryStackLimit()) {
+            InvUtil.setStackSize(stack, getInventoryStackLimit());
         }
     }
 
@@ -98,8 +78,10 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock implement
         return 64;
     }
 
+
+
     @Override
-    public boolean isUsable(EntityPlayer player) {
+    public boolean isUsableByPlayer(EntityPlayer player) {
         return this.getWorld().getTileEntity(pos) == this && player.getDistanceSq(this.pos.getX() + 0.5,
                 this.pos.getY() + 0.5,
                 this.pos.getZ() + 0.5) < 64;
@@ -129,7 +111,7 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock implement
     @Override
     public ItemStack removeStackFromSlot(int slot) {
         ItemStack itemstack = getStackInSlot(slot);
-        setInventorySlotContents(slot, ItemStackTools.getEmptyStack());
+        setInventorySlotContents(slot, ItemStack.EMPTY);
         return itemstack;
     }
 
