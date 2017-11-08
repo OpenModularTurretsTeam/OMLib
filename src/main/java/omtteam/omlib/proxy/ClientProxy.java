@@ -35,6 +35,11 @@ public class ClientProxy extends CommonProxy {
         super.initHandlers();
     }
 
+    @Override
+    public void init() {
+
+    }
+
     public static World getWorld(Minecraft mc) {
         return mc.world;
     }

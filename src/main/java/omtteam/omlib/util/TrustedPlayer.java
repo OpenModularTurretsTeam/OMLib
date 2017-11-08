@@ -16,6 +16,12 @@ public class TrustedPlayer {
         this.name = name;
     }
 
+    @ParametersAreNonnullByDefault
+    public TrustedPlayer(Player player) {
+        this.name = player.getName();
+        this.uuid = player.getUuid();
+    }
+
     public String getName() {
         return name;
     }
