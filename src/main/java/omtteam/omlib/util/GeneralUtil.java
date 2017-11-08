@@ -62,6 +62,7 @@ public class GeneralUtil {
         }
     }
 
+    @SuppressWarnings("unused")
     public static String getColoredBooleanLocalizationYesNo(boolean bool) {
         String localization = (bool ? OMLibNames.Localizations.GUI.YES : OMLibNames.Localizations.GUI.NO);
         if (!I18n.translateToLocal(localization).equals(localization)) {

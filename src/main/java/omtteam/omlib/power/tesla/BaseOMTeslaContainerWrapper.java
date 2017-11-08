@@ -9,12 +9,13 @@ import omtteam.omlib.tileentity.TileEntityElectric;
 /**
  * A Receiver for Energy, credits go to the ender IO devs :)
  */
-@SuppressWarnings("WeakerAccess")
+
 public class BaseOMTeslaContainerWrapper implements ITeslaConsumer {
 
     private final TileEntityElectric tile;
     private final EnumFacing facing;
 
+    @SuppressWarnings("SameParameterValue")
     public BaseOMTeslaContainerWrapper(TileEntityElectric tile, EnumFacing facing) {
         this.tile = tile;
         this.facing = facing;
