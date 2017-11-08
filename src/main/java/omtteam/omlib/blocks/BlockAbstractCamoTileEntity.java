@@ -41,6 +41,7 @@ public abstract class BlockAbstractCamoTileEntity extends BlockAbstractTileEntit
         }
     };
 
+    @SuppressWarnings("SameParameterValue")
     protected BlockAbstractCamoTileEntity(Material material) {
         super(material);
     }
