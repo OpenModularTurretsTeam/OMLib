@@ -40,7 +40,7 @@ public class InvUtil {
                         setStackSize(itemStackSlot, j);
                         slot.onSlotChanged();
                         flag = true;
-                    }else if (getStackSize(itemStackSlot) < Math.min(itemStackExt.getMaxStackSize(), slot.getItemStackLimit(itemStackExt) - getStackSize(itemStackSlot))) {
+                    } else if (getStackSize(itemStackSlot) <= Math.min(itemStackExt.getMaxStackSize(), slot.getItemStackLimit(itemStackExt) - getStackSize(itemStackSlot))) {
                         int stackSizeExt = getStackSize(itemStackExt);
                         setStackSize(itemStackExt, getStackSize(itemStackExt) - Math.min(itemStackExt.getMaxStackSize(), slot.getItemStackLimit(itemStackExt) - getStackSize(itemStackSlot)));
                         setStackSize(itemStackSlot, Math.min(slot.getItemStackLimit(itemStackExt), getStackSize(itemStackSlot) + (stackSizeExt - getStackSize(itemStackExt))));
