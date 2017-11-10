@@ -1,3 +1,4 @@
+gui.omtteam.omlib:base=Basis
 gui.omtteam.omlib:owner=Besitzer
 gui.omtteam.omlib:inverted=Invertiert
 gui.omtteam.omlib:noninverted=Nicht invertiert
@@ -9,6 +10,8 @@ gui.omtteam.omlib:true=wahr
 gui.omtteam.omlib:false=falsch
 gui.omtteam.omlib:yes=ja
 gui.omtteam.omlib:no=nein
+gui.omtteam.omlib:next=Nächst.
+gui.omtteam.omlib:previous=Vorher.
 gui.omtteam.omlib:trusted_players=Vertraute Spieler
 gui.omtteam.omlib:attack_mobs=Attackiert Mobs
 gui.omtteam.omlib:attack_neutrals=Attackiert Neutrale
