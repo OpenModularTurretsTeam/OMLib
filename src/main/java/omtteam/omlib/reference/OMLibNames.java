@@ -19,6 +19,8 @@ public class OMLibNames {
             public static final String NO = "gui.omtteam.omlib:no";
             public static final String FACING = "gui.omtteam.omlib:facing";
             public static final String ACTIVE = "gui.omtteam.omlib:active";
+            public static final String NEXT = "gui.omtteam.omlib:next";
+            public static final String PREVIOUS = "gui.omtteam.omlib:active";
             public static final String INVERTED = "gui.omtteam.omlib:inverted";
             public static final String NONINVERTED = "gui.omtteam.omlib:noninverted";
             public static final String ALWAYS_ON = "gui.omtteam.omlib:always_on";
