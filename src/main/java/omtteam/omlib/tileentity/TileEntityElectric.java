@@ -39,7 +39,8 @@ import static omtteam.omlib.handler.ConfigHandler.EUSupport;
 public abstract class TileEntityElectric extends TileEntityOwnedBlock implements IEnergyReceiver, ITickable, IEnergySink {
     protected OMEnergyStorage storage;
     protected Object teslaContainer;
-    protected double storageEU = 0D;
+    protected double storageEU;
+    protected double maxStorageEU = 40000D;
     //private float amountOfPotentia = 0F;
     //private final float maxAmountOfPotentia = ConfigHandler.getPotentiaAddonCapacity();
 
@@ -48,12 +49,10 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
         super.writeToNBT(nbtTagCompound);
-
         nbtTagCompound.setInteger("maxStorage", this.storage.getMaxEnergyStored());
         nbtTagCompound.setInteger("energyStored", this.storage.getEnergyStored());
         nbtTagCompound.setInteger("maxIO", this.storage.getMaxReceive());
         nbtTagCompound.setDouble("storageEU", storageEU);
-
         return nbtTagCompound;
     }
 
@@ -160,8 +159,17 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
         this.markDirty();
     }
 
+    public void removeEnergy(int energy) {
+        storage.extractEnergy(energy, false);
+        this.markDirty();
+    }
+
     public double getStorageEU() {
         return storageEU;
+    }
+
+    public double getMaxStorageEU() {
+        return maxStorageEU;
     }
 
     public void moveEnergyFromIC2ToStorage() {
@@ -206,7 +214,7 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
 
     @Optional.Method(modid = IC2ModId)
     protected void addToIc2EnergyNetwork() {
-        if (!world.isRemote) {
+        if (!worldObj.isRemote) {
             EnergyTileLoadEvent event = new EnergyTileLoadEvent(this);
             MinecraftForge.EVENT_BUS.post(event);
         }
@@ -257,7 +265,7 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
         // side can be used, for example only allow power input through the back, that could be
         // done here.
         if (ModCompatibility.TeslaLoaded) {
-            if (hasTeslaCapability(capability,facing) && getTeslaCapability(capability, facing) != null) {
+            if (hasTeslaCapability(capability, facing) && getTeslaCapability(capability, facing) != null) {
                 return getTeslaCapability(capability, facing);
             }
         }

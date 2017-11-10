@@ -1,4 +1,4 @@
-package omtteam.omlib.compatibility;
+package omtteam.omlib.compatability;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.Loader;
@@ -15,26 +15,38 @@ public class ModCompatibility {
     public static boolean TeslaLoaded = false;
     public static boolean CoFHApiLoaded = false;
     public static boolean OpenComputersLoaded = false;
+    public static boolean ComputerCraftLoaded = false;
+    public static boolean TOPLoaded = false;
 
     public static final String IC2ModId = "ic2";
     public static final String TeslaModId = "tesla";
     public static final String CoFHApiModId = "CoFHAPI";
-    public static final String OCModID = "CurrentlyDisabled";
+    public static final String OCModID = "OpenComputers";
+    public static final String CCModID = "ComputerCraft";
+    public static final String MekModID = "Mekanism";
+    public static final String TEModID = "ThermalExpansion";
+    public static final String EIOModID = "EnderIO";
+    public static final String TCModID = "Thaumcraft";
+    public static final String TOPModID = "theoneprobe";
 
     public static void checkForMods() {
-
         IC2Loaded = Loader.isModLoaded(IC2ModId);
-        fixIC2Loading();
         TeslaLoaded = Loader.isModLoaded(TeslaModId);
+        OpenComputersLoaded = Loader.isModLoaded(OCModID);
+        ComputerCraftLoaded = Loader.isModLoaded(CCModID);
+        TOPLoaded = Loader.isModLoaded(TOPModID);
+        fixIC2Loading();
+
         printDetectedMods();
     }
 
-    private static void printDetectedMods(){
+    private static void printDetectedMods() {
         String foundMods = "Found the following mods: ";
-        foundMods += IC2Loaded ? "IC2 ": "";
-        foundMods += TeslaLoaded ? "Tesla ": "";
-        foundMods += CoFHApiLoaded ? "CoFHApi ": "";
-        foundMods += OpenComputersLoaded ? "OpenComputers ": "";
+        foundMods += IC2Loaded ? "IC2 " : "";
+        foundMods += TeslaLoaded ? "Tesla " : "";
+        foundMods += CoFHApiLoaded ? "CoFHApi " : "";
+        foundMods += OpenComputersLoaded ? "OpenComputers " : "";
+        foundMods += TOPLoaded ? "The One Probe " : "";
         OMLib.getLogger().info(foundMods);
     }
 
@@ -60,5 +72,8 @@ public class ModCompatibility {
 
     public static void performModCompat() {
         addVersionCheckerInfo();
+        if (TOPLoaded) {
+            TOPCompatibility.register();
+        }
     }
 }

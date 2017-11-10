@@ -17,6 +17,7 @@ import javax.annotation.Nullable;
  */
 @SideOnly(Side.CLIENT)
 public class CamoBlockColor implements IBlockColor {
+    @SuppressWarnings("ConstantConditions")
     @Override
     public int colorMultiplier(@Nullable IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) {
         if (worldIn != null && pos != null && worldIn.getTileEntity(pos) instanceof ICamoSupport && state != ((ICamoSupport) worldIn.getTileEntity(pos)).getCamoState()) {
