@@ -1,20 +1,25 @@
 package omtteam.omlib.handler;
 
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import omtteam.omlib.OMLib;
+import omtteam.omlib.init.OMLibItems;
 import omtteam.omlib.items.IDrawOutline;
 import omtteam.omlib.items.IDrawOutlineBase;
 import omtteam.omlib.network.messages.MessageSetSharePlayerList;
@@ -53,6 +58,16 @@ public class EventHandler {
         if (!event.getWorld().isRemote && event.getEntity() instanceof EntityPlayerMP) {
             OMLibNetworkingHandler.sendMessageToPlayer(new MessageSetSharePlayerList(OwnerShareHandler.getInstance()), (EntityPlayerMP) event.getEntity());
         }
+    }
+
+    @SubscribeEvent
+    public void itemRegisterEvent(RegistryEvent.Register<Item> event) {
+        OMLibItems.init(event.getRegistry());
+    }
+
+    @SubscribeEvent
+    public void renderRegisterEvent(ModelRegistryEvent event) {
+        OMLib.proxy.initRenderers();
     }
 
     @SubscribeEvent
@@ -96,7 +111,7 @@ public class EventHandler {
             GlStateManager.disableTexture2D();
             GlStateManager.depthMask(false);
             Tessellator tessellator = Tessellator.getInstance();
-            VertexBuffer vertexbuffer = tessellator.getBuffer();
+            BufferBuilder vertexbuffer = tessellator.getBuffer();
             vertexbuffer.begin(3, DefaultVertexFormats.POSITION_COLOR);
             drawHighlightBox(vertexbuffer, alignedBB.minX, alignedBB.minY, alignedBB.minZ, alignedBB.maxX, alignedBB.maxY, alignedBB.maxZ, color[0], color[1], color[2], 0.5F);
             tessellator.draw();
