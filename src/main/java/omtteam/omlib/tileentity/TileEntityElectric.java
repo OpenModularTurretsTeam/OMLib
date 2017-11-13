@@ -1,6 +1,6 @@
 package omtteam.omlib.tileentity;
 
-import cofh.api.energy.IEnergyReceiver;
+import cofh.redstoneflux.api.IEnergyReceiver;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergyEmitter;
@@ -214,7 +214,7 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
 
     @Optional.Method(modid = IC2ModId)
     protected void addToIc2EnergyNetwork() {
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             EnergyTileLoadEvent event = new EnergyTileLoadEvent(this);
             MinecraftForge.EVENT_BUS.post(event);
         }
