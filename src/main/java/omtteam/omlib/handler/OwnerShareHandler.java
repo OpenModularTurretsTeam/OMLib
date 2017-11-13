@@ -165,7 +165,7 @@ public class OwnerShareHandler implements Serializable {
             Path fullpath = Paths.get(saveRoot.toString() + "/omlib/OwnerShare.sav");
             try {
                 if (Files.notExists(path)) {
-                    if (path.toFile().mkdir()) {
+                    if (!path.toFile().mkdir()) {
                         throw new Exception("Failed to create dir");
                     }
                 }
