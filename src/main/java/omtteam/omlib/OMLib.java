@@ -16,8 +16,8 @@ import omtteam.omlib.util.command.CommandShareOwner;
 import omtteam.omlib.util.command.CommandToggleDebug;
 import org.apache.logging.log4j.Logger;
 
-import static omtteam.omlib.compatibility.ModCompatibility.checkForMods;
 import static omtteam.omlib.compatibility.ModCompatibility.performModCompat;
+import static omtteam.omlib.compatibility.ModCompatibility.checkForMods;
 
 
 @Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, acceptedMinecraftVersions = "1.10.2", dependencies = Reference.DEPENDENCIES)
@@ -28,7 +28,7 @@ public class OMLib {
 
     @SuppressWarnings("unused")
     @SidedProxy(clientSide = "omtteam.omlib.proxy.ClientProxy", serverSide = "omtteam.omlib.proxy" + "" + ".CommonProxy")
-    private static CommonProxy proxy;
+    public static CommonProxy proxy;
 
     @SuppressWarnings("unused")
     public static CreativeTabs modularTurretsTab;
