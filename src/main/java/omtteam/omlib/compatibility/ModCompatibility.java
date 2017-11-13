@@ -1,9 +1,10 @@
-package omtteam.omlib.compatability;
+package omtteam.omlib.compatibility;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import omtteam.omlib.OMLib;
+import omtteam.omlib.compatibility.theoneprobe.TOPCompatibility;
 import omtteam.omlib.reference.Reference;
 
 /**
@@ -20,13 +21,13 @@ public class ModCompatibility {
 
     public static final String IC2ModId = "ic2";
     public static final String TeslaModId = "tesla";
-    public static final String CoFHApiModId = "CoFHAPI";
-    public static final String OCModID = "OpenComputers";
-    public static final String CCModID = "ComputerCraft";
-    public static final String MekModID = "Mekanism";
-    public static final String TEModID = "ThermalExpansion";
-    public static final String EIOModID = "EnderIO";
-    public static final String TCModID = "Thaumcraft";
+    public static final String CoFHApiModId = "redstoneflux";
+    public static final String OCModID = "opencomputers";
+    public static final String CCModID = "computercraft";
+    public static final String MekModID = "mekanism";
+    public static final String TEModID = "thermalexpansion";
+    public static final String EIOModID = "enderio";
+    public static final String TCModID = "thaumcraft";
     public static final String TOPModID = "theoneprobe";
 
     public static void checkForMods() {
@@ -35,7 +36,6 @@ public class ModCompatibility {
         OpenComputersLoaded = Loader.isModLoaded(OCModID);
         ComputerCraftLoaded = Loader.isModLoaded(CCModID);
         TOPLoaded = Loader.isModLoaded(TOPModID);
-        fixIC2Loading();
 
         printDetectedMods();
     }
@@ -44,21 +44,10 @@ public class ModCompatibility {
         String foundMods = "Found the following mods: ";
         foundMods += IC2Loaded ? "IC2 " : "";
         foundMods += TeslaLoaded ? "Tesla " : "";
-        foundMods += CoFHApiLoaded ? "CoFHApi " : "";
+        foundMods += CoFHApiLoaded ? "RedstoneFlux " : "";
         foundMods += OpenComputersLoaded ? "OpenComputers " : "";
-        foundMods += TOPLoaded ? "The One Probe " : "";
+        foundMods += TOPLoaded ? "TheOneProbe " : "";
         OMLib.getLogger().info(foundMods);
-    }
-
-    public static void fixIC2Loading() {
-       /* if (IC2Loaded) {
-            try {
-                Class.forName("ic2.api.energy.tile.IEnergySink", false, ClassLoader.getSystemClassLoader());
-            } catch (ClassNotFoundException e) {
-                IC2Loaded = false;
-                Logger.getLogger("OMlib").severe("IC2 should be present but class not found!");
-            }
-        }  */
     }
 
     private static void addVersionCheckerInfo() {
