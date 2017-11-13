@@ -7,7 +7,6 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
-import omtteam.openmodularturrets.OpenModularTurrets;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -29,7 +28,6 @@ public class JSONRecipeBuilder {
     public static void setupDir(Configuration config) {
         if (RECIPE_DIR == null) {
             RECIPE_DIR = config.getConfigFile().toPath().getParent().resolve("./recipes/").toFile();
-            OpenModularTurrets.getLogger().error(RECIPE_DIR.toString());
         }
 
         if (!RECIPE_DIR.exists()) {
