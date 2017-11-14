@@ -35,28 +35,30 @@ public abstract class CamoBakedModel implements IBakedModel {
     public CamoBakedModel(List<IBakedModel> list) {
         defaultModels = list;
     }
-    
+
     /**
      * Returns the corresponding model used for rendering the default model of the block.
      *
-     * @param   list    the list of available models
-     * @param   state   the state to get the model for
-     * @return          the correct model for the given state
+     * @param list  the list of available models
+     * @param state the state to get the model for
+     * @return the correct model for the given state
      */
-    protected abstract IBakedModel getModel(List<IBakedModel> list, IBlockState state);
+    protected abstract IBakedModel getModel(List<IBakedModel> list, @Nullable IBlockState state);
 
     @Override
     @Nonnull
     @SideOnly(Side.CLIENT)
     public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
         IExtendedBlockState extendedState = (IExtendedBlockState) state;
-        IBlockState camoState = extendedState.getValue(RENDERBLOCKSTATE).getRenderState();
+        IBlockState camoState = extendedState != null ? extendedState.getValue(RENDERBLOCKSTATE).getRenderState() : null;
 
-        if (camoState.getBlock() instanceof BlockAbstractCamoTileEntity && state != null) {
+        if (camoState != null && camoState.getBlock() instanceof BlockAbstractCamoTileEntity) {
             return getModel(defaultModels, state).getQuads(state, side, rand);
 
-        } else {
+        } else if (camoState != null) {
             return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(camoState).getQuads(camoState, side, rand);
+        } else {
+            return getModel(defaultModels, null).getQuads(state, side, rand);
         }
     }
 

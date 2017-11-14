@@ -34,7 +34,7 @@ import static omtteam.omlib.handler.ConfigHandler.EUSupport;
 @SuppressWarnings({"WeakerAccess", "CanBeFinal", "unused"})
 @Optional.InterfaceList({
         @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySink", modid = IC2ModId),
-        @Optional.Interface(iface = "cofh.api.energy.IEnergyReceiver", modid = CoFHApiModId)})
+        @Optional.Interface(iface = "cofh.redstoneflux.api.IEnergyReceiver", modid = CoFHApiModId)})
 @MethodsReturnNonnullByDefault
 public abstract class TileEntityElectric extends TileEntityOwnedBlock implements IEnergyReceiver, ITickable, IEnergySink {
     protected OMEnergyStorage storage;
