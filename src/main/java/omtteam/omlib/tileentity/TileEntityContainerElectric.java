@@ -37,8 +37,7 @@ public abstract class TileEntityContainerElectric extends TileEntityElectric imp
         NBTTagCompound inv = nbtTagCompound.getCompoundTag("Inventory");
         ItemStackHelper.loadAllItems(inv, inventory);
     }
-
-
+    
     @Override
     public ItemStack decrStackSize(int slot, int amt) {
         ItemStack stack = getStackInSlot(slot);
