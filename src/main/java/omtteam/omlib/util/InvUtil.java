@@ -19,7 +19,7 @@ public class InvUtil {
         return stackB.getItem() == stackA.getItem() && (!stackA.getHasSubtypes() || stackA.getMetadata() == stackB.getMetadata()) && ItemStack.areItemStackTagsEqual(stackA, stackB);
     }
 
-    public static boolean mergeItemStackWithStackLimit(ItemStack itemStackExt, int startIndex, int endIndex, boolean reverseDirection, Container container) {
+    public static boolean mergeItemStackWithStackLimit(ItemStack stack, int startIndex, int endIndex, boolean reverseDirection, Container container) {
         boolean flag = false;
         int i = startIndex;
 
@@ -27,23 +27,23 @@ public class InvUtil {
             i = endIndex - 1;
         }
 
-        if (itemStackExt.isStackable()) {
-            while (getStackSize(itemStackExt) > 0 && (!reverseDirection && i < endIndex || reverseDirection && i >= startIndex)) {
+        if (stack.isStackable()) {
+            while (getStackSize(stack) > 0 && (!reverseDirection && i < endIndex || reverseDirection && i >= startIndex)) {
                 Slot slot = container.inventorySlots.get(i);
                 ItemStack itemStackSlot = slot.getStack();
 
-                if (itemStackSlot != ItemStack.EMPTY  && areItemStacksEqual(itemStackExt, itemStackSlot)) {
-                    int j = getStackSize(itemStackSlot) + getStackSize(itemStackExt);
+                if (!itemStackSlot.isEmpty()  && areItemStacksEqual(stack, itemStackSlot) && ItemStack.areItemStackTagsEqual(stack, itemStackSlot)) {
+                    int j = getStackSize(itemStackSlot) + getStackSize(stack);
 
-                    if (j <= Math.min(itemStackExt.getMaxStackSize(), slot.getItemStackLimit(itemStackExt))) {
-                        setStackSize(itemStackExt, 0);
+                    if (j <= Math.min(stack.getMaxStackSize(), slot.getItemStackLimit(stack))) {
+                        setStackSize(stack, 0);
                         setStackSize(itemStackSlot, j);
                         slot.onSlotChanged();
                         flag = true;
-                    } else if (getStackSize(itemStackSlot) <= Math.min(itemStackExt.getMaxStackSize(), slot.getItemStackLimit(itemStackExt) - getStackSize(itemStackSlot))) {
-                        int stackSizeExt = getStackSize(itemStackExt);
-                        setStackSize(itemStackExt, getStackSize(itemStackExt) - Math.min(itemStackExt.getMaxStackSize(), slot.getItemStackLimit(itemStackExt) - getStackSize(itemStackSlot)));
-                        setStackSize(itemStackSlot, Math.min(slot.getItemStackLimit(itemStackExt), getStackSize(itemStackSlot) + (stackSizeExt - getStackSize(itemStackExt))));
+                    } else if (getStackSize(itemStackSlot) <= Math.min(stack.getMaxStackSize(), slot.getItemStackLimit(stack) - getStackSize(itemStackSlot))) {
+                        int stackSizeExt = getStackSize(stack);
+                        setStackSize(stack, getStackSize(stack) - Math.min(stack.getMaxStackSize(), slot.getItemStackLimit(stack) - getStackSize(itemStackSlot)));
+                        setStackSize(itemStackSlot, Math.min(slot.getItemStackLimit(stack), getStackSize(itemStackSlot) + (stackSizeExt - getStackSize(stack))));
                         slot.onSlotChanged();
                         flag = true;
                     }
@@ -57,7 +57,7 @@ public class InvUtil {
             }
         }
 
-        if (getStackSize(itemStackExt) > 0) {
+        if (getStackSize(stack) > 0) {
             if (reverseDirection) {
                 i = endIndex - 1;
             } else {
@@ -68,15 +68,19 @@ public class InvUtil {
                 Slot slot1 = container.inventorySlots.get(i);
                 ItemStack itemstack1 = slot1.getStack();
 
-                if (itemstack1 == ItemStack.EMPTY && slot1.isItemValid(itemStackExt)) // Forge: Make sure to respect isItemValid in the slot.
+                if (itemstack1.isEmpty() && slot1.isItemValid(stack)) // Forge: Make sure to respect isItemValid in the slot.
                 {
-                    ItemStack itemStackToPut = new ItemStack(itemStackExt.getItem(), Math.min(slot1.getItemStackLimit(itemStackExt), getStackSize(itemStackExt)), itemStackExt.getItemDamage());
-                    setStackSize(itemStackExt, getStackSize(itemStackExt) - getStackSize(itemStackToPut));
-                    slot1.putStack(itemStackToPut);
-                    slot1.onSlotChanged();
-                    if (getStackSize(itemStackExt) == 0) {
-                        flag = true;
+                    if (stack.getCount() > slot1.getItemStackLimit(stack))
+                    {
+                        slot1.putStack(stack.splitStack(slot1.getItemStackLimit(stack)));
                     }
+                    else
+                    {
+                        slot1.putStack(stack.splitStack(stack.getCount()));
+                    }
+
+                    slot1.onSlotChanged();
+                    flag = true;
                     break;
                 }
 
