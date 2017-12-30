@@ -78,9 +78,7 @@ public abstract class CamoBakedModel implements IBakedModel {
     }
 
     @Override
-    public TextureAtlasSprite getParticleTexture() {
-        return null;
-    }
+    public abstract TextureAtlasSprite getParticleTexture();
 
     @Override
     public ItemCameraTransforms getItemCameraTransforms() {
@@ -91,4 +89,6 @@ public abstract class CamoBakedModel implements IBakedModel {
     public ItemOverrideList getOverrides() {
         return ItemOverrideList.NONE;
     }
+
+
 }
