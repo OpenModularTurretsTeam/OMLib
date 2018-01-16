@@ -50,15 +50,16 @@ public abstract class CamoBakedModel implements IBakedModel {
     @SideOnly(Side.CLIENT)
     public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
         IExtendedBlockState extendedState = (IExtendedBlockState) state;
-        IBlockState camoState = extendedState != null ? extendedState.getValue(RENDERBLOCKSTATE).getRenderState() : null;
+        IBlockState camoState = null;
+        if (extendedState != null) {
+            camoState = extendedState.getValue(RENDERBLOCKSTATE).getRenderState();
+        }
 
         if (camoState != null && camoState.getBlock() instanceof BlockAbstractCamoTileEntity) {
             return getModel(defaultModels, state).getQuads(state, side, rand);
 
-        } else if (camoState != null) {
-            return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(camoState).getQuads(camoState, side, rand);
         } else {
-            return getModel(defaultModels, null).getQuads(state, side, rand);
+            return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(camoState).getQuads(camoState, side, rand);
         }
     }
 
