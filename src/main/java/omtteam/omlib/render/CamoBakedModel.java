@@ -1,6 +1,7 @@
 package omtteam.omlib.render;
 
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -9,7 +10,6 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -28,8 +28,8 @@ import static omtteam.omlib.blocks.BlockAbstractCamoTileEntity.RENDERBLOCKSTATE;
  * Extending classes must implement 3 additional classes that manage the default models caching and statemapping.
  * See TurretBaseBakedModel in OMT for a reference implementation.
  */
+@MethodsReturnNonnullByDefault
 public abstract class CamoBakedModel implements IBakedModel {
-    protected static ResourceLocation FAKE_LOCATION;
     private final List<IBakedModel> defaultModels;
 
     public CamoBakedModel(List<IBakedModel> list) {
@@ -58,9 +58,10 @@ public abstract class CamoBakedModel implements IBakedModel {
         if (camoState != null && camoState.getBlock() instanceof BlockAbstractCamoTileEntity) {
             return getModel(defaultModels, state).getQuads(state, side, rand);
 
-        } else {
+        } else if (camoState != null ){
             return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(camoState).getQuads(camoState, side, rand);
         }
+        return getModel(defaultModels, BlockAbstractCamoTileEntity.getStateById(0)).getQuads(BlockAbstractCamoTileEntity.getStateById(0), side, rand);
     }
 
     @Override
@@ -90,6 +91,4 @@ public abstract class CamoBakedModel implements IBakedModel {
     public ItemOverrideList getOverrides() {
         return ItemOverrideList.NONE;
     }
-
-
 }
