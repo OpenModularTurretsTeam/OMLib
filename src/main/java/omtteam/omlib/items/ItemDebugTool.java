@@ -16,6 +16,7 @@ import omtteam.omlib.tileentity.TileEntityElectric;
 import omtteam.omlib.tileentity.TileEntityMachine;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 import static omtteam.omlib.util.GeneralUtil.getMachineModeLocalization;
@@ -33,7 +34,7 @@ public class ItemDebugTool extends Item {
     }
 
 
-
+    @Nonnull
     @Override
     public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!worldIn.isRemote) {
