@@ -10,6 +10,7 @@ import net.minecraft.util.text.ITextComponent;
 import omtteam.omlib.util.InvUtil;
 import omtteam.omlib.util.ItemStackList;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -39,6 +40,7 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock implement
         ItemStackHelper.loadAllItems(inv, inventory);
     }
 
+    @Nonnull
     @Override
     public ItemStack decrStackSize(int slot, int amt) {
         ItemStack stack = getStackInSlot(slot);
@@ -57,7 +59,7 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock implement
     }
 
     @Override
-    public void setInventorySlotContents(int slot, ItemStack stack) {
+    public void setInventorySlotContents(int slot, @Nonnull ItemStack stack) {
         inventory.set(slot, stack);
         if (stack != ItemStack.EMPTY && InvUtil.getStackSize(stack) > getInventoryStackLimit()) {
             InvUtil.setStackSize(stack, getInventoryStackLimit());
@@ -69,6 +71,7 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock implement
         return inventory.size();
     }
 
+    @Nonnull
     @Override
     public ItemStack getStackInSlot(int slot) {
         return inventory.get(slot);
@@ -82,7 +85,7 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock implement
 
 
     @Override
-    public boolean isUsableByPlayer(EntityPlayer player) {
+    public boolean isUsableByPlayer(@Nonnull EntityPlayer player) {
         return this.getWorld().getTileEntity(pos) == this && player.getDistanceSq(this.pos.getX() + 0.5,
                 this.pos.getY() + 0.5,
                 this.pos.getZ() + 0.5) < 64;
@@ -109,6 +112,7 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock implement
         return 0;
     }
 
+    @Nonnull
     @Override
     public ItemStack removeStackFromSlot(int slot) {
         ItemStack itemstack = getStackInSlot(slot);
@@ -150,18 +154,19 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock implement
 
     }
 
+    @Nonnull
     @Override
-    public int[] getSlotsForFace(EnumFacing side) {
+    public int[] getSlotsForFace(@Nonnull EnumFacing side) {
         return new int[0];
     }
 
     @Override
-    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
+    public boolean canInsertItem(int index, @Nonnull ItemStack itemStackIn, @Nonnull EnumFacing direction) {
         return false;
     }
 
     @Override
-    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
+    public boolean canExtractItem(int index, @Nonnull ItemStack stack, @Nonnull EnumFacing direction) {
         return false;
     }
 
