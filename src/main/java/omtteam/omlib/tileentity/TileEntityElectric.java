@@ -256,7 +256,7 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
     @Override
     @ParametersAreNonnullByDefault
     @Nullable
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
 
         // This method is where other things will try to access your TileEntity's Tesla
         // capability. In the case of the analyzer, is a consumer, producer and holder so we
