@@ -12,5 +12,5 @@ import javax.annotation.Nullable;
  */
 public interface IDrawOutlineBase extends IDrawOutline {
     @Nullable
-    public EnumFacing getBaseFacing(World world, BlockPos pos);
+    EnumFacing getBaseFacing(World world, BlockPos pos);
 }
