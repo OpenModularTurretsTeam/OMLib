@@ -8,11 +8,14 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import omtteam.omlib.compatibility.minecraft.CompatCommandBase;
+import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.UUID;
 
+import static omtteam.omlib.util.PlayerUtil.getPlayerUUID;
 import static omtteam.omlib.util.compat.ChatTools.addChatMessage;
 
 /**
@@ -56,9 +59,18 @@ public class CommandChangeOwner extends CompatCommandBase {
 
             TileEntity tileEntity = worldserver.getTileEntity(new BlockPos(x, y, z));
             if (tileEntity instanceof TileEntityOwnedBlock) {
-                TileEntityOwnedBlock turret = (TileEntityOwnedBlock) tileEntity;
-                turret.setOwner(ownerName);
-                addChatMessage(sender, new TextComponentString("Block ownership has been updated"));
+                TileEntityOwnedBlock block = (TileEntityOwnedBlock) tileEntity;
+                UUID uuid = getPlayerUUID(ownerName);
+                if (uuid != null) {
+                    block.setOwner(uuid.toString());
+                    block.setOwnerName(ownerName);
+                    addChatMessage(sender, new TextComponentString("Block ownership has been updated"));
+                } else if (ConfigHandler.offlineModeSupport) {
+                    block.setOwnerName(ownerName);
+                    addChatMessage(sender, new TextComponentString("Block ownership has been updated"));
+                } else {
+                    addChatMessage(sender, new TextComponentString("New owner not valid."));
+                }
             } else {
                 addChatMessage(sender, new TextComponentString("No ownable block was found at that location"));
             }
