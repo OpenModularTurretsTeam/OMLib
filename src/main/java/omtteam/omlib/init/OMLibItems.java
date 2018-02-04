@@ -1,6 +1,7 @@
 package omtteam.omlib.init;
 
 import net.minecraft.item.Item;
+import omtteam.omlib.items.FakeSword;
 import omtteam.omlib.items.ItemDebugTool;
 
 import static omtteam.omlib.util.InitHelper.registerItem;
@@ -10,9 +11,11 @@ import static omtteam.omlib.util.InitHelper.registerItem;
  */
 public class OMLibItems {
     public static Item debugTool;
+    public static Item fakeSword;
 
     public static void init() {
         debugTool = registerItem(new ItemDebugTool());
+        fakeSword = registerItem(new FakeSword(Item.ToolMaterial.DIAMOND));
     }
 
 }
