@@ -117,6 +117,9 @@ repositories {
         name = "Covers Maven"
         url = "http://maven.covers1624.net"
     }
+    maven {
+        url 'http://maven.mcmoddev.com'
+    }
 }
 
 dependencies {
