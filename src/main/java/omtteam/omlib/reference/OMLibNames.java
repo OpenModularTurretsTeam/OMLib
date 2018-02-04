@@ -7,7 +7,7 @@ package omtteam.omlib.reference;
 public class OMLibNames {
     public static class Items {
         public static final String debugTool = "debug_tool";
-
+        public static final String fakeSword = "fake_sword";
     }
     public static class Localizations {
         public static class GUI {
