@@ -100,6 +100,9 @@ repositories {
             artifact "[module]-[revision](-[classifier])(.[ext])"
         }
     }
+    maven {
+        url 'http://maven.mcmoddev.com'
+    }
 }
 
 dependencies {
