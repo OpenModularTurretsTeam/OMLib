@@ -85,9 +85,6 @@ repositories {
         url "http://maven.tterrag.com/"
     }
     maven {
-        url 'http://maven.epoxide.xyz'
-    }
-    maven {
         url "http://maven.ironhide.de/"
     }
     maven {

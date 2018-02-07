@@ -96,12 +96,16 @@ public class EntityTools {
      */
     public static EntityLiving createEntity(World world, String mobId) {
         Class<? extends Entity> clazz;
-        if ("WitherSkeleton".equals(mobId)) {
-            clazz = EntitySkeleton.class;
-        } else if ("StraySkeleton".equals(mobId)) {
-            clazz = EntitySkeleton.class;
-        } else {
-            clazz = findClassById(mobId);
+        switch (mobId) {
+            case "WitherSkeleton":
+                clazz = EntitySkeleton.class;
+                break;
+            case "StraySkeleton":
+                clazz = EntitySkeleton.class;
+                break;
+            default:
+                clazz = findClassById(mobId);
+                break;
         }
         EntityLiving entityLiving = null;
         try {

@@ -85,6 +85,7 @@ public class GeneralUtil {
         }
     }
 
+    @SuppressWarnings("Annotator")
     public static float getFloatFromString(@Nullable String input) {
         final String Digits = "(\\p{Digit}+)";
         final String HexDigits = "(\\p{XDigit}+)";
