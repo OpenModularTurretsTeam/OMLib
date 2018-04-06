@@ -36,4 +36,9 @@ public abstract class TileEntityTrustedMachine extends TileEntityMachine impleme
         super.readFromNBT(nbtTagCompound);
         buildTrustedPlayersFromNBT(nbtTagCompound.getTagList("trustedPlayers", 10));
     }
+
+    @Override
+    public TileEntityOwnedBlock getOwnedBlock() {
+        return this;
+    }
 }

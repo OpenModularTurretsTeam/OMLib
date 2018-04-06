@@ -160,4 +160,6 @@ public interface ITrustedPlayersManager {
             }
         }
     }
+
+    public TileEntityOwnedBlock getOwnedBlock();
 }
