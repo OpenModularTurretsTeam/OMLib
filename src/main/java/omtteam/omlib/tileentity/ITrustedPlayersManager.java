@@ -157,4 +157,6 @@ public interface ITrustedPlayersManager {
             }
         }
     }
+
+    TileEntityOwnedBlock getOwnedBlock();
 }
