@@ -73,6 +73,16 @@ public class PlayerUtil {
         }
     }
 
+    @Nullable
+    @ParametersAreNonnullByDefault
+    public static TrustedPlayer getTrustedPlayer(Player player, ITrustedPlayersManager machine) {
+        if (machine.getTrustedPlayer(player.getUuid()) != null || (offlineModeSupport && machine.getTrustedPlayer(player.getName()) != null)) {
+            return (machine.getTrustedPlayer(player.getUuid()) == null ? machine.getTrustedPlayer(player.getName()) : machine.getTrustedPlayer(player.getUuid()));
+        } else {
+            return null;
+        }
+    }
+
     @ParametersAreNonnullByDefault
     public static boolean isPlayerTrusted(EntityPlayer entityPlayer, ITrustedPlayersManager trustedPlayersManager) {
         Player player = new Player(entityPlayer.getUniqueID(), entityPlayer.getName());
@@ -110,5 +120,18 @@ public class PlayerUtil {
         }
 
         return allowed;
+    }
+
+    @ParametersAreNonnullByDefault
+    public static boolean isPlayerAdmin(EntityPlayer checkPlayer, ITrustedPlayersManager machine) {
+        return isPlayerOwner(checkPlayer, machine.getOwnedBlock())
+                || (isPlayerTrusted(checkPlayer, machine) && (getTrustedPlayer(checkPlayer, machine).admin));
+
+    }
+
+    @ParametersAreNonnullByDefault
+    public static boolean isPlayerAdmin(Player player,  ITrustedPlayersManager machine) {
+        return isPlayerOwner(player, machine.getOwnedBlock())
+                || (isPlayerTrusted(player, machine) && (getTrustedPlayer(player, machine).admin));
     }
 }
