@@ -112,6 +112,7 @@ public class ItemStackTools {
     /**
      * Extract itemstack out of a slot and return a new stack.
      * Supports both IItemHandler as IInventory
+     *
      * @param tileEntity
      * @param slot
      * @param amount
@@ -131,6 +132,7 @@ public class ItemStackTools {
     /**
      * Get an item from an inventory
      * Supports both IItemHandler as IInventory
+     *
      * @param tileEntity
      * @param slot
      */
@@ -149,6 +151,7 @@ public class ItemStackTools {
     /**
      * Set a stack in a specific slot. This will totally replace whatever was in the slot before
      * Supports both IItemHandler as IInventory. Does not check for failure
+     *
      * @param tileEntity
      * @param slot
      * @param stack

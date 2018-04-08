@@ -9,7 +9,7 @@ import net.minecraft.block.state.IBlockState;
 public class RenderBlockStateContainer {
     private IBlockState renderState;
 
-    public RenderBlockStateContainer(IBlockState state){
+    public RenderBlockStateContainer(IBlockState state) {
         renderState = state;
     }
 
@@ -22,7 +22,7 @@ public class RenderBlockStateContainer {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return renderState.toString();
     }
 }

@@ -130,7 +130,7 @@ public class PlayerUtil {
     }
 
     @ParametersAreNonnullByDefault
-    public static boolean isPlayerAdmin(Player player,  ITrustedPlayersManager machine) {
+    public static boolean isPlayerAdmin(Player player, ITrustedPlayersManager machine) {
         return isPlayerOwner(player, machine.getOwnedBlock())
                 || (isPlayerTrusted(player, machine) && (getTrustedPlayer(player, machine).admin));
     }

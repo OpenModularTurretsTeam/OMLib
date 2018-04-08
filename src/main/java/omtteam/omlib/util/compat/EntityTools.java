@@ -24,6 +24,7 @@ public class EntityTools {
      * string representation of the new ResourceLocation. The 1.10 version of this function will just return
      * the given id
      * This does not work for modded entities.
+     *
      * @param id an old-style entity id as used in 1.10
      * @return
      */
@@ -148,6 +149,7 @@ public class EntityTools {
 
     /**
      * Set the type of mob on a spawner. The 1.10 version uses entityName. The 1.11 version uses the resource location
+     *
      * @param resourceLocation
      * @param entityName
      */

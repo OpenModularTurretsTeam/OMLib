@@ -35,12 +35,12 @@ public abstract class CamoBakedModel implements IBakedModel {
     public CamoBakedModel(List<IBakedModel> list) {
         defaultModels = list;
     }
-    
+
     /**
      * Returns the corresponding model used for rendering the default model of the block.
      *
-     * @param   list    the list of available models
-     * @param   state   the state to get the model for
+     * @param list  the list of available models
+     * @param state the state to get the model for
      * @return the correct model for the given state
      */
     protected abstract IBakedModel getModel(List<IBakedModel> list, IBlockState state);

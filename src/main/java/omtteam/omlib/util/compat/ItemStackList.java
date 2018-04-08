@@ -1,4 +1,5 @@
 package omtteam.omlib.util.compat;
+
 import net.minecraft.item.ItemStack;
 
 import java.util.AbstractList;

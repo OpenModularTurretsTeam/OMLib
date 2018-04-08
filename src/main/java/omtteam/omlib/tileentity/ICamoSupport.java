@@ -13,7 +13,7 @@ public interface ICamoSupport {
     /**
      * Returns the blockstate used for rendering the camo for the corresponding TE.
      *
-     * @return      the camo blockstate used to show the camo
+     * @return the camo blockstate used to show the camo
      */
     @Nonnull
     IBlockState getCamoState();
@@ -21,14 +21,14 @@ public interface ICamoSupport {
     /**
      * Sets the blockstate used for rendering the camo for the corresponding TE.
      *
-     * @param   state  the camo blockstate used to show the camo
+     * @param state the camo blockstate used to show the camo
      */
     void setCamoState(IBlockState state);
 
     /**
      * Returns the default blockstate used for rendering the camo for the corresponding TE.
      *
-     * @return          the default blockstate to be rendered (without camo)
+     * @return the default blockstate to be rendered (without camo)
      */
     @Nonnull
     IBlockState getDefaultCamoState();
