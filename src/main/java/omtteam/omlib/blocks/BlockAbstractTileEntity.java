@@ -54,8 +54,8 @@ public abstract class BlockAbstractTileEntity extends BlockAbstract {
         if (worldIn.getTileEntity(pos) instanceof TileEntityContainerElectric) {
             TileEntityContainerElectric entity = (TileEntityContainerElectric) worldIn.getTileEntity(pos);
             Random rand = new Random();
-            for (int i = 0; i < entity.getSizeInventory(); i++) {
-                ItemStack item = entity.getStackInSlot(i);
+            for (int i = 0; i < entity.getInventory().getSlots(); i++) {
+                ItemStack item = entity.getInventory().getStackInSlot(i);
 
                 if (item != null && InvUtil.getStackSize(item) > 0) {
                     float rx = rand.nextFloat() * 0.8F + 0.1F;
