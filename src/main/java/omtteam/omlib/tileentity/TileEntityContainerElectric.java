@@ -5,8 +5,13 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import omtteam.omlib.util.InvUtil;
 import omtteam.omlib.util.ItemStackList;
 
@@ -16,160 +21,81 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
  * Created by Keridos on 05/12/2015.
- * This Class is the abstract class handling SidedInventory.
+ * This Class is the abstract class handling Inventory Functions.
  */
 @SuppressWarnings("WeakerAccess")
-public abstract class TileEntityContainerElectric extends TileEntityElectric implements ISidedInventory {
-    protected ItemStackList inventory = ItemStackList.create();
+public abstract class TileEntityContainerElectric extends TileEntityElectric {
+    protected IItemHandlerModifiable inventory;
 
     @Nonnull
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
         super.writeToNBT(nbtTagCompound);
 
-        NBTTagCompound inv = new NBTTagCompound();
-        ItemStackHelper.saveAllItems(inv, inventory);
-        nbtTagCompound.setTag("Inventory", inv);
+        writeInventoryToNBT(nbtTagCompound);
         return nbtTagCompound;
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
         super.readFromNBT(nbtTagCompound);
-        NBTTagCompound inv = nbtTagCompound.getCompoundTag("Inventory");
-        ItemStackHelper.loadAllItems(inv, inventory);
+        readInventoryFromNBT(nbtTagCompound);
     }
 
-    @Nonnull
-    @Override
-    public ItemStack decrStackSize(int slot, int amt) {
-        ItemStack stack = getStackInSlot(slot);
+    private void readInventoryFromNBT(NBTTagCompound tagCompound)
+    {
+        if (tagCompound.getTagId("Items") == Constants.NBT.TAG_LIST)
+        {
+            NBTTagList tagList = tagCompound.getTagList("Items", Constants.NBT.TAG_COMPOUND);
 
-        if (stack != ItemStack.EMPTY) {
-            if (InvUtil.getStackSize(stack) <= amt) {
-                setInventorySlotContents(slot, ItemStack.EMPTY);
-            } else {
-                stack = stack.splitStack(amt);
-                if (InvUtil.getStackSize(stack) == 0) {
-                    setInventorySlotContents(slot, ItemStack.EMPTY);
+            for (int i = 0; i < this.getInventory().getSlots(); i++)
+            { this.getInventory().setStackInSlot(i, ItemStack.EMPTY); }
+
+            for (int i = 0; i < tagList.tagCount(); i++)
+            {
+                NBTTagCompound tag = (NBTTagCompound) tagList.get(i);
+                byte slot = tag.getByte("Slot");
+
+                if (slot < this.getInventory().getSlots())
+                {
+                    this.getInventory().setStackInSlot(slot, new ItemStack(tag));
                 }
             }
+
+            return;
         }
-        return stack;
+
+        CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.readNBT(this.getInventory(), null, tagCompound.getTag("Slots"));
+    }
+
+    private void writeInventoryToNBT(NBTTagCompound tagCompound)
+    {
+        tagCompound.setTag("Items", CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.writeNBT(this.getInventory(), null));
     }
 
     @Override
-    public void setInventorySlotContents(int slot, @Nonnull ItemStack stack) {
-        inventory.set(slot, stack);
-        if (stack != ItemStack.EMPTY && InvUtil.getStackSize(stack) > getInventoryStackLimit()) {
-            InvUtil.setStackSize(stack, getInventoryStackLimit());
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
+    {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        {
+            return true;
         }
+        return super.hasCapability(capability, facing);
     }
 
+    @SuppressWarnings("unchecked")
+    @Nullable
     @Override
-    public int getSizeInventory() {
-        return inventory.size();
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
+    {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        {
+             return (T) this.getInventory();
+        }
+        return super.getCapability(capability, facing);
     }
 
-    @Nonnull
-    @Override
-    public ItemStack getStackInSlot(int slot) {
-        return inventory.get(slot);
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 64;
-    }
-
-    @Override
-    public boolean isUsableByPlayer(@Nonnull EntityPlayer player) {
-        return this.getWorld().getTileEntity(pos) == this && player.getDistanceSq(this.pos.getX() + 0.5,
-                this.pos.getY() + 0.5,
-                this.pos.getZ() + 0.5) < 64;
-    }
-
-    @Override
-    @ParametersAreNonnullByDefault
-    public boolean isItemValidForSlot(int slot, @Nullable ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public int getField(int id) {
-        return 0;
-    }
-
-    @Override
-    public void setField(int id, int value) {
-
-    }
-
-    @Override
-    public int getFieldCount() {
-        return 0;
-    }
-
-    @Nonnull
-    @Override
-    public ItemStack removeStackFromSlot(int slot) {
-        ItemStack itemstack = getStackInSlot(slot);
-        setInventorySlotContents(slot, ItemStack.EMPTY);
-        return itemstack;
-    }
-
-    @SuppressWarnings("NullableProblems")
-    @Override
-    public String getName() {
-        return null;
-    }
-
-    @SuppressWarnings("NullableProblems")
-    @Override
-    public ITextComponent getDisplayName() {
-        return null;
-    }
-
-    @Override
-    @ParametersAreNonnullByDefault
-    public void openInventory(EntityPlayer player) {
-
-    }
-
-    @Override
-    @ParametersAreNonnullByDefault
-    public void closeInventory(EntityPlayer player) {
-
-    }
-
-    @Override
-    public boolean hasCustomName() {
-        return false;
-    }
-
-    @Override
-    public void clear() {
-
-    }
-
-    @Nonnull
-    @Override
-    public int[] getSlotsForFace(@Nonnull EnumFacing side) {
-        return new int[0];
-    }
-
-    @Override
-    public boolean canInsertItem(int index, @Nonnull ItemStack itemStackIn, @Nonnull EnumFacing direction) {
-        return false;
-    }
-
-    @Override
-    public boolean canExtractItem(int index, @Nonnull ItemStack stack, @Nonnull EnumFacing direction) {
-        return false;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return false;
+    public IItemHandlerModifiable getInventory() {
+        return inventory;
     }
 }
