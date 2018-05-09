@@ -25,8 +25,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
  */
 @SuppressWarnings("WeakerAccess")
 public abstract class TileEntityContainer extends TileEntityOwnedBlock {
-    protected IItemHandlerModifiable inventory;
-
     @Nonnull
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
@@ -41,39 +39,59 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock {
     @Override
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
         super.readFromNBT(nbtTagCompound);
-        NBTTagCompound inv = nbtTagCompound.getCompoundTag("Inventory");
+        NBTTagCompound inv = nbtTagCompound.getCompoundTag("Items");
         readInventoryFromNBT(nbtTagCompound);
     }
 
     private void readInventoryFromNBT(NBTTagCompound tagCompound)
     {
-        if (tagCompound.getTagId("Inventory") == Constants.NBT.TAG_LIST)
+        if (tagCompound.getTagId("Items") == Constants.NBT.TAG_LIST)
         {
-            NBTTagList tagList = tagCompound.getTagList("Inventory", Constants.NBT.TAG_COMPOUND);
+            NBTTagList tagList = tagCompound.getTagList("Items", Constants.NBT.TAG_COMPOUND);
 
-            for (int i = 0; i < inventory.getSlots(); i++)
-            { inventory.setStackInSlot(i, ItemStack.EMPTY); }
+            for (int i = 0; i < this.getInventory().getSlots(); i++)
+            { this.getInventory().setStackInSlot(i, ItemStack.EMPTY); }
 
             for (int i = 0; i < tagList.tagCount(); i++)
             {
                 NBTTagCompound tag = (NBTTagCompound) tagList.get(i);
                 byte slot = tag.getByte("Slot");
 
-                if (slot < inventory.getSlots())
+                if (slot < this.getInventory().getSlots())
                 {
-                    inventory.setStackInSlot(slot, new ItemStack(tag));
+                    this.getInventory().setStackInSlot(slot, new ItemStack(tag));
+                }
+            }
+
+            return;
+        } else if (tagCompound.hasKey("Inventory") && // TODO: this should be removed on 1.13
+                tagCompound.getCompoundTag("Inventory").getTagId("Items") == Constants.NBT.TAG_LIST)
+        {
+            NBTTagList tagList = tagCompound.getCompoundTag("Inventory").getTagList("Items", Constants.NBT.TAG_COMPOUND);
+
+            for (int i = 0; i < this.getInventory().getSlots(); i++)
+            { this.getInventory().setStackInSlot(i, ItemStack.EMPTY); }
+
+            for (int i = 0; i < tagList.tagCount(); i++)
+            {
+                NBTTagCompound tag = (NBTTagCompound) tagList.get(i);
+                byte slot = tag.getByte("Slot");
+
+                if (slot < this.getInventory().getSlots())
+                {
+                    this.getInventory().setStackInSlot(slot, new ItemStack(tag));
                 }
             }
 
             return;
         }
 
-        CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.readNBT(inventory, null, tagCompound.getTag("Slots"));
+        CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.readNBT(this.getInventory(), null, tagCompound.getTag("Slots"));
     }
 
     private void writeInventoryToNBT(NBTTagCompound tagCompound)
     {
-        tagCompound.setTag("Slots", CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.writeNBT(inventory, null));
+        tagCompound.setTag("Slots", CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.writeNBT(this.getInventory(), null));
     }
 
     @Override
@@ -93,12 +111,10 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock {
     {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
         {
-            return (T) inventory;
+            return (T) this.getInventory();
         }
         return super.getCapability(capability, facing);
     }
 
-    public IItemHandlerModifiable getInventory() {
-        return inventory;
-    }
+    public abstract IItemHandlerModifiable getInventory();
 }
