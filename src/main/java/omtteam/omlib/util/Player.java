@@ -1,6 +1,7 @@
 package omtteam.omlib.util;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 import java.util.UUID;
 
@@ -46,18 +47,13 @@ public class Player {
     }
 
     public static void writeToByteBuf(Player player, ByteBuf buf) {
-        buf.writeInt(player.getName().length());
-        buf.writeBytes(player.getName().getBytes());
-        buf.writeInt(player.getUuid().toString().length());
-        buf.writeBytes(player.getUuid().toString().getBytes());
+        ByteBufUtils.writeUTF8String(buf, player.name);
+        ByteBufUtils.writeUTF8String(buf,player.getUuid().toString());
     }
 
     public static Player readFromByteBuf(ByteBuf buf) {
-        int length = buf.readInt();
-        String name = new String(buf.readBytes(length).array());
-
-        length = buf.readInt();
-        UUID uuid = UUID.fromString(new String(buf.readBytes(length).array()));
+        String name = ByteBufUtils.readUTF8String(buf);
+        UUID uuid = UUID.fromString(ByteBufUtils.readUTF8String(buf));
         return new Player(uuid, name);
     }
 }
