@@ -2,6 +2,7 @@ package omtteam.omlib.util;
 
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import omtteam.omlib.reference.OMLibNames;
@@ -16,6 +17,9 @@ import java.util.regex.Pattern;
  */
 @SuppressWarnings({"deprecation", "unused"})
 public class GeneralUtil {
+    public static String shiftDetail = TextFormatting.GRAY + "Hold " + TextFormatting.YELLOW + TextFormatting.ITALIC +
+            "Shift" + TextFormatting.RESET + TextFormatting.GRAY + " for details.";
+
     public static Item getItem(String modid, String name) {
         Item item;
         item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(modid + ":" + name));
