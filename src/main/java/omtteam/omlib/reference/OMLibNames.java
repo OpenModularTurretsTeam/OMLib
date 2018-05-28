@@ -9,6 +9,7 @@ public class OMLibNames {
         public static final String debugTool = "debug_tool";
         public static final String fakeSword = "fake_sword";
     }
+
     public static class Localizations {
         public static class GUI {
             public static final String OWNER = "gui.omtteam.omlib:owner";

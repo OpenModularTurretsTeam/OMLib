@@ -11,8 +11,6 @@ import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.property.IExtendedBlockState;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import omtteam.omlib.blocks.BlockAbstractCamoTileEntity;
 
 import javax.annotation.Nonnull;
@@ -47,7 +45,6 @@ public abstract class CamoBakedModel implements IBakedModel {
 
     @Override
     @Nonnull
-    @SideOnly(Side.CLIENT)
     public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
         IExtendedBlockState extendedState;
         if (state instanceof IExtendedBlockState) {
@@ -63,7 +60,7 @@ public abstract class CamoBakedModel implements IBakedModel {
         if (camoState != null && camoState.getBlock() instanceof BlockAbstractCamoTileEntity) {
             return getModel(defaultModels, state).getQuads(state, side, rand);
 
-        } else if (camoState != null ){
+        } else if (camoState != null) {
             return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(camoState).getQuads(camoState, side, rand);
         }
         return getModel(defaultModels, BlockAbstractCamoTileEntity.getStateById(0)).getQuads(BlockAbstractCamoTileEntity.getStateById(0), side, rand);
