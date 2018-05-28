@@ -126,16 +126,49 @@ public class PlayerUtil {
     }
 
     @ParametersAreNonnullByDefault
-    public static boolean isPlayerAdmin(EntityPlayer checkPlayer, ITrustedPlayersManager machine) {
-        return isPlayerOwner(checkPlayer, machine.getOwnedBlock())
-                || (isPlayerTrusted(checkPlayer, machine) && (getTrustedPlayer(checkPlayer, machine).admin));
-
+    public static boolean isPlayerAdmin(EntityPlayer player, ITrustedPlayersManager machine) {
+        TrustedPlayer trustedPlayer = getTrustedPlayer(player, machine);
+        return isPlayerOwner(player, machine.getOwnedBlock())
+                || (trustedPlayer != null && trustedPlayer.getAccessMode().equals(EnumAccessMode.ADMIN));
     }
 
     @ParametersAreNonnullByDefault
     public static boolean isPlayerAdmin(Player player, ITrustedPlayersManager machine) {
+        TrustedPlayer trustedPlayer = getTrustedPlayer(player, machine);
         return isPlayerOwner(player, machine.getOwnedBlock())
-                || (isPlayerTrusted(player, machine) && (getTrustedPlayer(player, machine).admin));
+                || (trustedPlayer != null && trustedPlayer.getAccessMode().equals(EnumAccessMode.ADMIN));
+    }
+
+    @ParametersAreNonnullByDefault
+    public static boolean canPlayerOpenGUI(EntityPlayer player, ITrustedPlayersManager machine) {
+        TrustedPlayer trustedPlayer = getTrustedPlayer(player, machine);
+        return isPlayerOwner(player, machine.getOwnedBlock())
+                || isPlayerAdmin(player, machine) || canPlayerChangeSetting(player, machine)
+                || (trustedPlayer != null && trustedPlayer.getAccessMode().equals(EnumAccessMode.OPEN_GUI));
+    }
+
+    @ParametersAreNonnullByDefault
+    public static boolean canPlayerOpenGUI(Player player, ITrustedPlayersManager machine) {
+        TrustedPlayer trustedPlayer = getTrustedPlayer(player, machine);
+        return isPlayerOwner(player, machine.getOwnedBlock())
+                || isPlayerAdmin(player, machine) || canPlayerChangeSetting(player, machine)
+                || (trustedPlayer != null && trustedPlayer.getAccessMode().equals(EnumAccessMode.OPEN_GUI));
+    }
+
+    @ParametersAreNonnullByDefault
+    public static boolean canPlayerChangeSetting(EntityPlayer player, ITrustedPlayersManager machine) {
+        TrustedPlayer trustedPlayer = getTrustedPlayer(player, machine);
+        return isPlayerOwner(player, machine.getOwnedBlock())
+                || isPlayerAdmin(player, machine)
+                || (trustedPlayer != null && trustedPlayer.getAccessMode().equals(EnumAccessMode.CHANGE_SETTINGS));
+    }
+
+    @ParametersAreNonnullByDefault
+    public static boolean canPlayerChangeSetting(Player player, ITrustedPlayersManager machine) {
+        TrustedPlayer trustedPlayer = getTrustedPlayer(player, machine);
+        return isPlayerOwner(player, machine.getOwnedBlock())
+                || isPlayerAdmin(player, machine)
+                || (trustedPlayer != null && trustedPlayer.getAccessMode().equals(EnumAccessMode.CHANGE_SETTINGS));
     }
 
     public static void addChatMessage(@Nonnull ICommandSender sender, @Nonnull ITextComponent component) {

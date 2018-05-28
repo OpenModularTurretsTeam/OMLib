@@ -5,11 +5,10 @@ import java.util.UUID;
 
 @SuppressWarnings("unused")
 public class TrustedPlayer {
-    public String name = "";
-    public boolean canOpenGUI = false;
-    public boolean canChangeTargeting = false;
-    public boolean admin = false;
-    public UUID uuid;
+    private String name = "";
+    private EnumAccessMode accessMode = EnumAccessMode.NONE;
+    private UUID uuid;
+    private boolean hacked = false;
 
     @ParametersAreNonnullByDefault
     public TrustedPlayer(String name) {
@@ -30,15 +29,27 @@ public class TrustedPlayer {
         this.name = name;
     }
 
-    public void setCanOpenGUI(boolean canOpenGUI) {
-        this.canOpenGUI = canOpenGUI;
+    public EnumAccessMode getAccessMode() {
+        return accessMode;
     }
 
-    public void setCanChangeTargeting(boolean canChangeTargeting) {
-        this.canChangeTargeting = canChangeTargeting;
+    public void setAccessMode(EnumAccessMode accessMode) {
+        this.accessMode = accessMode;
     }
 
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public boolean isHacked() {
+        return hacked;
+    }
+
+    public void setHacked(boolean hacked) {
+        this.hacked = hacked;
     }
 }

@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.UsernameCache;
 import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.util.DebugHandler;
+import omtteam.omlib.util.EnumAccessMode;
 import omtteam.omlib.util.Player;
 import omtteam.omlib.util.TrustedPlayer;
 
@@ -24,7 +25,7 @@ public interface ITrustedPlayersManager {
     @ParametersAreNonnullByDefault
     default boolean addTrustedPlayer(String name) {
         TrustedPlayer trustedPlayer = new TrustedPlayer(name);
-        trustedPlayer.uuid = getPlayerUUID(name);
+        trustedPlayer.setUuid(getPlayerUUID(name));
 
         if (!((TileEntityOwnedBlock) this).getWorld().isRemote) {
             Player player = null;
@@ -52,13 +53,13 @@ public interface ITrustedPlayersManager {
                 }
 
             } else {
-                if (trustedPlayer.uuid == null || isPlayerOwner(player, (TileEntityOwnedBlock) this)) {
+                if (trustedPlayer.getUuid() == null || isPlayerOwner(player, (TileEntityOwnedBlock) this)) {
                     DebugHandler.getInstance().sendMessageToDebugChat("You cannot add an owner!");
                     return false;
                 }
             }
 
-            if (trustedPlayer.uuid != null || ConfigHandler.offlineModeSupport) {
+            if (trustedPlayer.getUuid() != null || ConfigHandler.offlineModeSupport) {
                 for (TrustedPlayer existPlayer : getTrustedPlayers()) {
                     if (ConfigHandler.offlineModeSupport) {
                         if (existPlayer.getName().toLowerCase().equals(name.toLowerCase())) {
@@ -66,7 +67,7 @@ public interface ITrustedPlayersManager {
                             return false;
                         }
                     } else {
-                        if (existPlayer.getName().toLowerCase().equals(name.toLowerCase()) || trustedPlayer.uuid.equals(existPlayer.uuid)) {
+                        if (existPlayer.getName().toLowerCase().equals(name.toLowerCase()) || trustedPlayer.getUuid().equals(existPlayer.getUuid())) {
                             return false;
                         }
                     }
@@ -93,7 +94,7 @@ public interface ITrustedPlayersManager {
 
     default TrustedPlayer getTrustedPlayer(String name) {
         for (TrustedPlayer trustedPlayer : getTrustedPlayers()) {
-            if (trustedPlayer.name.equals(name)) {
+            if (trustedPlayer.getName().equals(name)) {
                 return trustedPlayer;
             }
         }
@@ -102,7 +103,7 @@ public interface ITrustedPlayersManager {
 
     default TrustedPlayer getTrustedPlayer(UUID uuid) {
         for (TrustedPlayer trustedPlayer : getTrustedPlayers()) {
-            if (trustedPlayer.uuid.equals(uuid)) {
+            if (trustedPlayer.getUuid().equals(uuid)) {
                 return trustedPlayer;
             }
         }
@@ -116,14 +117,12 @@ public interface ITrustedPlayersManager {
         NBTTagList nbt = new NBTTagList();
         for (TrustedPlayer trustedPlayer : getTrustedPlayers()) {
             NBTTagCompound nbtPlayer = new NBTTagCompound();
-            nbtPlayer.setString("name", trustedPlayer.name);
-            nbtPlayer.setBoolean("canOpenGUI", trustedPlayer.canOpenGUI);
-            nbtPlayer.setBoolean("canChangeTargeting", trustedPlayer.canChangeTargeting);
-            nbtPlayer.setBoolean("admin", trustedPlayer.admin);
-            if (trustedPlayer.uuid != null) {
-                nbtPlayer.setString("UUID", trustedPlayer.uuid.toString());
-            } else if (getPlayerUUID(trustedPlayer.name) != null) {
-                nbtPlayer.setString("UUID", getPlayerUUID(trustedPlayer.name).toString());
+            nbtPlayer.setString("name", trustedPlayer.getName());
+            nbtPlayer.setInteger("accessLevel", trustedPlayer.getAccessMode().ordinal());
+            if (trustedPlayer.getUuid() != null) {
+                nbtPlayer.setString("UUID", trustedPlayer.getUuid().toString());
+            } else if (getPlayerUUID(trustedPlayer.getName()) != null) {
+                nbtPlayer.setString("UUID", getPlayerUUID(trustedPlayer.getName()).toString());
             }
             nbt.appendTag(nbtPlayer);
         }
@@ -136,22 +135,33 @@ public interface ITrustedPlayersManager {
             if (!nbt.getCompoundTagAt(i).getString("name").equals("")) {
                 NBTTagCompound nbtPlayer = nbt.getCompoundTagAt(i);
                 TrustedPlayer trustedPlayer = new TrustedPlayer(nbtPlayer.getString("name"));
-                trustedPlayer.canOpenGUI = nbtPlayer.getBoolean("canOpenGUI");
-                trustedPlayer.canChangeTargeting = nbtPlayer.getBoolean("canChangeTargeting");
-                trustedPlayer.admin = nbtPlayer.getBoolean("admin");
-                if (nbtPlayer.hasKey("UUID")) {
-                    trustedPlayer.uuid = getPlayerUIDUnstable(nbtPlayer.getString("UUID"));
-                } else {
-                    trustedPlayer.uuid = getPlayerUUID(trustedPlayer.name);
+                // TODO: Remove on 1.13
+                if (nbtPlayer.hasKey("canOpenGUI") && nbtPlayer.getBoolean("canOpenGUI")) {
+                    trustedPlayer.setAccessMode(EnumAccessMode.OPEN_GUI);
                 }
-                if (trustedPlayer.uuid != null) {
+                if (nbtPlayer.hasKey("canChangeTargeting") && nbtPlayer.getBoolean("canChangeTargeting")) {
+                    trustedPlayer.setAccessMode(EnumAccessMode.CHANGE_SETTINGS);
+                }
+                if (nbtPlayer.hasKey("admin") && nbtPlayer.getBoolean("admin")) {
+                    trustedPlayer.setAccessMode(EnumAccessMode.ADMIN);
+                }
+                if (nbtPlayer.hasKey("accessLevel")) {
+                    trustedPlayer.setAccessMode(EnumAccessMode.values()[nbtPlayer.getInteger("AccessLevel")]);
+                }
+
+                if (nbtPlayer.hasKey("UUID")) {
+                    trustedPlayer.setUuid(getPlayerUIDUnstable(nbtPlayer.getString("UUID")));
+                } else {
+                    trustedPlayer.setUuid(getPlayerUUID(trustedPlayer.getName()));
+                }
+                if (trustedPlayer.getUuid() != null) {
                     getTrustedPlayers().add(trustedPlayer);
                 }
             } else if (nbt.getCompoundTagAt(i).getString("name").equals("")) {
                 TrustedPlayer trustedPlayer = new TrustedPlayer(nbt.getStringTagAt(i));
                 Logger.getGlobal().info("found legacy trusted Player: " + nbt.getStringTagAt(i));
-                trustedPlayer.uuid = getPlayerUUID(trustedPlayer.name);
-                if (trustedPlayer.uuid != null) {
+                trustedPlayer.setUuid(getPlayerUUID(trustedPlayer.getName()));
+                if (trustedPlayer.getUuid() != null) {
                     getTrustedPlayers().add(trustedPlayer);
                 }
             }
