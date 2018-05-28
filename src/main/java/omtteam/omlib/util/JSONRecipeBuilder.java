@@ -89,8 +89,7 @@ public class JSONRecipeBuilder {
         }
     }
 
-    public static void addShapelessRecipe(ItemStack result, Object... components)
-    {
+    public static void addShapelessRecipe(ItemStack result, Object... components) {
 
         // addShapelessRecipe(result, components);
 

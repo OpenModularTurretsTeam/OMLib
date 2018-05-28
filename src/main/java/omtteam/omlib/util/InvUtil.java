@@ -32,7 +32,7 @@ public class InvUtil {
                 Slot slot = container.inventorySlots.get(i);
                 ItemStack itemStackSlot = slot.getStack();
 
-                if (!itemStackSlot.isEmpty()  && areItemStacksEqual(stack, itemStackSlot) && ItemStack.areItemStackTagsEqual(stack, itemStackSlot)) {
+                if (!itemStackSlot.isEmpty() && areItemStacksEqual(stack, itemStackSlot) && ItemStack.areItemStackTagsEqual(stack, itemStackSlot)) {
                     int j = getStackSize(itemStackSlot) + getStackSize(stack);
 
                     if (j <= Math.min(stack.getMaxStackSize(), slot.getItemStackLimit(stack))) {
@@ -70,12 +70,9 @@ public class InvUtil {
 
                 if (itemstack1.isEmpty() && slot1.isItemValid(stack)) // Forge: Make sure to respect isItemValid in the slot.
                 {
-                    if (stack.getCount() > slot1.getItemStackLimit(stack))
-                    {
+                    if (stack.getCount() > slot1.getItemStackLimit(stack)) {
                         slot1.putStack(stack.splitStack(slot1.getItemStackLimit(stack)));
-                    }
-                    else
-                    {
+                    } else {
                         slot1.putStack(stack.splitStack(stack.getCount()));
                     }
 

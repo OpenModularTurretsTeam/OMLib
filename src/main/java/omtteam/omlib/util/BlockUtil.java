@@ -10,14 +10,14 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
  * This Class
  */
 public class BlockUtil {
-    public static void writeBlockFromStateToNBT(NBTTagCompound nbtTagCompound, IBlockState state){
+    public static void writeBlockFromStateToNBT(NBTTagCompound nbtTagCompound, IBlockState state) {
         if (state != null) {
             nbtTagCompound.setString("camoBlockRegName", state.getBlock().getRegistryName().toString());
             nbtTagCompound.setInteger("camoBlockMeta", state.getBlock().getMetaFromState(state));
         }
     }
 
-    public static IBlockState getBlockStateFromNBT(NBTTagCompound nbtTagCompound){
+    public static IBlockState getBlockStateFromNBT(NBTTagCompound nbtTagCompound) {
         if (nbtTagCompound.hasKey("camoBlockRegName") && nbtTagCompound.hasKey("camoBlockMeta")) {
             return ForgeRegistries.BLOCKS.getValue(
                     new ResourceLocation(nbtTagCompound.getString("camoBlockRegName"))).getStateFromMeta(nbtTagCompound.getInteger("camoBlockMeta"));
