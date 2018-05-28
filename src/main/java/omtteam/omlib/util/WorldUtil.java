@@ -14,18 +14,18 @@ import java.util.ArrayList;
  */
 @SuppressWarnings("unused")
 public class WorldUtil {
-    public static ArrayList<TileEntity> getTouchingTileEntities(World world, BlockPos pos){
+    public static ArrayList<TileEntity> getTouchingTileEntities(World world, BlockPos pos) {
         ArrayList<TileEntity> list = new ArrayList<>();
-        for (EnumFacing facing: EnumFacing.VALUES) {
+        for (EnumFacing facing : EnumFacing.VALUES) {
             list.add(world.getTileEntity(pos.offset(facing)));
         }
         return list;
     }
 
     @SuppressWarnings("unused")
-    public static ArrayList<IBlockState> getTouchingBlockStates(World world, BlockPos pos){
+    public static ArrayList<IBlockState> getTouchingBlockStates(World world, BlockPos pos) {
         ArrayList<IBlockState> list = new ArrayList<>();
-        for (EnumFacing facing: EnumFacing.VALUES) {
+        for (EnumFacing facing : EnumFacing.VALUES) {
             list.add(world.getBlockState(pos.offset(facing)));
         }
         return list;

@@ -42,8 +42,8 @@ public abstract class TileEntityOwnedBlock extends TileEntityBase {
         if (nbtTagCompound.hasKey("ownerName")) {
             this.ownerName = nbtTagCompound.getString("ownerName");
         }
-        if (((owner == null || owner.isEmpty()) && !ConfigHandler.offlineModeSupport) || (ConfigHandler.offlineModeSupport && ownerName == null)){
-            dropBlock =true;
+        if (((owner == null || owner.isEmpty()) && !ConfigHandler.offlineModeSupport) || (ConfigHandler.offlineModeSupport && ownerName == null)) {
+            dropBlock = true;
         }
     }
 
