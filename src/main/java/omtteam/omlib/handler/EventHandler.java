@@ -16,6 +16,8 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import omtteam.omlib.OMLib;
 import omtteam.omlib.init.OMLibItems;
 import omtteam.omlib.items.IDrawOutline;
@@ -69,6 +71,7 @@ public class EventHandler {
     }
 
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
     public void drawBlockOutline(DrawBlockHighlightEvent event) {
         if (event.getTarget() != null && event.getTarget().sideHit != null && event.getPlayer().getHeldItemMainhand() != null && event.getPlayer().getHeldItemMainhand().getItem() instanceof IDrawOutline) {
             BlockPos blockpos = event.getTarget().getBlockPos().offset(event.getTarget().sideHit);
