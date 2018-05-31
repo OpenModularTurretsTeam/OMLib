@@ -1,7 +1,6 @@
 package omtteam.omlib.network.messages;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -28,7 +27,7 @@ public class MessageCloseGUI implements IMessage {
         public IMessage onMessage(MessageCloseGUI messageIn, MessageContext ctx) {
             final MessageCloseGUI message = messageIn;
             final EntityPlayerMP player = ctx.getServerHandler().player;
-            Minecraft.getMinecraft().addScheduledTask(() -> {
+            ctx.getServerHandler().player.getServerWorld().addScheduledTask(() -> {
                 World world = player.world;
                 TileEntity te = world.getTileEntity(new BlockPos(message.x, message.y, message.z));
                 if (te instanceof ISyncable) {
