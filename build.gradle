@@ -103,9 +103,6 @@ repositories {
         name  "ic2"
         url  "http://maven.ic2.player.to/"
     }
-    maven { // Tesla
-        url 'http://maven.epoxide.xyz'
-    }
     maven {
         url "http://tehnut.info/maven"
     }
