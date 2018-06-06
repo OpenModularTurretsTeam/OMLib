@@ -61,7 +61,7 @@ public class CommandChangeOwner extends CommandBase {
             if (tileEntity instanceof TileEntityOwnedBlock) {
                 TileEntityOwnedBlock block = (TileEntityOwnedBlock) tileEntity;
                 UUID uuid = getPlayerUUID(ownerName);
-                if (uuid != null ) {
+                if (uuid != null) {
                     block.setOwner(uuid.toString());
                     block.setOwnerName(ownerName);
                     addChatMessage(sender, new TextComponentString("Block ownership has been updated"));
