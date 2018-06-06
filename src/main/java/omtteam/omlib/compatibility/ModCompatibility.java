@@ -12,13 +12,6 @@ import omtteam.omlib.reference.Reference;
  */
 @SuppressWarnings("WeakerAccess")
 public class ModCompatibility {
-    public static boolean IC2Loaded = false;
-    public static boolean TeslaLoaded = false;
-    public static boolean CoFHApiLoaded = false;
-    public static boolean OpenComputersLoaded = false;
-    public static boolean ComputerCraftLoaded = false;
-    public static boolean TOPLoaded = false;
-
     public static final String IC2ModId = "ic2";
     public static final String TeslaModId = "tesla";
     public static final String CoFHApiModId = "redstoneflux";
@@ -29,6 +22,12 @@ public class ModCompatibility {
     public static final String EIOModID = "enderio";
     public static final String TCModID = "thaumcraft";
     public static final String TOPModID = "theoneprobe";
+    public static boolean IC2Loaded = false;
+    public static boolean TeslaLoaded = false;
+    public static boolean CoFHApiLoaded = false;
+    public static boolean OpenComputersLoaded = false;
+    public static boolean ComputerCraftLoaded = false;
+    public static boolean TOPLoaded = false;
 
     public static void checkForMods() {
         IC2Loaded = Loader.isModLoaded(IC2ModId);
