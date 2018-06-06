@@ -12,6 +12,10 @@ import omtteam.omlib.init.OMLibItems;
 @SuppressWarnings({"WeakerAccess", "EmptyMethod", "unused"})
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
+    public static World getWorld(Minecraft mc) {
+        return mc.world;
+    }
+
     @SuppressWarnings("SameParameterValue")
     private void registerItemModel(final Item item, int meta) {
         ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(item.getRegistryName().toString().toLowerCase()));
@@ -36,9 +40,5 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void init() {
         super.init();
-    }
-
-    public static World getWorld(Minecraft mc) {
-        return mc.world;
     }
 }

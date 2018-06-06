@@ -14,6 +14,17 @@ import omtteam.omlib.OMLib;
  */
 public abstract class AbstractOMDriver {
 
+    protected abstract Class<?> clGetTileEntityClass();
+
+    protected abstract ManagedEnvironment clCreateEnvironment(World world, BlockPos pos, EnumFacing side);
+
+    protected abstract String getName();
+
+    public void registerWrapper() {
+        Driver.add(new DriverSidedTEWrapper());
+        OMLib.getLogger().info("Registered OC Driver: " + this.getName());
+    }
+
     private class DriverSidedTEWrapper extends DriverSidedTileEntity {
         @Override
         public Class<?> getTileEntityClass() {
@@ -24,16 +35,5 @@ public abstract class AbstractOMDriver {
         public ManagedEnvironment createEnvironment(World world, BlockPos pos, EnumFacing side) {
             return clCreateEnvironment(world, pos, side);
         }
-    }
-
-    protected abstract Class<?> clGetTileEntityClass();
-
-    protected abstract ManagedEnvironment clCreateEnvironment(World world, BlockPos pos, EnumFacing side);
-
-    protected abstract String getName();
-
-    public void registerWrapper() {
-        Driver.add(new DriverSidedTEWrapper());
-        OMLib.getLogger().info("Registered OC Driver: " + this.getName());
     }
 }
