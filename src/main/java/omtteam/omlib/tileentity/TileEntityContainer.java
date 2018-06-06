@@ -41,7 +41,9 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock {
         if (tagCompound.getTagId("Items") == Constants.NBT.TAG_LIST) {
             NBTTagList tagList = tagCompound.getTagList("Items", Constants.NBT.TAG_COMPOUND);
 
-            for (int i = 0; i < this.getInventory().getSlots(); i++) { this.getInventory().setStackInSlot(i, ItemStack.EMPTY); }
+            for (int i = 0; i < this.getInventory().getSlots(); i++) {
+                this.getInventory().setStackInSlot(i, ItemStack.EMPTY);
+            }
 
             for (int i = 0; i < tagList.tagCount(); i++) {
                 NBTTagCompound tag = (NBTTagCompound) tagList.get(i);
@@ -57,7 +59,9 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock {
                 tagCompound.getCompoundTag("Inventory").getTagId("Items") == Constants.NBT.TAG_LIST) {
             NBTTagList tagList = tagCompound.getCompoundTag("Inventory").getTagList("Items", Constants.NBT.TAG_COMPOUND);
 
-            for (int i = 0; i < this.getInventory().getSlots(); i++) { this.getInventory().setStackInSlot(i, ItemStack.EMPTY); }
+            for (int i = 0; i < this.getInventory().getSlots(); i++) {
+                this.getInventory().setStackInSlot(i, ItemStack.EMPTY);
+            }
 
             for (int i = 0; i < tagList.tagCount(); i++) {
                 NBTTagCompound tag = (NBTTagCompound) tagList.get(i);

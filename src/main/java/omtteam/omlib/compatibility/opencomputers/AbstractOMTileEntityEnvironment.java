@@ -12,8 +12,8 @@ import net.minecraft.nbt.NBTTagCompound;
  * This Class
  */
 public abstract class AbstractOMTileEntityEnvironment<T> implements ManagedEnvironment {
-    protected final T tileEntity;
     public static final String NODE_TAG = "node";
+    protected final T tileEntity;
     private Node _node;
 
     public AbstractOMTileEntityEnvironment(final T tileEntity, final String name) {

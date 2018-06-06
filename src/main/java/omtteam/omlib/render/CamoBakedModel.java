@@ -63,7 +63,7 @@ public abstract class CamoBakedModel implements IBakedModel {
         if (camoState != null && camoState.getBlock() instanceof BlockAbstractCamoTileEntity) {
             return getModel(defaultModels, state).getQuads(state, side, rand);
 
-        } else if (camoState != null ){
+        } else if (camoState != null) {
             return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(camoState).getQuads(camoState, side, rand);
         }
         return getModel(defaultModels, BlockAbstractCamoTileEntity.getStateById(0)).getQuads(BlockAbstractCamoTileEntity.getStateById(0), side, rand);

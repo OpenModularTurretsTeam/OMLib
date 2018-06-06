@@ -22,7 +22,7 @@ public class CamoBlockColor implements IBlockColor {
     public int colorMultiplier(@Nullable IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) {
         if (worldIn != null && pos != null && worldIn.getTileEntity(pos) instanceof ICamoSupport && state != ((ICamoSupport) worldIn.getTileEntity(pos)).getCamoState()) {
             IBlockState camoState = ((ICamoSupport) worldIn.getTileEntity(pos)).getCamoState();
-                return Minecraft.getMinecraft().getBlockColors().colorMultiplier(camoState, worldIn, pos, tintIndex);
+            return Minecraft.getMinecraft().getBlockColors().colorMultiplier(camoState, worldIn, pos, tintIndex);
         }
         return -1;
     }
