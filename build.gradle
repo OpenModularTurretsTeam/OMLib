@@ -201,7 +201,7 @@ curseforge {
         apiKey = project.properties["curseforge_key"]
     }
     project {
-        id = project.curse_project_id
+        id = config.curse_project_id
 
         relations {
             optionalLibrary 'ompd'
