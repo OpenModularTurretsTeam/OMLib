@@ -5,6 +5,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import omtteam.omlib.handler.OwnerShareHandler;
 import omtteam.omlib.util.Player;
 
@@ -21,17 +23,6 @@ public class MessageSetSharePlayerList implements IMessage {
     public MessageSetSharePlayerList() {
     }
 
-
-    public static class MessageHandlerSetSharePlayerList implements IMessageHandler<MessageSetSharePlayerList, IMessage> {
-        @Override
-        @SuppressWarnings("deprecation")
-        public IMessage onMessage(MessageSetSharePlayerList messageIn, MessageContext ctx) {
-            final MessageSetSharePlayerList message = messageIn;
-            Minecraft.getMinecraft().addScheduledTask(() -> OwnerShareHandler.getInstance().setOwnerShareMap(messageIn.ownerShareMap));
-            return null;
-        }
-
-    }
 
     public MessageSetSharePlayerList(OwnerShareHandler shareHandler) {
         this.ownerShareMap = shareHandler.getOwnerShareMap();
@@ -67,5 +58,17 @@ public class MessageSetSharePlayerList implements IMessage {
                 }
             }
         }
+    }
+
+    public static class MessageHandlerSetSharePlayerList implements IMessageHandler<MessageSetSharePlayerList, IMessage> {
+        @Override
+        @SideOnly(Side.CLIENT)
+        @SuppressWarnings("deprecation")
+        public IMessage onMessage(MessageSetSharePlayerList messageIn, MessageContext ctx) {
+            final MessageSetSharePlayerList message = messageIn;
+            Minecraft.getMinecraft().addScheduledTask(() -> OwnerShareHandler.getInstance().setOwnerShareMap(messageIn.ownerShareMap));
+            return null;
+        }
+
     }
 }
