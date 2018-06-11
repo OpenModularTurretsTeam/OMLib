@@ -50,6 +50,10 @@ public class OMEnergyStorage implements IEnergyStorage {
         return energy;
     }
 
+    public void setEnergyStored(int stored) {
+        energy = stored > 0 ? Math.min(stored, capacity) : 0;
+    }
+
     @Override
     public int getMaxEnergyStored() {
         return capacity;
@@ -59,20 +63,16 @@ public class OMEnergyStorage implements IEnergyStorage {
         return maxReceive;
     }
 
-    public int getMaxExtract() {
-        return maxExtract;
-    }
-
     public void setMaxReceive(int max) {
         maxReceive = max;
     }
 
-    public void setCapacity(int max) {
-        capacity = max;
+    public int getMaxExtract() {
+        return maxExtract;
     }
 
-    public void setEnergyStored(int stored) {
-        energy = stored > 0 ? Math.min(stored, capacity) : 0;
+    public void setCapacity(int max) {
+        capacity = max;
     }
 
     public void modifyEnergyStored(int change) {

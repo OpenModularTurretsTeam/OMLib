@@ -13,6 +13,10 @@ public class ItemStackList extends NonNullList<ItemStack> {
 
     public static final ItemStackList EMPTY = ItemStackList.create(0);
 
+    public ItemStackList(List<ItemStack> delegateIn, @Nullable ItemStack stack) {
+        super(delegateIn, stack);
+    }
+
     public static ItemStackList create(int size) {
         Validate.notNull(ItemStack.EMPTY);
         ItemStack[] aobject = new ItemStack[size];
@@ -22,9 +26,5 @@ public class ItemStackList extends NonNullList<ItemStack> {
 
     public static ItemStackList create() {
         return new ItemStackList(new ArrayList<>(), ItemStack.EMPTY);
-    }
-
-    public ItemStackList(List<ItemStack> delegateIn, @Nullable ItemStack stack) {
-        super(delegateIn, stack);
     }
 }

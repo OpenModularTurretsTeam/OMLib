@@ -18,5 +18,4 @@ public class OMLibItems {
         debugTool = registerItem(new ItemDebugTool(), registry);
         fakeSword = registerItem(new FakeSword(Item.ToolMaterial.DIAMOND), registry);
     }
-
 }
