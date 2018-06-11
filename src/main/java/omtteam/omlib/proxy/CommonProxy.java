@@ -1,7 +1,7 @@
 package omtteam.omlib.proxy;
 
 import net.minecraftforge.common.MinecraftForge;
-import omtteam.omlib.handler.EventHandler;
+import omtteam.omlib.handler.OMLibEventHandler;
 import omtteam.omlib.handler.OMLibNetworkingHandler;
 
 @SuppressWarnings({"EmptyMethod", "WeakerAccess", "unused"})
@@ -16,7 +16,7 @@ public class CommonProxy {
 
     public void initHandlers() {
         OMLibNetworkingHandler.initNetworking();
-        MinecraftForge.EVENT_BUS.register(EventHandler.getInstance());
+        MinecraftForge.EVENT_BUS.register(OMLibEventHandler.getInstance());
     }
 
     public void init() {
