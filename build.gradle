@@ -38,16 +38,16 @@ repositories {
         url "http://chickenbones.net/maven/"
     }
     maven {
-        name  "OC repo"
-        url  "http://maven.cil.li/"
+        name "OC repo"
+        url "http://maven.cil.li/"
     }
     maven { // the repo from which to get EnderIO and tterrags mods
         name 'tterrag'
         url "http://maven.tterrag.com/"
     }
     maven {
-        name  "ic2"
-        url  "http://maven.ic2.player.to/"
+        name "ic2"
+        url "http://maven.ic2.player.to/"
     }
     maven {
         url "http://tehnut.info/maven"
@@ -99,7 +99,7 @@ minecraft {
     runDir = "run"
 
     replace "@VERSION@", project.version
-	    // the mappings can be changed at any time, and must be in the following format.
+    // the mappings can be changed at any time, and must be in the following format.
     // snapshot_YYYYMMDD   snapshot are built nightly.
     // stable_#            stables are built at the discretion of the MCP team.
     // Use non-default mappings at your own risk. they may not always work.
@@ -159,33 +159,38 @@ publishing {
         }
     }
     repositories {
-            mavenLocal()
+        mavenLocal()
     }
 }
-
 
 //// DETECTING COMMIT NAME AND ACTIVATING CURSE RELEASE \\\\
 
 def commit_release_type = getCommmitReleaseType()
-def getCommmitReleaseType(){
-    if(project.hasProperty("curseforge_key")){
+
+def getCommmitReleaseType() {
+    if (project.hasProperty("curseforge_key")) {
         def stdout = new ByteArrayOutputStream()
         try {
             exec {
                 commandLine 'git', 'log', '-1', '--pretty=tformat:%s'
                 standardOutput = stdout
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             System.print("SKIPPING CURSE RELEASE - FAILED TO RETRIEVE LAST COMMIT")
             e.printStackTrace();
             return 'none';
         }
         String commit = stdout.toString().trim()
 
-        if(commit.startsWith("Release") || commit.startsWith("release")){ System.out.println("FOUND NEW RELEASE - COMMIT: " + commit); return 'release' }
-        else if(commit.startsWith("Beta") || commit.startsWith("beta")){ System.out.println("FOUND NEW BETA - COMMIT: " + commit); return 'beta' }
-        else if(commit.startsWith("Alpha") || commit.startsWith("alpha")){ System.out.println("FOUND NEW ALPHA - COMMIT: " + commit); return 'alpha' }
-        else{System.out.println("SKIPPING CURSE RELEASE - COMMIT: " + commit)}
+        if (commit.startsWith("Release") || commit.startsWith("release")) {
+            System.out.println("FOUND NEW RELEASE - COMMIT: " + commit); return 'release'
+        } else if (commit.startsWith("Beta") || commit.startsWith("beta")) {
+            System.out.println("FOUND NEW BETA - COMMIT: " + commit); return 'beta'
+        } else if (commit.startsWith("Alpha") || commit.startsWith("alpha")) {
+            System.out.println("FOUND NEW ALPHA - COMMIT: " + commit); return 'alpha'
+        } else {
+            System.out.println("SKIPPING CURSE RELEASE - COMMIT: " + commit); return 'none'
+        }
     }
     System.out.println("SKIPPING CURSE RELEASE - NO CURSE API KEY")
     return 'none';
@@ -193,7 +198,7 @@ def getCommmitReleaseType(){
 
 tasks.curseforge.enabled = project.hasProperty("curseforge_key") && !commit_release_type.equals('none')
 curseforge {
-    if(project.hasProperty("curseforge_key") && !commit_release_type.equals('none')) {
+    if (project.hasProperty("curseforge_key") && !commit_release_type.equals('none')) {
         System.out.println("ATTEMPTING CURSE RELEASE")
         apiKey = project.properties["curseforge_key"]
     }
@@ -206,17 +211,18 @@ curseforge {
         }
 
         mainArtifact(jar) {
-            releaseType = commit_release_type.equals('none') ? 'release' : commit_release_type //throws if not release, beta or alpha
+            releaseType = commit_release_type
+            //throws if not release, beta or alpha
             changelog = file("${projectDir}/change_log.html").text
             changelogType = 'html'
         }
 
-        addArtifact(sourceJar){
+        addArtifact(sourceJar) {
             changelog = file("${projectDir}/change_log.html").text
             releaseType = 'alpha'
         }
 
-        addArtifact(deobfJar){
+        addArtifact(deobfJar) {
             changelog = file("${projectDir}/change_log.html").text
             releaseType = 'alpha'
         }
