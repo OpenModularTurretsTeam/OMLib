@@ -20,6 +20,17 @@ public class Player {
         this.name = name;
     }
 
+    public static void writeToByteBuf(Player player, ByteBuf buf) {
+        ByteBufUtils.writeUTF8String(buf, player.name);
+        ByteBufUtils.writeUTF8String(buf, player.getUuid().toString());
+    }
+
+    public static Player readFromByteBuf(ByteBuf buf) {
+        String name = ByteBufUtils.readUTF8String(buf);
+        UUID uuid = UUID.fromString(ByteBufUtils.readUTF8String(buf));
+        return new Player(uuid, name);
+    }
+
     public UUID getUuid() {
         return uuid;
     }
@@ -44,16 +55,5 @@ public class Player {
         int result = getUuid() != null ? getUuid().hashCode() : 0;
         result = 31 * result + getName().toLowerCase().hashCode();
         return result;
-    }
-
-    public static void writeToByteBuf(Player player, ByteBuf buf) {
-        ByteBufUtils.writeUTF8String(buf, player.name);
-        ByteBufUtils.writeUTF8String(buf, player.getUuid().toString());
-    }
-
-    public static Player readFromByteBuf(ByteBuf buf) {
-        String name = ByteBufUtils.readUTF8String(buf);
-        UUID uuid = UUID.fromString(ByteBufUtils.readUTF8String(buf));
-        return new Player(uuid, name);
     }
 }

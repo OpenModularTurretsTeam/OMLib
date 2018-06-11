@@ -35,6 +35,52 @@ public class OwnerShareHandler implements Serializable {
         return instance;
     }
 
+    static void saveToDisk() {
+        File saveRoot = DimensionManager.getCurrentSaveRootDirectory();
+        if (saveRoot != null) {
+            Path path = Paths.get(saveRoot.toString() + "/omlib/");
+            Path fullpath = Paths.get(saveRoot.toString() + "/omlib/OwnerShare.sav");
+            try {
+                if (Files.notExists(path)) {
+                    if (!path.toFile().mkdir()) {
+                        throw new Exception("Failed to create dir");
+                    }
+                }
+                if (getInstance() != null && getInstance().getOwnerShareMap() != null) {
+                    FileOutputStream saveFile = new FileOutputStream(fullpath.toFile());
+                    ObjectOutputStream save = new ObjectOutputStream(saveFile);
+                    save.writeObject(getInstance().getOwnerShareMap());
+                    save.close();
+                    saveFile.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                try {
+                    Files.deleteIfExists(fullpath);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+        }
+    }
+
+    static void loadFromDisk() {
+        HashMap<Player, ArrayList<Player>> input = new HashMap<>();
+        try {
+            Path fullpath = Paths.get(DimensionManager.getCurrentSaveRootDirectory().toString() + "/omlib/OwnerShare.sav");
+            FileInputStream saveFile = new FileInputStream(fullpath.toFile());
+            ObjectInputStream save = new ObjectInputStream(saveFile);
+            Object object = save.readObject();
+            if (object instanceof HashMap) {
+                input = (HashMap<Player, ArrayList<Player>>) object;
+            }
+            getInstance().setOwnerShareMap(input);
+            save.close();
+            saveFile.close();
+        } catch (Exception e) {
+        }
+    }
+
     public HashMap<Player, ArrayList<Player>> getOwnerShareMap() {
         return ownerShareMap;
     }
@@ -156,51 +202,5 @@ public class OwnerShareHandler implements Serializable {
             }
         }
         return false;
-    }
-
-    static void saveToDisk() {
-        File saveRoot = DimensionManager.getCurrentSaveRootDirectory();
-        if (saveRoot != null) {
-            Path path = Paths.get(saveRoot.toString() + "/omlib/");
-            Path fullpath = Paths.get(saveRoot.toString() + "/omlib/OwnerShare.sav");
-            try {
-                if (Files.notExists(path)) {
-                    if (!path.toFile().mkdir()) {
-                        throw new Exception("Failed to create dir");
-                    }
-                }
-                if (getInstance() != null && getInstance().getOwnerShareMap() != null) {
-                    FileOutputStream saveFile = new FileOutputStream(fullpath.toFile());
-                    ObjectOutputStream save = new ObjectOutputStream(saveFile);
-                    save.writeObject(getInstance().getOwnerShareMap());
-                    save.close();
-                    saveFile.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                try {
-                    Files.deleteIfExists(fullpath);
-                } catch (Exception exception) {
-                    exception.printStackTrace();
-                }
-            }
-        }
-    }
-
-    static void loadFromDisk() {
-        HashMap<Player, ArrayList<Player>> input = new HashMap<>();
-        try {
-            Path fullpath = Paths.get(DimensionManager.getCurrentSaveRootDirectory().toString() + "/omlib/OwnerShare.sav");
-            FileInputStream saveFile = new FileInputStream(fullpath.toFile());
-            ObjectInputStream save = new ObjectInputStream(saveFile);
-            Object object = save.readObject();
-            if (object instanceof HashMap) {
-                input = (HashMap<Player, ArrayList<Player>>) object;
-            }
-            getInstance().setOwnerShareMap(input);
-            save.close();
-            saveFile.close();
-        } catch (Exception e) {
-        }
     }
 }
