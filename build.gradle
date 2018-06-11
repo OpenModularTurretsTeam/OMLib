@@ -19,6 +19,59 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'maven-publish'
 apply plugin: 'idea'
 apply plugin: 'java'
+
+plugins {
+    id "com.matthewprenger.cursegradle" version "1.0.10"
+}
+
+repositories {
+    maven {
+        name "IGW"
+        url "http://maven.k-4u.nl/"
+    }
+    maven { // The repo from which to get waila
+        name "Mobius Repo"
+        url "http://mobiusstrip.eu/maven"
+    }
+    maven { // the repo from which to get NEI and stuff
+        name 'CB Repo'
+        url "http://chickenbones.net/maven/"
+    }
+    maven {
+        name  "OC repo"
+        url  "http://maven.cil.li/"
+    }
+    maven { // the repo from which to get EnderIO and tterrags mods
+        name 'tterrag'
+        url "http://maven.tterrag.com/"
+    }
+    maven {
+        name  "ic2"
+        url  "http://maven.ic2.player.to/"
+    }
+    maven { // Tesla
+        url 'http://maven.epoxide.xyz'
+    }
+    maven {
+        url "http://tehnut.info/maven"
+    }
+    maven {
+        url "http://maven.ironhide.de/"
+    }
+    maven { // JEI
+        url "http://dvs1.progwml6.com/files/maven"
+    }
+    maven { url = "http://dl.tsr.me/artifactory/libs-release-local" }
+
+    maven { // CoFH
+        name = "Covers Maven"
+        url = "http://maven.covers1624.net"
+    }
+    maven {
+        url 'http://maven.mcmoddev.com'
+    }
+}
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -78,54 +131,6 @@ processResources {
     }
 }
 
-repositories {
-    maven {
-        name "IGW"
-        url "http://maven.k-4u.nl/"
-    }
-    maven { // The repo from which to get waila
-        name "Mobius Repo"
-        url "http://mobiusstrip.eu/maven"
-    }
-    maven { // the repo from which to get NEI and stuff
-        name 'CB Repo'
-        url "http://chickenbones.net/maven/"
-    }
-    maven {
-        name  "OC repo"
-        url  "http://maven.cil.li/"
-    }
-    maven { // the repo from which to get EnderIO and tterrags mods
-        name 'tterrag'
-        url "http://maven.tterrag.com/"
-    }
-    maven {
-        name  "ic2"
-        url  "http://maven.ic2.player.to/"
-    }
-    maven { // Tesla
-        url 'http://maven.epoxide.xyz'
-    }
-    maven {
-        url "http://tehnut.info/maven"
-    }
-    maven {
-        url "http://maven.ironhide.de/"
-    }
-    maven { // JEI
-        url "http://dvs1.progwml6.com/files/maven"
-    }
-    maven { url = "http://dl.tsr.me/artifactory/libs-release-local" }
-
-    maven { // CoFH
-        name = "Covers Maven"
-        url = "http://maven.covers1624.net"
-    }
-    maven {
-        url 'http://maven.mcmoddev.com'
-    }
-}
-
 dependencies {
     deobfCompile "mezz.jei:jei_${config.minecraft_version}:${config.jei_version}"
     deobfCompile "cofh:RedstoneFlux:${config.minecraft_version_short}-${config.redstoneflux_version}:deobf"
@@ -135,7 +140,6 @@ dependencies {
     deobfCompile "mcjty.theoneprobe:TheOneProbe-${config.minecraft_version_short}:${config.minecraft_version_short}-${config.top_version}"
     deobfCompile "li.cil.oc:OpenComputers:MC${config.minecraft_version_short}.1-${config.oc_version}"
 }
-
 
 task deobfJar(type: Jar) {
     from sourceSets.main.output
@@ -158,5 +162,65 @@ publishing {
     }
     repositories {
             mavenLocal()
+    }
+}
+
+
+//// DETECTING COMMIT NAME AND ACTIVATING CURSE RELEASE \\\\
+
+def commit_release_type = getCommmitReleaseType()
+def getCommmitReleaseType(){
+    if(project.hasProperty("curseforge_key")){
+        def stdout = new ByteArrayOutputStream()
+        try {
+            exec {
+                commandLine 'git', 'log', '-1', '--pretty=tformat:%s'
+                standardOutput = stdout
+            }
+        }catch(Exception e){
+            System.print("SKIPPING CURSE RELEASE - FAILED TO RETRIEVE LAST COMMIT")
+            e.printStackTrace();
+            return 'none';
+        }
+        String commit = stdout.toString().trim()
+
+        if(commit.startsWith("Release") || commit.startsWith("release")){ System.out.println("FOUND NEW RELEASE - COMMIT: " + commit); return 'release' }
+        else if(commit.startsWith("Beta") || commit.startsWith("beta")){ System.out.println("FOUND NEW BETA - COMMIT: " + commit); return 'beta' }
+        else if(commit.startsWith("Alpha") || commit.startsWith("alpha")){ System.out.println("FOUND NEW ALPHA - COMMIT: " + commit); return 'alpha' }
+        else{System.out.println("SKIPPING CURSE RELEASE - COMMIT: " + commit)}
+    }
+    System.out.println("SKIPPING CURSE RELEASE - NO CURSE API KEY")
+    return 'none';
+}
+
+tasks.curseforge.enabled = project.hasProperty("curseforge_key") && !commit_release_type.equals('none')
+curseforge {
+    if(project.hasProperty("curseforge_key") && !commit_release_type.equals('none')) {
+        System.out.println("ATTEMPTING CURSE RELEASE")
+        apiKey = project.properties["curseforge_key"]
+    }
+    project {
+        id = curse_project_id
+
+        relations {
+            optionalLibrary 'ompd'
+            optionalLibrary 'openmodularturrets'
+        }
+
+        mainArtifact(jar) {
+            releaseType = commit_release_type.equals('none') ? 'release' : commit_release_type //throws if not release, beta or alpha
+            changelog = file("${projectDir}/change_log.html").text
+            changelogType = 'html'
+        }
+
+        addArtifact(sourceJar){
+            changelog = file("${projectDir}/change_log.html").text
+            releaseType = 'alpha'
+        }
+
+        addArtifact(deobfJar){
+            changelog = file("${projectDir}/change_log.html").text
+            releaseType = 'alpha'
+        }
     }
 }
