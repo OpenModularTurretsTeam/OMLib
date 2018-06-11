@@ -96,6 +96,7 @@ if (hasProperty('appendBuildNumber')) {
 group = "${config.group_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "${config.mod_id}-${config.minecraft_version}"
 
+
 minecraft {
     version = "${config.forge_version}"
     runDir = "run"
@@ -200,7 +201,7 @@ curseforge {
         apiKey = project.properties["curseforge_key"]
     }
     project {
-        id = curse_project_id
+        id = project.curse_project_id
 
         relations {
             optionalLibrary 'ompd'
