@@ -57,14 +57,18 @@ public class OMLibEventHandler {
 
     @SubscribeEvent
     public void worldLoadEvent(WorldEvent.Load event) {
-        OwnerShareHandler.loadFromDisk();
-        this.loadNetworks(event);
+        if (!event.getWorld().isRemote) {
+            OwnerShareHandler.loadFromDisk();
+            this.loadNetworks(event);
+        }
     }
 
     @SubscribeEvent
     public void worldUnloadEvent(WorldEvent.Unload event) {
-        OwnerShareHandler.saveToDisk();
-        this.saveNetworks(event);
+        if (!event.getWorld().isRemote) {
+            OwnerShareHandler.saveToDisk();
+            this.saveNetworks(event);
+        }
     }
 
     @SubscribeEvent

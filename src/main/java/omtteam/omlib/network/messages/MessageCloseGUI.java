@@ -21,24 +21,6 @@ public class MessageCloseGUI implements IMessage {
     }
 
 
-    public static class MessageHandlerCloseGUI implements IMessageHandler<MessageCloseGUI, IMessage> {
-        @Override
-        @SuppressWarnings("deprecation")
-        public IMessage onMessage(MessageCloseGUI messageIn, MessageContext ctx) {
-            final MessageCloseGUI message = messageIn;
-            final EntityPlayerMP player = ctx.getServerHandler().player;
-            ctx.getServerHandler().player.getServerWorld().addScheduledTask(() -> {
-                World world = player.world;
-                TileEntity te = world.getTileEntity(new BlockPos(message.x, message.y, message.z));
-                if (te instanceof ISyncable) {
-                    ((ISyncable) te).getSyncPlayerList().remove(player);
-                }
-            });
-            return null;
-        }
-
-    }
-
     public MessageCloseGUI(TileEntity te) {
         this.x = te.getPos().getX();
         this.y = te.getPos().getY();
@@ -69,5 +51,23 @@ public class MessageCloseGUI implements IMessage {
 
     public int getZ() {
         return z;
+    }
+
+    public static class MessageHandlerCloseGUI implements IMessageHandler<MessageCloseGUI, IMessage> {
+        @Override
+        @SuppressWarnings("deprecation")
+        public IMessage onMessage(MessageCloseGUI messageIn, MessageContext ctx) {
+            final MessageCloseGUI message = messageIn;
+            final EntityPlayerMP player = ctx.getServerHandler().player;
+            ctx.getServerHandler().player.getServerWorld().addScheduledTask(() -> {
+                World world = player.world;
+                TileEntity te = world.getTileEntity(new BlockPos(message.x, message.y, message.z));
+                if (te instanceof ISyncable) {
+                    ((ISyncable) te).getSyncPlayerList().remove(player);
+                }
+            });
+            return null;
+        }
+
     }
 }
