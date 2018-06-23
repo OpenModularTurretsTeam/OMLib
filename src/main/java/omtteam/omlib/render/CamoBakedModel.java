@@ -9,12 +9,15 @@ import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import omtteam.omlib.blocks.BlockAbstractCamoTileEntity;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
 import static omtteam.omlib.blocks.BlockAbstractCamoTileEntity.RENDERBLOCKSTATE;
@@ -46,24 +49,24 @@ public abstract class CamoBakedModel implements IBakedModel {
     @Override
     @Nonnull
     public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
-        IExtendedBlockState extendedState;
         if (state instanceof IExtendedBlockState) {
-            extendedState = (IExtendedBlockState) state;
+            BlockRenderLayer layer = MinecraftForgeClient.getRenderLayer();
+            IExtendedBlockState extendedState = (IExtendedBlockState) state;
+            IExtendedBlockState camoState = null;
+            if (extendedState.getValue(RENDERBLOCKSTATE) != null && extendedState.getValue(RENDERBLOCKSTATE).getRenderState() != null) {
+                camoState = extendedState.getValue(RENDERBLOCKSTATE).getRenderState();
+            }
+            if (camoState != null && camoState.getBlock() instanceof BlockAbstractCamoTileEntity && layer.equals(BlockRenderLayer.SOLID)) {
+                return getModel(defaultModels, state).getQuads(state, side, rand);
+            } else if (camoState != null && camoState.getBlock().canRenderInLayer(camoState, layer)) {
+                return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(camoState.getClean()).getQuads(camoState, side, rand);
+            } else if (camoState != null) {
+                return new ArrayList<>();
+            }
         } else {
             return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(state).getQuads(state, side, rand);
         }
-        IBlockState camoState = null;
-        if (extendedState != null) {
-            camoState = extendedState.getValue(RENDERBLOCKSTATE).getRenderState();
-        }
-
-        if (camoState != null && camoState.getBlock() instanceof BlockAbstractCamoTileEntity) {
-            return getModel(defaultModels, state).getQuads(state, side, rand);
-
-        } else if (camoState != null) {
-            return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(camoState).getQuads(camoState, side, rand);
-        }
-        return getModel(defaultModels, BlockAbstractCamoTileEntity.getStateById(0)).getQuads(BlockAbstractCamoTileEntity.getStateById(0), side, rand);
+        return new ArrayList<>();
     }
 
     @Override
