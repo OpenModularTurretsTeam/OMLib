@@ -1,23 +1,23 @@
 package omtteam.omlib.render;
 
-import net.minecraft.block.state.IBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
 
 /**
  * Created by Keridos on 29/01/17.
- * This Class
+ * This is the BlockState saving property for block rendering for camo blocks.
  */
 public class RenderBlockStateContainer {
-    private IBlockState renderState;
+    private IExtendedBlockState renderState;
 
-    public RenderBlockStateContainer(IBlockState state) {
+    public RenderBlockStateContainer(IExtendedBlockState state) {
         renderState = state;
     }
 
-    public IBlockState getRenderState() {
+    public IExtendedBlockState getRenderState() {
         return renderState;
     }
 
-    public void setRenderState(IBlockState renderState) {
+    public void setRenderState(IExtendedBlockState renderState) {
         this.renderState = renderState;
     }
 

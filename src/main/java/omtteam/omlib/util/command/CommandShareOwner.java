@@ -45,21 +45,25 @@ public class CommandShareOwner extends CommandBase {
         try {
             String shareName = params[1];
             String command = params[0];
-            if (command.equals("add")) {
-                if (!offlineModeSupport && getPlayerUUID(shareName) != null) {
-                    Player sharePlayer = new Player(getPlayerUUID(shareName), shareName);
+            switch (command) {
+                case "add":
+                    if (!offlineModeSupport && getPlayerUUID(shareName) != null) {
+                        Player sharePlayer = new Player(getPlayerUUID(shareName), shareName);
+                        Player owner = new Player(getPlayerUUID(sender.getName()), sender.getName());
+                        OwnerShareHandler.getInstance().addSharePlayer(owner, sharePlayer, sender);
+                    }
+                    break;
+                case "del":
+                    if (!offlineModeSupport && getPlayerUUID(shareName) != null) {
+                        Player sharePlayer = new Player(getPlayerUUID(shareName), shareName);
+                        Player owner = new Player(getPlayerUUID(sender.getName()), sender.getName());
+                        OwnerShareHandler.getInstance().removeSharePlayer(owner, sharePlayer, sender);
+                    }
+                    break;
+                case "list":
                     Player owner = new Player(getPlayerUUID(sender.getName()), sender.getName());
-                    OwnerShareHandler.getInstance().addSharePlayer(owner, sharePlayer, sender);
-                }
-            } else if (command.equals("del")) {
-                if (!offlineModeSupport && getPlayerUUID(shareName) != null) {
-                    Player sharePlayer = new Player(getPlayerUUID(shareName), shareName);
-                    Player owner = new Player(getPlayerUUID(sender.getName()), sender.getName());
-                    OwnerShareHandler.getInstance().removeSharePlayer(owner, sharePlayer, sender);
-                }
-            } else if (command.equals("list")) {
-                Player owner = new Player(getPlayerUUID(sender.getName()), sender.getName());
-                OwnerShareHandler.getInstance().printSharePlayers(owner, sender);
+                    OwnerShareHandler.getInstance().printSharePlayers(owner, sender);
+                    break;
             }
         } catch (NumberFormatException e) {
             addChatMessage(sender, new TextComponentString("Please supply a valid name and command"));
