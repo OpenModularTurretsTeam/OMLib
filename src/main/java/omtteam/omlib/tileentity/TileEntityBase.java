@@ -20,6 +20,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @SuppressWarnings({"EmptyMethod", "WeakerAccess"})
 @MethodsReturnNonnullByDefault
 public abstract class TileEntityBase extends TileEntity {
+    protected boolean updateNBT = false;
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound nbtTagCompound = new NBTTagCompound();
@@ -52,8 +53,12 @@ public abstract class TileEntityBase extends TileEntity {
         return oldState.getBlock() != newState.getBlock();
     }
 
-    protected void markBlockForUpdate(int flag) {
+    public void markBlockForUpdate(int flag) {
         IBlockState state = this.getWorld().getBlockState(this.getPos());
         this.getWorld().markAndNotifyBlock(this.getPos(), null, state, state, flag);
+    }
+
+    public void setUpdateNBT(boolean shouldUpdateNBT) {
+        this.updateNBT = shouldUpdateNBT;
     }
 }

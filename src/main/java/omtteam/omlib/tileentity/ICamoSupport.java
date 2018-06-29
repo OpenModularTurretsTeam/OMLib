@@ -1,6 +1,10 @@
 package omtteam.omlib.tileentity;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import omtteam.omlib.network.OMLibNetworkingHandler;
+import omtteam.omlib.network.messages.MessageCamoSettings;
+import omtteam.omlib.util.CamoSettings;
 
 import javax.annotation.Nonnull;
 
@@ -32,4 +36,18 @@ public interface ICamoSupport {
      */
     @Nonnull
     IBlockState getDefaultCamoState();
+
+    @Nonnull
+    CamoSettings getCamoSettings();
+
+    @Nonnull
+    TileEntityOwnedBlock getOwnedBlock();
+
+    default void updateCamoSettingsToPlayers() {
+        OMLibNetworkingHandler.INSTANCE.sendToAllAround(new MessageCamoSettings((ICamoSupport) this.getOwnedBlock()),
+                new NetworkRegistry.TargetPoint(this.getOwnedBlock().getWorld().provider.getDimension(),
+                        this.getOwnedBlock().getPos().getX(),
+                        this.getOwnedBlock().getPos().getY(),
+                        this.getOwnedBlock().getPos().getZ(), 160));
+    }
 }
