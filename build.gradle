@@ -182,11 +182,11 @@ def getCommmitReleaseType() {
         }
         String commit = stdout.toString().trim()
 
-        if (commit.startsWith("Release") || commit.startsWith("release")) {
+        if (commit.startsWith("CRelease") || commit.startsWith("crelease")) {
             System.out.println("FOUND NEW RELEASE - COMMIT: " + commit); return 'release'
-        } else if (commit.startsWith("Beta") || commit.startsWith("beta")) {
+        } else if (commit.startsWith("CBeta") || commit.startsWith("cbeta")) {
             System.out.println("FOUND NEW BETA - COMMIT: " + commit); return 'beta'
-        } else if (commit.startsWith("Alpha") || commit.startsWith("alpha")) {
+        } else if (commit.startsWith("CAlpha") || commit.startsWith("calpha")) {
             System.out.println("FOUND NEW ALPHA - COMMIT: " + commit); return 'alpha'
         } else {
             System.out.println("SKIPPING CURSE RELEASE - COMMIT: " + commit); return 'none'
