@@ -2,7 +2,7 @@ package omtteam.omlib.proxy;
 
 import net.minecraftforge.common.MinecraftForge;
 import omtteam.omlib.handler.OMLibEventHandler;
-import omtteam.omlib.handler.OMLibNetworkingHandler;
+import omtteam.omlib.network.OMLibNetworkingHandler;
 
 @SuppressWarnings({"EmptyMethod", "WeakerAccess", "unused"})
 public class CommonProxy {

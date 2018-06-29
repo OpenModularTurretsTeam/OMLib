@@ -27,6 +27,7 @@ import omtteam.omlib.api.network.OMLibNetwork;
 import omtteam.omlib.init.OMLibItems;
 import omtteam.omlib.items.IDrawOutline;
 import omtteam.omlib.items.IDrawOutlineBase;
+import omtteam.omlib.network.OMLibNetworkingHandler;
 import omtteam.omlib.network.messages.MessageSetSharePlayerList;
 
 import java.io.*;
