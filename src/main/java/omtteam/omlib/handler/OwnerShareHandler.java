@@ -3,6 +3,7 @@ package omtteam.omlib.handler;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.DimensionManager;
+import omtteam.omlib.network.OMLibNetworkingHandler;
 import omtteam.omlib.network.messages.MessageSetSharePlayerList;
 import omtteam.omlib.util.Player;
 
