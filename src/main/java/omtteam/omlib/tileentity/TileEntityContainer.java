@@ -10,7 +10,6 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.RangedWrapper;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
@@ -19,7 +18,6 @@ import javax.annotation.Nullable;
  */
 @SuppressWarnings("WeakerAccess")
 public abstract class TileEntityContainer extends TileEntityOwnedBlock {
-    @Nonnull
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
         super.writeToNBT(nbtTagCompound);

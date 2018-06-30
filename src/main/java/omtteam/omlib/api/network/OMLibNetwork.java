@@ -90,11 +90,11 @@ public class OMLibNetwork {
         }
         for (IPowerExchangeTile tile : requiring) {
             powerRequired += Math.min(tile.getEnergyStorage().getMaxReceive(),
-                    tile.getEnergyStorage().getMaxEnergyStored() - tile.getEnergyStorage().getEnergyStored());
+                                      tile.getEnergyStorage().getMaxEnergyStored() - tile.getEnergyStorage().getEnergyStored());
         }
         for (IPowerExchangeTile tile : delivering) {
             powerToDeliver += Math.min(powerRequired - powerToDeliver, Math.min(tile.getEnergyStorage().getMaxExtract(),
-                    tile.getEnergyStorage().getMaxEnergyStored() - tile.getEnergyStorage().getEnergyStored()));
+                                                                                tile.getEnergyStorage().getMaxEnergyStored() - tile.getEnergyStorage().getEnergyStored()));
         }
         for (IPowerExchangeTile tile : requiring) {
             tile.getEnergyStorage().receiveEnergy(powerToDeliver / requiring.size(), false);

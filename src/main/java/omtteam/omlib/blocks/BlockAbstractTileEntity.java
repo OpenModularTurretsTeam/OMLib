@@ -63,8 +63,8 @@ public abstract class BlockAbstractTileEntity extends BlockAbstract {
                     float rz = rand.nextFloat() * 0.8F + 0.1F;
 
                     EntityItem entityItem = new EntityItem(worldIn, pos.getX() + rx, pos.getY() + ry, pos.getZ() + rz,
-                            new ItemStack(item.getItem(), InvUtil.getStackSize(item),
-                                    item.getItemDamage()));
+                                                           new ItemStack(item.getItem(), InvUtil.getStackSize(item),
+                                                                         item.getItemDamage()));
 
                     if (item.hasTagCompound()) {
                         entityItem.getItem().setTagCompound(item.getTagCompound().copy());

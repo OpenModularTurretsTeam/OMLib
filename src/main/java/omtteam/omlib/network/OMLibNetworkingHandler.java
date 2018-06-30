@@ -19,13 +19,13 @@ public class OMLibNetworkingHandler {
 
     public static void initNetworking() {
         INSTANCE.registerMessage(MessageSetSharePlayerList.MessageHandlerSetSharePlayerList.class, MessageSetSharePlayerList.class, 0,
-                Side.CLIENT);
+                                 Side.CLIENT);
         INSTANCE.registerMessage(MessageOpenGUI.MessageHandlerOpenGUI.class, MessageOpenGUI.class, 1,
-                Side.SERVER);
+                                 Side.SERVER);
         INSTANCE.registerMessage(MessageCloseGUI.MessageHandlerCloseGUI.class, MessageCloseGUI.class, 2,
-                Side.SERVER);
+                                 Side.SERVER);
         INSTANCE.registerMessage(MessageCamoSettings.MessageHandlerCamoSettings.class, MessageCamoSettings.class, 3,
-                Side.CLIENT);
+                                 Side.CLIENT);
     }
 
     public static void sendMessageToAllPlayers(IMessage message) {
