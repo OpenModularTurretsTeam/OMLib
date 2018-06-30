@@ -1,16 +1,24 @@
 package omtteam.omlib.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import omtteam.omlib.power.OMEnergyStorage;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Created by Keridos on 27/07/17.
- * This Class
+ * This is the base machine with the mode and tank
  */
 public abstract class TileEntityMachine extends TileEntityContainerElectric {
-    protected boolean active = false;
+    protected boolean active;
     protected boolean redstone = false;
     protected EnumMachineMode mode;
+    protected FluidTank tank = new FluidTank(4000);
 
     public TileEntityMachine() {
         super();
@@ -54,18 +62,26 @@ public abstract class TileEntityMachine extends TileEntityContainerElectric {
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
-        super.writeToNBT(nbtTagCompound);
-        nbtTagCompound.setBoolean("active", active);
-        nbtTagCompound.setBoolean("redstone", redstone);
-        return nbtTagCompound;
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+        tag.setBoolean("active", active);
+        tag.setBoolean("redstone", redstone);
+        if (this.getTank() != null) {
+            NBTTagCompound tank = new NBTTagCompound();
+            this.getTank().writeToNBT(tank);
+            tag.setTag("tank", tank);
+        }
+        return tag;
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbtTagCompound) {
-        super.readFromNBT(nbtTagCompound);
-        this.active = !nbtTagCompound.hasKey("active") || nbtTagCompound.getBoolean("active");
-        this.redstone = nbtTagCompound.getBoolean("redstone");
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        if (this.getTank() != null && tag.hasKey("tank")) {
+            this.getTank().readFromNBT(tag.getCompoundTag("tank"));
+        }
+        this.active = !tag.hasKey("active") || tag.getBoolean("active");
+        this.redstone = tag.getBoolean("redstone");
     }
 
     public boolean isActive() {
@@ -80,4 +96,34 @@ public abstract class TileEntityMachine extends TileEntityContainerElectric {
         this.redstone = redstone;
         refreshActive(this.mode);
     }
+
+    @Override
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && this.getTank() != null || super.hasCapability(capability, facing);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    @Nullable
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && this.getTank() != null)
+            return (T) this.getCapabilityTank(facing);
+        return super.getCapability(capability, facing);
+    }
+
+    /**
+     * Returns the internal tank of the tile, without restrictions
+     *
+     * @return internal tank
+     */
+    @Nullable
+    public abstract FluidTank getTank();
+
+    /**
+     * Returns the externally "visible" tank of the tile, with proper restrictions
+     *
+     * @return internal tank
+     */
+    @Nullable
+    public abstract FluidTank getCapabilityTank(EnumFacing facing);
 }

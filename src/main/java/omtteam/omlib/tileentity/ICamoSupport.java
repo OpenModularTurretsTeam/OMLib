@@ -45,9 +45,10 @@ public interface ICamoSupport {
 
     default void updateCamoSettingsToPlayers() {
         OMLibNetworkingHandler.INSTANCE.sendToAllAround(new MessageCamoSettings((ICamoSupport) this.getOwnedBlock()),
-                new NetworkRegistry.TargetPoint(this.getOwnedBlock().getWorld().provider.getDimension(),
-                        this.getOwnedBlock().getPos().getX(),
-                        this.getOwnedBlock().getPos().getY(),
-                        this.getOwnedBlock().getPos().getZ(), 160));
+                                                        new NetworkRegistry.TargetPoint(
+                                                                this.getOwnedBlock().getWorld().provider.getDimension(),
+                                                                this.getOwnedBlock().getPos().getX(),
+                                                                this.getOwnedBlock().getPos().getY(),
+                                                                this.getOwnedBlock().getPos().getZ(), 160));
     }
 }

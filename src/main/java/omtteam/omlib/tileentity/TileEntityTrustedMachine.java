@@ -25,15 +25,15 @@ public abstract class TileEntityTrustedMachine extends TileEntityMachine impleme
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
-        super.writeToNBT(nbtTagCompound);
-        nbtTagCompound.setTag("trustedPlayers", getTrustedPlayersAsNBT());
-        return nbtTagCompound;
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+        tag.setTag("trustedPlayers", getTrustedPlayersAsNBT());
+        return tag;
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbtTagCompound) {
-        super.readFromNBT(nbtTagCompound);
-        buildTrustedPlayersFromNBT(nbtTagCompound.getTagList("trustedPlayers", 10));
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        buildTrustedPlayersFromNBT(tag.getTagList("trustedPlayers", 10));
     }
 }
