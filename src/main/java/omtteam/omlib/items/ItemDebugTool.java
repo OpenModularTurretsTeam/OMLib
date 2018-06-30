@@ -52,7 +52,7 @@ public class ItemDebugTool extends Item {
                 if (tileEntity instanceof TileEntityMachine) {
                     TileEntityMachine te = (TileEntityMachine) tileEntity;
                     playerIn.sendMessage(new TextComponentString("Active: " + te.isActive() + ", Redstone: "
-                            + te.getRedstone() + ", Mode: " + getMachineModeLocalization(te.getMode())));
+                                                                         + te.getRedstone() + ", Mode: " + getMachineModeLocalization(te.getMode())));
                 }
                 if (tileEntity instanceof IDebugTile) {
                     List<String> debugInfo = ((IDebugTile) tileEntity).getDebugInfo();

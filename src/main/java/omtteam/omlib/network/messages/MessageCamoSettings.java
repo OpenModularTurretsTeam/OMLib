@@ -5,21 +5,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import omtteam.omlib.tileentity.EnumMachineMode;
 import omtteam.omlib.tileentity.ICamoSupport;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
-import omtteam.omlib.util.EnumAccessMode;
-import omtteam.omlib.util.Player;
-import omtteam.omlib.util.TrustedPlayer;
 
-import java.util.*;
+import java.util.Objects;
 
 import static omtteam.omlib.proxy.ClientProxy.getWorld;
 
@@ -75,14 +70,14 @@ public class MessageCamoSettings implements IMessage {
             final MessageCamoSettings message = messageIn;
             Minecraft.getMinecraft().addScheduledTask(() -> {
                 TileEntity tileEntity = getWorld(FMLClientHandler.instance().getClient()).getTileEntity(new BlockPos(message.x, message.y,
-                        message.z));
+                                                                                                                     message.z));
                 if (tileEntity instanceof ICamoSupport) {
                     ICamoSupport base = (ICamoSupport) tileEntity;
                     base.getCamoSettings().setLightValue(message.lightValue);
                     base.getCamoSettings().setLightOpacity(message.lightOpacity);
                     base.setCamoState(Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(
                             new ResourceLocation(message.camoBlockRegName))).getStateFromMeta(message.camoBlockMeta));
-                    ((ICamoSupport) tileEntity).getOwnedBlock().markBlockForUpdate(3);
+                    ((ICamoSupport) tileEntity).getOwnedBlock().markDirty();
                     base.getOwnedBlock().getWorld().checkLight(base.getOwnedBlock().getPos());
                 }
             });

@@ -11,6 +11,14 @@ public class CamoSettings {
     protected int lightValue = 0;
     protected int lightOpacity = 15;
 
+    public static CamoSettings getSettingsFromNBT(NBTTagCompound tag) {
+        CamoSettings settings = new CamoSettings();
+        settings.setCamoBlockState(getBlockStateFromNBT(tag));
+        settings.setLightValue(tag.getInteger("light_value"));
+        settings.setLightOpacity(tag.getInteger("light_opacity"));
+        return settings;
+    }
+
     public IBlockState getCamoBlockState() {
         return camoBlockState;
     }
@@ -39,13 +47,5 @@ public class CamoSettings {
         writeBlockFromStateToNBT(tag, this.camoBlockState);
         tag.setInteger("light_value", this.lightValue);
         tag.setInteger("light_opacity", this.lightOpacity);
-    }
-
-    public static CamoSettings getSettingsFromNBT(NBTTagCompound tag) {
-        CamoSettings settings = new CamoSettings();
-        settings.setCamoBlockState(getBlockStateFromNBT(tag));
-        settings.setLightValue(tag.getInteger("light_value"));
-        settings.setLightOpacity(tag.getInteger("light_opacity"));
-        return settings;
     }
 }
