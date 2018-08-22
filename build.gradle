@@ -200,7 +200,8 @@ curseforge {
         apiKey = project.properties["curseforge_key"]
     }
     project {
-        id = curse_project_id
+        id = config.curse_project_id
+        addGameVersion '1.12.2'
 
         relations {
             optionalLibrary 'ompd'
