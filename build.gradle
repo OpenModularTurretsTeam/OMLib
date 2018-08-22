@@ -49,9 +49,6 @@ repositories {
         name  "ic2"
         url  "http://maven.ic2.player.to/"
     }
-    maven { // Tesla
-        url 'http://maven.epoxide.xyz'
-    }
     maven {
         url "http://tehnut.info/maven"
     }
@@ -101,7 +98,7 @@ minecraft {
     runDir = "run"
 
     replace "@VERSION@", project.version
-	    // the mappings can be changed at any time, and must be in the following format.
+    // the mappings can be changed at any time, and must be in the following format.
     // snapshot_YYYYMMDD   snapshot are built nightly.
     // stable_#            stables are built at the discretion of the MCP team.
     // Use non-default mappings at your own risk. they may not always work.
@@ -134,7 +131,7 @@ processResources {
 dependencies {
     deobfCompile "mezz.jei:jei_${config.minecraft_version}:${config.jei_version}"
     deobfCompile "cofh:RedstoneFlux:${config.minecraft_version_short}-${config.redstoneflux_version}:deobf"
-    compile "net.darkhax.tesla:Tesla-${config.minecraft_version_short}:${config.tesla_version}"
+    compile "net.darkhax.tesla:Tesla-${config.minecraft_version}:${config.tesla_version}"
     deobfCompile "net.industrial-craft:industrialcraft-2:${config.ic2_version}"
     deobfCompile "mcp.mobius.waila:Hwyla:${config.hwyla_version}_${config.minecraft_version_short}"
     deobfCompile "mcjty.theoneprobe:TheOneProbe-${config.minecraft_version_short}:${config.minecraft_version_short}-${config.top_version}"
