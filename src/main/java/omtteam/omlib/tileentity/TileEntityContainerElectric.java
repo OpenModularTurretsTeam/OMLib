@@ -95,7 +95,6 @@ public abstract class TileEntityContainerElectric extends TileEntityElectric {
         return super.getCapability(capability, facing);
     }
 
-
     /**
      * Returns the internal inventory of the item, without restrictions
      *

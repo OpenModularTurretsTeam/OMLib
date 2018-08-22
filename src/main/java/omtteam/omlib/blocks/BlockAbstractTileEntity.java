@@ -1,6 +1,7 @@
 package omtteam.omlib.blocks;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
@@ -42,6 +43,11 @@ public abstract class BlockAbstractTileEntity extends BlockAbstract {
     @Override
     public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
         return false;
+    }
+
+    @Override
+    public EnumPushReaction getMobilityFlag(IBlockState state) {
+        return EnumPushReaction.BLOCK;
     }
 
     @Override
