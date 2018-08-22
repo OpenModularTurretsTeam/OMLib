@@ -1,6 +1,7 @@
 package omtteam.omlib.blocks;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
@@ -45,6 +46,11 @@ public abstract class BlockAbstractTileEntity extends BlockAbstract {
     }
 
     @Override
+    public EnumPushReaction getMobilityFlag(IBlockState state) {
+        return EnumPushReaction.BLOCK;
+    }
+
+    @Override
     public EnumBlockRenderType getRenderType(IBlockState state) {
         return EnumBlockRenderType.MODEL;
     }
@@ -63,8 +69,8 @@ public abstract class BlockAbstractTileEntity extends BlockAbstract {
                     float rz = rand.nextFloat() * 0.8F + 0.1F;
 
                     EntityItem entityItem = new EntityItem(worldIn, pos.getX() + rx, pos.getY() + ry, pos.getZ() + rz,
-                            new ItemStack(item.getItem(), InvUtil.getStackSize(item),
-                                    item.getItemDamage()));
+                                                           new ItemStack(item.getItem(), InvUtil.getStackSize(item),
+                                                                         item.getItemDamage()));
 
                     if (item.hasTagCompound()) {
                         entityItem.getItem().setTagCompound(item.getTagCompound().copy());
