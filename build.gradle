@@ -206,8 +206,8 @@ curseforge {
         addGameVersion '1.12.2'
 
         relations {
-            optionalLibrary 'ompd'
-            optionalLibrary 'openmodularturrets'
+            optionalDependency 'ompd'
+            optionalDependency 'openmodularturrets'
         }
 
         mainArtifact(jar) {
