@@ -69,8 +69,7 @@ repositories {
     }
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = targetCompatibility = 1.8
 
 // define the properties file
 ext.configFile = file "project.properties"
@@ -201,6 +200,8 @@ curseforge {
     if (project.hasProperty("curseforge_key") && !commit_release_type.equals('none')) {
         System.out.println("ATTEMPTING CURSE RELEASE")
         apiKey = project.properties["curseforge_key"]
+    } else {
+        return
     }
     project {
         id = config.curse_project_id
