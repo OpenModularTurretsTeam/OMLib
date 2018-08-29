@@ -14,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -24,6 +25,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import omtteam.omlib.OMLib;
 import omtteam.omlib.api.network.OMLibNetwork;
+import omtteam.omlib.api.render.RenderManager;
 import omtteam.omlib.init.OMLibItems;
 import omtteam.omlib.items.IDrawOutline;
 import omtteam.omlib.items.IDrawOutlineBase;
@@ -60,7 +62,7 @@ public class OMLibEventHandler {
     public void worldLoadEvent(WorldEvent.Load event) {
         if (!event.getWorld().isRemote) {
             OwnerShareHandler.loadFromDisk();
-            this.loadNetworks(event);
+            this.loadNetworks();
         }
     }
 
@@ -68,7 +70,7 @@ public class OMLibEventHandler {
     public void worldUnloadEvent(WorldEvent.Unload event) {
         if (!event.getWorld().isRemote) {
             OwnerShareHandler.saveToDisk();
-            this.saveNetworks(event);
+            this.saveNetworks();
         }
     }
 
@@ -152,6 +154,12 @@ public class OMLibEventHandler {
         }
     }
 
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void renderWorldLastEvent(RenderWorldLastEvent event) {
+        RenderManager.getInstance().renderWorldLastEvent(event.getContext(), event.getPartialTicks());
+    }
+
     public void registerNetwork(OMLibNetwork network) {
         getNetworkListForWorld(network.getWorld()).add(network);
     }
@@ -160,7 +168,7 @@ public class OMLibEventHandler {
         getNetworkListForWorld(network.getWorld()).remove(network);
     }
 
-    private void loadNetworks(WorldEvent.Load event) {
+    private void loadNetworks() {
         try {
             HashMap<Integer, List<Tuple<UUID, String>>> tempList = new HashMap<>();
             Path fullpath = Paths.get(DimensionManager.getCurrentSaveRootDirectory().toString() + "/omt/networks.sav");
@@ -183,7 +191,7 @@ public class OMLibEventHandler {
         }
     }
 
-    private void saveNetworks(WorldEvent.Unload event) {
+    private void saveNetworks() {
         HashMap<Integer, List<Tuple<UUID, String>>> list = new HashMap<>();
         for (Map.Entry<World, List<OMLibNetwork>> entry : networks.entrySet()) {
             List<Tuple<UUID, String>> tempList = new ArrayList<>();
