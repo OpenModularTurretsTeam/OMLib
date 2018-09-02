@@ -26,6 +26,9 @@ public class OMLibNames {
             public static final String NONINVERTED = "gui.omtteam.omlib:noninverted";
             public static final String ALWAYS_ON = "gui.omtteam.omlib:always_on";
             public static final String ALWAYS_OFF = "gui.omtteam.omlib:always_off";
+            public static final String SHIFT_DETAIL_START = "gui.omtteam.omlib:shift_detail_start";
+            public static final String SHIFT_DETAIL_END = "gui.omtteam.omlib:shift_detail_end";
+            public static final String SHIFT = "gui.omtteam.omlib:shift";
         }
     }
 }
