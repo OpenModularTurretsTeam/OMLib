@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/OpenModularTurretsTeam/OMLib.svg?branch=1.12)](https://travis-ci.org/OpenModularTurretsTeam/OMLib)
 # OMLib
 OpenModularLib for OMT, OMPD, and soon OMTControl.
 
