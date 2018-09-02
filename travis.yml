@@ -1,0 +1,12 @@
+language: groovy
+sudo: false
+cache:
+  directories:
+  - $HOME/.gradle
+notifications:
+  email: false
+jdk:
+- oraclejdk8
+script: gradle clean check
+after_script:
+- rm -rf libs/
