@@ -18,7 +18,6 @@ public interface IOwnedBlockAddon {
     @Nonnull
     TileEntityOwnedBlock getLinkedBlock();
 
-
     /**
      * Return the owner of the block this block is linked to.
      *

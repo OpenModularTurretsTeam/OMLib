@@ -29,7 +29,6 @@ public class MessageCamoSettings implements IMessage {
     public MessageCamoSettings() {
     }
 
-
     public MessageCamoSettings(ICamoSupport block) {
         TileEntityOwnedBlock ownedBlock = block.getOwnedBlock();
         this.x = ownedBlock.getPos().getX();

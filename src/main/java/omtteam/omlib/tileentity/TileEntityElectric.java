@@ -63,7 +63,6 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
         this.storage.setEnergyStored(nbtTagCompound.getInteger("energyStored"));
         this.storage.setMaxReceive(nbtTagCompound.getInteger("maxIO"));
         this.storageEU = nbtTagCompound.getDouble("storageEU");
-
     }
 
     @Override
@@ -249,7 +248,6 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
             teslaContainer = new BaseOMTeslaContainerWrapper(this, EnumFacing.DOWN);
             return (BaseOMTeslaContainerWrapper) teslaContainer;
         }
-
     }
 
     @SuppressWarnings({"ConstantConditions", "unchecked"})

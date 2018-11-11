@@ -111,7 +111,6 @@ public class PlayerUtil {
         return EnumPlayerAccess.NONE;
     }
 
-
     // Use this for block access.
     @ParametersAreNonnullByDefault
     public static boolean canPlayerAccessBlock(EntityPlayer entityPlayer, TileEntityOwnedBlock ownedBlock) {
@@ -164,7 +163,6 @@ public class PlayerUtil {
     public static boolean isTrustedPlayerAdmin(EntityPlayer checkPlayer, ITrustedPlayersManager machine) {
         Player player = new Player(checkPlayer.getGameProfile().getId(), checkPlayer.getName());
         return isTrustedPlayerAdmin(player, machine);
-
     }
 
     @ParametersAreNonnullByDefault

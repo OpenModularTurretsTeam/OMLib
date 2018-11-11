@@ -14,7 +14,6 @@ import static omtteam.omlib.handler.ConfigHandler.offlineModeSupport;
 import static omtteam.omlib.util.player.PlayerUtil.addChatMessage;
 import static omtteam.omlib.util.player.PlayerUtil.getPlayerUUID;
 
-
 /**
  * Created by nico on 6/4/15.
  * Command for changing owners of an owned block
@@ -26,7 +25,6 @@ public class CommandShareOwner extends CommandBase {
     public String getName() {
         return "omshareowner";
     }
-
 
     @Override
     @Nonnull

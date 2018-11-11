@@ -51,7 +51,6 @@ public abstract class AbstractOMTileEntityEnvironment<T> implements ManagedEnvir
         if (this.node() != null) {
             this.node().load(nbt.getCompoundTag("node"));
         }
-
     }
 
     public void save(NBTTagCompound nbt) {
@@ -69,6 +68,5 @@ public abstract class AbstractOMTileEntityEnvironment<T> implements ManagedEnvir
                 nbt.setTag("node", nodeTag);
             }
         }
-
     }
 }

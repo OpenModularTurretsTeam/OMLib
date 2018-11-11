@@ -47,9 +47,7 @@ public class Player {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Player player = (Player) o;
-
         return (!offlineModeSupport ? getUuid().equals(player.getUuid())
                 : getName().toLowerCase().equals(player.getName().toLowerCase()));
     }

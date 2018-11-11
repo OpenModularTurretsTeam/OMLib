@@ -1,6 +1,5 @@
 package omtteam.omlib;
 
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -18,7 +17,6 @@ import org.apache.logging.log4j.Logger;
 
 import static omtteam.omlib.compatibility.ModCompatibility.checkForMods;
 import static omtteam.omlib.compatibility.ModCompatibility.performModCompat;
-
 
 @Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, acceptedMinecraftVersions = "1.10.2", dependencies = Reference.DEPENDENCIES)
 public class OMLib {

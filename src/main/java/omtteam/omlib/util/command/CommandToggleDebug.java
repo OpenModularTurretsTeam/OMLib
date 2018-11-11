@@ -23,7 +23,6 @@ public class CommandToggleDebug extends CommandBase {
         return "omdebug";
     }
 
-
     @Override
     @Nonnull
     @ParametersAreNonnullByDefault

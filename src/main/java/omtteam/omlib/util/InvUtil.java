@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
-
 /**
  * Created by Keridos on 03/12/16.
  * This Class contains a modified version of the mergeItemStack so that it respect slot.getItemStackLimit(stack) and

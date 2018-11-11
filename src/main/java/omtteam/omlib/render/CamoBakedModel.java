@@ -1,6 +1,5 @@
 package omtteam.omlib.render;
 
-
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -21,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static omtteam.omlib.blocks.BlockAbstractCamoTileEntity.RENDERBLOCKSTATE;
-
 
 /**
  * Created by Keridos on 29/01/17.

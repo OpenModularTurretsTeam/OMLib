@@ -1,6 +1,5 @@
 package omtteam.omlib.util;
 
-
 import java.util.Random;
 
 /**
