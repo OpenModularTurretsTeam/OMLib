@@ -16,10 +16,8 @@ import omtteam.omlib.network.ISyncable;
 public class MessageOpenGUI implements IMessage {
     private int x, y, z;
 
-
     public MessageOpenGUI() {
     }
-
 
     public MessageOpenGUI(TileEntity te) {
         this.x = te.getPos().getX();
@@ -68,6 +66,5 @@ public class MessageOpenGUI implements IMessage {
             });
             return null;
         }
-
     }
 }

@@ -33,7 +33,6 @@ public class ItemDebugTool extends Item {
         this.setUnlocalizedName(OMLibNames.Items.debugTool);
     }
 
-
     @Nonnull
     @Override
     public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {

@@ -1,6 +1,5 @@
 package omtteam.omlib.api.render.object;
 
-
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.Tessellator;

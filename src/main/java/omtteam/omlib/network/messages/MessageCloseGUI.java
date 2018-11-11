@@ -16,10 +16,8 @@ import omtteam.omlib.network.ISyncable;
 public class MessageCloseGUI implements IMessage {
     private int x, y, z;
 
-
     public MessageCloseGUI() {
     }
-
 
     public MessageCloseGUI(TileEntity te) {
         this.x = te.getPos().getX();
@@ -68,6 +66,5 @@ public class MessageCloseGUI implements IMessage {
             });
             return null;
         }
-
     }
 }

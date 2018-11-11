@@ -29,5 +29,4 @@ public class BaseOMTeslaContainerWrapper implements ITeslaConsumer {
         }
         return 0;
     }
-
 }

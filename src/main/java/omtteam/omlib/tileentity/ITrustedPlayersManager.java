@@ -51,7 +51,6 @@ public interface ITrustedPlayersManager {
                     DebugHandler.getInstance().sendMessageToDebugChat("You cannot add an owner!");
                     return false;
                 }
-
             } else {
                 if (trustedPlayer.getUuid() == null || isPlayerOwner(player, (TileEntityOwnedBlock) this)) {
                     DebugHandler.getInstance().sendMessageToDebugChat("You cannot add an owner!");
