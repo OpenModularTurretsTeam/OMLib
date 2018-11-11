@@ -6,7 +6,6 @@ import omtteam.omlib.handler.ConfigHandler;
 
 import static omtteam.omlib.util.player.PlayerUtil.*;
 
-
 /**
  * Created by Keridos on 24/11/16.
  * This Class

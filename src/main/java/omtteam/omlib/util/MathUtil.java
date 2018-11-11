@@ -48,7 +48,6 @@ public class MathUtil {
         return getVectorFromYawPitch(yaw, pitch).scale(velocity);
     }
 
-
     public static float getRotationXYFromYawPitch(float yaw, float pitch) {
         return (float) ((pitch + 270F) / 90F * (Math.PI / 2F));
     }

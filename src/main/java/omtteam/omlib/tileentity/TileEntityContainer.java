@@ -98,7 +98,6 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock {
         return super.getCapability(capability, facing);
     }
 
-
     /**
      * Returns the internal inventory of the item, without restrictions
      *

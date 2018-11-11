@@ -1,6 +1,5 @@
 package omtteam.omlib.compatibility.theoneprobe;
 
-
 import mcjty.theoneprobe.api.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -46,7 +45,6 @@ public class TOPCompatibility {
                         TOPInfoProvider provider = (TOPInfoProvider) blockState.getBlock();
                         provider.addProbeInfo(mode, probeInfo, player, world, blockState, data);
                     }
-
                 }
             });
             return null;

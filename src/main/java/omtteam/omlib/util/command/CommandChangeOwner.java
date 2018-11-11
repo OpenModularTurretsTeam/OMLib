@@ -30,7 +30,6 @@ public class CommandChangeOwner extends CommandBase {
         return "omchangeowner";
     }
 
-
     @Override
     @Nonnull
     @ParametersAreNonnullByDefault

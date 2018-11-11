@@ -23,7 +23,6 @@ public class MessageSetSharePlayerList implements IMessage {
     public MessageSetSharePlayerList() {
     }
 
-
     public MessageSetSharePlayerList(OwnerShareHandler shareHandler) {
         this.ownerShareMap = shareHandler.getOwnerShareMap();
     }
@@ -69,6 +68,5 @@ public class MessageSetSharePlayerList implements IMessage {
             Minecraft.getMinecraft().addScheduledTask(() -> OwnerShareHandler.getInstance().setOwnerShareMap(messageIn.ownerShareMap));
             return null;
         }
-
     }
 }
