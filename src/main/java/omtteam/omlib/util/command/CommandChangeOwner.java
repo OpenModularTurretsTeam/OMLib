@@ -15,8 +15,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.UUID;
 
-import static omtteam.omlib.util.PlayerUtil.addChatMessage;
-import static omtteam.omlib.util.PlayerUtil.getPlayerUUID;
+import static omtteam.omlib.util.player.PlayerUtil.addChatMessage;
+import static omtteam.omlib.util.player.PlayerUtil.getPlayerUUID;
 
 /**
  * Created by nico on 6/4/15.

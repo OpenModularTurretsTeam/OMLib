@@ -1,7 +1,7 @@
 package omtteam.omlib.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
-import omtteam.omlib.util.TrustedPlayer;
+import omtteam.omlib.util.player.TrustedPlayer;
 
 import java.util.ArrayList;
 import java.util.List;

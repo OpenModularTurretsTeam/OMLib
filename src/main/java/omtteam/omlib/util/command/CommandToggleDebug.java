@@ -9,7 +9,7 @@ import omtteam.omlib.handler.ConfigHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static omtteam.omlib.util.PlayerUtil.addChatMessage;
+import static omtteam.omlib.util.player.PlayerUtil.addChatMessage;
 
 /**
  * Created by nico on 6/4/15.
