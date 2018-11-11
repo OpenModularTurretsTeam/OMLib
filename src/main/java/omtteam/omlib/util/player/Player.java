@@ -1,8 +1,12 @@
-package omtteam.omlib.util;
+package omtteam.omlib.util.player;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
+import javax.annotation.Nullable;
 import java.util.UUID;
 
 import static omtteam.omlib.handler.ConfigHandler.offlineModeSupport;
@@ -55,5 +59,11 @@ public class Player {
         int result = getUuid() != null ? getUuid().hashCode() : 0;
         result = 31 * result + getName().toLowerCase().hashCode();
         return result;
+    }
+
+    @Nullable
+    public EntityPlayer getEntityPlayer() {
+        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+        return server.getPlayerList().getPlayerByUUID(this.uuid);
     }
 }

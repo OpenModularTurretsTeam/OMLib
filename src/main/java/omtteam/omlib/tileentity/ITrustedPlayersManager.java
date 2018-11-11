@@ -6,8 +6,8 @@ import net.minecraftforge.common.UsernameCache;
 import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.util.DebugHandler;
 import omtteam.omlib.util.EnumAccessMode;
-import omtteam.omlib.util.Player;
-import omtteam.omlib.util.TrustedPlayer;
+import omtteam.omlib.util.player.Player;
+import omtteam.omlib.util.player.TrustedPlayer;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-import static omtteam.omlib.util.PlayerUtil.*;
+import static omtteam.omlib.util.player.PlayerUtil.*;
 
 /**
  * Created by Keridos on 09/02/17.
@@ -104,6 +104,16 @@ public interface ITrustedPlayersManager {
     default TrustedPlayer getTrustedPlayer(UUID uuid) {
         for (TrustedPlayer trustedPlayer : getTrustedPlayers()) {
             if (trustedPlayer.getUuid().equals(uuid)) {
+                return trustedPlayer;
+            }
+        }
+        return null;
+    }
+
+    default TrustedPlayer getTrustedPlayer(Player player) {
+        for (TrustedPlayer trustedPlayer : getTrustedPlayers()) {
+            if (trustedPlayer.getUuid().equals(player.getUuid()) ||
+                    (ConfigHandler.offlineModeSupport && trustedPlayer.getName().equals(player.getName()))) {
                 return trustedPlayer;
             }
         }

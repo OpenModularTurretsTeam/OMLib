@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import omtteam.omlib.handler.OwnerShareHandler;
-import omtteam.omlib.util.Player;
+import omtteam.omlib.util.player.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;

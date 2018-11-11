@@ -5,14 +5,14 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
 import omtteam.omlib.handler.OwnerShareHandler;
-import omtteam.omlib.util.Player;
+import omtteam.omlib.util.player.Player;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import static omtteam.omlib.handler.ConfigHandler.offlineModeSupport;
-import static omtteam.omlib.util.PlayerUtil.addChatMessage;
-import static omtteam.omlib.util.PlayerUtil.getPlayerUUID;
+import static omtteam.omlib.util.player.PlayerUtil.addChatMessage;
+import static omtteam.omlib.util.player.PlayerUtil.getPlayerUUID;
 
 
 /**

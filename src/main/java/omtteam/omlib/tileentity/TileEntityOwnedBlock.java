@@ -4,7 +4,7 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.nbt.NBTTagCompound;
 import omtteam.omlib.handler.ConfigHandler;
 
-import static omtteam.omlib.util.PlayerUtil.*;
+import static omtteam.omlib.util.player.PlayerUtil.*;
 
 
 /**

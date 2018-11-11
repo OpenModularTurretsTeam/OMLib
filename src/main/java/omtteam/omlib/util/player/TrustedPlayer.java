@@ -1,11 +1,13 @@
-package omtteam.omlib.util;
+package omtteam.omlib.util.player;
+
+import omtteam.omlib.util.EnumAccessMode;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
 public class TrustedPlayer {
-    private String name = "";
+    private String name;
     private EnumAccessMode accessMode = EnumAccessMode.NONE;
     private UUID uuid;
     private boolean hacked = false;
