@@ -122,7 +122,7 @@ public class PlayerUtil {
             allowed = true;
         }
 
-        return allowed;
+        return allowed; // TODO: create enum for result, adapt all other code.
     }
 
     @ParametersAreNonnullByDefault

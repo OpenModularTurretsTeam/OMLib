@@ -21,10 +21,10 @@ public class ConfigHandler {
 
         potentiaToRFRatio = config.get("ModCompatibility", "Potentia to RF conversion ratio per essentia", 500).getInt();
         EUSupport = config.get("ModCompatibility", "Can turrets be powered with EU?", true).getBoolean();
-        offlineModeSupport = config.get("General", "Enable offline mode support?(warning, makes turrets fairly unsafe)", false).getBoolean();
-        canOPAccessOwnedBlocks = config.get("General", "Enable OPs to access all owned blocks.", false).getBoolean();
+        offlineModeSupport = config.get("ConfigGeneral", "Enable offline mode support?(warning, makes turrets fairly unsafe)", false).getBoolean();
+        canOPAccessOwnedBlocks = config.get("ConfigGeneral", "Enable OPs to access all owned blocks.", false).getBoolean();
         EUtoRFRatio = config.get("ModCompatibility", "EU to RF Ratio", 4.0D).getDouble();
-        doDebugChat = config.get("General", "Do debug Chat?", false).getBoolean();
+        doDebugChat = config.get("ConfigGeneral", "Do debug Chat?", false).getBoolean();
 
         if (config.hasChanged()) {
             config.save();
