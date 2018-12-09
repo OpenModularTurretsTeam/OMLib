@@ -53,6 +53,7 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
         nbtTagCompound.setInteger("energyStored", this.storage.getEnergyStored());
         nbtTagCompound.setInteger("maxIO", this.storage.getMaxReceive());
         nbtTagCompound.setDouble("storageEU", storageEU);
+        nbtTagCompound.setDouble("maxStorageEU", maxStorageEU);
         return nbtTagCompound;
     }
 
@@ -63,6 +64,7 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
         this.storage.setEnergyStored(nbtTagCompound.getInteger("energyStored"));
         this.storage.setMaxReceive(nbtTagCompound.getInteger("maxIO"));
         this.storageEU = nbtTagCompound.getDouble("storageEU");
+        this.maxStorageEU = nbtTagCompound.getDouble("maxStorageEU");
     }
 
     @Override
@@ -200,7 +202,7 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
     @Override
     public double getDemandedEnergy() {
         if (ConfigHandler.EUSupport) {
-            return Math.max(80000D - storageEU, 0.0D);
+            return Math.max(maxStorageEU - storageEU, 0.0D);
         }
         return 0;
     }
