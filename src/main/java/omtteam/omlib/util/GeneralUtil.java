@@ -17,8 +17,8 @@ import javax.annotation.Nullable;
 @SuppressWarnings({"deprecation", "unused"})
 public class GeneralUtil {
     public static String shiftDetail = TextFormatting.GRAY + safeLocalize(OMLibNames.Localizations.GUI.SHIFT_DETAIL_START)
-            + TextFormatting.YELLOW + TextFormatting.ITALIC + safeLocalize(OMLibNames.Localizations.GUI.SHIFT)
-            + TextFormatting.RESET + TextFormatting.GRAY + safeLocalize(OMLibNames.Localizations.GUI.SHIFT_DETAIL_END);
+            + " " + TextFormatting.YELLOW + TextFormatting.ITALIC + safeLocalize(OMLibNames.Localizations.GUI.SHIFT)
+            + TextFormatting.RESET + TextFormatting.GRAY + " " + safeLocalize(OMLibNames.Localizations.GUI.SHIFT_DETAIL_END);
 
     public static Item getItem(String modid, String name) {
         Item item;
