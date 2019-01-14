@@ -54,13 +54,7 @@ public abstract class TileEntityBase extends TileEntity {
         return oldState.getBlock() != newState.getBlock();
     }
 
-    @Override
-    public void markDirty() {
-        super.markDirty();
-        markBlockForUpdate();
-    }
-
-    private void markBlockForUpdate() {
+    public void markBlockForUpdate() {
         IBlockState state = this.getWorld().getBlockState(this.getPos());
         this.getWorld().markAndNotifyBlock(this.getPos(), null, state, state, 3);
     }
