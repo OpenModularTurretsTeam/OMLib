@@ -34,7 +34,9 @@ public class RenderManager {
         while (iterator.hasNext()) {
             RenderObject renderObject = iterator.next();
             renderObject.render(renderGlobal, partialTicks);
-            iterator.remove();
+            if (renderObject.decreaseDuration()) {
+                iterator.remove();
+            }
         }
     }
 }

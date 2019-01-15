@@ -7,6 +7,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
+import java.util.Iterator;
+
 /**
  * Created by Keridos on 10/11/17.
  * This Class
@@ -19,10 +21,10 @@ public class EntityUtil {
 
     public static int getEntityArmor(Entity entity) {
         int armor = 0;
-        Iterable<ItemStack> iter = entity.getArmorInventoryList();
-        while (iter.iterator().hasNext()) {
-            ItemStack itemStack = iter.iterator().next();
-            armor += ((ItemArmor) itemStack.getItem()).damageReduceAmount;
+        Iterator<ItemStack> iter = entity.getArmorInventoryList().iterator();
+        while (iter.hasNext()) {
+            ItemStack itemStack = iter.next();
+            armor += itemStack.getItem() instanceof ItemArmor ? ((ItemArmor) itemStack.getItem()).damageReduceAmount : 0;
         }
         return armor;
     }
