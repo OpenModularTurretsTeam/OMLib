@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import omtteam.omlib.api.render.ColorOM;
 import omtteam.omlib.api.render.RenderManager;
 import omtteam.omlib.api.render.object.Ray;
 
@@ -17,37 +18,39 @@ import omtteam.omlib.api.render.object.Ray;
  */
 public class MessageRenderRay implements IMessage {
     private double x, y, z, xEnd, yEnd, zEnd;
-    private float r, g, b;
+    private float r, g, b, a;
     private int duration;
     private boolean bloom;
 
     public MessageRenderRay() {
     }
 
-    public MessageRenderRay(double x, double y, double z, double xEnd, double yEnd, double zEnd, float r, float g, float b, int duration, boolean bloom) {
+    public MessageRenderRay(double x, double y, double z, double xEnd, double yEnd, double zEnd, ColorOM color, int duration, boolean bloom) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.xEnd = xEnd;
         this.yEnd = yEnd;
         this.zEnd = zEnd;
-        this.r = r;
-        this.g = g;
-        this.b = b;
+        this.r = color.r;
+        this.g = color.g;
+        this.b = color.b;
+        this.a = color.a;
         this.duration = duration;
         this.bloom = bloom;
     }
 
-    public MessageRenderRay(Vec3d start, Vec3d end, float r, float g, float b, int duration, boolean bloom) {
+    public MessageRenderRay(Vec3d start, Vec3d end, ColorOM color, int duration, boolean bloom) {
         this.x = start.x;
         this.y = start.y;
         this.z = start.z;
         this.xEnd = end.x;
         this.yEnd = end.y;
         this.zEnd = end.z;
-        this.r = r;
-        this.g = g;
-        this.b = b;
+        this.r = color.r;
+        this.g = color.g;
+        this.b = color.b;
+        this.a = color.a;
         this.duration = duration;
         this.bloom = bloom;
     }
@@ -63,6 +66,7 @@ public class MessageRenderRay implements IMessage {
         this.r = buf.readFloat();
         this.g = buf.readFloat();
         this.b = buf.readFloat();
+        this.a = buf.readFloat();
         this.duration = buf.readInt();
         this.bloom = buf.readBoolean();
     }
@@ -78,6 +82,7 @@ public class MessageRenderRay implements IMessage {
         buf.writeFloat(r);
         buf.writeFloat(g);
         buf.writeFloat(b);
+        buf.writeFloat(a);
         buf.writeInt(duration);
         buf.writeBoolean(bloom);
     }
@@ -91,7 +96,7 @@ public class MessageRenderRay implements IMessage {
             Minecraft.getMinecraft().addScheduledTask(() -> {
                 RenderManager.getInstance().addRenderObjectToList(new Ray(message.x, message.y, message.z,
                                                                           message.xEnd, message.yEnd, message.zEnd,
-                                                                          message.r, message.g, message.b,
+                                                                          new ColorOM(message.r, message.g, message.b, message.a),
                                                                           message.duration, message.bloom));
             });
             return null;

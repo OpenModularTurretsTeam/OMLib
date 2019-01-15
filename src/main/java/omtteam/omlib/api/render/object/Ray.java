@@ -9,22 +9,30 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import omtteam.omlib.api.render.ColorOM;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class Ray extends RenderObject {
     private double xEnd, yEnd, zEnd;
-    private float r, g, b;
+    private ColorOM color;
     private boolean bloom;
 
-    public Ray(double x, double y, double z, double xEnd, double yEnd, double zEnd, float r, float g, float b, int duration, boolean bloom) {
+    public Ray(double x, double y, double z, double xEnd, double yEnd, double zEnd, float r, float g, float b, float alpha, int duration, boolean bloom) {
         super(x, y, z, duration);
         this.xEnd = xEnd;
         this.yEnd = yEnd;
         this.zEnd = zEnd;
-        this.r = r;
-        this.g = g;
-        this.b = b;
+        this.color = new ColorOM(r, g, b, alpha);
+        this.bloom = bloom;
+    }
+
+    public Ray(double x, double y, double z, double xEnd, double yEnd, double zEnd, ColorOM color, int duration, boolean bloom) {
+        super(x, y, z, duration);
+        this.xEnd = xEnd;
+        this.yEnd = yEnd;
+        this.zEnd = zEnd;
+        this.color = color;
         this.bloom = bloom;
     }
 
@@ -46,8 +54,8 @@ public class Ray extends RenderObject {
                 BufferBuilder worldRenderer = tessellator.getBuffer();
 
                 worldRenderer.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
-                worldRenderer.pos(x - rVE.posX, y - rVE.posY, z - rVE.posZ).color(r, g, b, 0.7F).endVertex();
-                worldRenderer.pos(xEnd - rVE.posX, yEnd - rVE.posY, zEnd - rVE.posZ).color(r, g, b, 0.7F).endVertex();
+                worldRenderer.pos(x - rVE.posX, y - rVE.posY, z - rVE.posZ).color(color.r, color.g, color.b, color.a).endVertex();
+                worldRenderer.pos(xEnd - rVE.posX, yEnd - rVE.posY, zEnd - rVE.posZ).color(color.r, color.g, color.b, color.a).endVertex();
                 tessellator.draw();
             }
         } finally {
