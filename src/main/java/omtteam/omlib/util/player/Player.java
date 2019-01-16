@@ -87,6 +87,9 @@ public class Player {
     private String getTeamNameFromServer() {
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
         Team team = server.getPlayerList().getPlayerByUUID(this.uuid).getTeam();
-        return team != null ? team.getName() : "";
+        if (team != null) {
+            return team.getName();
+        }
+        return "";
     }
 }
