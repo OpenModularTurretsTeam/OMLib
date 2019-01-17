@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.util.player.Player;
 
+import javax.annotation.Nonnull;
 import java.util.UUID;
 
 import static omtteam.omlib.util.player.PlayerUtil.*;
@@ -28,7 +29,7 @@ public abstract class TileEntityOwnedBlock extends TileEntityBase {
         super.writeToNBT(nbtTagCompound);
         nbtTagCompound.setString("owner", owner);
         if (ownerName.isEmpty() && getPlayerNameFromUUID(owner) != null) {
-            ownerName = getPlayerNameFromUUID(owner);
+            ownerName = getPlayerNameFromUUID(owner) != null ? getPlayerNameFromUUID(owner) : "";
         }
         nbtTagCompound.setString("ownerName", ownerName);
         nbtTagCompound.setString("ownerTeamName", ownerTeamName);
@@ -51,7 +52,7 @@ public abstract class TileEntityOwnedBlock extends TileEntityBase {
         if (nbtTagCompound.hasKey("ownerTeamName")) {
             this.ownerName = nbtTagCompound.getString("ownerTeamName");
         }
-        if (((owner == null || owner.isEmpty()) && !ConfigHandler.offlineModeSupport) || (ConfigHandler.offlineModeSupport && ownerName == null)) {
+        if (((owner == null || owner.isEmpty()) && !ConfigHandler.offlineModeSupport) || (ConfigHandler.offlineModeSupport && ownerName.isEmpty())) {
             dropBlock = true;
         }
     }
@@ -68,7 +69,7 @@ public abstract class TileEntityOwnedBlock extends TileEntityBase {
         return ownerName;
     }
 
-    public void setOwnerName(String name) {
+    public void setOwnerName(@Nonnull String name) {
         ownerName = name;
     }
 

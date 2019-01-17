@@ -18,8 +18,7 @@ public abstract class RenderObject {
 
     public boolean decreaseDuration() {
         duration--;
-        boolean ret = duration <= 0;
-        return ret;
+        return duration <= 0;
     }
     public abstract void render(RenderGlobal renderGlobal, float partialTick);
 }

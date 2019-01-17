@@ -16,6 +16,7 @@ import javax.annotation.Nullable;
  * @see ILuaContext#executeMainThreadTask(ILuaTask)
  * @see ILuaContext#issueMainThreadTask(ILuaTask)
  */
+@SuppressWarnings("ALL")
 public interface ILuaTask {
     /**
      * Execute this task.

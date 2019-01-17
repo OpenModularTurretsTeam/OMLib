@@ -28,15 +28,20 @@ import static omtteam.omlib.handler.ConfigHandler.offlineModeSupport;
 public class PlayerUtil {
     @ParametersAreNullableByDefault
     public static boolean isPlayerOP(EntityPlayer player) {
-        return player.getServer() != null &&
-                player.getServer().getPlayerList().getOppedPlayers().getEntry(player.getGameProfile()) != null &&
-                player.getServer().getPlayerList().getOppedPlayers().getEntry(player.getGameProfile()).getPermissionLevel() == 4;
+        if (player != null) {
+            return player.getServer() != null &&
+                    player.getServer().getPlayerList().getOppedPlayers().getEntry(player.getGameProfile()).getPermissionLevel() == 4;
+        }
+        return false;
     }
 
     @ParametersAreNullableByDefault
     public static boolean isPlayerOP(Player player) {
-        EntityPlayer entityPlayer = player.getEntityPlayer();
-        return entityPlayer != null && isPlayerOP(entityPlayer);
+        if (player != null) {
+            EntityPlayer entityPlayer = player.getEntityPlayer();
+            return isPlayerOP(entityPlayer);
+        }
+        return false;
     }
 
     @Nullable

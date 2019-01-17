@@ -13,6 +13,7 @@ import javax.annotation.Nonnull;
 /**
  * An object on an {@link IPacketNetwork}, capable of receiving packets.
  */
+@SuppressWarnings("ALL")
 public interface IPacketReceiver {
     /**
      * Get the world in which this packet receiver exists.
