@@ -18,7 +18,9 @@ public class ClientProxy extends CommonProxy {
 
     @SuppressWarnings("SameParameterValue")
     private void registerItemModel(final Item item, int meta) {
-        ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(item.getRegistryName().toString().toLowerCase()));
+        if (item.getRegistryName() != null) {
+            ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(item.getRegistryName().toString().toLowerCase()));
+        }
     }
 
     @Override

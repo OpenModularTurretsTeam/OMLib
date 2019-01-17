@@ -171,7 +171,12 @@ public class OMLibEventHandler {
     private void loadNetworks() {
         try {
             HashMap<Integer, List<Tuple<UUID, String>>> tempList = new HashMap<>();
-            Path fullpath = Paths.get(DimensionManager.getCurrentSaveRootDirectory().toString() + "/omt/networks.sav");
+            Path fullpath;
+            if (DimensionManager.getCurrentSaveRootDirectory() != null) {
+                fullpath = Paths.get(DimensionManager.getCurrentSaveRootDirectory().toString() + "/omt/networks.sav");
+            } else {
+                return;
+            }
             FileInputStream saveFile = new FileInputStream(fullpath.toFile());
             ObjectInputStream save = new ObjectInputStream(saveFile);
             Object object = save.readObject();

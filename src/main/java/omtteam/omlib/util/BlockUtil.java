@@ -1,5 +1,6 @@
 package omtteam.omlib.util;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -11,7 +12,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
  */
 public class BlockUtil {
     public static void writeBlockFromStateToNBT(NBTTagCompound nbtTagCompound, IBlockState state) {
-        if (state != null) {
+        if (state != null && state.getBlock().getRegistryName() != null) {
             nbtTagCompound.setString("camoBlockRegName", state.getBlock().getRegistryName().toString());
             nbtTagCompound.setInteger("camoBlockMeta", state.getBlock().getMetaFromState(state));
         }
@@ -19,8 +20,11 @@ public class BlockUtil {
 
     public static IBlockState getBlockStateFromNBT(NBTTagCompound nbtTagCompound) {
         if (nbtTagCompound.hasKey("camoBlockRegName") && nbtTagCompound.hasKey("camoBlockMeta")) {
-            return ForgeRegistries.BLOCKS.getValue(
-                    new ResourceLocation(nbtTagCompound.getString("camoBlockRegName"))).getStateFromMeta(nbtTagCompound.getInteger("camoBlockMeta"));
+            Block block = ForgeRegistries.BLOCKS.getValue(
+                    new ResourceLocation(nbtTagCompound.getString("camoBlockRegName")));
+            if (block != null) {
+                return block.getStateFromMeta(nbtTagCompound.getInteger("camoBlockMeta"));
+            }
         }
         return null;
     }

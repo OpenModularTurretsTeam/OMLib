@@ -53,7 +53,6 @@ public class MessageOpenGUI implements IMessage {
 
     public static class MessageHandlerOpenGUI implements IMessageHandler<MessageOpenGUI, IMessage> {
         @Override
-        @SuppressWarnings("deprecation")
         public IMessage onMessage(MessageOpenGUI messageIn, MessageContext ctx) {
             final MessageOpenGUI message = messageIn;
             final EntityPlayerMP player = ctx.getServerHandler().player;

@@ -53,7 +53,6 @@ public class MessageCloseGUI implements IMessage {
 
     public static class MessageHandlerCloseGUI implements IMessageHandler<MessageCloseGUI, IMessage> {
         @Override
-        @SuppressWarnings("deprecation")
         public IMessage onMessage(MessageCloseGUI messageIn, MessageContext ctx) {
             final MessageCloseGUI message = messageIn;
             final EntityPlayerMP player = ctx.getServerHandler().player;
