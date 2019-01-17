@@ -19,7 +19,7 @@ public class InitHelper {
         registry.register(block);
         if (block instanceof IHasItemBlock) {
             subblocks.add(((IHasItemBlock) block).getItemBlock(block));
-        } else {
+        } else if (block.getRegistryName() != null) {
             subblocks.add(new ItemBlock(block).setRegistryName(block.getRegistryName()));
         }
         return block;

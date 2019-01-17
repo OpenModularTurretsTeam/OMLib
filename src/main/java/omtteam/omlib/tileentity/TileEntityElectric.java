@@ -252,7 +252,7 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
         }
     }
 
-    @SuppressWarnings({"ConstantConditions", "unchecked"})
+    @SuppressWarnings({"unchecked"})
     @Override
     @ParametersAreNonnullByDefault
     @Nullable

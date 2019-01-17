@@ -169,14 +169,12 @@ public final class ComputerCraftAPI {
      * @see dan200.computercraft.api.turtle.ITurtleUpgrade
      */
     public static void registerTurtleUpgrade(@Nonnull ITurtleUpgrade upgrade) {
-        if (upgrade != null) {
-            findCC();
-            if (computerCraft_registerTurtleUpgrade != null) {
-                try {
-                    computerCraft_registerTurtleUpgrade.invoke(null, upgrade);
-                } catch (Exception e) {
-                    // It failed
-                }
+        findCC();
+        if (computerCraft_registerTurtleUpgrade != null) {
+            try {
+                computerCraft_registerTurtleUpgrade.invoke(null, upgrade);
+            } catch (Exception e) {
+                // It failed
             }
         }
     }

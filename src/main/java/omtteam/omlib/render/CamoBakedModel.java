@@ -61,7 +61,7 @@ public abstract class CamoBakedModel implements IBakedModel {
             } else if (camoState != null) {
                 return new ArrayList<>();
             }
-        } else {
+        } else if (state != null) {
             return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(state).getQuads(state, side, rand);
         }
         return new ArrayList<>();

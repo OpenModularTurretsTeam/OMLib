@@ -68,7 +68,12 @@ public class OwnerShareHandler implements Serializable {
     static void loadFromDisk() {
         HashMap<Player, ArrayList<Player>> input = new HashMap<>();
         try {
-            Path fullpath = Paths.get(DimensionManager.getCurrentSaveRootDirectory().toString() + "/omlib/OwnerShare.sav");
+            Path fullpath;
+            if (DimensionManager.getCurrentSaveRootDirectory() != null) {
+                fullpath = Paths.get(DimensionManager.getCurrentSaveRootDirectory().toString() + "/omlib/OwnerShare.sav");
+            } else {
+                return;
+            }
             FileInputStream saveFile = new FileInputStream(fullpath.toFile());
             ObjectInputStream save = new ObjectInputStream(saveFile);
             Object object = save.readObject();

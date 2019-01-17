@@ -89,16 +89,14 @@ public class MessageRenderRay implements IMessage {
 
     public static class MessageHandlerRenderRay implements IMessageHandler<MessageRenderRay, IMessage> {
         @Override
-        @SuppressWarnings("deprecation")
         @SideOnly(Side.CLIENT)
         public IMessage onMessage(MessageRenderRay messageIn, MessageContext ctx) {
             final MessageRenderRay message = messageIn;
-            Minecraft.getMinecraft().addScheduledTask(() -> {
-                RenderManager.getInstance().addRenderObjectToList(new Ray(message.x, message.y, message.z,
-                                                                          message.xEnd, message.yEnd, message.zEnd,
-                                                                          new ColorOM(message.r, message.g, message.b, message.a),
-                                                                          message.duration, message.bloom));
-            });
+            Minecraft.getMinecraft().addScheduledTask(() -> RenderManager.getInstance()
+                    .addRenderObjectToList(new Ray(message.x, message.y, message.z,
+                                                   message.xEnd, message.yEnd, message.zEnd,
+                                                   new ColorOM(message.r, message.g, message.b, message.a),
+                                                   message.duration, message.bloom)));
             return null;
         }
     }

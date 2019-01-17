@@ -19,6 +19,7 @@ public class EntityUtil {
         return entry == null ? null : entry.getEntityClass();
     }
 
+    @SuppressWarnings("WhileLoopReplaceableByForEach")
     public static int getEntityArmor(Entity entity) {
         int armor = 0;
         Iterator<ItemStack> iter = entity.getArmorInventoryList().iterator();
