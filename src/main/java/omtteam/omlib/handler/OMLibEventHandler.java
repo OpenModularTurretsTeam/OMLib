@@ -1,5 +1,6 @@
 package omtteam.omlib.handler;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -8,14 +9,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Tuple;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -26,17 +24,17 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import omtteam.omlib.OMLib;
 import omtteam.omlib.api.network.OMLibNetwork;
 import omtteam.omlib.api.render.RenderManager;
+import omtteam.omlib.init.OMLibBlocks;
 import omtteam.omlib.init.OMLibItems;
 import omtteam.omlib.items.IDrawOutline;
 import omtteam.omlib.items.IDrawOutlineBase;
 import omtteam.omlib.network.OMLibNetworkingHandler;
 import omtteam.omlib.network.messages.MessageSetSharePlayerList;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import static omtteam.omlib.util.RenderUtil.drawHighlightBox;
 
@@ -46,7 +44,7 @@ import static omtteam.omlib.util.RenderUtil.drawHighlightBox;
  */
 public class OMLibEventHandler {
     private static OMLibEventHandler instance;
-    private HashMap<World, List<OMLibNetwork>> networks = new HashMap<>();
+    private List<OMLibNetwork> networks = new ArrayList<>();
 
     private OMLibEventHandler() {
     }
@@ -62,7 +60,6 @@ public class OMLibEventHandler {
     public void worldLoadEvent(WorldEvent.Load event) {
         if (!event.getWorld().isRemote) {
             OwnerShareHandler.loadFromDisk();
-            this.loadNetworks();
         }
     }
 
@@ -70,7 +67,6 @@ public class OMLibEventHandler {
     public void worldUnloadEvent(WorldEvent.Unload event) {
         if (!event.getWorld().isRemote) {
             OwnerShareHandler.saveToDisk();
-            this.saveNetworks();
         }
     }
 
@@ -84,6 +80,11 @@ public class OMLibEventHandler {
     @SubscribeEvent
     public void itemRegisterEvent(RegistryEvent.Register<Item> event) {
         OMLibItems.init(event.getRegistry());
+    }
+
+    @SubscribeEvent
+    public void blockRegisterEvent(RegistryEvent.Register<Block> event) {
+        OMLibBlocks.initBlocks(event.getRegistry());
     }
 
     @SubscribeEvent
@@ -142,15 +143,12 @@ public class OMLibEventHandler {
         }
     }
 
-    private List<OMLibNetwork> getNetworkListForWorld(World world) {
-        networks.putIfAbsent(world, new ArrayList<>());
-        return networks.get(world);
-    }
-
     @SubscribeEvent
     public void tickEvent(TickEvent.WorldTickEvent event) {
-        for (OMLibNetwork network : getNetworkListForWorld(event.world)) {
-            network.tick();
+        for (OMLibNetwork network : networks) {
+            if (network.getWorld().provider.getDimension() == event.world.provider.getDimension()) {
+                network.tick();
+            }
         }
     }
 
@@ -160,76 +158,27 @@ public class OMLibEventHandler {
         RenderManager.getInstance().renderWorldLastEvent(event.getContext(), event.getPartialTicks());
     }
 
+    private List<OMLibNetwork> getNetworkList() {
+        return networks;
+    }
     public void registerNetwork(OMLibNetwork network) {
-        getNetworkListForWorld(network.getWorld()).add(network);
+        networks.add(network);
     }
 
     public void removeNetwork(OMLibNetwork network) {
-        getNetworkListForWorld(network.getWorld()).remove(network);
+        networks.remove(network);
     }
 
-    private void loadNetworks() {
-        try {
-            HashMap<Integer, List<Tuple<UUID, String>>> tempList = new HashMap<>();
-            Path fullpath;
-            if (DimensionManager.getCurrentSaveRootDirectory() != null) {
-                fullpath = Paths.get(DimensionManager.getCurrentSaveRootDirectory().toString() + "/omt/networks.sav");
-            } else {
-                return;
-            }
-            FileInputStream saveFile = new FileInputStream(fullpath.toFile());
-            ObjectInputStream save = new ObjectInputStream(saveFile);
-            Object object = save.readObject();
-            if (object instanceof HashMap) {
-                tempList = (HashMap<Integer, List<Tuple<UUID, String>>>) object;
-            }
-            save.close();
-            saveFile.close();
-            for (Map.Entry<Integer, List<Tuple<UUID, String>>> entry : tempList.entrySet()) {
-                World world = DimensionManager.getWorld(entry.getKey());
-                for (Tuple<UUID, String> tuple : entry.getValue()) {
-                    new OMLibNetwork(world, tuple.getSecond(), tuple.getFirst());
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void saveNetworks() {
-        HashMap<Integer, List<Tuple<UUID, String>>> list = new HashMap<>();
-        for (Map.Entry<World, List<OMLibNetwork>> entry : networks.entrySet()) {
-            List<Tuple<UUID, String>> tempList = new ArrayList<>();
-            for (OMLibNetwork network : entry.getValue()) {
-                tempList.add(new Tuple<>(network.getUuid(), network.getName()));
-                network.saveToDisk();
-            }
-            list.put(entry.getKey().provider.getDimension(), tempList);
-        }
-        File saveRoot = DimensionManager.getCurrentSaveRootDirectory();
-        if (saveRoot != null) {
-            Path path = Paths.get(saveRoot.toString() + "/omt/");
-            Path fullpath = Paths.get(saveRoot.toString() + "/omt/networks.sav");
-            try {
-                if (Files.notExists(path)) {
-                    if (!path.toFile().mkdir()) {
-                        throw new Exception("Failed to create dir");
-                    }
-                }
-                FileOutputStream saveFile = new FileOutputStream(fullpath.toFile());
-                ObjectOutputStream save = new ObjectOutputStream(saveFile);
-                save.writeObject(list);
-                save.close();
-                saveFile.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-                try {
-                    Files.deleteIfExists(fullpath);
-                } catch (Exception exception) {
-                    exception.printStackTrace();
-                }
+    @Nullable
+    public OMLibNetwork getNetwork(UUID uuid) {
+        OMLibNetwork network = null;
+        for (OMLibNetwork net : networks) {
+            if (net.getUuid().equals(uuid)) {
+                network = net;
+                break;
             }
         }
+        return network;
     }
 }
 

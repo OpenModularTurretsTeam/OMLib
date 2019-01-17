@@ -15,12 +15,5 @@ public interface INetworkCable extends INetworkTile {
      * @return connection state.
      */
     boolean shouldConnect(EnumFacing side);
-
-    /**
-     * Return a list of all networking capable tiles near the cable.
-     *
-     * @return the list.
-     */
-    OMLibNetwork getConnectedNetwork();
 }
 
