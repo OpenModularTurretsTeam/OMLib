@@ -30,6 +30,17 @@ public class WorldUtil {
         return list;
     }
 
+    public static <T> ArrayList<T> getTouchingTileEntitiesByClass(World world, BlockPos pos, Class<T> clazz) {
+        ArrayList<T> list = new ArrayList<>();
+        for (EnumFacing facing : EnumFacing.VALUES) {
+            TileEntity tileEntity = world.getTileEntity(pos.offset(facing));
+            if (clazz.isInstance(tileEntity)) {
+                list.add((T) tileEntity);
+            }
+        }
+        return list;
+    }
+
     public static ArrayList<IBlockState> getTouchingBlockStates(World world, BlockPos pos) {
         ArrayList<IBlockState> list = new ArrayList<>();
         for (EnumFacing facing : EnumFacing.VALUES) {
@@ -43,7 +54,7 @@ public class WorldUtil {
         RayTraceResult result = null;
         Vec3d vec3d3 = null;
         AxisAlignedBB search = new AxisAlignedBB(base.x, base.y, base.z, target.x, target.y, target.z).grow(.5, .5, .5);
-        List<Entity> list = world.getEntitiesInAABBexcluding(toIgnore, search, Predicates.and(EntitySelectors.NOT_SPECTATING, entity -> entity != null && entity.canBeCollidedWith()));
+        @SuppressWarnings("Guava") List<Entity> list = world.getEntitiesInAABBexcluding(toIgnore, search, Predicates.and(EntitySelectors.NOT_SPECTATING, entity -> entity != null && entity.canBeCollidedWith()));
         List<RayTraceResult> resultList = new ArrayList<>();
 
         for (Entity entity1 : list) {

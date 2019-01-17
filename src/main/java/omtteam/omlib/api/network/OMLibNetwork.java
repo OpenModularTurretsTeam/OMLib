@@ -6,13 +6,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
 import omtteam.omlib.handler.OMLibEventHandler;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 import static java.util.UUID.randomUUID;
@@ -21,12 +16,14 @@ import static java.util.UUID.randomUUID;
  * Created by Keridos on 30/08/17.
  * This Class
  */
-@SuppressWarnings("UnusedReturnValue")
 public class OMLibNetwork {
     private Map<BlockPos, INetworkTile> devices = new HashMap<>();
     private World world;
     private UUID uuid;
     private String name;
+    private String ownerName;
+    private UUID ownerUUID;
+
 
     /**
      * This is the default constructor for a network without a custom name.
@@ -51,22 +48,6 @@ public class OMLibNetwork {
         this.uuid = randomUUID();
         this.name = name;
         OMLibEventHandler.getInstance().registerNetwork(this);
-    }
-
-    /**
-     * This is the constructor that is called when the networks are being loaded from disk.
-     * Do NOT call this manually anywhere.
-     *
-     * @param world the world the network is in
-     * @param name  the name of the network
-     * @param uuid  the uuid of the network
-     */
-    public OMLibNetwork(World world, String name, UUID uuid) {
-        this.world = world;
-        this.uuid = uuid;
-        this.name = name;
-        OMLibEventHandler.getInstance().registerNetwork(this);
-        this.loadFromDisk(uuid, world);
     }
 
     /**
@@ -103,13 +84,13 @@ public class OMLibNetwork {
     }
 
     /**
-     * This returns, if existing the TurretBaseController in the network.
+     * This returns, if existing theController in the network.
      */
     @Nullable
-    public IController getController() {
+    public <T> T getController(Class<T> clazz) {
         for (INetworkTile device : devices.values()) {
-            if (device instanceof IController) {
-                return (IController) device;
+            if (clazz.isInstance(device) && device instanceof IController) {
+                return (T) device;
             }
         }
         return null;
@@ -122,12 +103,12 @@ public class OMLibNetwork {
      * @return true if possible, false if it failed.
      */
     public boolean addDevice(INetworkTile tile) {
-        boolean controllerExists = getController() != null;
-        if (tile instanceof IController && !controllerExists) {
+        boolean controllerExists = getController(tile.getClass()) != null;
+        if (!controllerExists) {
             this.devices.putIfAbsent(tile.getPosition(), tile);
-            return true;
-        } else if (!(tile instanceof IController)) {
-            this.devices.putIfAbsent(tile.getPosition(), tile);
+            if (tile instanceof INameController) {
+                this.setName(((INameController) tile).getNetworkName());
+            }
             return true;
         }
         return false;
@@ -181,6 +162,22 @@ public class OMLibNetwork {
         this.name = name;
     }
 
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+
+    public UUID getOwner() {
+        return ownerUUID;
+    }
+
+    public void setOwner(UUID ownerUUID) {
+        this.ownerUUID = ownerUUID;
+    }
+
     //Utility Functions
 
     private boolean isSplitted() {
@@ -232,52 +229,5 @@ public class OMLibNetwork {
         OMLibEventHandler.getInstance().removeNetwork(this);
         this.devices = null;
         this.world = null;
-    }
-
-    public void saveToDisk() {
-        File saveRoot = DimensionManager.getCurrentSaveRootDirectory();
-        if (saveRoot != null) {
-            Path path = Paths.get(saveRoot.toString() + "/omt/");
-            Path fullpath = Paths.get(saveRoot.toString() + "/omt/network-" + this.getUuid().toString() + ".sav");
-            try {
-                if (Files.notExists(path)) {
-                    if (!path.toFile().mkdir()) {
-                        throw new Exception("Failed to create dir");
-                    }
-                }
-                FileOutputStream saveFile = new FileOutputStream(fullpath.toFile());
-                ObjectOutputStream save = new ObjectOutputStream(saveFile);
-                save.writeObject(this.devices.keySet());
-                save.close();
-                saveFile.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-                try {
-                    Files.deleteIfExists(fullpath);
-                } catch (Exception exception) {
-                    exception.printStackTrace();
-                }
-            }
-        }
-    }
-
-    private void loadFromDisk(UUID uuid, World world) {
-        try {
-            Set<BlockPos> tempList = new HashSet<>();
-            Path fullpath = Paths.get(DimensionManager.getCurrentSaveRootDirectory().toString() + "/omt/network- " + uuid.toString() + ").sav");
-            FileInputStream saveFile = new FileInputStream(fullpath.toFile());
-            ObjectInputStream save = new ObjectInputStream(saveFile);
-            Object object = save.readObject();
-            if (object instanceof Set) {
-                tempList = (HashSet<BlockPos>) object;
-            }
-            save.close();
-            saveFile.close();
-            for (BlockPos pos : tempList) {
-                devices.put(pos, (INetworkTile) world.getTileEntity(pos));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

@@ -6,6 +6,7 @@ import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.util.player.Player;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.UUID;
 
 import static omtteam.omlib.util.player.PlayerUtil.*;
@@ -25,20 +26,21 @@ public abstract class TileEntityOwnedBlock extends TileEntityBase {
 
 
     @Override
+    @ParametersAreNonnullByDefault
     public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
         super.writeToNBT(nbtTagCompound);
-        nbtTagCompound.setString("owner", owner);
-        if (ownerName.isEmpty() && getPlayerNameFromUUID(owner) != null) {
-            ownerName = getPlayerNameFromUUID(owner) != null ? getPlayerNameFromUUID(owner) : "";
+        nbtTagCompound.setString("owner", getOwner());
+        if (this.getOwnerName().isEmpty() && getPlayerNameFromUUID(getOwner()) != null) {
+            ownerName = getPlayerNameFromUUID(getOwner()) != null ? getPlayerNameFromUUID(getOwner()) : "";
         }
-        nbtTagCompound.setString("ownerName", ownerName);
+        nbtTagCompound.setString("ownerName", this.getOwnerName());
         nbtTagCompound.setString("ownerTeamName", ownerTeamName);
         return nbtTagCompound;
     }
 
     @SuppressWarnings("ConstantConditions")
     @Override
-
+    @ParametersAreNonnullByDefault
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
         super.readFromNBT(nbtTagCompound);
         if (getPlayerUIDUnstable(nbtTagCompound.getString("owner")) != null) {
