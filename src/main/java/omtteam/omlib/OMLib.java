@@ -7,6 +7,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import omtteam.omlib.handler.ConfigHandler;
+import omtteam.omlib.init.OMLibBlocks;
 import omtteam.omlib.proxy.CommonProxy;
 import omtteam.omlib.reference.Reference;
 import omtteam.omlib.util.RandomUtil;
@@ -41,6 +42,7 @@ public class OMLib {
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
         ConfigHandler.init(event.getSuggestedConfigurationFile());
+        OMLibBlocks.initTileEntities();
         checkForMods();
         RandomUtil.init();
         proxy.preInit();

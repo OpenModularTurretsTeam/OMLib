@@ -10,6 +10,10 @@ public class OMLibNames {
         public static final String fakeSword = "fake_sword";
     }
 
+    public static class Blocks {
+        public static final String networkCable = "network_cable";
+    }
+
     public static class Localizations {
         public static class GUI {
             public static final String OWNER = "gui.omtteam.omlib:owner";
