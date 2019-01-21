@@ -161,6 +161,7 @@ public class OMLibEventHandler {
     private List<OMLibNetwork> getNetworkList() {
         return networks;
     }
+
     public void registerNetwork(OMLibNetwork network) {
         networks.add(network);
     }

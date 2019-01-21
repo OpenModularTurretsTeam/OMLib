@@ -24,7 +24,6 @@ public class OMLibNetwork {
     private String ownerName;
     private UUID ownerUUID;
 
-
     /**
      * This is the default constructor for a network without a custom name.
      * Names can be added to an existing network later.

@@ -20,5 +20,6 @@ public abstract class RenderObject {
         duration--;
         return duration <= 0;
     }
+
     public abstract void render(RenderGlobal renderGlobal, float partialTick);
 }
