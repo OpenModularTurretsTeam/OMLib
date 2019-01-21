@@ -23,6 +23,7 @@ public interface IOwnedBlockAddon extends IHasOwner {
      *
      * @return owner
      */
+    @Override
     default String getOwner() {
         return this.getLinkedBlock().getOwner();
     }
@@ -32,7 +33,18 @@ public interface IOwnedBlockAddon extends IHasOwner {
      *
      * @return ownerName
      */
+    @Override
     default String getOwnerName() {
         return this.getLinkedBlock().getOwnerName();
+    }
+
+    /**
+     * Return the owners team of the block this block is linked to.
+     *
+     * @return owners team
+     */
+    @Override
+    default String getOwnerTeamName() {
+        return this.getLinkedBlock().getOwnerTeamName();
     }
 }
