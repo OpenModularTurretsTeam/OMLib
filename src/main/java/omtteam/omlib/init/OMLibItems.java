@@ -18,7 +18,6 @@ public class OMLibItems {
     public static Item fakeSword;
     public static List<Item> subBlocks = new ArrayList<>();
 
-
     public static void init(IForgeRegistry<Item> registry) {
         debugTool = registerItem(new ItemDebugTool(), registry);
         fakeSword = registerItem(new FakeSword(Item.ToolMaterial.DIAMOND), registry);

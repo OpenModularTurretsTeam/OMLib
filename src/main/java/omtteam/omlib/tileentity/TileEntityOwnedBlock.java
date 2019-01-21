@@ -25,7 +25,6 @@ public abstract class TileEntityOwnedBlock extends TileEntityBase implements IHa
     protected String ownerTeamName = "";
     protected boolean dropBlock = false;
 
-
     @Override
     @ParametersAreNonnullByDefault
     public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
