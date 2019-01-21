@@ -3,6 +3,7 @@ package omtteam.omlib.tileentity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import omtteam.omlib.api.IDebugTile;
+import omtteam.omlib.api.IHasOwner;
 import omtteam.omlib.api.network.INetworkCable;
 import omtteam.omlib.api.network.INetworkTile;
 import omtteam.omlib.api.network.OMLibNetwork;
@@ -13,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TileEntityCable extends TileEntityOwnedBlock implements INetworkCable, IDebugTile {
+public class TileEntityCable extends TileEntityBase implements INetworkCable, IDebugTile, IHasOwner {
     private Map<EnumFacing, Boolean> facingMap = new HashMap<>();
     private OMLibNetwork network;
 
@@ -87,5 +88,10 @@ public class TileEntityCable extends TileEntityOwnedBlock implements INetworkCab
     @Nonnull
     public String getOwnerName() {
         return network.getOwnerName();
+    }
+
+    @Override
+    public String getOwnerTeamName() {
+        return ""; //TODO: implement this
     }
 }

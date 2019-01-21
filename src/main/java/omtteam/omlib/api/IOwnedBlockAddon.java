@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
  * Created by Keridos on 17/05/17.
  * This interface is for anything that should be bound to an owned block.
  */
-public interface IOwnedBlockAddon {
+public interface IOwnedBlockAddon extends IHasOwner {
 
     /**
      * Return the owned block this block is linked to.
@@ -30,7 +30,7 @@ public interface IOwnedBlockAddon {
     /**
      * Return the owner name of the block this block is linked to.
      *
-     * @return owner
+     * @return ownerName
      */
     default String getOwnerName() {
         return this.getLinkedBlock().getOwnerName();
