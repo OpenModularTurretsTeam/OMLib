@@ -2,6 +2,7 @@ package omtteam.omlib.tileentity;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.nbt.NBTTagCompound;
+import omtteam.omlib.api.IHasOwner;
 import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.util.player.Player;
 
@@ -17,7 +18,7 @@ import static omtteam.omlib.util.player.PlayerUtil.*;
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
 @MethodsReturnNonnullByDefault
-public abstract class TileEntityOwnedBlock extends TileEntityBase {
+public abstract class TileEntityOwnedBlock extends TileEntityBase implements IHasOwner {
 
     protected String owner = "";
     protected String ownerName = "";
@@ -59,6 +60,7 @@ public abstract class TileEntityOwnedBlock extends TileEntityBase {
         }
     }
 
+    @Override
     public String getOwner() {
         return owner;
     }
@@ -67,6 +69,7 @@ public abstract class TileEntityOwnedBlock extends TileEntityBase {
         this.owner = owner;
     }
 
+    @Override
     public String getOwnerName() {
         return ownerName;
     }
