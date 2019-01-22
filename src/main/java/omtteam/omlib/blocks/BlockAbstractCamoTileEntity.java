@@ -13,7 +13,6 @@ import omtteam.omlib.tileentity.ICamoSupport;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Objects;
 
 /**
  * Created by Keridos on 31/01/17.
@@ -53,9 +52,19 @@ public abstract class BlockAbstractCamoTileEntity extends BlockAbstractTileEntit
     public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
         ICamoSupport camoTE = (ICamoSupport) world.getTileEntity(pos);
         if (camoTE != null && state instanceof IExtendedBlockState) {
-            return ((IExtendedBlockState) state).withProperty(RENDERBLOCKSTATE, new RenderBlockStateContainer((IExtendedBlockState) camoTE.getCamoState()));
+            IBlockState camoState = camoTE.getCamoState();
+            if (camoState instanceof IExtendedBlockState) {
+                return ((IExtendedBlockState) state)
+                        .withProperty(RENDERBLOCKSTATE, new RenderBlockStateContainer((IExtendedBlockState) camoState));
+            } else {
+                return ((IExtendedBlockState) state)
+                        .withProperty(RENDERBLOCKSTATE, new RenderBlockStateContainer(
+                                (IExtendedBlockState) camoTE.getCamoState().getBlock().getExtendedState(
+                                        camoState, camoTE.getOwnedBlock().getWorld(), camoTE.getOwnedBlock().getPos()
+                                )));
+            }
         } else {
-            return Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(
+            return (ForgeRegistries.BLOCKS.getValue(
                     new ResourceLocation("minecraft:grass"))).getDefaultState();
         }
     }
