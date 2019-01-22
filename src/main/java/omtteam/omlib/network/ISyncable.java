@@ -11,7 +11,7 @@ public interface ISyncable {
 
     TileEntity getTE();
 
-    void sendMessageToAllAround();
+    void sendMessageToAllTracking();
 
     default void scrubSyncPlayerList() {
         ListIterator<EntityPlayerMP> iter = getSyncPlayerList().listIterator();
