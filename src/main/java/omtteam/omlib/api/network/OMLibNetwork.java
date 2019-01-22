@@ -1,6 +1,6 @@
 package omtteam.omlib.api.network;
 
-import jline.internal.Nullable;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -8,6 +8,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import omtteam.omlib.handler.OMLibEventHandler;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 import static java.util.UUID.randomUUID;
