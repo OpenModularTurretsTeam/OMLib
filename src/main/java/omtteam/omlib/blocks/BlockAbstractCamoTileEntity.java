@@ -52,7 +52,7 @@ public abstract class BlockAbstractCamoTileEntity extends BlockAbstractTileEntit
     @ParametersAreNonnullByDefault
     public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
         ICamoSupport camoTE = (ICamoSupport) world.getTileEntity(pos);
-        if (camoTE != null) {
+        if (camoTE != null && state instanceof IExtendedBlockState) {
             return ((IExtendedBlockState) state).withProperty(RENDERBLOCKSTATE, new RenderBlockStateContainer((IExtendedBlockState) camoTE.getCamoState()));
         } else {
             return Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(

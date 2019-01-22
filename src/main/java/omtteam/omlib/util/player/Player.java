@@ -33,6 +33,14 @@ public class Player {
         this.teamName = teamName;
     }
 
+    public Player(EntityPlayer player) {
+        this.uuid = player.getUniqueID();
+        this.name = player.getName();
+        if (player.getTeam() != null) {
+            this.teamName = player.getTeam().getName();
+        }
+    }
+
     public static void writeToByteBuf(Player player, ByteBuf buf) {
         ByteBufUtils.writeUTF8String(buf, player.name);
         ByteBufUtils.writeUTF8String(buf, player.getUuid().toString());
