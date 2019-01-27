@@ -51,21 +51,14 @@ public abstract class BlockAbstractCamoTileEntity extends BlockAbstractTileEntit
     @ParametersAreNonnullByDefault
     public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
         ICamoSupport camoTE = (ICamoSupport) world.getTileEntity(pos);
-        if (camoTE != null && state instanceof IExtendedBlockState) {
+        if (camoTE != null && state.getBlock() instanceof BlockAbstractCamoTileEntity && state instanceof IExtendedBlockState) {
             IBlockState camoState = camoTE.getCamoState();
-            if (camoState instanceof IExtendedBlockState) {
-                return ((IExtendedBlockState) state)
-                        .withProperty(RENDERBLOCKSTATE, new RenderBlockStateContainer((IExtendedBlockState) camoState));
-            } else {
-                return ((IExtendedBlockState) state)
-                        .withProperty(RENDERBLOCKSTATE, new RenderBlockStateContainer(
-                                (IExtendedBlockState) camoTE.getCamoState().getBlock().getExtendedState(
-                                        camoState, camoTE.getOwnedBlock().getWorld(), camoTE.getOwnedBlock().getPos()
-                                )));
-            }
-        } else {
-            return (ForgeRegistries.BLOCKS.getValue(
-                    new ResourceLocation("minecraft:grass"))).getDefaultState();
+            return ((IExtendedBlockState) state)
+                    .withProperty(RENDERBLOCKSTATE, new RenderBlockStateContainer(camoState));
+        } else if (camoTE != null && !(state instanceof IExtendedBlockState)) {
+            return state.getBlock().getExtendedState(state, world, pos);
         }
+        return (ForgeRegistries.BLOCKS.getValue(
+                new ResourceLocation("minecraft:grass"))).getDefaultState();
     }
 }
