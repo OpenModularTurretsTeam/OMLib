@@ -50,16 +50,20 @@ public abstract class CamoBakedModel implements IBakedModel {
         if (state instanceof IExtendedBlockState) {
             BlockRenderLayer layer = MinecraftForgeClient.getRenderLayer();
             IExtendedBlockState extendedState = (IExtendedBlockState) state;
-            IExtendedBlockState camoState = null;
+            IBlockState camoState = null;
             if (extendedState.getValue(RENDERBLOCKSTATE) != null && extendedState.getValue(RENDERBLOCKSTATE).getRenderState() != null) {
                 camoState = extendedState.getValue(RENDERBLOCKSTATE).getRenderState();
-            }
-            if (camoState != null && camoState.getBlock() instanceof BlockAbstractCamoTileEntity && (BlockRenderLayer.SOLID.equals(layer))) {
-                return getModel(defaultModels, state).getQuads(state, side, rand);
-            } else if (camoState != null && camoState.getBlock().canRenderInLayer(camoState, layer)) {
-                return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(camoState.getClean()).getQuads(camoState, side, rand);
-            } else if (camoState != null) {
-                return new ArrayList<>();
+                if (camoState != null && camoState.getBlock() instanceof BlockAbstractCamoTileEntity && (BlockRenderLayer.SOLID.equals(layer))) {
+                    return getModel(defaultModels, state).getQuads(state, side, rand);
+                } else if (camoState != null && camoState.getBlock().canRenderInLayer(camoState, layer) && camoState instanceof IExtendedBlockState) {
+                    return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes()
+                            .getModelForState(((IExtendedBlockState) camoState).getClean()).getQuads(camoState, side, rand);
+                } else if (camoState != null && camoState.getBlock().canRenderInLayer(camoState, layer)) {
+                    return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes()
+                            .getModelForState(camoState).getQuads(camoState, side, rand);
+                } else if (camoState != null) {
+                    return new ArrayList<>();
+                }
             }
         } else if (state != null) {
             return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(state).getQuads(state, side, rand);
