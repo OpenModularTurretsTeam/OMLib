@@ -14,7 +14,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.common.Optional;
-import omtteam.omlib.compatibility.ModCompatibility;
+import omtteam.omlib.compatibility.OMLibModCompatibility;
 import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.power.OMEnergyStorage;
 import omtteam.omlib.power.tesla.BaseOMTeslaContainerWrapper;
@@ -23,7 +23,7 @@ import omtteam.omlib.util.MathUtil;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static omtteam.omlib.compatibility.ModCompatibility.*;
+import static omtteam.omlib.compatibility.OMLibModCompatibility.*;
 import static omtteam.omlib.handler.ConfigHandler.EUSupport;
 
 /**
@@ -235,7 +235,7 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
     @Override
     public void onChunkUnload() {
         if (wasAddedToEnergyNet &&
-                ModCompatibility.IC2Loaded) {
+                OMLibModCompatibility.IC2Loaded) {
             removeFromIc2EnergyNetwork();
 
             wasAddedToEnergyNet = false;
@@ -264,7 +264,7 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
         // not care about which side is being accessed, however if you wanted to restrict which
         // side can be used, for example only allow power input through the back, that could be
         // done here.
-        if (ModCompatibility.TeslaLoaded) {
+        if (OMLibModCompatibility.TeslaLoaded) {
             if (hasTeslaCapability(capability, facing) && getTeslaCapability(capability, facing) != null) {
                 return getTeslaCapability(capability, facing);
             }
@@ -286,7 +286,7 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock implements
         // three. This can also be used to restrict access on certain sides, for example if you
         // only accept power input from the bottom of the block, you would only return true for
         // Consumer if the facing parameter was down.
-        if (ModCompatibility.TeslaLoaded) {
+        if (OMLibModCompatibility.TeslaLoaded) {
             if (hasTeslaCapability(capability, facing)) {
                 return true;
             }

@@ -1,4 +1,4 @@
-package omtteam.omlib.util;
+package omtteam.omlib.util.camo;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
