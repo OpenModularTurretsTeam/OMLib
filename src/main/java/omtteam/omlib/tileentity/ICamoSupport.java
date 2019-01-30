@@ -4,7 +4,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import omtteam.omlib.network.OMLibNetworkingHandler;
 import omtteam.omlib.network.messages.MessageCamoSettings;
-import omtteam.omlib.util.CamoSettings;
+import omtteam.omlib.util.camo.CamoSettings;
 
 import javax.annotation.Nonnull;
 

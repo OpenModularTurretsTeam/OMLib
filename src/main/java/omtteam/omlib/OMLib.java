@@ -16,8 +16,8 @@ import omtteam.omlib.util.command.CommandShareOwner;
 import omtteam.omlib.util.command.CommandToggleDebug;
 import org.apache.logging.log4j.Logger;
 
-import static omtteam.omlib.compatibility.ModCompatibility.checkForMods;
-import static omtteam.omlib.compatibility.ModCompatibility.performModCompat;
+import static omtteam.omlib.compatibility.OMLibModCompatibility.checkForMods;
+import static omtteam.omlib.compatibility.OMLibModCompatibility.performModCompat;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, acceptedMinecraftVersions = "1.10.2", dependencies = Reference.DEPENDENCIES)
 public class OMLib {

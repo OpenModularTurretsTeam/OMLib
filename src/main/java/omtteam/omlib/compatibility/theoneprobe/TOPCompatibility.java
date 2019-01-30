@@ -25,8 +25,7 @@ public class TOPCompatibility {
     }
 
     public static class GetTheOneProbe implements com.google.common.base.Function<ITheOneProbe, Void> {
-
-        public static ITheOneProbe probe;
+        static ITheOneProbe probe;
 
         @Nullable
         @Override
@@ -46,6 +45,14 @@ public class TOPCompatibility {
                         provider.addProbeInfo(mode, probeInfo, player, world, blockState, data);
                     }
                 }
+            });
+            probe.registerBlockDisplayOverride((mode, probeInfo, player, world, blockState, data) -> {
+                if (blockState.getBlock() instanceof TOPInfoModifier) {
+                    TOPInfoModifier provider = (TOPInfoModifier) blockState.getBlock();
+                    provider.addProbeInfo(mode, probeInfo, player, world, blockState, data);
+                    return true;
+                }
+                return false;
             });
             return null;
         }
