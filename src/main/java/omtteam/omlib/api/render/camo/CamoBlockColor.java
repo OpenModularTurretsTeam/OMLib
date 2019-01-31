@@ -1,11 +1,10 @@
-package omtteam.omlib.render;
+package omtteam.omlib.api.render.camo;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import omtteam.omlib.tileentity.ICamoSupport;
 
 import javax.annotation.Nullable;
 

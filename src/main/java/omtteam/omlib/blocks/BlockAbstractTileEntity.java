@@ -13,7 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import omtteam.omlib.tileentity.TileEntityContainerElectric;
-import omtteam.omlib.util.InvUtil;
+import omtteam.omlib.util.inventory.InvUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;

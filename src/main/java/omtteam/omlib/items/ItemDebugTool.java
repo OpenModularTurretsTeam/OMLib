@@ -45,8 +45,7 @@ public class ItemDebugTool extends Item {
                 }
                 if (tileEntity instanceof TileEntityElectric) {
                     TileEntityElectric te = (TileEntityElectric) tileEntity;
-                    playerIn.sendMessage(new TextComponentString("Stored Energy: " + te.getEnergyLevel(EnumFacing.DOWN) + "/" + te.getMaxEnergyLevel(EnumFacing.DOWN)));
-                    playerIn.sendMessage(new TextComponentString("Stored EU: " + te.getStorageEU()));
+                    playerIn.sendMessage(new TextComponentString("Stored Energy: " + te.getEnergyStored(EnumFacing.DOWN) + "/" + te.getMaxEnergyStored(EnumFacing.DOWN)));
                 }
                 if (tileEntity instanceof TileEntityMachine) {
                     TileEntityMachine te = (TileEntityMachine) tileEntity;

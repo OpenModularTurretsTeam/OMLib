@@ -1,4 +1,4 @@
-package omtteam.omlib.render;
+package omtteam.omlib.api.render.camo;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.state.IBlockState;
@@ -25,7 +25,8 @@ import static omtteam.omlib.blocks.BlockAbstractCamoTileEntity.RENDERBLOCKSTATE;
  * Created by Keridos on 29/01/17.
  * This Class is the abstract implementation of the camo model.
  * Extending classes must implement 3 additional classes that manage the default models caching and statemapping.
- * See TurretBaseBakedModel in OMT for a reference implementation.
+ * See TurretBaseBakedModel in OMT for a reference implementation. Do not forget to link your block color to the
+ * CamoBlockColor class, else some blocks won't render correctly (e.g. grass).
  */
 @MethodsReturnNonnullByDefault
 public abstract class CamoBakedModel implements IBakedModel {

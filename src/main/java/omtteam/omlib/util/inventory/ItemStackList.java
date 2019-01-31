@@ -1,4 +1,4 @@
-package omtteam.omlib.util;
+package omtteam.omlib.util.inventory;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
