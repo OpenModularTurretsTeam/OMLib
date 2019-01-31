@@ -1,4 +1,4 @@
-package omtteam.omlib.api;
+package omtteam.omlib.api.permission;
 
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 

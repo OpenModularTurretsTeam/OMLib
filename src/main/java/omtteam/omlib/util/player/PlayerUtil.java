@@ -4,11 +4,10 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.UsernameCache;
+import omtteam.omlib.api.permission.ITrustedPlayersManager;
 import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.handler.OwnerShareHandler;
-import omtteam.omlib.tileentity.ITrustedPlayersManager;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
-import omtteam.omlib.util.EnumAccessMode;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;

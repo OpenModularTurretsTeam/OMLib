@@ -1,11 +1,12 @@
-package omtteam.omlib.tileentity;
+package omtteam.omlib.api.permission;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.UsernameCache;
 import omtteam.omlib.handler.ConfigHandler;
+import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 import omtteam.omlib.util.DebugHandler;
-import omtteam.omlib.util.EnumAccessMode;
+import omtteam.omlib.util.player.EnumAccessMode;
 import omtteam.omlib.util.player.Player;
 import omtteam.omlib.util.player.TrustedPlayer;
 

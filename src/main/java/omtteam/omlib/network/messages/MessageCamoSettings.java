@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import omtteam.omlib.tileentity.ICamoSupport;
+import omtteam.omlib.api.render.camo.ICamoSupport;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 
 import java.util.Objects;

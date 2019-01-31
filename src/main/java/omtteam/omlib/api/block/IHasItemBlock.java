@@ -1,4 +1,4 @@
-package omtteam.omlib.api;
+package omtteam.omlib.api.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;

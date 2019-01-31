@@ -1,4 +1,4 @@
-package omtteam.omlib.api;
+package omtteam.omlib.api.permission;
 
 public interface IHasOwner {
     String getOwner();
