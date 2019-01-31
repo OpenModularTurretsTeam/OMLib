@@ -5,8 +5,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import omtteam.omlib.api.permission.EnumMachineMode;
 import omtteam.omlib.power.OMEnergyStorage;
+import omtteam.omlib.util.EnumMachineMode;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

@@ -2,6 +2,7 @@ package omtteam.omlib.util.player;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -101,5 +102,18 @@ public class Player {
             }
         }
         return "";
+    }
+
+    public static Player readFromNBT(NBTTagCompound tag) {
+        return new Player(tag.getUniqueId("uuid"),
+                          tag.getString("name"),
+                          tag.getString("team_name"));
+    }
+
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+        tag.setString("name", this.name);
+        tag.setUniqueId("uuid", this.uuid);
+        tag.setString("team_name", this.teamName);
+        return tag;
     }
 }
