@@ -4,9 +4,11 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.UsernameCache;
-import omtteam.omlib.api.permission.ITrustedPlayersManager;
+import omtteam.omlib.api.permission.GlobalTrustRegister;
+import omtteam.omlib.api.permission.IHasTrustManager;
+import omtteam.omlib.api.permission.OwnerShareRegister;
+import omtteam.omlib.api.permission.TrustedPlayersManagerTile;
 import omtteam.omlib.handler.ConfigHandler;
-import omtteam.omlib.handler.OwnerShareHandler;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 
 import javax.annotation.Nullable;
@@ -15,7 +17,6 @@ import javax.annotation.ParametersAreNullableByDefault;
 import java.util.Map;
 import java.util.UUID;
 
-import static omtteam.omlib.handler.ConfigHandler.offlineModeSupport;
 
 /**
  * Created by Keridos on 20/07/16.
@@ -77,40 +78,36 @@ public class PlayerUtil {
 
     @Nullable
     @ParametersAreNonnullByDefault
-    public static TrustedPlayer getTrustedPlayer(EntityPlayer entityPlayer, ITrustedPlayersManager machine) {
+    public static TrustedPlayer getTrustedPlayer(EntityPlayer entityPlayer, IHasTrustManager machine) {
         Player player = new Player(entityPlayer);
         return getTrustedPlayer(player, machine);
     }
 
     @Nullable
     @ParametersAreNonnullByDefault
-    public static TrustedPlayer getTrustedPlayer(Player player, ITrustedPlayersManager machine) {
-        if (machine.getTrustedPlayer(player.getUuid()) != null || (offlineModeSupport && machine.getTrustedPlayer(player.getName()) != null)) {
-            return (machine.getTrustedPlayer(player.getUuid()) == null ? machine.getTrustedPlayer(player.getName()) : machine.getTrustedPlayer(player.getUuid()));
-        } else {
-            return null;
-        }
+    public static TrustedPlayer getTrustedPlayer(Player player, IHasTrustManager machine) {
+        return machine.getTrustManager().getTrustedPlayer(player);
     }
 
     // Use this for determining what the access type for the player would be.
     // (needed when OP access is active and OPs need to be treated the same in some regions)
     @ParametersAreNonnullByDefault
-    public static EnumPlayerType getPlayerType(EntityPlayer entityPlayer, TileEntityOwnedBlock ownedBlock) {
+    public static EnumPlayerAccessType getPlayerType(EntityPlayer entityPlayer, TileEntityOwnedBlock ownedBlock) {
         Player player = new Player(entityPlayer);
         return getPlayerType(player, ownedBlock);
     }
 
     @ParametersAreNonnullByDefault
-    public static EnumPlayerType getPlayerType(Player player, TileEntityOwnedBlock ownedBlock) {
+    public static EnumPlayerAccessType getPlayerType(Player player, TileEntityOwnedBlock ownedBlock) {
         Player owner = new Player(getPlayerUIDUnstable(ownedBlock.getOwner()), ownedBlock.getOwnerName());
-        if (player.equals(owner) || OwnerShareHandler.getInstance().isPlayerSharedOwner(owner, player)) {
-            return EnumPlayerType.OWNER;
-        } else if (ownedBlock instanceof ITrustedPlayersManager && isPlayerTrusted(player, (ITrustedPlayersManager) ownedBlock)) {
-            return EnumPlayerType.TRUSTED;
+        if (player.equals(owner) || OwnerShareRegister.instance.isPlayerSharedOwner(owner, player)) {
+            return EnumPlayerAccessType.OWNER;
+        } else if (ownedBlock instanceof IHasTrustManager && isPlayerTrusted(player, ownedBlock)) {
+            return EnumPlayerAccessType.TRUSTED;
         } else if (ConfigHandler.canOPAccessOwnedBlocks && isPlayerOP(player)) {
-            return EnumPlayerType.OP;
+            return EnumPlayerAccessType.OP;
         }
-        return EnumPlayerType.NONE;
+        return EnumPlayerAccessType.NONE;
     }
 
     // Use this for block access.
@@ -122,29 +119,35 @@ public class PlayerUtil {
 
     @ParametersAreNonnullByDefault
     public static boolean canPlayerAccessBlock(Player player, TileEntityOwnedBlock ownedBlock) {
-        ITrustedPlayersManager machine = (ownedBlock instanceof ITrustedPlayersManager ? (ITrustedPlayersManager) ownedBlock : null);
-        Player owner = new Player(getPlayerUIDUnstable(ownedBlock.getOwner()), ownedBlock.getOwnerName());
-        TrustedPlayer trustedPlayer = machine != null ? machine.getTrustedPlayer(player) : null;
+        IHasTrustManager machine = (ownedBlock instanceof IHasTrustManager ? (IHasTrustManager) ownedBlock : null);
+        TrustedPlayer trustedPlayer = machine != null ? machine.getTrustManager().getTrustedPlayer(player) : null;
         if (ConfigHandler.canOPAccessOwnedBlocks && isPlayerOP(player)) {
             return true;
         } else if (isPlayerOwner(player, ownedBlock)) {
             return true;
         }
-        return (machine != null && trustedPlayer != null && (isPlayerAdmin(player, machine) ||
-                canPlayerChangeSetting(player, machine) ||
-                trustedPlayer.getAccessMode().equals(EnumAccessMode.OPEN_GUI)));
+        return (machine != null && trustedPlayer != null && (
+                canPlayerChangeSetting(player, ownedBlock) ||
+                        trustedPlayer.getAccessMode().equals(EnumAccessLevel.OPEN_GUI)));
     }
 
     @ParametersAreNonnullByDefault
-    public static boolean isPlayerTrusted(EntityPlayer entityPlayer, ITrustedPlayersManager trustedPlayersManager) {
+    public static boolean isPlayerTrusted(EntityPlayer entityPlayer, TileEntityOwnedBlock ownedBlock) {
         Player player = new Player(entityPlayer);
-        return isPlayerTrusted(player, trustedPlayersManager);
+        return isPlayerTrusted(player, ownedBlock);
     }
 
     @ParametersAreNonnullByDefault
-    public static boolean isPlayerTrusted(Player player, ITrustedPlayersManager trustedPlayersManager) {
-        return (offlineModeSupport ? trustedPlayersManager.getTrustedPlayer(player.getName()) != null :
-                trustedPlayersManager.getTrustedPlayer(player.getUuid()) != null);
+    public static boolean isPlayerTrusted(Player player, TileEntityOwnedBlock ownedBlock) {
+        boolean found = false;
+        if (ownedBlock instanceof IHasTrustManager) {
+            TrustedPlayersManagerTile trustedPlayersManager = ((IHasTrustManager) ownedBlock).getTrustManager();
+            found = trustedPlayersManager.getTrustedPlayer(player) != null;
+            if (!found) {
+                found = GlobalTrustRegister.instance.getTrustedPlayer(ownedBlock.getOwnerAsPlayer(), player) != null;
+            }
+        }
+        return found;
     }
 
     @ParametersAreNonnullByDefault
@@ -156,34 +159,37 @@ public class PlayerUtil {
     @ParametersAreNonnullByDefault
     public static boolean isPlayerOwner(Player player, TileEntityOwnedBlock ownedBlock) {
         Player owner = new Player(getPlayerUIDUnstable(ownedBlock.getOwner()), ownedBlock.getOwnerName());
-        return player.equals(owner) || OwnerShareHandler.getInstance().isPlayerSharedOwner(owner, player);
+        return player.equals(owner) || OwnerShareRegister.instance.isPlayerSharedOwner(owner, player);
     }
 
     @ParametersAreNonnullByDefault
-    public static boolean isPlayerAdmin(EntityPlayer checkPlayer, ITrustedPlayersManager machine) {
+    public static boolean isPlayerAdmin(EntityPlayer checkPlayer, TileEntityOwnedBlock machine) {
         Player player = new Player(checkPlayer);
         return isPlayerAdmin(player, machine);
     }
 
     @ParametersAreNonnullByDefault
-    public static boolean isPlayerAdmin(Player player, ITrustedPlayersManager machine) {
-        TrustedPlayer trustedPlayer = getTrustedPlayer(player, machine);
-        return isPlayerOwner(player, machine.getOwnedBlock())
-                || (trustedPlayer != null && trustedPlayer.getAccessMode().equals(EnumAccessMode.ADMIN));
+    public static boolean isPlayerAdmin(Player player, TileEntityOwnedBlock ownedBlock) {
+        IHasTrustManager machine = (ownedBlock instanceof IHasTrustManager ? (IHasTrustManager) ownedBlock : null);
+        TrustedPlayer trustedPlayer = machine != null ? machine.getTrustManager().getTrustedPlayer(player) : null;
+        if (isPlayerOwner(player, ownedBlock)) {
+            return true;
+        }
+        return (machine != null && trustedPlayer != null && trustedPlayer.getAccessMode().equals(EnumAccessLevel.ADMIN));
     }
 
     @ParametersAreNonnullByDefault
-    public static boolean canPlayerChangeSetting(EntityPlayer checkPlayer, ITrustedPlayersManager machine) {
+    public static boolean canPlayerChangeSetting(EntityPlayer checkPlayer, TileEntityOwnedBlock machine) {
         Player player = new Player(checkPlayer);
         return canPlayerChangeSetting(player, machine);
     }
 
     @ParametersAreNonnullByDefault
-    public static boolean canPlayerChangeSetting(Player player, ITrustedPlayersManager machine) {
-        TrustedPlayer trustedPlayer = getTrustedPlayer(player, machine);
-        return isPlayerOwner(player, machine.getOwnedBlock())
-                || isPlayerAdmin(player, machine)
-                || (trustedPlayer != null && trustedPlayer.getAccessMode().equals(EnumAccessMode.CHANGE_SETTINGS));
+    public static boolean canPlayerChangeSetting(Player player, TileEntityOwnedBlock ownedBlock) {
+        IHasTrustManager machine = (ownedBlock instanceof IHasTrustManager ? (IHasTrustManager) ownedBlock : null);
+        TrustedPlayer trustedPlayer = machine != null ? machine.getTrustManager().getTrustedPlayer(player) : null;
+        return (machine != null && trustedPlayer != null && (isPlayerAdmin(player, ownedBlock) ||
+                trustedPlayer.getAccessMode().equals(EnumAccessLevel.CHANGE_SETTINGS)));
     }
 
     @ParametersAreNonnullByDefault
@@ -196,25 +202,31 @@ public class PlayerUtil {
     }
 
     @ParametersAreNonnullByDefault
-    public static EnumAccessMode getPlayerAccess(EntityPlayer player, TileEntityOwnedBlock ownedBlock) {
-        if (ownedBlock instanceof ITrustedPlayersManager) {
-            ITrustedPlayersManager trustedPlayersManager = (ITrustedPlayersManager) ownedBlock;
-            TrustedPlayer trustedPlayer = trustedPlayersManager.getTrustedPlayer(new Player(player));
-            if (trustedPlayer != null) {
-                if (isPlayerAdmin(player, trustedPlayersManager)) {
-                    return EnumAccessMode.ADMIN;
-                }
-                if (canPlayerChangeSetting(player, trustedPlayersManager)) {
-                    return EnumAccessMode.CHANGE_SETTINGS;
-                }
-                if (canPlayerAccessBlock(player, ownedBlock)) {
-                    return EnumAccessMode.OPEN_GUI;
-                }
+    public static EnumAccessLevel getPlayerAccess(EntityPlayer player, TileEntityOwnedBlock ownedBlock) {
+        if (isPlayerOwner(player, ownedBlock)) {
+            return EnumAccessLevel.ADMIN;
+        }
+        if (isPlayerAdmin(player, ownedBlock)) {
+            return EnumAccessLevel.ADMIN;
+        }
+        if (canPlayerChangeSetting(player, ownedBlock)) {
+            return EnumAccessLevel.CHANGE_SETTINGS;
+        }
+        if (canPlayerAccessBlock(player, ownedBlock)) {
+            return EnumAccessLevel.OPEN_GUI;
+        }
+        return EnumAccessLevel.NONE;
+    }
+
+    @Nullable
+    public static Player getPlayerFromUsernameCache(String name) {
+        Player player = null;
+        for (Map.Entry<UUID, String> serverName : UsernameCache.getMap().entrySet()) {
+            if (name.equals(serverName.getValue())) {
+                player = new Player(serverName.getKey(), serverName.getValue());
+                break;
             }
         }
-        if (isPlayerOwner(player, ownedBlock)) {
-            return EnumAccessMode.ADMIN;
-        }
-        return EnumAccessMode.NONE;
+        return player;
     }
 }

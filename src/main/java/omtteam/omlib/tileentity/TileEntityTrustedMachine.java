@@ -1,40 +1,33 @@
 package omtteam.omlib.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
-import omtteam.omlib.api.permission.ITrustedPlayersManager;
-import omtteam.omlib.util.player.TrustedPlayer;
-
-import java.util.ArrayList;
-import java.util.List;
+import omtteam.omlib.api.permission.IHasTrustManager;
+import omtteam.omlib.api.permission.TrustedPlayersManagerTile;
 
 @SuppressWarnings({"WeakerAccess", "CanBeFinal", "unused"})
-public abstract class TileEntityTrustedMachine extends TileEntityMachine implements ITrustedPlayersManager {
-    protected List<TrustedPlayer> trustedPlayers;
+public abstract class TileEntityTrustedMachine extends TileEntityMachine implements IHasTrustManager {
+    protected TrustedPlayersManagerTile trustManager;
 
     public TileEntityTrustedMachine() {
         super();
-        this.trustedPlayers = new ArrayList<>();
+        this.trustManager = new TrustedPlayersManagerTile(this);
     }
 
     @Override
-    public List<TrustedPlayer> getTrustedPlayers() {
-        return trustedPlayers;
-    }
-
-    public void setTrustedPlayers(List<TrustedPlayer> list) {
-        this.trustedPlayers = list;
+    public TrustedPlayersManagerTile getTrustManager() {
+        return trustManager;
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        tag.setTag("trustedPlayers", getTrustedPlayersAsNBT());
+        trustManager.writeToNBT(tag);
         return tag;
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        buildTrustedPlayersFromNBT(tag.getTagList("trustedPlayers", 10));
+        trustManager.readFromNBT(tag);
     }
 }
