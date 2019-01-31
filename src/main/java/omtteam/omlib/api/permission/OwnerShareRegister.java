@@ -1,17 +1,28 @@
-package omtteam.omlib.handler;
+package omtteam.omlib.api.permission;
 
 import net.minecraft.command.ICommandSender;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraftforge.common.DimensionManager;
+import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import omtteam.omlib.OMLib;
 import omtteam.omlib.network.OMLibNetworkingHandler;
 import omtteam.omlib.network.messages.MessageSetSharePlayerList;
+import omtteam.omlib.reference.Reference;
 import omtteam.omlib.util.player.Player;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,69 +32,93 @@ import java.util.function.Predicate;
  * Created by Keridos on 17/05/17.
  * This Class
  */
-public class OwnerShareHandler implements Serializable {
-    private static OwnerShareHandler instance;
+@Mod.EventBusSubscriber(modid = Reference.MOD_ID)
+public class OwnerShareRegister implements ICapabilityProvider, IOwnerShareRegister {
+    public final static @Nonnull
+    OwnerShareRegister instance = new OwnerShareRegister();
     private HashMap<Player, ArrayList<Player>> ownerShareMap;
 
-    private OwnerShareHandler() {
+    private final static @Nonnull
+    ResourceLocation CAP_KEY = new ResourceLocation(Reference.MOD_ID, "owner_share");
+    @SuppressWarnings("CanBeFinal")
+    @CapabilityInject(IOwnerShareRegister.class)
+    public static Capability<IOwnerShareRegister> SERVER_REGISTER = null;
+
+    private OwnerShareRegister() {
         ownerShareMap = new HashMap<>();
     }
 
-    public static OwnerShareHandler getInstance() {
-        if (instance == null) {
-            instance = new OwnerShareHandler();
-        }
-        return instance;
-    }
-
-    static void saveToDisk() {
-        File saveRoot = DimensionManager.getCurrentSaveRootDirectory();
-        if (saveRoot != null) {
-            Path path = Paths.get(saveRoot.toString() + "/omlib/");
-            Path fullpath = Paths.get(saveRoot.toString() + "/omlib/OwnerShare.sav");
-            try {
-                if (Files.notExists(path)) {
-                    if (!path.toFile().mkdir()) {
-                        throw new Exception("Failed to create dir");
-                    }
-                }
-                if (getInstance() != null && getInstance().getOwnerShareMap() != null) {
-                    FileOutputStream saveFile = new FileOutputStream(fullpath.toFile());
-                    ObjectOutputStream save = new ObjectOutputStream(saveFile);
-                    save.writeObject(getInstance().getOwnerShareMap());
-                    save.close();
-                    saveFile.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                try {
-                    Files.deleteIfExists(fullpath);
-                } catch (Exception exception) {
-                    exception.printStackTrace();
-                }
-            }
+    @SubscribeEvent
+    public static void onWorldCaps(AttachCapabilitiesEvent<World> event) {
+        if (SERVER_REGISTER != null && !event.getObject().isRemote && event.getObject().provider.getDimension() == 1) {
+            event.addCapability(CAP_KEY, instance);
         }
     }
 
-    static void loadFromDisk() {
-        HashMap<Player, ArrayList<Player>> input = new HashMap<>();
-        try {
-            Path fullpath;
-            if (DimensionManager.getCurrentSaveRootDirectory() != null) {
-                fullpath = Paths.get(DimensionManager.getCurrentSaveRootDirectory().toString() + "/omlib/OwnerShare.sav");
-            } else {
-                return;
+    public static void preInit() {
+        CapabilityManager.INSTANCE.register(IOwnerShareRegister.class, new Capability.IStorage<IOwnerShareRegister>() {
+            @Override
+            public NBTBase writeNBT(Capability<IOwnerShareRegister> capability, IOwnerShareRegister instanceIn, EnumFacing side) {
+                return instanceIn.serializeNBT();
             }
-            FileInputStream saveFile = new FileInputStream(fullpath.toFile());
-            ObjectInputStream save = new ObjectInputStream(saveFile);
-            Object object = save.readObject();
-            if (object instanceof HashMap) {
-                input = (HashMap<Player, ArrayList<Player>>) object;
+
+            @Override
+            public void readNBT(Capability<IOwnerShareRegister> capability, IOwnerShareRegister instanceIn, EnumFacing side, NBTBase nbt) {
+                instanceIn.deserializeNBT(nbt);
             }
-            getInstance().setOwnerShareMap(input);
-            save.close();
-            saveFile.close();
-        } catch (Exception e) {
+        }, () -> OwnerShareRegister.instance);
+    }
+
+    @Override
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+        return capability == SERVER_REGISTER;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    @Nullable
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+        return (T) (capability == SERVER_REGISTER ? this : null);
+    }
+
+    @Override
+    public NBTBase serializeNBT() {
+        NBTTagCompound nbt = new NBTTagCompound();
+        NBTTagList list = new NBTTagList();
+
+        for (Map.Entry<Player, ArrayList<Player>> entry : ownerShareMap.entrySet()) {
+            NBTTagCompound tag = new NBTTagCompound();
+            NBTTagList listPlayers = new NBTTagList();
+            entry.getKey().writeToNBT(tag);
+            for (Player player : entry.getValue()) {
+                listPlayers.appendTag(player.writeToNBT(new NBTTagCompound()));
+            }
+            tag.setTag("share_players", listPlayers);
+            list.appendTag(tag);
+        }
+        nbt.setTag("list", list);
+
+        return nbt;
+    }
+
+    @Override
+    public void deserializeNBT(NBTBase nbtIn) {
+        if (nbtIn instanceof NBTTagCompound) {
+            NBTTagCompound nbt = (NBTTagCompound) nbtIn;
+            NBTTagList list = nbt.getTagList("list", nbt.getId());
+            for (int i = 0; i < list.tagCount(); i++) {
+                NBTTagCompound tag = list.getCompoundTagAt(i);
+                Player player = Player.readFromNBT(tag);
+                NBTTagList playerTagList = tag.getTagList("share_players", tag.getId());
+                ArrayList<Player> sharePlayers = new ArrayList<>();
+                for (int j = 0; j < playerTagList.tagCount(); j++) {
+                    Player tempPlayer = Player.readFromNBT(playerTagList.getCompoundTagAt(j));
+                    sharePlayers.add(tempPlayer);
+                }
+                ownerShareMap.put(player, sharePlayers);
+            }
+        } else {
+            OMLib.getLogger().debug("failed to deserialize NBT");
         }
     }
 

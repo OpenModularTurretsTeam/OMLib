@@ -6,7 +6,7 @@ import java.util.UUID;
 @SuppressWarnings("unused")
 public class TrustedPlayer {
     private String name;
-    private EnumAccessMode accessMode = EnumAccessMode.NONE;
+    private EnumAccessLevel accessMode = EnumAccessLevel.NONE;
     private UUID uuid;
     private boolean hacked = false;
 
@@ -29,11 +29,11 @@ public class TrustedPlayer {
         this.name = name;
     }
 
-    public EnumAccessMode getAccessMode() {
+    public EnumAccessLevel getAccessMode() {
         return accessMode;
     }
 
-    public void setAccessMode(EnumAccessMode accessMode) {
+    public void setAccessMode(EnumAccessLevel accessMode) {
         this.accessMode = accessMode;
     }
 
@@ -51,5 +51,9 @@ public class TrustedPlayer {
 
     public void setHacked(boolean hacked) {
         this.hacked = hacked;
+    }
+
+    public Player getPlayer() {
+        return new Player(this.uuid, this.name);
     }
 }

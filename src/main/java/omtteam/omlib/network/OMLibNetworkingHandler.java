@@ -5,10 +5,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
-import omtteam.omlib.network.messages.MessageCamoSettings;
-import omtteam.omlib.network.messages.MessageCloseGUI;
-import omtteam.omlib.network.messages.MessageOpenGUI;
-import omtteam.omlib.network.messages.MessageSetSharePlayerList;
+import omtteam.omlib.network.messages.*;
 import omtteam.omlib.network.messages.render.MessageRenderRay;
 import omtteam.omlib.reference.Reference;
 
@@ -29,6 +26,8 @@ public class OMLibNetworkingHandler {
                                  3, Side.CLIENT);
         INSTANCE.registerMessage(MessageRenderRay.MessageHandlerRenderRay.class, MessageRenderRay.class,
                                  4, Side.CLIENT);
+        INSTANCE.registerMessage(MessageSetGlobalTrustList.MessageHandlerSetGlobalTrustList.class,
+                                 MessageSetGlobalTrustList.class, 5, Side.CLIENT);
     }
 
     public static void sendMessageToAllPlayers(IMessage message) {

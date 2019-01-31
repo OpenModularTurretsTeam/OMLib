@@ -4,7 +4,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
-import omtteam.omlib.handler.OwnerShareHandler;
+import omtteam.omlib.api.permission.OwnerShareRegister;
 import omtteam.omlib.util.player.Player;
 
 import javax.annotation.Nonnull;
@@ -48,19 +48,19 @@ public class CommandShareOwner extends CommandBase {
                     if (!offlineModeSupport && getPlayerUUID(shareName) != null) {
                         Player sharePlayer = new Player(getPlayerUUID(shareName), shareName);
                         Player owner = new Player(getPlayerUUID(sender.getName()), sender.getName());
-                        OwnerShareHandler.getInstance().addSharePlayer(owner, sharePlayer, sender);
+                        OwnerShareRegister.instance.addSharePlayer(owner, sharePlayer, sender);
                     }
                     break;
                 case "del":
                     if (!offlineModeSupport && getPlayerUUID(shareName) != null) {
                         Player sharePlayer = new Player(getPlayerUUID(shareName), shareName);
                         Player owner = new Player(getPlayerUUID(sender.getName()), sender.getName());
-                        OwnerShareHandler.getInstance().removeSharePlayer(owner, sharePlayer, sender);
+                        OwnerShareRegister.instance.removeSharePlayer(owner, sharePlayer, sender);
                     }
                     break;
                 case "list":
                     Player owner = new Player(getPlayerUUID(sender.getName()), sender.getName());
-                    OwnerShareHandler.getInstance().printSharePlayers(owner, sender);
+                    OwnerShareRegister.instance.printSharePlayers(owner, sender);
                     break;
             }
         } catch (NumberFormatException e) {

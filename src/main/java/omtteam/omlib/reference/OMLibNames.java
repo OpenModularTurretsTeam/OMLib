@@ -25,7 +25,7 @@ public class OMLibNames {
             public static final String FACING = "gui.omtteam.omlib:facing";
             public static final String ACTIVE = "gui.omtteam.omlib:active";
             public static final String NEXT = "gui.omtteam.omlib:next";
-            public static final String PREVIOUS = "gui.omtteam.omlib:active";
+            public static final String PREVIOUS = "gui.omtteam.omlib:previous";
             public static final String INVERTED = "gui.omtteam.omlib:inverted";
             public static final String NONINVERTED = "gui.omtteam.omlib:noninverted";
             public static final String ALWAYS_ON = "gui.omtteam.omlib:always_on";
@@ -33,6 +33,14 @@ public class OMLibNames {
             public static final String SHIFT_DETAIL_START = "gui.omtteam.omlib:shift_detail_start";
             public static final String SHIFT_DETAIL_END = "gui.omtteam.omlib:shift_detail_end";
             public static final String SHIFT = "gui.omtteam.omlib:shift";
+            public static final String ACCESS_LEVEL_ADMIN = "gui.omtteam.omlib:access_level_admin";
+            public static final String ACCESS_LEVEL_CHANGE_SETTINGS = "gui.omtteam.omlib:access_level_change_settings";
+            public static final String ACCESS_LEVEL_OPEN_GUI = "gui.omtteam.omlib:access_level_open_gui";
+            public static final String ACCESS_LEVEL_NONE = "gui.omtteam.omlib:access_level_none";
+            public static final String ACCCESS_TYPE_NONE = "gui.omtteam.omlib:access_type_none";
+            public static final String ACCCESS_TYPE_TRUSTED = "gui.omtteam.omlib:access_type_trusted";
+            public static final String ACCCESS_TYPE_OWNER = "gui.omtteam.omlib:access_type_owner";
+            public static final String ACCCESS_TYPE_OP = "gui.omtteam.omlib:access_type_op";
         }
     }
 }
