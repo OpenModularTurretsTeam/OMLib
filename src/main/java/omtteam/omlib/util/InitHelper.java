@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
-import omtteam.omlib.api.IHasItemBlock;
+import omtteam.omlib.api.block.IHasItemBlock;
 
 import java.util.List;
 

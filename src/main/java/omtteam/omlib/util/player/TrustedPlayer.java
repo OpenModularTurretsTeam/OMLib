@@ -1,7 +1,5 @@
 package omtteam.omlib.util.player;
 
-import omtteam.omlib.util.EnumAccessMode;
-
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.UUID;
 

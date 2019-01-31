@@ -1,4 +1,4 @@
-package omtteam.omlib.util;
+package omtteam.omlib.util.inventory;
 
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;

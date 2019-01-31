@@ -1,4 +1,4 @@
-package omtteam.omlib.render;
+package omtteam.omlib.api.render.camo;
 
 import net.minecraft.block.state.IBlockState;
 

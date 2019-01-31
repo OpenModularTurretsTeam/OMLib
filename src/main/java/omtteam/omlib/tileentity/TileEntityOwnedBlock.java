@@ -2,7 +2,7 @@ package omtteam.omlib.tileentity;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.nbt.NBTTagCompound;
-import omtteam.omlib.api.IHasOwner;
+import omtteam.omlib.api.permission.IHasOwner;
 import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.util.player.Player;
 

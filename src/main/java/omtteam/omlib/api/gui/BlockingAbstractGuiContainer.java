@@ -1,4 +1,4 @@
-package omtteam.omlib.client.gui;
+package omtteam.omlib.api.gui;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;

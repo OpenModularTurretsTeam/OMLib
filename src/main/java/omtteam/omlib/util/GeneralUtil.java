@@ -5,8 +5,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import omtteam.omlib.api.permission.EnumMachineMode;
 import omtteam.omlib.reference.OMLibNames;
-import omtteam.omlib.tileentity.EnumMachineMode;
 
 import javax.annotation.Nullable;
 
