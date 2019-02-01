@@ -36,13 +36,12 @@ import java.util.function.Predicate;
 public class OwnerShareRegister implements ICapabilityProvider, IOwnerShareRegister {
     public final static @Nonnull
     OwnerShareRegister instance = new OwnerShareRegister();
-    private HashMap<Player, ArrayList<Player>> ownerShareMap;
-
     private final static @Nonnull
     ResourceLocation CAP_KEY = new ResourceLocation(Reference.MOD_ID, "owner_share");
     @SuppressWarnings("CanBeFinal")
     @CapabilityInject(IOwnerShareRegister.class)
     public static Capability<IOwnerShareRegister> SERVER_REGISTER = null;
+    private HashMap<Player, ArrayList<Player>> ownerShareMap;
 
     private OwnerShareRegister() {
         ownerShareMap = new HashMap<>();
