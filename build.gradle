@@ -22,6 +22,7 @@ plugins {
 
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'maven-publish'
+apply plugin: 'org.junit.platform.gradle.plugin'
 apply plugin: 'idea'
 apply plugin: 'java'
 
@@ -31,20 +32,19 @@ repositories {
         url "http://maven.k-4u.nl/"
     }
     maven { // The repo from which to get waila
-        name "Mobius Repo"
         url "http://mobiusstrip.eu/maven"
     }
     maven { // the repo from which to get NEI and stuff
-        name 'CB Repo'
         url "http://chickenbones.net/maven/"
     }
     maven {
-        name "OC repo"
         url "http://maven.cil.li/"
     }
     maven { // the repo from which to get EnderIO and tterrags mods
-        name 'tterrag'
         url "http://maven.tterrag.com/"
+    }
+    maven { // the repo from which to get EnderIO and tterrags mods
+        url "http://maven2.tterrag.com/"
     }
     maven {
         name "ic2"
@@ -67,6 +67,9 @@ repositories {
     }
     maven {
         url 'http://maven.mcmoddev.com'
+    }
+    maven {
+        url = "http://files.minecraftforge.net/maven"
     }
 }
 
@@ -137,11 +140,20 @@ dependencies {
     deobfCompile "mcp.mobius.waila:Hwyla:${config.hwyla_version}_${config.minecraft_version_short}"
     deobfCompile "mcjty.theoneprobe:TheOneProbe-${config.minecraft_version_short}:${config.minecraft_version_short}-${config.top_version}"
     deobfCompile "li.cil.oc:OpenComputers:MC${config.minecraft_version_short}.1-${config.oc_version}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.2.0"
+    testCompile("org.junit.jupiter:junit-jupiter-api:5.2.0")
+    testCompile("org.junit.platform:junit-platform-launcher:1.1.0")
+    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.2.0")
 }
 
 task deobfJar(type: Jar) {
     from sourceSets.main.output
     classifier = 'dev'
+}
+
+junitPlatform {
+    platformVersion '1.0.3'
+    enableStandardTestTask true
 }
 
 tasks.build.dependsOn deobfJar, sourceJar
