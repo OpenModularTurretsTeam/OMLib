@@ -9,7 +9,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
-import omtteam.omlib.api.IDebugTile;
+import omtteam.omlib.api.tile.IDebugTile;
 import omtteam.omlib.reference.OMLibNames;
 import omtteam.omlib.reference.Reference;
 import omtteam.omlib.tileentity.TileEntityElectric;

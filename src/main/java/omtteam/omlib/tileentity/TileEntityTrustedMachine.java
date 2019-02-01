@@ -1,8 +1,8 @@
 package omtteam.omlib.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
-import omtteam.omlib.api.permission.IHasTrustManager;
-import omtteam.omlib.api.permission.TrustedPlayersManagerTile;
+import omtteam.omlib.api.tile.IHasTrustManager;
+import omtteam.omlib.api.tile.TrustedPlayersManagerTile;
 
 @SuppressWarnings({"WeakerAccess", "CanBeFinal", "unused"})
 public abstract class TileEntityTrustedMachine extends TileEntityMachine implements IHasTrustManager {

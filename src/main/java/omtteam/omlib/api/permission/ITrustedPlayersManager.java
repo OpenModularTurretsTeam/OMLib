@@ -66,8 +66,8 @@ public interface ITrustedPlayersManager {
 
     default TrustedPlayer getTrustedPlayer(Player player) {
         for (TrustedPlayer trustedPlayer : getTrustedPlayers()) {
-            if (trustedPlayer.getUuid().equals(player.getUuid()) ||
-                    (ConfigHandler.offlineModeSupport && trustedPlayer.getName().equals(player.getName()))) {
+            if ((ConfigHandler.offlineModeSupport && trustedPlayer.getName().equals(player.getName())) ||
+                    (trustedPlayer.getUuid() != null && trustedPlayer.getUuid().equals(player.getUuid()))) {
                 return trustedPlayer;
             }
         }
