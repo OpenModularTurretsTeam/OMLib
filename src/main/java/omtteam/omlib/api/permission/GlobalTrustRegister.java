@@ -19,9 +19,7 @@ import omtteam.omlib.OMLib;
 import omtteam.omlib.network.OMLibNetworkingHandler;
 import omtteam.omlib.network.messages.MessageSetGlobalTrustList;
 import omtteam.omlib.reference.Reference;
-import omtteam.omlib.util.player.EnumAccessLevel;
 import omtteam.omlib.util.player.Player;
-import omtteam.omlib.util.player.TrustedPlayer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -150,7 +148,7 @@ public class GlobalTrustRegister implements ICapabilityProvider, IGlobalTrustReg
         if (entry == null) {
             TrustedPlayersManagerGlobal tpm = new TrustedPlayersManagerGlobal();
             if (tpm.addTrustedPlayer(sharePlayer.getName())) {
-                tpm.getTrustedPlayer(sharePlayer.getName()).setAccessMode(accessMode);
+                tpm.getTrustedPlayer(sharePlayer.getName()).setAccessLevel(accessMode);
                 if (sender != null) {
                     sender.sendMessage(new TextComponentString("Added player " + sharePlayer.getName() + " to your global trust List!"));
                 }
@@ -162,7 +160,7 @@ public class GlobalTrustRegister implements ICapabilityProvider, IGlobalTrustReg
             globalTrustList.put(owner, tpm);
         } else {
             if (entry.getValue().addTrustedPlayer(sharePlayer.getName())) {
-                entry.getValue().getTrustedPlayer(sharePlayer.getName()).setAccessMode(accessMode);
+                entry.getValue().getTrustedPlayer(sharePlayer.getName()).setAccessLevel(accessMode);
                 if (sender != null) {
                     sender.sendMessage(new TextComponentString("Added player " + sharePlayer.getName() + " to your global trust List!"));
                 }
