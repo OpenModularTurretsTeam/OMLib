@@ -2,11 +2,11 @@ package omtteam.omlib.tileentity;
 
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import omtteam.omlib.api.IDebugTile;
 import omtteam.omlib.api.network.INetworkCable;
 import omtteam.omlib.api.network.INetworkTile;
 import omtteam.omlib.api.network.OMLibNetwork;
 import omtteam.omlib.api.permission.IHasOwner;
+import omtteam.omlib.api.tile.IDebugTile;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;

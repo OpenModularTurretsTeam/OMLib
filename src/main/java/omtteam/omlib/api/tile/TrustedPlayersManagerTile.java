@@ -1,6 +1,9 @@
-package omtteam.omlib.api.permission;
+package omtteam.omlib.api.tile;
 
 import net.minecraftforge.common.UsernameCache;
+import omtteam.omlib.api.permission.GlobalTrustRegister;
+import omtteam.omlib.api.permission.ITrustedPlayersManager;
+import omtteam.omlib.api.permission.TrustedPlayer;
 import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 import omtteam.omlib.util.DebugHandler;

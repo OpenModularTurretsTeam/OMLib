@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.UsernameCache;
 import omtteam.omlib.api.permission.*;
+import omtteam.omlib.api.tile.IHasTrustManager;
 import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 
