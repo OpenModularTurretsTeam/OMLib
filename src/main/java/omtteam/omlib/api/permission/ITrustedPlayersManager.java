@@ -5,9 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.util.DebugHandler;
-import omtteam.omlib.util.player.EnumAccessLevel;
 import omtteam.omlib.util.player.Player;
-import omtteam.omlib.util.player.TrustedPlayer;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
@@ -22,6 +20,19 @@ public interface ITrustedPlayersManager {
 
     @ParametersAreNonnullByDefault
     boolean addTrustedPlayer(String name);
+
+    default boolean addTrustedPlayer(TrustedPlayer player) {
+        for (TrustedPlayer trustedPlayer : getTrustedPlayers()) {
+            if (trustedPlayer.equals(player)) {
+                return false;
+            }
+        }
+        if (!ConfigHandler.offlineModeSupport && player.getUuid() == null) {
+            return false;
+        }
+        getTrustedPlayers().add(player);
+        return true;
+    }
 
     default boolean removeTrustedPlayer(String name) {
         for (TrustedPlayer player : getTrustedPlayers()) {
@@ -75,7 +86,7 @@ public interface ITrustedPlayersManager {
         for (TrustedPlayer trustedPlayer : getTrustedPlayers()) {
             NBTTagCompound nbtPlayer = new NBTTagCompound();
             nbtPlayer.setString("name", trustedPlayer.getName());
-            nbtPlayer.setInteger("accessLevel", trustedPlayer.getAccessMode().ordinal());
+            nbtPlayer.setInteger("accessLevel", trustedPlayer.getAccessLevel().ordinal());
             if (trustedPlayer.getUuid() != null) {
                 nbtPlayer.setString("UUID", trustedPlayer.getUuid().toString());
             } else if (getPlayerUUID(trustedPlayer.getName()) != null) {
@@ -96,7 +107,7 @@ public interface ITrustedPlayersManager {
                 NBTTagCompound nbtPlayer = list.getCompoundTagAt(i);
                 TrustedPlayer trustedPlayer = new TrustedPlayer(nbtPlayer.getString("name"));
                 if (nbtPlayer.hasKey("accessLevel")) {
-                    trustedPlayer.setAccessMode(EnumAccessLevel.values()[nbtPlayer.getInteger("AccessLevel")]);
+                    trustedPlayer.setAccessLevel(EnumAccessLevel.values()[nbtPlayer.getInteger("AccessLevel")]);
                 }
                 if (nbtPlayer.hasKey("UUID")) {
                     trustedPlayer.setUuid(getPlayerUIDUnstable(nbtPlayer.getString("UUID")));
@@ -123,7 +134,7 @@ public interface ITrustedPlayersManager {
         if (lengthOfPlayerList > 0) {
             for (int j = 0; j < lengthOfPlayerList; j++) {
                 TrustedPlayer player = new TrustedPlayer(Player.readFromByteBuf(buf));
-                player.setAccessMode(EnumAccessLevel.values()[buf.readInt()]);
+                player.setAccessLevel(EnumAccessLevel.values()[buf.readInt()]);
                 sharePlayerList.add(player);
             }
         }
@@ -134,7 +145,7 @@ public interface ITrustedPlayersManager {
         buf.writeInt(getTrustedPlayers().size());
         for (TrustedPlayer trustedPlayer : getTrustedPlayers()) {
             Player.writeToByteBuf(trustedPlayer.getPlayer(), buf);
-            buf.writeInt(trustedPlayer.getAccessMode().ordinal());
+            buf.writeInt(trustedPlayer.getAccessLevel().ordinal());
         }
     }
 

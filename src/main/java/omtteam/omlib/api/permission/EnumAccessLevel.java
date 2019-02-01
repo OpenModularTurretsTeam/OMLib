@@ -1,4 +1,4 @@
-package omtteam.omlib.util.player;
+package omtteam.omlib.api.permission;
 
 import omtteam.omlib.reference.OMLibNames;
 import omtteam.omlib.util.GeneralUtil;

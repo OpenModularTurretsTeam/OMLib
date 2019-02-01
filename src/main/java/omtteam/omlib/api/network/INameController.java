@@ -10,5 +10,5 @@ public interface INameController extends IController {
      *
      * @return if loaded and existing, the device, null otherwise
      */
-    public String getNetworkName();
+    String getNetworkName();
 }

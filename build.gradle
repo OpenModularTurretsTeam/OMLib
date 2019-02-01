@@ -13,6 +13,7 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.3'
     }
 }
 plugins {
@@ -176,8 +177,8 @@ def getCommmitReleaseType() {
             }
         } catch (Exception e) {
             System.print("SKIPPING CURSE RELEASE - FAILED TO RETRIEVE LAST COMMIT")
-            e.printStackTrace();
-            return 'none';
+            e.printStackTrace()
+            return 'none'
         }
         String commit = stdout.toString().trim()
 
@@ -192,7 +193,7 @@ def getCommmitReleaseType() {
         }
     }
     System.out.println("SKIPPING CURSE RELEASE - NO CURSE API KEY")
-    return 'none';
+    return 'none'
 }
 
 tasks.curseforge.enabled = project.hasProperty("curseforge_key") && !commit_release_type.equals('none')

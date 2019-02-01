@@ -5,7 +5,6 @@ import omtteam.omlib.handler.ConfigHandler;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 import omtteam.omlib.util.DebugHandler;
 import omtteam.omlib.util.player.Player;
-import omtteam.omlib.util.player.TrustedPlayer;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;

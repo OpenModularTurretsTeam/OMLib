@@ -55,6 +55,12 @@ public class Player {
         return new Player(uuid, name, teamUUID);
     }
 
+    public static Player readFromNBT(NBTTagCompound tag) {
+        return new Player(tag.getUniqueId("uuid"),
+                          tag.getString("name"),
+                          tag.getString("team_name"));
+    }
+
     public UUID getUuid() {
         return uuid;
     }
@@ -94,20 +100,18 @@ public class Player {
     }
 
     private String getTeamNameFromServer() {
-        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-        if (server != null && server.getPlayerList().getPlayerByUUID(this.uuid) != null) {
-            Team team = server.getPlayerList().getPlayerByUUID(this.uuid).getTeam();
-            if (team != null) {
-                return team.getName();
+        try {
+            MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+            if (server != null && server.getPlayerList().getPlayerByUUID(this.uuid) != null) {
+                Team team = server.getPlayerList().getPlayerByUUID(this.uuid).getTeam();
+                if (team != null) {
+                    return team.getName();
+                }
             }
+        } catch (Exception e) {
+            // e.printStackTrace();
         }
         return "";
-    }
-
-    public static Player readFromNBT(NBTTagCompound tag) {
-        return new Player(tag.getUniqueId("uuid"),
-                          tag.getString("name"),
-                          tag.getString("team_name"));
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
