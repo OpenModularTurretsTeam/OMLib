@@ -1,8 +1,7 @@
 package omtteam.omlib.api.permission;
 
 import omtteam.omlib.util.player.Player;
-
-import java.util.UUID;
+import omtteam.omlib.util.player.PlayerUtil;
 
 public interface IHasOwner {
     String getOwner();
@@ -12,6 +11,6 @@ public interface IHasOwner {
     String getOwnerTeamName();
 
     default Player getOwnerAsPlayer() {
-        return new Player(UUID.fromString(getOwner()), getOwnerName(), getOwnerTeamName());
+        return new Player(PlayerUtil.getPlayerUIDUnstable(getOwner()), getOwnerName(), getOwnerTeamName());
     }
 }

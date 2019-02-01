@@ -1,5 +1,6 @@
-package omtteam.omlib.api.permission;
+package omtteam.omlib.api.tile;
 
+import omtteam.omlib.api.permission.IHasOwner;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 
 import javax.annotation.Nonnull;
