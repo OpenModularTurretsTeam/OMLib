@@ -6,7 +6,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.UsernameCache;
 import omtteam.omlib.api.permission.*;
 import omtteam.omlib.api.tile.IHasTrustManager;
-import omtteam.omlib.handler.ConfigHandler;
+import omtteam.omlib.handler.OMConfig;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 
 import javax.annotation.Nullable;
@@ -124,7 +124,7 @@ public class PlayerUtil {
         }
         if (getTrustedPlayer(player, ownedBlock) != null) {
             return EnumPlayerAccessType.TRUSTED;
-        } else if (ConfigHandler.canOPAccessOwnedBlocks && isPlayerOP(player)) {
+        } else if (OMConfig.ConfigGeneral.canOPAccessOwnedBlocks && isPlayerOP(player)) {
             return EnumPlayerAccessType.OP;
         }
         return EnumPlayerAccessType.NONE;
@@ -188,7 +188,7 @@ public class PlayerUtil {
 
     @ParametersAreNonnullByDefault
     public static boolean canPlayerAccessBlock(Player player, IHasOwner ownedBlock) {
-        if (ConfigHandler.canOPAccessOwnedBlocks && isPlayerOP(player)) {
+        if (OMConfig.ConfigGeneral.canOPAccessOwnedBlocks && isPlayerOP(player)) {
             return true;
         }
         TrustedPlayer trustedPlayer = getTrustedPlayer(player, ownedBlock);

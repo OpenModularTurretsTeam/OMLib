@@ -3,7 +3,7 @@ package omtteam.omlib.api.permission;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import omtteam.omlib.handler.ConfigHandler;
+import omtteam.omlib.handler.OMConfig;
 import omtteam.omlib.util.DebugHandler;
 import omtteam.omlib.util.player.Player;
 
@@ -27,7 +27,7 @@ public interface ITrustedPlayersManager {
                 return false;
             }
         }
-        if (!ConfigHandler.offlineModeSupport && player.getUuid() == null) {
+        if (!OMConfig.GENERAL.offlineModeSupport && player.getUuid() == null) {
             return false;
         }
         getTrustedPlayers().add(player);
@@ -66,7 +66,7 @@ public interface ITrustedPlayersManager {
 
     default TrustedPlayer getTrustedPlayer(Player player) {
         for (TrustedPlayer trustedPlayer : getTrustedPlayers()) {
-            if ((ConfigHandler.offlineModeSupport && trustedPlayer.getName().equals(player.getName())) ||
+            if ((OMConfig.GENERAL.offlineModeSupport && trustedPlayer.getName().equals(player.getName())) ||
                     (trustedPlayer.getUuid() != null && trustedPlayer.getUuid().equals(player.getUuid()))) {
                 return trustedPlayer;
             }

@@ -1,0 +1,5 @@
+{
+  "conditions": {
+    "recipetype": "omtteam.omlib.handler.recipes.RecipeConfigFactory"
+  }
+}

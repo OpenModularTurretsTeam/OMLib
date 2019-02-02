@@ -3,7 +3,7 @@ package omtteam.omlib.tileentity;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.nbt.NBTTagCompound;
 import omtteam.omlib.api.permission.IHasOwner;
-import omtteam.omlib.handler.ConfigHandler;
+import omtteam.omlib.handler.OMConfig;
 import omtteam.omlib.util.player.Player;
 
 import javax.annotation.Nonnull;
@@ -54,7 +54,7 @@ public abstract class TileEntityOwnedBlock extends TileEntityBase implements IHa
         if (nbtTagCompound.hasKey("ownerTeamName")) {
             this.ownerName = nbtTagCompound.getString("ownerTeamName");
         }
-        if (((owner == null || owner.isEmpty()) && !ConfigHandler.offlineModeSupport) || (ConfigHandler.offlineModeSupport && ownerName.isEmpty())) {
+        if (((owner == null || owner.isEmpty()) && !OMConfig.GENERAL.offlineModeSupport) || (OMConfig.GENERAL.offlineModeSupport && ownerName.isEmpty())) {
             dropBlock = true;
         }
     }

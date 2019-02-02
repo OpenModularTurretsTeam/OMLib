@@ -3,7 +3,7 @@ package omtteam.omlib.api.tile;
 import net.minecraft.nbt.NBTTagCompound;
 import omtteam.omlib.api.permission.EnumAccessLevel;
 import omtteam.omlib.api.permission.TrustedPlayer;
-import omtteam.omlib.handler.ConfigHandler;
+import omtteam.omlib.handler.OMConfig;
 import omtteam.omlib.util.player.Player;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +18,7 @@ class TrustedPlayersManagerTileTest {
     @Test
     void testTrustedPlayerAdditionAndRemoval() {
         Player player = new Player(UUID.randomUUID(), "test", "test");
-        ConfigHandler.offlineModeSupport = true;
+        OMConfig.GENERAL.offlineModeSupport = true;
         for (EnumAccessLevel level : EnumAccessLevel.values()) {
             TrustedPlayer trustedPlayer = new TrustedPlayer(player, level);
             tpm.addTrustedPlayer(trustedPlayer);
@@ -34,7 +34,7 @@ class TrustedPlayersManagerTileTest {
             assertNull(tpm.getTrustedPlayer(player), "removed trustedPlayer needs to be null");
             tpm.getTrustedPlayers().clear();
         }
-        ConfigHandler.offlineModeSupport = false;
+        OMConfig.GENERAL.offlineModeSupport = false;
         for (EnumAccessLevel level : EnumAccessLevel.values()) {
             TrustedPlayer trustedPlayer = new TrustedPlayer(player, level);
             tpm.addTrustedPlayer(trustedPlayer);

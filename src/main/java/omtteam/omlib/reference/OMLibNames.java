@@ -8,6 +8,7 @@ public class OMLibNames {
     public static class Items {
         public static final String debugTool = "debug_tool";
         public static final String fakeSword = "fake_sword";
+        public static final String multiTool = "multi_tool";
     }
 
     public static class Blocks {

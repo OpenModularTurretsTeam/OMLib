@@ -10,7 +10,7 @@ public enum EnumTool implements IStringSerializable {
     PICKAXE("pickaxe"),
     SHOVEL("shovel");
 
-    String name;
+    final String name;
 
     EnumTool(String name) {
         this.name = name;

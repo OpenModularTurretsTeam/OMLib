@@ -1,0 +1,36 @@
+{
+  "result": {
+    "item": "omlib:multi_tool",
+    "data": 0
+  },
+  "pattern": [
+    "ABA",
+    "BCB",
+    "ADA"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "A": {
+      "type": "forge:ore_dict",
+      "ore": "ingotElectricalSteel"
+    },
+    "B": {
+      "type": "forge:ore_dict",
+      "ore": "itemChassiParts"
+    },
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "gearEnergized"
+    },
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "itemVibrantCrystal"
+    }
+  },
+  "conditions": [
+    {
+      "type": "omlib:recipetype",
+      "mod": "enderio"
+    }
+  ]
+}

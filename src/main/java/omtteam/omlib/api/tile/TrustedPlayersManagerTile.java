@@ -4,7 +4,7 @@ import net.minecraftforge.common.UsernameCache;
 import omtteam.omlib.api.permission.GlobalTrustRegister;
 import omtteam.omlib.api.permission.ITrustedPlayersManager;
 import omtteam.omlib.api.permission.TrustedPlayer;
-import omtteam.omlib.handler.ConfigHandler;
+import omtteam.omlib.handler.OMConfig;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 import omtteam.omlib.util.DebugHandler;
 import omtteam.omlib.util.player.Player;
@@ -51,12 +51,12 @@ public class TrustedPlayersManagerTile implements ITrustedPlayersManager {
                 player = new Player(null, name);
             }
 
-            if (!foundPlayer && !ConfigHandler.offlineModeSupport) {
+            if (!foundPlayer && !OMConfig.GENERAL.offlineModeSupport) {
                 DebugHandler.getInstance().sendMessageToDebugChat("Did not find player named " + name + "in the username cache.");
                 return false;
             }
 
-            if (ConfigHandler.offlineModeSupport) {
+            if (OMConfig.GENERAL.offlineModeSupport) {
                 if (isPlayerOwner(player, ownedBlock)) {
                     DebugHandler.getInstance().sendMessageToDebugChat("You cannot add an owner!");
                     return false;
@@ -68,9 +68,9 @@ public class TrustedPlayersManagerTile implements ITrustedPlayersManager {
                 }
             }
 
-            if (trustedPlayer.getUuid() != null || ConfigHandler.offlineModeSupport) {
+            if (trustedPlayer.getUuid() != null || OMConfig.GENERAL.offlineModeSupport) {
                 for (TrustedPlayer existPlayer : trustedPlayers) {
-                    if (ConfigHandler.offlineModeSupport) {
+                    if (OMConfig.GENERAL.offlineModeSupport) {
                         if (existPlayer.getName().toLowerCase().equals(name.toLowerCase())) {
                             DebugHandler.getInstance().sendMessageToDebugChat("Already on trust list!");
                             return false;
