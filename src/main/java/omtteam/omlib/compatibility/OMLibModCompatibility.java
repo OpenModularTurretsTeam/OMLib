@@ -30,6 +30,9 @@ public class OMLibModCompatibility {
     public static boolean ComputerCraftLoaded = false;
     public static boolean TOPLoaded = false;
     public static boolean WailaLoaded = false;
+    public static boolean ThermalExpansionLoaded = false;
+    public static boolean EnderIOLoaded = false;
+    public static boolean MekanismLoaded = false;
 
     public static void checkForMods() {
         IC2Loaded = Loader.isModLoaded(IC2ModId);
@@ -38,6 +41,9 @@ public class OMLibModCompatibility {
         ComputerCraftLoaded = Loader.isModLoaded(CCModID);
         TOPLoaded = Loader.isModLoaded(TOPModID);
         WailaLoaded = Loader.isModLoaded(WailaModID);
+        ThermalExpansionLoaded = Loader.isModLoaded(TEModID);
+        EnderIOLoaded = Loader.isModLoaded(OMLibModCompatibility.EIOModID);
+        MekanismLoaded = Loader.isModLoaded(OMLibModCompatibility.MekModID);
 
         printDetectedMods();
     }

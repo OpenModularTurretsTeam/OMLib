@@ -4,8 +4,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class CamoResult {
-    private boolean success;
-    private EnumTool tool;
+    private final boolean success;
+    private final EnumTool tool;
 
     public CamoResult(boolean success, EnumTool tool) {
         this.success = success;

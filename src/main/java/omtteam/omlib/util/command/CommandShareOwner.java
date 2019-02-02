@@ -5,12 +5,12 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
 import omtteam.omlib.api.permission.OwnerShareRegister;
+import omtteam.omlib.handler.OMConfig;
 import omtteam.omlib.util.player.Player;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static omtteam.omlib.handler.ConfigHandler.offlineModeSupport;
 import static omtteam.omlib.util.player.PlayerUtil.addChatMessage;
 import static omtteam.omlib.util.player.PlayerUtil.getPlayerUUID;
 
@@ -45,14 +45,14 @@ public class CommandShareOwner extends CommandBase {
             String command = params[0];
             switch (command) {
                 case "add":
-                    if (!offlineModeSupport && getPlayerUUID(shareName) != null) {
+                    if (!OMConfig.GENERAL.offlineModeSupport && getPlayerUUID(shareName) != null) {
                         Player sharePlayer = new Player(getPlayerUUID(shareName), shareName);
                         Player owner = new Player(getPlayerUUID(sender.getName()), sender.getName());
                         OwnerShareRegister.instance.addSharePlayer(owner, sharePlayer, sender);
                     }
                     break;
                 case "del":
-                    if (!offlineModeSupport && getPlayerUUID(shareName) != null) {
+                    if (!OMConfig.GENERAL.offlineModeSupport && getPlayerUUID(shareName) != null) {
                         Player sharePlayer = new Player(getPlayerUUID(shareName), shareName);
                         Player owner = new Player(getPlayerUUID(sender.getName()), sender.getName());
                         OwnerShareRegister.instance.removeSharePlayer(owner, sharePlayer, sender);

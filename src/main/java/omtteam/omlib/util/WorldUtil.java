@@ -30,6 +30,7 @@ public class WorldUtil {
         return list;
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> ArrayList<T> getTouchingTileEntitiesByClass(World world, BlockPos pos, Class<T> clazz) {
         ArrayList<T> list = new ArrayList<>();
         for (EnumFacing facing : EnumFacing.VALUES) {

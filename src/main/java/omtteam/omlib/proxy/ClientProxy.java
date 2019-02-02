@@ -32,6 +32,7 @@ public class ClientProxy extends CommonProxy {
     public void initRenderers() {
         super.initRenderers();
         registerItemModel(OMLibItems.debugTool, 0);
+        registerItemModel(OMLibItems.multiTool, 0);
     }
 
     @Override

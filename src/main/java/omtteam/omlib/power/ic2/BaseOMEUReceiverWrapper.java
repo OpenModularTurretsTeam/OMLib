@@ -8,7 +8,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.common.Optional;
-import omtteam.omlib.handler.ConfigHandler;
+import omtteam.omlib.handler.OMConfig;
 import omtteam.omlib.power.OMEnergyStorage;
 import omtteam.omlib.tileentity.TileEntityElectric;
 
@@ -32,7 +32,7 @@ public class BaseOMEUReceiverWrapper implements IEnergySink, ILocatable {
     public double injectEnergy(EnumFacing facing, double v, double v1) {
         OMEnergyStorage storage = (OMEnergyStorage) tile.getCapability(CapabilityEnergy.ENERGY, facing);
         if (storage != null) {
-            storage.receiveEnergy((int) (v * ConfigHandler.EUtoRFRatio), false);
+            storage.receiveEnergy((int) (v * OMConfig.GENERAL.EUtoRFRatio), false);
             return 0.0D;
         }
         return v;
@@ -48,8 +48,8 @@ public class BaseOMEUReceiverWrapper implements IEnergySink, ILocatable {
     @Override
     public double getDemandedEnergy() {
         OMEnergyStorage storage = (OMEnergyStorage) tile.getCapability(CapabilityEnergy.ENERGY, facing);
-        if (storage != null && ConfigHandler.EUSupport) {
-            return (storage.getMaxEnergyStored() - storage.getEnergyStored()) / ConfigHandler.EUtoRFRatio;
+        if (storage != null && OMConfig.GENERAL.EUSupport) {
+            return (storage.getMaxEnergyStored() - storage.getEnergyStored()) / OMConfig.GENERAL.EUtoRFRatio;
         }
         return 0;
     }

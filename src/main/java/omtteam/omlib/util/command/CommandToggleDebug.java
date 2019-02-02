@@ -4,7 +4,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
-import omtteam.omlib.handler.ConfigHandler;
+import omtteam.omlib.handler.OMConfig;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -40,10 +40,10 @@ public class CommandToggleDebug extends CommandBase {
         try {
             String command = params[0];
             if (command.equals("on")) {
-                ConfigHandler.doDebugChat = true;
+                OMConfig.ConfigGeneral.doDebugChat = true;
                 addChatMessage(sender, new TextComponentString("Enabled debug chat."));
             } else if (command.equals("off")) {
-                ConfigHandler.doDebugChat = false;
+                OMConfig.ConfigGeneral.doDebugChat = false;
                 addChatMessage(sender, new TextComponentString("Disabled debug chat."));
             }
         } catch (NumberFormatException e) {

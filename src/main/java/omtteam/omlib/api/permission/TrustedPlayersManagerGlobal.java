@@ -1,6 +1,6 @@
 package omtteam.omlib.api.permission;
 
-import omtteam.omlib.handler.ConfigHandler;
+import omtteam.omlib.handler.OMConfig;
 import omtteam.omlib.util.DebugHandler;
 import omtteam.omlib.util.player.Player;
 import omtteam.omlib.util.player.PlayerUtil;
@@ -20,7 +20,7 @@ public class TrustedPlayersManagerGlobal implements ITrustedPlayersManager {
     @ParametersAreNonnullByDefault
     public boolean addTrustedPlayer(String name) {
         Player player = PlayerUtil.getPlayerFromUsernameCache(name);
-        if (player == null && !ConfigHandler.offlineModeSupport) {
+        if (player == null && !OMConfig.GENERAL.offlineModeSupport) {
             DebugHandler.getInstance().sendMessageToDebugChat("Did not find player named " + name + "in the username cache.");
             return false;
         } else if (player == null) {
@@ -30,9 +30,9 @@ public class TrustedPlayersManagerGlobal implements ITrustedPlayersManager {
             TrustedPlayer trustedPlayer = new TrustedPlayer(player.getName());
             trustedPlayer.setUuid(player.getUuid());
 
-            if (trustedPlayer.getUuid() != null || ConfigHandler.offlineModeSupport) {
+            if (trustedPlayer.getUuid() != null || OMConfig.GENERAL.offlineModeSupport) {
                 for (TrustedPlayer existPlayer : trustedPlayers) {
-                    if (ConfigHandler.offlineModeSupport) {
+                    if (OMConfig.GENERAL.offlineModeSupport) {
                         if (existPlayer.getName().toLowerCase().equals(name.toLowerCase())) {
                             DebugHandler.getInstance().sendMessageToDebugChat("Already on trust list!");
                             return false;
