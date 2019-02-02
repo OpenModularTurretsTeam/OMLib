@@ -7,11 +7,10 @@ import net.minecraft.scoreboard.Team;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
+import omtteam.omlib.handler.OMConfig;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
-
-import static omtteam.omlib.handler.ConfigHandler.offlineModeSupport;
 
 /**
  * Created by Keridos on 17/05/17.
@@ -19,7 +18,7 @@ import static omtteam.omlib.handler.ConfigHandler.offlineModeSupport;
  */
 public class Player {
     private final UUID uuid;
-    private String name;
+    private final String name;
     private String teamName;
 
     public Player(UUID uuid, String name) {
@@ -82,7 +81,7 @@ public class Player {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Player player = (Player) o;
-        return (!offlineModeSupport ? getUuid().equals(player.getUuid())
+        return (!OMConfig.GENERAL.offlineModeSupport ? getUuid().equals(player.getUuid())
                 : getName().toLowerCase().equals(player.getName().toLowerCase()));
     }
 

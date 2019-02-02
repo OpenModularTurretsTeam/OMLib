@@ -8,7 +8,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
-import omtteam.omlib.handler.ConfigHandler;
+import omtteam.omlib.handler.OMConfig;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 
 import javax.annotation.Nonnull;
@@ -64,7 +64,7 @@ public class CommandChangeOwner extends CommandBase {
                     block.setOwner(uuid.toString());
                     block.setOwnerName(ownerName);
                     addChatMessage(sender, new TextComponentString("Block ownership has been updated"));
-                } else if (ConfigHandler.offlineModeSupport) {
+                } else if (OMConfig.GENERAL.offlineModeSupport) {
                     block.setOwnerName(ownerName);
                     addChatMessage(sender, new TextComponentString("Block ownership has been updated"));
                 } else {

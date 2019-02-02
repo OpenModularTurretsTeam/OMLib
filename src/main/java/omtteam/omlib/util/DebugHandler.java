@@ -4,7 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.util.text.TextComponentString;
-import omtteam.omlib.handler.ConfigHandler;
+import omtteam.omlib.handler.OMConfig;
 
 import java.util.List;
 
@@ -43,10 +43,10 @@ public class DebugHandler {
     }
 
     public void sendMessageToDebugChat(String message) {
-        if (this.player != null && !this.player.getEntityWorld().isRemote && ConfigHandler.doDebugChat) {
+        if (this.player != null && !this.player.getEntityWorld().isRemote && OMConfig.ConfigGeneral.doDebugChat) {
             this.player.sendMessage(new TextComponentString(message));
         }
-        if (this.listeners != null && ConfigHandler.doDebugChat) {
+        if (this.listeners != null && OMConfig.ConfigGeneral.doDebugChat) {
             for (IContainerListener listener : this.listeners) {
                 if (listener instanceof EntityPlayerMP && !((EntityPlayerMP) listener).getEntityWorld().isRemote) {
                     ((EntityPlayerMP) listener).sendMessage(new TextComponentString(message));

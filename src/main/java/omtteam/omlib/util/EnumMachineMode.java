@@ -11,8 +11,8 @@ public enum EnumMachineMode {
     INVERTED("inverted", OMLibNames.Localizations.GUI.INVERTED),
     NONINVERTED("noninverted", OMLibNames.Localizations.GUI.NONINVERTED);
 
-    private String name;
-    private String unlocalizedName;
+    private final String name;
+    private final String unlocalizedName;
 
     EnumMachineMode(String name, String unlocalizedName) {
         this.name = name;

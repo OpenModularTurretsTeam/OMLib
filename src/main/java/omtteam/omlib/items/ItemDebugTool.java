@@ -27,8 +27,6 @@ import static omtteam.omlib.util.GeneralUtil.getMachineModeLocalization;
 public class ItemDebugTool extends Item {
     public ItemDebugTool() {
         super();
-
-        this.setHasSubtypes(true);
         this.setRegistryName(Reference.MOD_ID, OMLibNames.Items.debugTool);
         this.setUnlocalizedName(OMLibNames.Items.debugTool);
     }

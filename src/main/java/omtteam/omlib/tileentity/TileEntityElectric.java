@@ -11,6 +11,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.common.Optional;
 import omtteam.omlib.compatibility.OMLibModCompatibility;
+import omtteam.omlib.handler.OMConfig;
 import omtteam.omlib.power.OMEnergyStorage;
 import omtteam.omlib.power.ic2.BaseOMEUReceiverWrapper;
 import omtteam.omlib.power.ic2.EUCapabilities;
@@ -22,7 +23,6 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import static omtteam.omlib.compatibility.OMLibModCompatibility.*;
-import static omtteam.omlib.handler.ConfigHandler.EUSupport;
 
 /**
  * Created by Keridos on 27/04/17.
@@ -59,7 +59,7 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock {
 
     @Override
     public void onLoad() {
-        if (IC2Loaded && EUSupport && !wasAddedToEnergyNet && !this.getWorld().isRemote) {
+        if (IC2Loaded && OMConfig.GENERAL.EUSupport && !wasAddedToEnergyNet && !this.getWorld().isRemote) {
             addToIc2EnergyNetwork();
             wasAddedToEnergyNet = true;
         }
