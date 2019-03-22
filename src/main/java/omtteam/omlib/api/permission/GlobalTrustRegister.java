@@ -100,10 +100,10 @@ public class GlobalTrustRegister implements ICapabilityProvider, IGlobalTrustReg
             NBTTagList list = nbt.getTagList("list", nbt.getId());
             for (int i = 0; i < list.tagCount(); i++) {
                 NBTTagCompound tag = list.getCompoundTagAt(i);
-                Player player = Player.readFromNBT(tag);
-                TrustedPlayersManagerGlobal tpm = new TrustedPlayersManagerGlobal();
+                Player owner = Player.readFromNBT(tag);
+                TrustedPlayersManagerGlobal tpm = new TrustedPlayersManagerGlobal(owner);
                 tpm.readFromNBT(tag);
-                globalTrustList.put(player, tpm);
+                globalTrustList.put(owner, tpm);
             }
         } else {
             OMLib.getLogger().debug("failed to deserialize NBT");
@@ -146,7 +146,7 @@ public class GlobalTrustRegister implements ICapabilityProvider, IGlobalTrustReg
             return;
         }
         if (entry == null) {
-            TrustedPlayersManagerGlobal tpm = new TrustedPlayersManagerGlobal();
+            TrustedPlayersManagerGlobal tpm = new TrustedPlayersManagerGlobal(owner);
             if (tpm.addTrustedPlayer(sharePlayer.getName())) {
                 tpm.getTrustedPlayer(sharePlayer.getName()).setAccessLevel(accessMode);
                 if (sender != null) {
@@ -173,25 +173,25 @@ public class GlobalTrustRegister implements ICapabilityProvider, IGlobalTrustReg
         OMLibNetworkingHandler.sendMessageToAllPlayers(new MessageSetGlobalTrustList(this));
     }
 
-    public void removeSharePlayer(Player owner, Player sharePlayer, @Nullable ICommandSender sender) {
+    public void removeTrustedPlayer(Player owner, Player trustedPlayer, @Nullable ICommandSender sender) {
         Map.Entry<Player, TrustedPlayersManagerGlobal> entry = getEntry(owner);
-        if (owner.equals(sharePlayer)) {
+        if (owner.equals(trustedPlayer)) {
             if (sender != null) {
                 sender.sendMessage(new TextComponentString("You cannot add/remove yourself to/from your Share List!"));
             }
             return;
         }
         if (entry != null) {
-            boolean result = entry.getValue().removeTrustedPlayer(sharePlayer.getName());
+            boolean result = entry.getValue().removeTrustedPlayer(trustedPlayer.getName());
             if (sender != null) {
                 if (result) {
-                    sender.sendMessage(new TextComponentString("Removed player " + sharePlayer.getName() + " from your Share List!"));
+                    sender.sendMessage(new TextComponentString("Removed player " + trustedPlayer.getName() + " from your Share List!"));
                 } else {
-                    sender.sendMessage(new TextComponentString("Could not remove player " + sharePlayer.getName() + " from your Share List!"));
+                    sender.sendMessage(new TextComponentString("Could not remove player " + trustedPlayer.getName() + " from your Share List!"));
                 }
             }
         } else if (sender != null) {
-            sender.sendMessage(new TextComponentString("Could not remove player " + sharePlayer.getName() + " from your Share List!"));
+            sender.sendMessage(new TextComponentString("Could not remove player " + trustedPlayer.getName() + " from your Share List!"));
         }
         OMLibNetworkingHandler.sendMessageToAllPlayers(new MessageSetGlobalTrustList(this));
     }
@@ -234,4 +234,18 @@ public class GlobalTrustRegister implements ICapabilityProvider, IGlobalTrustReg
         }
         return null;
     }
+
+    public boolean changePermission(Player owner, String player, EnumAccessLevel level) {
+        Map.Entry<Player, TrustedPlayersManagerGlobal> entry = getEntry(owner);
+        if (entry != null) {
+            for (TrustedPlayer trustedPlayer : entry.getValue().getTrustedPlayers()) {
+                if (trustedPlayer.getName().equalsIgnoreCase(player)) {
+                    trustedPlayer.setAccessLevel(level);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

@@ -19,7 +19,7 @@ import java.util.UUID;
 public class Player {
     private final UUID uuid;
     private final String name;
-    private String teamName;
+    private String teamName = "";
 
     public Player(UUID uuid, String name) {
         this.uuid = uuid;
@@ -58,6 +58,15 @@ public class Player {
         return new Player(tag.getUniqueId("uuid"),
                           tag.getString("name"),
                           tag.getString("team_name"));
+    }
+
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+        tag.setString("name", this.name);
+        tag.setUniqueId("uuid", this.uuid);
+        if (!this.teamName.equalsIgnoreCase("")) {
+            tag.setString("team_name", this.teamName);
+        }
+        return tag;
     }
 
     public UUID getUuid() {
@@ -111,12 +120,5 @@ public class Player {
             // e.printStackTrace();
         }
         return "";
-    }
-
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        tag.setString("name", this.name);
-        tag.setUniqueId("uuid", this.uuid);
-        tag.setString("team_name", this.teamName);
-        return tag;
     }
 }

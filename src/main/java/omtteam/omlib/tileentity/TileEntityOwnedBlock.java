@@ -2,15 +2,14 @@ package omtteam.omlib.tileentity;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.Constants;
 import omtteam.omlib.api.permission.IHasOwner;
-import omtteam.omlib.handler.OMConfig;
 import omtteam.omlib.util.player.Player;
 
-import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.UUID;
 
-import static omtteam.omlib.util.player.PlayerUtil.*;
+import static omtteam.omlib.util.player.PlayerUtil.getPlayerUIDUnstable;
 
 /**
  * Created by Keridos on 24/11/16.
@@ -19,22 +18,18 @@ import static omtteam.omlib.util.player.PlayerUtil.*;
 @SuppressWarnings({"WeakerAccess", "unused"})
 @MethodsReturnNonnullByDefault
 public abstract class TileEntityOwnedBlock extends TileEntityBase implements IHasOwner {
-
-    protected String owner = "";
-    protected String ownerName = "";
-    protected String ownerTeamName = "";
+    protected Player owner;
     protected boolean dropBlock = false;
 
     @Override
     @ParametersAreNonnullByDefault
     public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
         super.writeToNBT(nbtTagCompound);
-        nbtTagCompound.setString("owner", getOwner());
-        if (this.getOwnerName().isEmpty() && getPlayerNameFromUUID(getOwner()) != null) {
-            ownerName = getPlayerNameFromUUID(getOwner()) != null ? getPlayerNameFromUUID(getOwner()) : "";
+        NBTTagCompound tag = new NBTTagCompound();
+        if (this.getOwner() != null) {
+            this.owner.writeToNBT(tag);
         }
-        nbtTagCompound.setString("ownerName", this.getOwnerName());
-        nbtTagCompound.setString("ownerTeamName", ownerTeamName);
+        nbtTagCompound.setTag("owner", tag);
         return nbtTagCompound;
     }
 
@@ -43,55 +38,31 @@ public abstract class TileEntityOwnedBlock extends TileEntityBase implements IHa
     @ParametersAreNonnullByDefault
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
         super.readFromNBT(nbtTagCompound);
-        if (getPlayerUIDUnstable(nbtTagCompound.getString("owner")) != null) {
-            this.owner = getPlayerUIDUnstable(nbtTagCompound.getString("owner")).toString();
-        } else if (getPlayerUUID(nbtTagCompound.getString("owner")) != null) {
-            this.owner = getPlayerUUID(nbtTagCompound.getString("owner")).toString();
+
+        if (nbtTagCompound.hasKey("ownerName")) { // TODO: Remove in 1.13
+            UUID uuid = getPlayerUIDUnstable(nbtTagCompound.getString("owner"));
+            String ownerName = nbtTagCompound.getString("ownerName");
+            Player owner = new Player(uuid, nbtTagCompound.getString("ownerName"));
+            if (nbtTagCompound.hasKey("ownerTeamName")) {
+                owner.setTeamName(nbtTagCompound.getString("ownerTeamName"));
+            }
+            this.owner = owner;
         }
-        if (nbtTagCompound.hasKey("ownerName")) {
-            this.ownerName = nbtTagCompound.getString("ownerName");
+        if (nbtTagCompound.hasKey("owner", Constants.NBT.TAG_COMPOUND)) {
+            this.owner = Player.readFromNBT((NBTTagCompound) nbtTagCompound.getTag("owner"));
         }
-        if (nbtTagCompound.hasKey("ownerTeamName")) {
-            this.ownerName = nbtTagCompound.getString("ownerTeamName");
-        }
-        if (((owner == null || owner.isEmpty()) && !OMConfig.GENERAL.offlineModeSupport) || (OMConfig.GENERAL.offlineModeSupport && ownerName.isEmpty())) {
+
+        if (owner == null) {
             dropBlock = true;
         }
     }
 
     @Override
-    public String getOwner() {
+    public Player getOwner() {
         return owner;
     }
 
-    public void setOwner(String owner) {
+    public void setOwner(Player owner) {
         this.owner = owner;
-    }
-
-    @Override
-    public String getOwnerName() {
-        return ownerName;
-    }
-
-    public void setOwnerName(@Nonnull String name) {
-        ownerName = name;
-    }
-
-    public String getOwnerTeamName() {
-        return ownerTeamName;
-    }
-
-    public void setOwnerTeamName(String ownerTeamName) {
-        this.ownerTeamName = ownerTeamName;
-    }
-
-    public Player getOwnerAsPlayer() {
-        if (ownerTeamName.isEmpty()) {
-            Player player = new Player(UUID.fromString(owner), ownerName);
-            this.ownerTeamName = player.getTeamName();
-            return player;
-        } else {
-            return new Player(UUID.fromString(owner), ownerName, ownerTeamName);
-        }
     }
 }

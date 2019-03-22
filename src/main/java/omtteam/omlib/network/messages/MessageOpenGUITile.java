@@ -8,18 +8,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import omtteam.omlib.network.ISyncable;
+import omtteam.omlib.network.ISyncableTE;
 
 /**
  * Created by nico on 23/05/17.
  */
-public class MessageCloseGUI implements IMessage {
+public class MessageOpenGUITile implements IMessage {
     private int x, y, z;
 
-    public MessageCloseGUI() {
+    public MessageOpenGUITile() {
     }
 
-    public MessageCloseGUI(TileEntity te) {
+    public MessageOpenGUITile(TileEntity te) {
         this.x = te.getPos().getX();
         this.y = te.getPos().getY();
         this.z = te.getPos().getZ();
@@ -51,16 +51,16 @@ public class MessageCloseGUI implements IMessage {
         return z;
     }
 
-    public static class MessageHandlerCloseGUI implements IMessageHandler<MessageCloseGUI, IMessage> {
+    public static class MessageHandlerOpenGUITile implements IMessageHandler<MessageOpenGUITile, IMessage> {
         @Override
-        public IMessage onMessage(MessageCloseGUI messageIn, MessageContext ctx) {
-            final MessageCloseGUI message = messageIn;
+        public IMessage onMessage(MessageOpenGUITile messageIn, MessageContext ctx) {
+            final MessageOpenGUITile message = messageIn;
             final EntityPlayerMP player = ctx.getServerHandler().player;
             ctx.getServerHandler().player.getServerWorld().addScheduledTask(() -> {
                 World world = player.world;
                 TileEntity te = world.getTileEntity(new BlockPos(message.x, message.y, message.z));
-                if (te instanceof ISyncable) {
-                    ((ISyncable) te).getSyncPlayerList().remove(player);
+                if (te instanceof ISyncableTE) {
+                    ((ISyncableTE) te).getSyncPlayerList().add(player);
                 }
             });
             return null;

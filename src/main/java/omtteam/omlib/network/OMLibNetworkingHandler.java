@@ -18,9 +18,9 @@ public class OMLibNetworkingHandler {
     public static void initNetworking() {
         INSTANCE.registerMessage(MessageSetSharePlayerList.MessageHandlerSetSharePlayerList.class,
                                  MessageSetSharePlayerList.class, 0, Side.CLIENT);
-        INSTANCE.registerMessage(MessageOpenGUI.MessageHandlerOpenGUI.class, MessageOpenGUI.class,
+        INSTANCE.registerMessage(MessageOpenGUITile.MessageHandlerOpenGUITile.class, MessageOpenGUITile.class,
                                  1, Side.SERVER);
-        INSTANCE.registerMessage(MessageCloseGUI.MessageHandlerCloseGUI.class, MessageCloseGUI.class,
+        INSTANCE.registerMessage(MessageCloseGUITile.MessageHandlerCloseGUITile.class, MessageCloseGUITile.class,
                                  2, Side.SERVER);
         INSTANCE.registerMessage(MessageCamoSettings.MessageHandlerCamoSettings.class, MessageCamoSettings.class,
                                  3, Side.CLIENT);
@@ -28,6 +28,15 @@ public class OMLibNetworkingHandler {
                                  4, Side.CLIENT);
         INSTANCE.registerMessage(MessageSetGlobalTrustList.MessageHandlerSetGlobalTrustList.class,
                                  MessageSetGlobalTrustList.class, 5, Side.CLIENT);
+
+        INSTANCE.registerMessage(MessageModifyPermissions.MessageHandlerModifyPermissions.class,
+                                 MessageModifyPermissions.class, 6, Side.SERVER);
+
+        INSTANCE.registerMessage(MessageAddTrustedPlayer.MessageHandlerAddTrustedPlayer.class,
+                                 MessageAddTrustedPlayer.class, 7, Side.SERVER);
+
+        INSTANCE.registerMessage(MessageRemoveTrustedPlayer.MessageHandlerRemoveTrustedPlayer.class,
+                                 MessageRemoveTrustedPlayer.class, 8, Side.SERVER);
     }
 
     public static void sendMessageToAllPlayers(IMessage message) {
