@@ -117,7 +117,7 @@ public class PlayerUtil {
             ownedBlock = (IHasOwner) block;
         }
         if (ownedBlock != null) {
-            Player owner = ownedBlock.getOwnerAsPlayer();
+            Player owner = ownedBlock.getOwner();
             if (player.equals(owner) || OwnerShareRegister.instance.isPlayerSharedOwner(owner, player)) {
                 return EnumPlayerAccessType.OWNER;
             }
@@ -149,8 +149,8 @@ public class PlayerUtil {
 
     @ParametersAreNonnullByDefault
     public static boolean isPlayerOwner(Player player, IHasOwner ownedBlock) {
-        Player owner = new Player(getPlayerUIDUnstable(ownedBlock.getOwner()), ownedBlock.getOwnerName());
-        return player.equals(owner) || OwnerShareRegister.instance.isPlayerSharedOwner(owner, player);
+        return player.equals(ownedBlock.getOwner())
+                || OwnerShareRegister.instance.isPlayerSharedOwner(ownedBlock.getOwner(), player);
     }
 
     @ParametersAreNonnullByDefault

@@ -33,7 +33,7 @@ public class MessageSetGlobalTrustList implements IMessage {
         int lengthofMap = buf.readInt();
         for (int i = 0; i < lengthofMap; i++) {
             Player owner = Player.readFromByteBuf(buf);
-            TrustedPlayersManagerGlobal tpm = new TrustedPlayersManagerGlobal();
+            TrustedPlayersManagerGlobal tpm = new TrustedPlayersManagerGlobal(owner);
             tpm.readFromByteBuf(buf);
             globalTrustList.put(owner, tpm);
         }

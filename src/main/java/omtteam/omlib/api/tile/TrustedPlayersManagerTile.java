@@ -1,5 +1,6 @@
 package omtteam.omlib.api.tile;
 
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.UsernameCache;
 import omtteam.omlib.api.permission.GlobalTrustRegister;
 import omtteam.omlib.api.permission.ITrustedPlayersManager;
@@ -29,6 +30,11 @@ public class TrustedPlayersManagerTile implements ITrustedPlayersManager {
 
     public TrustedPlayersManagerTile(TileEntityOwnedBlock ownedBlock) {
         this.ownedBlock = ownedBlock;
+    }
+
+    @Override
+    public Player getOwner() {
+        return ownedBlock.getOwner();
     }
 
     @Override
@@ -92,7 +98,7 @@ public class TrustedPlayersManagerTile implements ITrustedPlayersManager {
     @Override
     public TrustedPlayer getTrustedPlayer(String name) {
         if (useGlobal) {
-            return GlobalTrustRegister.instance.getTrustedPlayer(ownedBlock.getOwnerAsPlayer(), name);
+            return GlobalTrustRegister.instance.getTrustedPlayer(ownedBlock.getOwner(), name);
         }
         return ITrustedPlayersManager.super.getTrustedPlayer(name);
     }
@@ -100,7 +106,7 @@ public class TrustedPlayersManagerTile implements ITrustedPlayersManager {
     @Override
     public TrustedPlayer getTrustedPlayer(UUID uuid) {
         if (useGlobal) {
-            return GlobalTrustRegister.instance.getTrustedPlayer(ownedBlock.getOwnerAsPlayer(), uuid);
+            return GlobalTrustRegister.instance.getTrustedPlayer(ownedBlock.getOwner(), uuid);
         }
         return ITrustedPlayersManager.super.getTrustedPlayer(uuid);
     }
@@ -108,7 +114,7 @@ public class TrustedPlayersManagerTile implements ITrustedPlayersManager {
     @Override
     public TrustedPlayer getTrustedPlayer(Player player) {
         if (useGlobal) {
-            return GlobalTrustRegister.instance.getTrustedPlayer(ownedBlock.getOwnerAsPlayer(), player);
+            return GlobalTrustRegister.instance.getTrustedPlayer(ownedBlock.getOwner(), player);
         }
         return ITrustedPlayersManager.super.getTrustedPlayer(player);
     }
@@ -129,5 +135,15 @@ public class TrustedPlayersManagerTile implements ITrustedPlayersManager {
     @Override
     public void setTrustedPlayers(List<TrustedPlayer> trustedPlayers) {
         this.trustedPlayers = trustedPlayers;
+    }
+
+    @Override
+    public boolean hasTile() {
+        return true;
+    }
+
+    @Override
+    public TileEntity getTile() {
+        return ownedBlock;
     }
 }

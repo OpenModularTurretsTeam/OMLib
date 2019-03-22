@@ -190,21 +190,8 @@ class PlayerUtilTest {
         }
 
         @Override
-        public String getOwner() {
-            if (owner.getUuid() != null) {
-                return owner.getUuid().toString();
-            }
-            return "";
-        }
-
-        @Override
-        public String getOwnerName() {
-            return owner.getName();
-        }
-
-        @Override
-        public String getOwnerTeamName() {
-            return owner.getTeamName();
+        public Player getOwner() {
+            return owner;
         }
     }
 }

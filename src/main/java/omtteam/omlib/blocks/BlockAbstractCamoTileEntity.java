@@ -107,7 +107,8 @@ public abstract class BlockAbstractCamoTileEntity extends BlockAbstractTileEntit
             }
             // Camo set
             if (!player.isSneaking() && heldItem != ItemStack.EMPTY && heldItem.getItem() instanceof ItemBlock
-                    && heldBlock.isNormalCube(camoState, world, pos)
+                    && (heldBlock.isFullBlock(camoState) || heldBlock.isTranslucent(camoState))
+                    && !heldBlock.isAir(camoState, world, pos)
                     && !heldBlock.hasTileEntity(camoState)
                     && !(heldBlock instanceof BlockAbstractCamoTileEntity)) {
                 if (te != null) {

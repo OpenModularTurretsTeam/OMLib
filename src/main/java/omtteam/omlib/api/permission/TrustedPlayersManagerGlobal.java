@@ -1,5 +1,6 @@
 package omtteam.omlib.api.permission;
 
+import net.minecraft.tileentity.TileEntity;
 import omtteam.omlib.handler.OMConfig;
 import omtteam.omlib.util.DebugHandler;
 import omtteam.omlib.util.player.Player;
@@ -15,6 +16,16 @@ import java.util.List;
  */
 public class TrustedPlayersManagerGlobal implements ITrustedPlayersManager {
     protected List<TrustedPlayer> trustedPlayers = new ArrayList<>();
+    Player owner;
+
+    public TrustedPlayersManagerGlobal(Player owner) {
+        this.owner = owner;
+    }
+
+    @Override
+    public Player getOwner() {
+        return this.owner;
+    }
 
     @Override
     @ParametersAreNonnullByDefault
@@ -69,5 +80,15 @@ public class TrustedPlayersManagerGlobal implements ITrustedPlayersManager {
     @Override
     public void setUseGlobal(boolean useGlobal) {
         //Do nothing;
+    }
+
+    @Override
+    public boolean hasTile() {
+        return false;
+    }
+
+    @Override
+    public TileEntity getTile() {
+        return null;
     }
 }
