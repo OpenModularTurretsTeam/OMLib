@@ -39,7 +39,7 @@ public class ItemDebugTool extends Item {
             if (tileEntity != null) {
                 if (tileEntity instanceof TileEntityOwnedBlock) {
                     TileEntityOwnedBlock te = (TileEntityOwnedBlock) tileEntity;
-                    playerIn.sendMessage(new TextComponentString("Owner name is \"" + te.getOwnerName() + "\" and UUID is " + te.getOwner()));
+                    playerIn.sendMessage(new TextComponentString("Owner name is \"" + te.getOwner().getName() + "\" and UUID is " + te.getOwner().getUuid().toString()));
                 }
                 if (tileEntity instanceof TileEntityElectric) {
                     TileEntityElectric te = (TileEntityElectric) tileEntity;

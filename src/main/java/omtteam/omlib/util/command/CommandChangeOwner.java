@@ -10,6 +10,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import omtteam.omlib.handler.OMConfig;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
+import omtteam.omlib.util.player.Player;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -61,11 +62,10 @@ public class CommandChangeOwner extends CommandBase {
                 TileEntityOwnedBlock block = (TileEntityOwnedBlock) tileEntity;
                 UUID uuid = getPlayerUUID(ownerName);
                 if (uuid != null) {
-                    block.setOwner(uuid.toString());
-                    block.setOwnerName(ownerName);
+                    block.setOwner(new Player(uuid, ownerName));
                     addChatMessage(sender, new TextComponentString("Block ownership has been updated"));
                 } else if (OMConfig.GENERAL.offlineModeSupport) {
-                    block.setOwnerName(ownerName);
+                    block.setOwner(new Player(null, ownerName));
                     addChatMessage(sender, new TextComponentString("Block ownership has been updated"));
                 } else {
                     addChatMessage(sender, new TextComponentString("New owner not valid."));

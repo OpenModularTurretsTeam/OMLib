@@ -3,6 +3,7 @@ package omtteam.omlib.api.permission;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import omtteam.omlib.handler.OMConfig;
 import omtteam.omlib.util.DebugHandler;
 import omtteam.omlib.util.player.Player;
@@ -16,10 +17,12 @@ import java.util.logging.Logger;
 import static omtteam.omlib.util.player.PlayerUtil.getPlayerUIDUnstable;
 import static omtteam.omlib.util.player.PlayerUtil.getPlayerUUID;
 
-public interface ITrustedPlayersManager {
+public interface ITrustedPlayersManager extends IHasOwner {
 
     @ParametersAreNonnullByDefault
     boolean addTrustedPlayer(String name);
+
+    Player getOwner();
 
     default boolean addTrustedPlayer(TrustedPlayer player) {
         for (TrustedPlayer trustedPlayer : getTrustedPlayers()) {
@@ -149,7 +152,21 @@ public interface ITrustedPlayersManager {
         }
     }
 
+    default boolean changePermission(String player, EnumAccessLevel level) {
+        for (TrustedPlayer trustedPlayer : getTrustedPlayers()) {
+            if (trustedPlayer.getName().equalsIgnoreCase(player)) {
+                trustedPlayer.setAccessLevel(level);
+                return true;
+            }
+        }
+        return false;
+    }
+
     boolean useGlobal();
 
     void setUseGlobal(boolean useGlobal);
+
+    boolean hasTile();
+
+    TileEntity getTile();
 }

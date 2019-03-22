@@ -7,6 +7,7 @@ import omtteam.omlib.api.network.INetworkTile;
 import omtteam.omlib.api.network.OMLibNetwork;
 import omtteam.omlib.api.permission.IHasOwner;
 import omtteam.omlib.api.tile.IDebugTile;
+import omtteam.omlib.util.player.Player;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -80,18 +81,8 @@ public class TileEntityCable extends TileEntityBase implements INetworkCable, ID
 
     @Override
     @Nonnull
-    public String getOwner() {
-        return network.getOwner().toString();
+    public Player getOwner() {
+        return network.getOwner();
     }
 
-    @Override
-    @Nonnull
-    public String getOwnerName() {
-        return network.getOwnerName();
-    }
-
-    @Override
-    public String getOwnerTeamName() {
-        return ""; //TODO: implement this
-    }
 }

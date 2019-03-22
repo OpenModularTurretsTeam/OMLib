@@ -2,6 +2,7 @@ package omtteam.omlib.api.tile;
 
 import omtteam.omlib.api.permission.IHasOwner;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
+import omtteam.omlib.util.player.Player;
 
 import javax.annotation.Nonnull;
 
@@ -25,27 +26,7 @@ public interface IOwnedBlockAddon extends IHasOwner {
      * @return owner
      */
     @Override
-    default String getOwner() {
+    default Player getOwner() {
         return this.getLinkedBlock().getOwner();
-    }
-
-    /**
-     * Return the owner name of the block this block is linked to.
-     *
-     * @return ownerName
-     */
-    @Override
-    default String getOwnerName() {
-        return this.getLinkedBlock().getOwnerName();
-    }
-
-    /**
-     * Return the owners team of the block this block is linked to.
-     *
-     * @return owners team
-     */
-    @Override
-    default String getOwnerTeamName() {
-        return this.getLinkedBlock().getOwnerTeamName();
     }
 }

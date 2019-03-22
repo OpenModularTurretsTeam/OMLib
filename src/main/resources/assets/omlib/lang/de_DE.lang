@@ -12,7 +12,6 @@ gui.omtteam.omlib:yes=ja
 gui.omtteam.omlib:no=nein
 gui.omtteam.omlib:next=Nächst.
 gui.omtteam.omlib:previous=Vorher.
-gui.omtteam.omlib:trusted_players=Vertraute Spieler
 gui.omtteam.omlib:attack_mobs=Attackiert Mobs
 gui.omtteam.omlib:attack_neutrals=Attackiert Neutrale
 gui.omtteam.omlib:attack_players=Attackiert Spieler
@@ -21,5 +20,23 @@ gui.omtteam.omlib:facing=Richtung
 gui.omtteam.omlib:shift=Shift
 gui.omtteam.omlib:shift_detail_start=Drücke
 gui.omtteam.omlib:shift_detail_end=für Details.
+gui.omtteam.omlib:trusted_players=Vertraute Spieler
+gui.omtteam.omlib:add_trusted_player=Füge vertrauten Spieler hinzu
+gui.omtteam.omlib:no_trusted_players=Keine vertrauten Spieler
+gui.omtteam.omlib:permissions=Permissions
+
+tooltip.omtteam.omlib:add_trusted_player=Fügt den Spieler der vertrauten Spieler Liste hinzu.
+tooltip.omtteam.omlib:remove_trusted_player=Entfernt den angezeigten Spieler aus der Liste.
+tooltip.omtteam.omlib:view_previous_trusted_player=Schaue vorherigen vertrauten Spieler an.
+tooltip.omtteam.omlib:view_next_trusted_player=Schaue nächsten vertrauten Spieler an..
+tooltip.omtteam.omlib:tp_none=Spieler kann das GUI nicht öffnen.
+tooltip.omtteam.omlib:tp_can_open_gui=Spieler kann das GUI öffnen.
+tooltip.omtteam.omlib:tp_can_change_settings=Spieler kann die Parameter der Basis ändern.
+tooltip.omtteam.omlib:tp_can_administer=Spieler kann die Basis administr. (vertraute Sp. + abbauen).
+tooltip.omtteam.omlib:tp_decrease_access=Zugriffslevel für ausgewählten Spieler reduzieren.
+tooltip.omtteam.omlib:tp_increase_access=Zugriffslevel für ausgewählten Spieler erhöhen.
+tooltip.omtteam.omlib:tp_text_field=Name des vertrauten Spielers, der hinzugefügt werden soll.
+tooltip.omtteam.omlib:info_access_level=Zeigt Zugriffslevel des ausgewählten Spielers an, falls ausgewählt.
 
 item.debug_tool.name=Debug Werkzeug
+

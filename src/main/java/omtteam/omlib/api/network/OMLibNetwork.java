@@ -6,6 +6,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import omtteam.omlib.handler.OMLibEventHandler;
+import omtteam.omlib.util.player.Player;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -21,8 +22,7 @@ public class OMLibNetwork {
     private World world;
     private UUID uuid;
     private String name;
-    private String ownerName;
-    private UUID ownerUUID;
+    private Player owner;
 
     /**
      * This is the default constructor for a network without a custom name.
@@ -161,20 +161,12 @@ public class OMLibNetwork {
         this.name = name;
     }
 
-    public String getOwnerName() {
-        return ownerName;
+    public Player getOwner() {
+        return owner;
     }
 
-    public void setOwnerName(String ownerName) {
-        this.ownerName = ownerName;
-    }
-
-    public UUID getOwner() {
-        return ownerUUID;
-    }
-
-    public void setOwner(UUID ownerUUID) {
-        this.ownerUUID = ownerUUID;
+    public void setOwner(Player owner) {
+        this.owner = owner;
     }
 
     //Utility Functions
