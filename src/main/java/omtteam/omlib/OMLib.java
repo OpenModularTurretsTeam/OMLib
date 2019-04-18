@@ -6,6 +6,8 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import omtteam.omlib.handler.OMGuiHandler;
 import omtteam.omlib.init.OMLibBlocks;
 import omtteam.omlib.proxy.CommonProxy;
 import omtteam.omlib.reference.Reference;
@@ -44,6 +46,7 @@ public class OMLib {
         checkForMods();
         RandomUtil.init();
         proxy.preInit();
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, OMGuiHandler.getInstance());
     }
 
     @SuppressWarnings("unused")

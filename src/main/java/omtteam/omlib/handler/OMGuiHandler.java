@@ -5,7 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
-import omtteam.omlib.api.permission.ITrustedPlayersManager;
+import omtteam.omlib.api.tile.IHasTrustManager;
 import omtteam.omlib.client.gui.TrustedPlayersGUI;
 
 public class OMGuiHandler implements IGuiHandler {
@@ -36,8 +36,8 @@ public class OMGuiHandler implements IGuiHandler {
         TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
 
         switch (id) {
-            case 1:
-                return new TrustedPlayersGUI(player.inventory, (ITrustedPlayersManager) tileEntity);
+            case 0:
+                return new TrustedPlayersGUI(player.inventory, (IHasTrustManager) tileEntity);
             default:
                 return null;
         }
