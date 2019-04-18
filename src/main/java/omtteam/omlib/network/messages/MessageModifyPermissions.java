@@ -85,7 +85,7 @@ public class MessageModifyPermissions implements IMessage {
                         machine = (IHasTrustManager) entity;
                     }
                     if (machine != null && PlayerUtil.isPlayerAdmin(player, machine.getTrustManager())) {
-                        machine.getTrustManager().changePermission(message.player, EnumAccessLevel.values()[message.change]);
+                        machine.getTrustManager().changePermission(message.player, message.change);
                         if (machine instanceof ISyncable)
                             ((ISyncable) machine).sendMessageToAllTracking();
                     }
