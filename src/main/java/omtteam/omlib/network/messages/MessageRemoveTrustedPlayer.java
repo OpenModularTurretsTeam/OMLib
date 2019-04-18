@@ -78,7 +78,7 @@ public class MessageRemoveTrustedPlayer implements IMessage {
                     if (entity instanceof IHasTrustManager) {
                         machine = (IHasTrustManager) entity;
                     }
-                    if (machine != null && PlayerUtil.isPlayerAdmin(player, machine.getTrustManager())) {
+                    if (machine != null && PlayerUtil.isPlayerAdmin(player, machine)) {
                         machine.getTrustManager().removeTrustedPlayer(message.player);
                         if (machine instanceof ISyncable)
                             ((ISyncable) machine).sendMessageToAllTracking();

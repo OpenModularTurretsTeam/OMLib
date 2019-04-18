@@ -1,5 +1,7 @@
 package omtteam.omlib.api.tile;
 
-public interface IHasTrustManager {
+import omtteam.omlib.api.permission.IHasOwner;
+
+public interface IHasTrustManager extends IHasOwner {
     TrustedPlayersManagerTile getTrustManager();
 }

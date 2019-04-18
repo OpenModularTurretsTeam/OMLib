@@ -9,7 +9,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
-import omtteam.omlib.OMLib;
 import omtteam.omlib.api.gui.IHasTooltips;
 import omtteam.omlib.api.gui.StringListBox;
 import omtteam.omlib.api.permission.GlobalTrustRegister;
@@ -74,7 +73,7 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips {
             }
             addedToSyncList = true;
         }
-        accessLevel = PlayerUtil.getPlayerAccessLevel(player, tpm).ordinal();
+        accessLevel = PlayerUtil.getPlayerAccessLevel(player, (IHasTrustManager) tpm.getTile()).ordinal();
         if (accessLevel < 2) {
             player.closeScreen();
         }
@@ -93,14 +92,11 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips {
         this.mouseX = par1;
         this.mouseY = par2;
 
-        if (accessLevel != PlayerUtil.getPlayerAccessLevel(player, tpm).ordinal() && !isPlayerOwner(player, tpm)) {
-            accessLevel = PlayerUtil.getPlayerAccessLevel(player, tpm).ordinal();
-            if (accessLevel != 0) {
-                this.initGui();
-            }
-        } else if (!isPlayerOwner(player, tpm) && accessLevel < 2) {
+        if (accessLevel != PlayerUtil.getPlayerAccessLevel(player, (IHasTrustManager) tpm.getTile()).ordinal() && !isPlayerOwner(player, (IHasTrustManager) tpm.getTile())) {
+            accessLevel = PlayerUtil.getPlayerAccessLevel(player, (IHasTrustManager) tpm.getTile()).ordinal();
+        }
+        if (!isPlayerOwner(player, (IHasTrustManager) tpm.getTile()) && accessLevel < 3) {
             player.closeScreen();
-            player.openGui(OMLib.instance, 0, player.getEntityWorld(), (int) player.posX, (int) player.posY, (int) player.posZ);
         }
         ResourceLocation texture = new ResourceLocation(OMLibNames.Textures.trustedPlayers);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -175,7 +171,7 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips {
     }
 
     protected void buttonInit() {
-        if (PlayerUtil.isPlayerAdmin(player, tpm)) {
+        if (PlayerUtil.isPlayerAdmin(player, (IHasTrustManager) tpm.getTile())) {
 
             textFieldAddTrustedPlayer = new GuiTextField(0, Minecraft.getMinecraft().fontRenderer, guiLeft + 11, guiTop + 231, 100, 18);
             this.listBox = new StringListBox(5, guiLeft + 5, guiTop + 5, 246, 212, trustedPlayers);
@@ -192,7 +188,9 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips {
         for (TrustedPlayer trustedPlayer : tpm.getTrustedPlayers()) {
             this.trustedPlayers.add(trustedPlayer.getName() + ", " + trustedPlayer.getAccessLevel().getLocalizedName());
         }
-        this.listBox.updateList(trustedPlayers);
+        if (this.listBox != null) {
+            this.listBox.updateList(trustedPlayers);
+        }
     }
 
     @Override
@@ -253,7 +251,7 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips {
     protected void actionPerformed(GuiButton guibutton) {
 
         if (guibutton.id == 1) { //add trusted player
-            if (PlayerUtil.isPlayerAdmin(player, tpm)) {
+            if (PlayerUtil.isPlayerAdmin(player, (IHasTrustManager) tpm.getTile())) {
                 if (!textFieldAddTrustedPlayer.getText().equals("") || !textFieldAddTrustedPlayer.getText().isEmpty()) {
                     sendChangeToServerAddTrusted();
                     textFieldAddTrustedPlayer.setText("");
@@ -272,10 +270,10 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips {
 
             if (tpm.getTrustedPlayers().size() > 0) {
                 if (this.tpm.getTrustedPlayers().get(
-                        listBox.selectedItem) != null && PlayerUtil.isPlayerAdmin(player, tpm)) {
+                        listBox.selectedItem) != null && PlayerUtil.isPlayerAdmin(player, (IHasTrustManager) tpm.getTile())) {
                     sendChangeToServerRemoveTrusted();
                     tpm.removeTrustedPlayer(tpm.getTrustedPlayers().get(listBox.selectedItem).getName());
-                    if (!player.getUniqueID().equals(tpm.getOwner().getUuid()) && (tpm.getTrustedPlayers().size() == 0 || PlayerUtil.isPlayerAdmin(player, tpm))) {
+                    if (!player.getUniqueID().equals(tpm.getOwner().getUuid()) && (tpm.getTrustedPlayers().size() == 0 || PlayerUtil.isPlayerAdmin(player, (IHasTrustManager) tpm.getTile()))) {
                         mc.displayGuiScreen(null);
                         return;
                     }
@@ -291,7 +289,7 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips {
         }
 
         if (guibutton.id == 3) { // decrease permission level by 1
-            if (PlayerUtil.isPlayerAdmin(player, tpm) && this.tpm.getTrustedPlayers().get(
+            if (PlayerUtil.isPlayerAdmin(player, (IHasTrustManager) tpm.getTile()) && this.tpm.getTrustedPlayers().get(
                     listBox.selectedItem) != null) {
                 sendChangeToServerModifyPermissions(
                         this.tpm.getTrustedPlayers().get(listBox.selectedItem).getName(), -1);
@@ -301,7 +299,7 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips {
         }
 
         if (guibutton.id == 4) { //increase permission level by 1
-            if (PlayerUtil.isPlayerAdmin(player, tpm) && this.tpm.getTrustedPlayers().get(
+            if (PlayerUtil.isPlayerAdmin(player, (IHasTrustManager) tpm.getTile()) && this.tpm.getTrustedPlayers().get(
                     listBox.selectedItem) != null) {
                 sendChangeToServerModifyPermissions(
                         this.tpm.getTrustedPlayers().get(listBox.selectedItem).getName(), 1);
