@@ -47,8 +47,7 @@ public abstract class TileEntityOwnedBlock extends TileEntityBase implements IHa
                 owner.setTeamName(nbtTagCompound.getString("ownerTeamName"));
             }
             this.owner = owner;
-        }
-        if (nbtTagCompound.hasKey("owner", Constants.NBT.TAG_COMPOUND)) {
+        } else if (nbtTagCompound.hasKey("owner", Constants.NBT.TAG_COMPOUND)) {
             this.owner = Player.readFromNBT((NBTTagCompound) nbtTagCompound.getTag("owner"));
         }
 
