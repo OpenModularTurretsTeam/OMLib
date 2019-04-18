@@ -109,8 +109,15 @@ public interface ITrustedPlayersManager extends IHasOwner {
             if (!list.getCompoundTagAt(i).getString("name").equals("")) {
                 NBTTagCompound nbtPlayer = list.getCompoundTagAt(i);
                 TrustedPlayer trustedPlayer = new TrustedPlayer(nbtPlayer.getString("name"));
+                //TODO: remove on 1.13
                 if (nbtPlayer.hasKey("accessLevel")) {
-                    trustedPlayer.setAccessLevel(EnumAccessLevel.values()[nbtPlayer.getInteger("AccessLevel")]);
+                    trustedPlayer.setAccessLevel(EnumAccessLevel.values()[nbtPlayer.getInteger("accessLevel")]);
+                } else if (nbtPlayer.hasKey("admin") && nbtPlayer.getBoolean("admin")) {
+                    trustedPlayer.setAccessLevel(EnumAccessLevel.ADMIN);
+                } else if (nbtPlayer.hasKey("canChangeTargeting") && nbtPlayer.getBoolean("canChangeTargeting")) {
+                    trustedPlayer.setAccessLevel(EnumAccessLevel.CHANGE_SETTINGS);
+                } else if (nbtPlayer.hasKey("canOpenGUI") && nbtPlayer.getBoolean("canOpenGUI")) {
+                    trustedPlayer.setAccessLevel(EnumAccessLevel.OPEN_GUI);
                 }
                 if (nbtPlayer.hasKey("UUID")) {
                     trustedPlayer.setUuid(getPlayerUIDUnstable(nbtPlayer.getString("UUID")));

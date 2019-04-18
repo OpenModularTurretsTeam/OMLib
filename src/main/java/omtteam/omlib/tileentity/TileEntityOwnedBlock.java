@@ -10,6 +10,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.UUID;
 
 import static omtteam.omlib.util.player.PlayerUtil.getPlayerUIDUnstable;
+import static omtteam.omlib.util.player.PlayerUtil.getPlayerUUID;
 
 /**
  * Created by Keridos on 24/11/16.
@@ -18,7 +19,7 @@ import static omtteam.omlib.util.player.PlayerUtil.getPlayerUIDUnstable;
 @SuppressWarnings({"WeakerAccess", "unused"})
 @MethodsReturnNonnullByDefault
 public abstract class TileEntityOwnedBlock extends TileEntityBase implements IHasOwner {
-    protected Player owner;
+    private Player owner;
     protected boolean dropBlock = false;
 
     @Override
@@ -28,26 +29,32 @@ public abstract class TileEntityOwnedBlock extends TileEntityBase implements IHa
         NBTTagCompound tag = new NBTTagCompound();
         if (this.getOwner() != null) {
             this.owner.writeToNBT(tag);
+            nbtTagCompound.setTag("owner", tag);
         }
-        nbtTagCompound.setTag("owner", tag);
+
         return nbtTagCompound;
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Override
     @ParametersAreNonnullByDefault
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
         super.readFromNBT(nbtTagCompound);
 
         if (nbtTagCompound.hasKey("ownerName")) { // TODO: Remove in 1.13
-            UUID uuid = getPlayerUIDUnstable(nbtTagCompound.getString("owner"));
+            UUID uuid = null;
+            if (getPlayerUIDUnstable(nbtTagCompound.getString("owner")) != null) {
+                uuid = getPlayerUIDUnstable(nbtTagCompound.getString("owner"));
+            } else if (getPlayerUUID(nbtTagCompound.getString("owner")) != null) {
+                uuid = getPlayerUUID(nbtTagCompound.getString("owner"));
+            }
             String ownerName = nbtTagCompound.getString("ownerName");
             Player owner = new Player(uuid, nbtTagCompound.getString("ownerName"));
             if (nbtTagCompound.hasKey("ownerTeamName")) {
                 owner.setTeamName(nbtTagCompound.getString("ownerTeamName"));
             }
             this.owner = owner;
-        } else if (nbtTagCompound.hasKey("owner", Constants.NBT.TAG_COMPOUND)) {
+        }
+        if (nbtTagCompound.hasKey("owner", Constants.NBT.TAG_COMPOUND)) {
             this.owner = Player.readFromNBT((NBTTagCompound) nbtTagCompound.getTag("owner"));
         }
 
