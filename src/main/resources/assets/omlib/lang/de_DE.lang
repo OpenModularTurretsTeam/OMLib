@@ -24,6 +24,14 @@ gui.omtteam.omlib:trusted_players=Vertraute Spieler
 gui.omtteam.omlib:add_trusted_player=Füge vertrauten Spieler hinzu
 gui.omtteam.omlib:no_trusted_players=Keine vertrauten Spieler
 gui.omtteam.omlib:permissions=Permissions
+gui.omtteam.omlib:access_level_none=Kein Zugriff
+gui.omtteam.omlib:access_level_open_gui=GUI öffnen
+gui.omtteam.omlib:access_level_change_settings=Einstellungen ändern
+gui.omtteam.omlib:access_level_admin=Administrator
+gui.omtteam.omlib:access_type_none=Keine Relation
+gui.omtteam.omlib:access_type_trusted=Vertrauter Spieler
+gui.omtteam.omlib:access_type_owner=Besitzer
+gui.omtteam.omlib:access_type_op=OP
 
 tooltip.omtteam.omlib:add_trusted_player=Fügt den Spieler der vertrauten Spieler Liste hinzu.
 tooltip.omtteam.omlib:remove_trusted_player=Entfernt den angezeigten Spieler aus der Liste.
@@ -39,4 +47,3 @@ tooltip.omtteam.omlib:tp_text_field=Name des vertrauten Spielers, der hinzugefü
 tooltip.omtteam.omlib:info_access_level=Zeigt Zugriffslevel des ausgewählten Spielers an, falls ausgewählt.
 
 item.debug_tool.name=Debug Werkzeug
-

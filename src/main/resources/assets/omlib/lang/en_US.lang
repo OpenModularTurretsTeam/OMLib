@@ -24,6 +24,14 @@ gui.omtteam.omlib:trusted_players=Trusted Players
 gui.omtteam.omlib:add_trusted_player=Add trusted player
 gui.omtteam.omlib:no_trusted_players=No trusted players to edit
 gui.omtteam.omlib:permissions=Permissions
+gui.omtteam.omlib:access_level_none=None
+gui.omtteam.omlib:access_level_open_gui=Open GUI
+gui.omtteam.omlib:access_level_change_settings=Change Settings
+gui.omtteam.omlib:access_level_admin=Admin
+gui.omtteam.omlib:access_type_none=None
+gui.omtteam.omlib:access_type_trusted=Trusted
+gui.omtteam.omlib:access_type_owner=Owner
+gui.omtteam.omlib:access_type_op=OP
 
 tooltip.omtteam.omlib:add_trusted_player=Adds the given player to the base's trusted list.
 tooltip.omtteam.omlib:remove_trusted_player=Removes player from the base's trusted player list.

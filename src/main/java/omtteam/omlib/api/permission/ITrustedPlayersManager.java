@@ -162,6 +162,21 @@ public interface ITrustedPlayersManager extends IHasOwner {
         return false;
     }
 
+    default boolean changePermission(String player, int change) {
+        for (TrustedPlayer trustedPlayer : getTrustedPlayers()) {
+            if (trustedPlayer.getName().equalsIgnoreCase(player)) {
+                if (trustedPlayer.getAccessLevel().ordinal() == 0 && change == -1
+                        || trustedPlayer.getAccessLevel().ordinal() == 3 && change == 1) {
+                    return false;
+                } else {
+                    trustedPlayer.setAccessLevel(EnumAccessLevel.values()[trustedPlayer.getAccessLevel().ordinal() + change]);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
     boolean useGlobal();
 
     void setUseGlobal(boolean useGlobal);
