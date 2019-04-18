@@ -34,6 +34,9 @@ public class OMGuiHandler implements IGuiHandler {
     @Override
     public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
         TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
+        if (tileEntity == null) {
+            return null;
+        }
 
         switch (id) {
             case 0:
