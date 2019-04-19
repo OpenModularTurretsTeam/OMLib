@@ -22,7 +22,6 @@ gui.omtteam.omlib:shift_detail_start=Drücke
 gui.omtteam.omlib:shift_detail_end=für Details.
 gui.omtteam.omlib:trusted_players=Vertraute Spieler
 gui.omtteam.omlib:add_trusted_player=Füge vertrauten Spieler hinzu
-gui.omtteam.omlib:no_trusted_players=Keine vertrauten Spieler
 gui.omtteam.omlib:permissions=Permissions
 gui.omtteam.omlib:access_level_none=Kein Zugriff
 gui.omtteam.omlib:access_level_open_gui=GUI öffnen
@@ -32,11 +31,10 @@ gui.omtteam.omlib:access_type_none=Keine Relation
 gui.omtteam.omlib:access_type_trusted=Vertrauter Spieler
 gui.omtteam.omlib:access_type_owner=Besitzer
 gui.omtteam.omlib:access_type_op=OP
+gui.omtteam.omlib:light_values=Licht Einstellungen
 
 tooltip.omtteam.omlib:add_trusted_player=Fügt den Spieler der vertrauten Spieler Liste hinzu.
 tooltip.omtteam.omlib:remove_trusted_player=Entfernt den angezeigten Spieler aus der Liste.
-tooltip.omtteam.omlib:view_previous_trusted_player=Schaue vorherigen vertrauten Spieler an.
-tooltip.omtteam.omlib:view_next_trusted_player=Schaue nächsten vertrauten Spieler an..
 tooltip.omtteam.omlib:tp_none=Spieler kann das GUI nicht öffnen.
 tooltip.omtteam.omlib:tp_can_open_gui=Spieler kann das GUI öffnen.
 tooltip.omtteam.omlib:tp_can_change_settings=Spieler kann die Parameter der Basis ändern.
@@ -45,5 +43,6 @@ tooltip.omtteam.omlib:tp_decrease_access=Zugriffslevel für ausgewählten Spiele
 tooltip.omtteam.omlib:tp_increase_access=Zugriffslevel für ausgewählten Spieler erhöhen.
 tooltip.omtteam.omlib:tp_text_field=Name des vertrauten Spielers, der hinzugefügt werden soll.
 tooltip.omtteam.omlib:info_access_level=Zeigt Zugriffslevel des ausgewählten Spielers an, falls ausgewählt.
+tooltip.omtteam.omlib:trusted_player_gui=Zeige die vertraute Spieler Verwaltungs GUI an.
 
 item.debug_tool.name=Debug Werkzeug
