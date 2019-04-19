@@ -48,15 +48,13 @@ public class OMLibNames {
             public static final String ACCCESS_TYPE_OP = "gui.omtteam.omlib:access_type_op";
             public static final String TRUSTED_PLAYERS = "gui.omtteam.omlib:trusted_players";
             public static final String ADD_TRUSTED_PLAYER = "gui.omtteam.omlib:add_trusted_player";
-            public static final String NO_TRUSTED_PLAYERS = "gui.omtteam.omlib:no_trusted_players";
             public static final String PERMISSIONS = "gui.omtteam.omlib:permissions";
+            public static final String LIGHT_VALUES = "gui.omtteam.omlib:light_values";
         }
 
         public static class Tooltip {
             public static final String ADD_TRUSTED_PLAYER = "tooltip.omtteam.omlib:add_trusted_player";
             public static final String REMOVE_TRUSTED_PLAYER = "tooltip.omtteam.omlib:remove_trusted_player";
-            public static final String VIEW_PREVIOUS_TRUSTED_PLAYER = "tooltip.omtteam.omlib:view_previous_trusted_player";
-            public static final String VIEW_NEXT_TRUSTED_PLAYER = "tooltip.omtteam.omlib:view_previous_trusted_player";
             public static final String TP_NONE = "tooltip.omtteam.omlib:tp_none";
             public static final String TP_CAN_OPEN_GUI = "tooltip.omtteam.omlib:tp_can_open_gui";
             public static final String TP_CAN_CHANGE_SETTINGS = "tooltip.omtteam.omlib:tp_can_change_settings";
@@ -65,6 +63,8 @@ public class OMLibNames {
             public static final String TP_DECREASE_ACCESS = "tooltip.omtteam.omlib:tp_decrease_access";
             public static final String TEXT_TRUSTED_PLAYER = "tooltip.omtteam.omlib:tp_text_field";
             public static final String INFO_ACCESS_LEVEL = "tooltip.omtteam.omlib:info_access_level";
+            public static final String TRUSTED_PLAYER_GUI = "tooltip.omtteam.omlib:trusted_player_gui";
+
         }
     }
 }
