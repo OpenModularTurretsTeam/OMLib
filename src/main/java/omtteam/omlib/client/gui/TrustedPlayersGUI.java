@@ -92,6 +92,8 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips {
         this.mouseX = par1;
         this.mouseY = par2;
 
+        this.drawDefaultBackground();
+
         if (accessLevel != PlayerUtil.getPlayerAccessLevel(player, (IHasTrustManager) tpm.getTile()).ordinal() && !isPlayerOwner(player, (IHasTrustManager) tpm.getTile())) {
             accessLevel = PlayerUtil.getPlayerAccessLevel(player, (IHasTrustManager) tpm.getTile()).ordinal();
         }
