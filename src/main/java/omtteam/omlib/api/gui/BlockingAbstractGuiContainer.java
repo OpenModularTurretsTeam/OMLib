@@ -4,7 +4,6 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * Created by nico on 6/4/15.
@@ -16,5 +15,5 @@ public abstract class BlockingAbstractGuiContainer extends GuiContainer {
         super(inventorySlotsIn);
     }
 
-    public abstract ArrayList<Rectangle> getBlockingAreas();
+    public abstract java.util.List<Rectangle> getBlockingAreas();
 }
