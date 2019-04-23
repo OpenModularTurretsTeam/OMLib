@@ -57,4 +57,8 @@ public class TOPCompatibility {
             return null;
         }
     }
+
+    public static String getLocalizationString(String unloc) {
+        return IProbeInfo.STARTLOC + unloc + IProbeInfo.ENDLOC;
+    }
 }
