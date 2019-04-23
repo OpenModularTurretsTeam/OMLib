@@ -13,6 +13,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
+import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -22,6 +23,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import omtteam.omlib.OMLib;
+import omtteam.omlib.api.gui.ISupportsBackSystem;
 import omtteam.omlib.api.network.OMLibNetwork;
 import omtteam.omlib.api.permission.OwnerShareRegister;
 import omtteam.omlib.api.render.RenderManager;
@@ -143,6 +145,16 @@ public class OMLibEventHandler {
     @SubscribeEvent
     public void renderWorldLastEvent(RenderWorldLastEvent event) {
         RenderManager.getInstance().renderWorldLastEvent(event.getContext(), event.getPartialTicks());
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void playerGUIEvent(GuiOpenEvent event) {
+        if (event.getGui() instanceof ISupportsBackSystem && ((ISupportsBackSystem) event.getGui()).getGuiParameters() != null) {
+            GUIBackSystem.getInstance().addGuiToStack((ISupportsBackSystem) event.getGui());
+        } else if (event.getGui() == null) {
+            GUIBackSystem.getInstance().clearStack();
+        }
     }
 
     private List<OMLibNetwork> getNetworkList() {
