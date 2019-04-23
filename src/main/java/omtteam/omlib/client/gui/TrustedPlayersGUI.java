@@ -9,13 +9,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
+import omtteam.omlib.OMLib;
+import omtteam.omlib.api.gui.GuiParameters;
 import omtteam.omlib.api.gui.IHasTooltips;
+import omtteam.omlib.api.gui.ISupportsBackSystem;
 import omtteam.omlib.api.gui.StringListBox;
 import omtteam.omlib.api.permission.GlobalTrustRegister;
 import omtteam.omlib.api.permission.ITrustedPlayersManager;
 import omtteam.omlib.api.permission.TrustedPlayer;
 import omtteam.omlib.api.permission.TrustedPlayersManagerGlobal;
 import omtteam.omlib.api.tile.IHasTrustManager;
+import omtteam.omlib.handler.GUIBackSystem;
 import omtteam.omlib.network.OMLibNetworkingHandler;
 import omtteam.omlib.network.messages.*;
 import omtteam.omlib.reference.OMLibNames;
@@ -23,6 +27,7 @@ import omtteam.omlib.util.player.Player;
 import omtteam.omlib.util.player.PlayerUtil;
 import org.lwjgl.opengl.GL11;
 
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,7 +38,7 @@ import static omtteam.omlib.util.GeneralUtil.safeLocalize;
 import static omtteam.omlib.util.player.PlayerUtil.addChatMessage;
 import static omtteam.omlib.util.player.PlayerUtil.isPlayerOwner;
 
-public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips {
+public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips, ISupportsBackSystem {
     protected final int xSize = 256;
     protected final int ySize = 256;
     private final ITrustedPlayersManager tpm;
@@ -181,6 +186,7 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips {
             this.buttonList.add(new GuiButton(2, guiLeft + 148, guiTop + 230, 33, 20, "-"));
             this.buttonList.add(new GuiButton(3, guiLeft + 185, guiTop + 230, 23, 20, "-"));
             this.buttonList.add(new GuiButton(4, guiLeft + 226, guiTop + 230, 23, 20, "+"));
+            this.buttonList.add(new GuiButton(6, guiLeft + 261, guiTop + 10, 80, 20, safeLocalize(OMLibNames.Localizations.GUI.BACK)));
             this.buttonList.add(listBox);
         }
     }
@@ -316,6 +322,9 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips {
                 }
             }
         }
+        if (guibutton.id == 6) { //back button
+            GUIBackSystem.getInstance().openLastGui(player);
+        }
     }
 
     private void sendChangeToServerAddTrusted() {
@@ -343,5 +352,18 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips {
             OMLibNetworkingHandler.INSTANCE.sendToServer(new MessageCloseGUITile(tpm.getTile()));
         }
         super.onGuiClosed();
+    }
+
+    @Override
+    @Nullable
+    public GuiParameters getGuiParameters() {
+        if (tpm.hasTile()) {
+            return new GuiParameters(OMLib.instance, 0, player.getEntityWorld(),
+                                     tpm.getTile().getPos().getX(),
+                                     tpm.getTile().getPos().getY(),
+                                     tpm.getTile().getPos().getZ());
+        } else {
+            return null;
+        }
     }
 }
