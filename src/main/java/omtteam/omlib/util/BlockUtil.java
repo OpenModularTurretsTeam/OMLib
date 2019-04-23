@@ -8,9 +8,12 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 /**
  * Created by Keridos on 31/01/17.
- * This Class
+ * This Class implements some Block related Utility functions
  */
 public class BlockUtil {
+
+    // ---------------------------------------------------------------
+    // Utility functions for Camo Blockstates
     public static void writeBlockFromStateToNBT(NBTTagCompound nbtTagCompound, IBlockState state) {
         if (state != null && state.getBlock().getRegistryName() != null) {
             nbtTagCompound.setString("camoBlockRegName", state.getBlock().getRegistryName().toString());
@@ -28,4 +31,5 @@ public class BlockUtil {
         }
         return null;
     }
+    // ---------------------------------------------------------------
 }
