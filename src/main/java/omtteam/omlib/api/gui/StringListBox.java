@@ -4,7 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 
@@ -41,30 +40,6 @@ public class StringListBox extends GuiButton {
 
     public void updateList(List<String> items) {
         this.items = items;
-    }
-
-    private void drawBackground(Tessellator tess, double xAbs, double yAbs, double z) {
-        double x = xAbs;
-        tess.getBuffer().pos(x, y, z);
-        tess.getBuffer().color(0.1f, 0.1f, 0.1f, 1.0f);
-        tess.getBuffer().endVertex();
-        tess.getBuffer().pos(x, y + this.height, z);
-        tess.getBuffer().color(0.1f, 0.1f, 0.1f, 1.0f);
-        tess.getBuffer().endVertex();
-
-        tess.getBuffer().pos(x + this.width, y + this.height, z);
-        tess.getBuffer().color(0.1f, 0.1f, 0.1f, 1.0f);
-        tess.getBuffer().endVertex();
-        tess.getBuffer().pos(x + this.width, y, z);
-        tess.getBuffer().color(0.1f, 0.1f, 0.1f, 1.0f);
-        tess.getBuffer().endVertex();
-    }
-
-    private void drawSlider(Tessellator tess, double x, double y, double z, double sliderHeight) {
-        tess.getBuffer().pos(x, y, z);
-        tess.getBuffer().color(0.4f, 0.4f, 0.4f, 1.0f);
-        tess.getBuffer().pos(x + SCROLL_WIDTH, y + sliderHeight, z);
-        tess.getBuffer().endVertex();
     }
 
     private void scrollTo(int pos) {
