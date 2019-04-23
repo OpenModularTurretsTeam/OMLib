@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * Created by Keridos on 20/07/16.
- * This Class
+ * This Class implements some World related utility functions.
  */
 @SuppressWarnings("unused")
 public class WorldUtil {
