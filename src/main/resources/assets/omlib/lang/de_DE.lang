@@ -12,6 +12,7 @@ gui.omtteam.omlib:yes=ja
 gui.omtteam.omlib:no=nein
 gui.omtteam.omlib:next=Nächst.
 gui.omtteam.omlib:previous=Vorher.
+gui.omtteam.omlib:back=Zurück
 gui.omtteam.omlib:attack_mobs=Attackiert Mobs
 gui.omtteam.omlib:attack_neutrals=Attackiert Neutrale
 gui.omtteam.omlib:attack_players=Attackiert Spieler
