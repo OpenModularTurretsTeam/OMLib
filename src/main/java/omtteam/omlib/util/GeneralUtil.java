@@ -40,32 +40,46 @@ public class GeneralUtil {
 
     @SideOnly(Side.CLIENT)
     public static String getBooleanLocalization(boolean bool) {
-        String localization = (bool ? OMLibNames.Localizations.GUI.TRUE : OMLibNames.Localizations.GUI.FALSE);
+        String localization = getBooleanUnlocalization(bool);
         return I18n.format(localization);
     }
 
     @SideOnly(Side.CLIENT)
     public static String getColoredBooleanLocalization(boolean bool) {
-        String localization = (bool ? OMLibNames.Localizations.GUI.TRUE : OMLibNames.Localizations.GUI.FALSE);
+        String localization = getBooleanUnlocalization(bool);
 
-        return (bool ? "\u00A72" : "\u00A74") + I18n.format(localization);
+        return getColoredBooleanColor(bool) + I18n.format(localization);
     }
 
     @SideOnly(Side.CLIENT)
     public static String getColoredBooleanLocalizationYesNo(boolean bool) {
-        String localization = (bool ? OMLibNames.Localizations.GUI.YES : OMLibNames.Localizations.GUI.NO);
+        String localization = getBooleanUnlocalizationYesNo(bool);
 
-        return (bool ? "\u00A72" : "\u00A74") + I18n.format(localization);
+        return getColoredBooleanColor(bool) + I18n.format(localization);
+    }
+
+    public static String getBooleanUnlocalization(boolean bool) {
+        return (bool ? OMLibNames.Localizations.GUI.TRUE : OMLibNames.Localizations.GUI.FALSE);
+    }
+
+    public static String getBooleanUnlocalizationYesNo(boolean bool) {
+        return (bool ? OMLibNames.Localizations.GUI.YES : OMLibNames.Localizations.GUI.NO);
+    }
+
+    public static String getColoredBooleanColor(boolean bool) {
+        return (bool ? "\u00A72" : "\u00A74");
     }
 
     @SideOnly(Side.CLIENT)
     public static String getMachineModeLocalization(EnumMachineMode mode) {
-        String localization = (mode == EnumMachineMode.ALWAYS_OFF ? OMLibNames.Localizations.GUI.ALWAYS_OFF
+        return I18n.format(getMachineModeUnLocalization(mode));
+    }
+
+    public static String getMachineModeUnLocalization(EnumMachineMode mode) {
+        return (mode == EnumMachineMode.ALWAYS_OFF ? OMLibNames.Localizations.GUI.ALWAYS_OFF
                 : mode == EnumMachineMode.ALWAYS_ON ? OMLibNames.Localizations.GUI.ALWAYS_ON
                 : mode == EnumMachineMode.INVERTED ? OMLibNames.Localizations.GUI.INVERTED
                 : OMLibNames.Localizations.GUI.NONINVERTED);
-
-        return I18n.format(localization);
     }
 
     public static float getFloatFromString(@Nullable String input) {
