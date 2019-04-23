@@ -9,7 +9,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
  * Created by Keridos on 01/10/2015.
- * This Class
+ * This Class implements some Math functions.
  */
 @SuppressWarnings({"unused", "SuspiciousNameCombination"})
 public class MathUtil {

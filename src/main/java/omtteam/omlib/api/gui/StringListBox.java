@@ -120,6 +120,7 @@ public class StringListBox extends GuiButton {
         drawRect(this.x + this.width - SCROLL_WIDTH, this.y + this.height - SCROLL_BUTTON_HEIGHT, this.x + this.width, this.y + this.height, 0xff808080);
         // Slider
         drawRect(sliderX - 1, sliderY, sliderX + SCROLL_WIDTH - 1, sliderY + sliderHeight, 0xff252525);
+
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         Minecraft mc = FMLClientHandler.instance().getClient();
         ScaledResolution scaler = new ScaledResolution(mc);
