@@ -11,6 +11,7 @@ import omtteam.omlib.util.player.Player;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -78,6 +79,15 @@ public interface ITrustedPlayersManager extends IHasOwner {
     }
 
     List<TrustedPlayer> getTrustedPlayers();
+
+    default List<Map<String, String>> getTrustedPlayersAsListMap() {
+        ArrayList<Map<String, String>> list = new ArrayList<>();
+        for (TrustedPlayer tp : getTrustedPlayers()) {
+            list.add(tp.asMap());
+        }
+        return list;
+    }
+
 
     void setTrustedPlayers(List<TrustedPlayer> trustedPlayers);
 
@@ -159,6 +169,7 @@ public interface ITrustedPlayersManager extends IHasOwner {
         }
     }
 
+    @SuppressWarnings("unused")
     default boolean changePermission(String player, EnumAccessLevel level) {
         for (TrustedPlayer trustedPlayer : getTrustedPlayers()) {
             if (trustedPlayer.getName().equalsIgnoreCase(player)) {

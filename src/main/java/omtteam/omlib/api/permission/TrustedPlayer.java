@@ -4,6 +4,8 @@ import omtteam.omlib.handler.OMConfig;
 import omtteam.omlib.util.player.Player;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -82,5 +84,12 @@ public class TrustedPlayer {
     @Override
     public int hashCode() {
         return Objects.hash(name, accessLevel, uuid, hacked);
+    }
+
+    public Map<String, String> asMap() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("name", this.name);
+        map.put("accessLevel", this.accessLevel.ordinal() + ": " + this.accessLevel.getName());
+        return map;
     }
 }
