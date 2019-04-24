@@ -126,6 +126,7 @@ public class StringListBox extends GuiButton {
         ScaledResolution scaler = new ScaledResolution(mc);
         GL11.glScissor(x * scaler.getScaleFactor(), mc.displayHeight - (y + height) * scaler.getScaleFactor(), (width - SCROLL_WIDTH) * scaler.getScaleFactor(), height * scaler.getScaleFactor());
         if (items.size() > 0) {
+            selectedItem = Math.max(0, selectedItem);
             for (String row : items) {
                 if (row.equals(items.get(selectedItem))) {
                     drawRect(x, y + rowTop - scrollTop - 1, x + width - SCROLL_WIDTH, y + rowTop - scrollTop + lineHeight - 1, selectedColor);
