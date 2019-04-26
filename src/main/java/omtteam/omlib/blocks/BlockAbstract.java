@@ -7,7 +7,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
-import javax.annotation.ParametersAreNullableByDefault;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
  * Created by Keridos on 05/12/2015.
@@ -20,7 +20,7 @@ public abstract class BlockAbstract extends Block {
     }
 
     @Override
-    @ParametersAreNullableByDefault
+    @ParametersAreNonnullByDefault
     public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
         return false;
     }

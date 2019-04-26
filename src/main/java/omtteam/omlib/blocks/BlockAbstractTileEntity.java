@@ -23,7 +23,7 @@ import java.util.Random;
  * Created by Keridos on 05/12/2015.
  * This Class
  */
-@SuppressWarnings({"deprecation", "unused"})
+@SuppressWarnings({"deprecation"})
 @MethodsReturnNonnullByDefault
 public abstract class BlockAbstractTileEntity extends BlockAbstract {
     protected BlockAbstractTileEntity(Material material) {
@@ -31,6 +31,7 @@ public abstract class BlockAbstractTileEntity extends BlockAbstract {
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public boolean hasTileEntity(IBlockState state) {
         return true;
     }
@@ -41,47 +42,52 @@ public abstract class BlockAbstractTileEntity extends BlockAbstract {
     public abstract TileEntity createTileEntity(World world, IBlockState state);
 
     @Override
+    @ParametersAreNonnullByDefault
     public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
         return false;
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public EnumPushReaction getMobilityFlag(IBlockState state) {
         return EnumPushReaction.BLOCK;
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public EnumBlockRenderType getRenderType(IBlockState state) {
         return EnumBlockRenderType.MODEL;
     }
 
-    @SuppressWarnings("ConstantConditions")
+
     protected void dropItems(World worldIn, BlockPos pos) {
         if (worldIn.getTileEntity(pos) instanceof TileEntityContainerElectric) {
             TileEntityContainerElectric entity = (TileEntityContainerElectric) worldIn.getTileEntity(pos);
             Random rand = new Random();
-            for (int i = 0; i < entity.getInventory().getSlots(); i++) {
-                ItemStack item = entity.getInventory().getStackInSlot(i);
+            if (entity != null) {
+                for (int i = 0; i < entity.getInventory().getSlots(); i++) {
+                    ItemStack item = entity.getInventory().getStackInSlot(i);
 
-                if (item != null && InvUtil.getStackSize(item) > 0) {
-                    float rx = rand.nextFloat() * 0.8F + 0.1F;
-                    float ry = rand.nextFloat() * 0.8F + 0.1F;
-                    float rz = rand.nextFloat() * 0.8F + 0.1F;
+                    if (!item.isEmpty()) {
+                        float rx = rand.nextFloat() * 0.8F + 0.1F;
+                        float ry = rand.nextFloat() * 0.8F + 0.1F;
+                        float rz = rand.nextFloat() * 0.8F + 0.1F;
 
-                    EntityItem entityItem = new EntityItem(worldIn, pos.getX() + rx, pos.getY() + ry, pos.getZ() + rz,
-                                                           new ItemStack(item.getItem(), InvUtil.getStackSize(item),
-                                                                         item.getItemDamage()));
+                        EntityItem entityItem = new EntityItem(worldIn, pos.getX() + rx, pos.getY() + ry, pos.getZ() + rz,
+                                                               new ItemStack(item.getItem(), InvUtil.getStackSize(item),
+                                                                             item.getItemDamage()));
 
-                    if (item.hasTagCompound()) {
-                        entityItem.getItem().setTagCompound(item.getTagCompound().copy());
+                        if (item.hasTagCompound()) {
+                            entityItem.getItem().setTagCompound(item.getTagCompound().copy());
+                        }
+
+                        float factor = 0.05F;
+                        entityItem.motionX = rand.nextGaussian() * factor;
+                        entityItem.motionY = rand.nextGaussian() * factor + 0.2F;
+                        entityItem.motionZ = rand.nextGaussian() * factor;
+                        worldIn.spawnEntity(entityItem);
+                        InvUtil.setStackSize(item, 0);
                     }
-
-                    float factor = 0.05F;
-                    entityItem.motionX = rand.nextGaussian() * factor;
-                    entityItem.motionY = rand.nextGaussian() * factor + 0.2F;
-                    entityItem.motionZ = rand.nextGaussian() * factor;
-                    worldIn.spawnEntity(entityItem);
-                    InvUtil.setStackSize(item, 0);
                 }
             }
         }
