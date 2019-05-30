@@ -27,10 +27,6 @@ apply plugin: 'idea'
 apply plugin: 'java'
 
 repositories {
-    maven {
-        name "IGW"
-        url "http://maven.k-4u.nl/"
-    }
     maven { // The repo from which to get waila
         url "http://mobiusstrip.eu/maven"
     }
