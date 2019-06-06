@@ -36,15 +36,20 @@ public class CommandShareOwner extends CommandBase {
     @Override
     @ParametersAreNonnullByDefault
     public void execute(MinecraftServer server, ICommandSender sender, String[] params) {
-        if (params.length != 2) {
+        if (params.length > 2 || params.length < 1) {
             addChatMessage(sender, new TextComponentString(getUsage(sender)));
             return;
         }
         try {
-            String shareName = params[1];
+            String shareName;
             String command = params[0];
+            if (params.length < 2 && command.equalsIgnoreCase("add") || command.equalsIgnoreCase("del")) {
+                addChatMessage(sender, new TextComponentString(getUsage(sender)));
+                return;
+            }
             switch (command) {
                 case "add":
+                    shareName = params[1];
                     if (!OMConfig.GENERAL.offlineModeSupport && getPlayerUUID(shareName) != null) {
                         Player sharePlayer = new Player(getPlayerUUID(shareName), shareName);
                         Player owner = new Player(getPlayerUUID(sender.getName()), sender.getName());
@@ -52,6 +57,7 @@ public class CommandShareOwner extends CommandBase {
                     }
                     break;
                 case "del":
+                    shareName = params[1];
                     if (!OMConfig.GENERAL.offlineModeSupport && getPlayerUUID(shareName) != null) {
                         Player sharePlayer = new Player(getPlayerUUID(shareName), shareName);
                         Player owner = new Player(getPlayerUUID(sender.getName()), sender.getName());
