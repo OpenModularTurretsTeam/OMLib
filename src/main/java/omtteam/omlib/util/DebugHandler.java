@@ -43,10 +43,10 @@ public class DebugHandler {
     }
 
     public void sendMessageToDebugChat(String message) {
-        if (this.player != null && !this.player.getEntityWorld().isRemote && OMConfig.ConfigGeneral.doDebugChat) {
+        if (this.player != null && !this.player.getEntityWorld().isRemote && OMConfig.GENERAL.doDebugChat) {
             this.player.sendMessage(new TextComponentString(message));
         }
-        if (this.listeners != null && OMConfig.ConfigGeneral.doDebugChat) {
+        if (this.listeners != null && OMConfig.GENERAL.doDebugChat) {
             for (IContainerListener listener : this.listeners) {
                 if (listener instanceof EntityPlayerMP && !((EntityPlayerMP) listener).getEntityWorld().isRemote) {
                     ((EntityPlayerMP) listener).sendMessage(new TextComponentString(message));
