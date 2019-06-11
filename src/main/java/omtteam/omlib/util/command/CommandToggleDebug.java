@@ -40,10 +40,10 @@ public class CommandToggleDebug extends CommandBase {
         try {
             String command = params[0];
             if (command.equals("on")) {
-                OMConfig.ConfigGeneral.doDebugChat = true;
+                OMConfig.GENERAL.doDebugChat = true;
                 addChatMessage(sender, new TextComponentString("Enabled debug chat."));
             } else if (command.equals("off")) {
-                OMConfig.ConfigGeneral.doDebugChat = false;
+                OMConfig.GENERAL.doDebugChat = false;
                 addChatMessage(sender, new TextComponentString("Disabled debug chat."));
             }
         } catch (NumberFormatException e) {

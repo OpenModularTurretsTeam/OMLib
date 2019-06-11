@@ -124,7 +124,7 @@ public class PlayerUtil {
         }
         if (getTrustedPlayer(player, ownedBlock) != null) {
             return EnumPlayerAccessType.TRUSTED;
-        } else if (OMConfig.ConfigGeneral.canOPAccessOwnedBlocks && isPlayerOP(player)) {
+        } else if (OMConfig.GENERAL.canOPAccessOwnedBlocks && isPlayerOP(player)) {
             return EnumPlayerAccessType.OP;
         }
         return EnumPlayerAccessType.NONE;
@@ -188,7 +188,7 @@ public class PlayerUtil {
 
     @ParametersAreNonnullByDefault
     public static boolean canPlayerAccessBlock(Player player, IHasOwner ownedBlock) {
-        if (OMConfig.ConfigGeneral.canOPAccessOwnedBlocks && isPlayerOP(player)) {
+        if (OMConfig.GENERAL.canOPAccessOwnedBlocks && isPlayerOP(player)) {
             return true;
         }
         TrustedPlayer trustedPlayer = getTrustedPlayer(player, ownedBlock);
