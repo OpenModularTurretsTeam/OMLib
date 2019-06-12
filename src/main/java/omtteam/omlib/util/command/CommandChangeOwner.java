@@ -21,7 +21,7 @@ import static omtteam.omlib.util.player.PlayerUtil.getPlayerUUID;
 
 /**
  * Created by nico on 6/4/15.
- * Command for changing owners of an owned block
+ * Command for changing owners of an owned block.
  */
 
 public class CommandChangeOwner extends CommandBase {
@@ -76,6 +76,11 @@ public class CommandChangeOwner extends CommandBase {
         } catch (NumberFormatException e) {
             addChatMessage(sender, new TextComponentString("Dimension and coordinates must be numbers"));
         }
+    }
+
+    @Override
+    public int getRequiredPermissionLevel() {
+        return 4;
     }
 }
 

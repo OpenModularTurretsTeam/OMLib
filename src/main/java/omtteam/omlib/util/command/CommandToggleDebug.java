@@ -13,7 +13,7 @@ import static omtteam.omlib.util.player.PlayerUtil.addChatMessage;
 
 /**
  * Created by nico on 6/4/15.
- * Command for changing owners of an owned block
+ * Command for toggling debug messages on interaction with certain blocks.
  */
 
 public class CommandToggleDebug extends CommandBase {
