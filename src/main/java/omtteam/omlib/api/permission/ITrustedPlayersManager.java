@@ -80,6 +80,8 @@ public interface ITrustedPlayersManager extends IHasOwner {
 
     List<TrustedPlayer> getTrustedPlayers();
 
+    void setTrustedPlayers(List<TrustedPlayer> trustedPlayers);
+
     default List<Map<String, String>> getTrustedPlayersAsListMap() {
         ArrayList<Map<String, String>> list = new ArrayList<>();
         for (TrustedPlayer tp : getTrustedPlayers()) {
@@ -87,9 +89,6 @@ public interface ITrustedPlayersManager extends IHasOwner {
         }
         return list;
     }
-
-
-    void setTrustedPlayers(List<TrustedPlayer> trustedPlayers);
 
     @SuppressWarnings("ConstantConditions")
     default NBTTagCompound writeToNBT(NBTTagCompound nbt) {

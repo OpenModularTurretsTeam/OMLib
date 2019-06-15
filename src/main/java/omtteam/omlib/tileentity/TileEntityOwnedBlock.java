@@ -19,8 +19,8 @@ import static omtteam.omlib.util.player.PlayerUtil.getPlayerUUID;
 @SuppressWarnings({"WeakerAccess", "unused"})
 @MethodsReturnNonnullByDefault
 public abstract class TileEntityOwnedBlock extends TileEntityBase implements IHasOwner {
-    private Player owner;
     protected boolean dropBlock = false;
+    private Player owner;
 
     @Override
     @ParametersAreNonnullByDefault
