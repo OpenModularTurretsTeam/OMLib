@@ -65,7 +65,6 @@ public class OMLibNames {
             public static final String TEXT_TRUSTED_PLAYER = "tooltip.omtteam.omlib:tp_text_field";
             public static final String INFO_ACCESS_LEVEL = "tooltip.omtteam.omlib:info_access_level";
             public static final String TRUSTED_PLAYER_GUI = "tooltip.omtteam.omlib:trusted_player_gui";
-
         }
     }
 }

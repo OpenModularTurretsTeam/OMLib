@@ -59,7 +59,6 @@ public abstract class BlockAbstractTileEntity extends BlockAbstract {
         return EnumBlockRenderType.MODEL;
     }
 
-
     protected void dropItems(World worldIn, BlockPos pos) {
         if (worldIn.getTileEntity(pos) instanceof TileEntityContainerElectric) {
             TileEntityContainerElectric entity = (TileEntityContainerElectric) worldIn.getTileEntity(pos);
