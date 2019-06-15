@@ -84,5 +84,4 @@ public class TileEntityCable extends TileEntityBase implements INetworkCable, ID
     public Player getOwner() {
         return network.getOwner();
     }
-
 }

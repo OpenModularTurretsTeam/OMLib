@@ -24,6 +24,10 @@ public class TOPCompatibility {
         FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "omtteam.omlib.compatibility.theoneprobe.TOPCompatibility$GetTheOneProbe");
     }
 
+    public static String getLocalizationString(String unloc) {
+        return IProbeInfo.STARTLOC + unloc + IProbeInfo.ENDLOC;
+    }
+
     public static class GetTheOneProbe implements com.google.common.base.Function<ITheOneProbe, Void> {
         static ITheOneProbe probe;
 
@@ -56,9 +60,5 @@ public class TOPCompatibility {
             });
             return null;
         }
-    }
-
-    public static String getLocalizationString(String unloc) {
-        return IProbeInfo.STARTLOC + unloc + IProbeInfo.ENDLOC;
     }
 }
