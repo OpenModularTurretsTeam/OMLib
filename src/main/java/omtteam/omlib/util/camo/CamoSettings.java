@@ -3,8 +3,8 @@ package omtteam.omlib.util.camo;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 
-import static omtteam.omlib.util.BlockUtil.getBlockStateFromNBT;
-import static omtteam.omlib.util.BlockUtil.writeBlockFromStateToNBT;
+import static omtteam.omlib.util.world.BlockUtil.getBlockStateFromNBT;
+import static omtteam.omlib.util.world.BlockUtil.writeBlockFromStateToNBT;
 
 public class CamoSettings {
     protected IBlockState camoBlockState;

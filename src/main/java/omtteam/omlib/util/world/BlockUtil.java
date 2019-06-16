@@ -1,4 +1,4 @@
-package omtteam.omlib.util;
+package omtteam.omlib.util.world;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

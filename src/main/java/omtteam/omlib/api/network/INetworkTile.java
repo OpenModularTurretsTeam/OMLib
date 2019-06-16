@@ -5,7 +5,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import omtteam.omlib.handler.OMLibEventHandler;
-import omtteam.omlib.util.WorldUtil;
+import omtteam.omlib.util.world.WorldUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
