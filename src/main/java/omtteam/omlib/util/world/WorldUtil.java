@@ -1,4 +1,4 @@
-package omtteam.omlib.util;
+package omtteam.omlib.util.world;
 
 import com.google.common.base.Predicates;
 import net.minecraft.block.state.IBlockState;
