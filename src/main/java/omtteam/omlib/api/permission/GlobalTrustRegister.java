@@ -247,5 +247,4 @@ public class GlobalTrustRegister implements ICapabilityProvider, IGlobalTrustReg
         }
         return false;
     }
-
 }

@@ -4,6 +4,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import omtteam.omlib.api.permission.EnumAccessLevel;
 import omtteam.omlib.api.permission.TrustedPlayer;
 import omtteam.omlib.handler.OMConfig;
+import omtteam.omlib.util.RandomUtil;
 import omtteam.omlib.util.player.Player;
 import org.junit.jupiter.api.Test;
 
@@ -53,6 +54,13 @@ class TrustedPlayersManagerTileTest {
 
     @Test
     void checkNBT() {
+        tpm.getTrustedPlayers().clear();
+        RandomUtil.init();
+        for (EnumAccessLevel level : EnumAccessLevel.values()) {
+            Player player = new Player(UUID.randomUUID(), RandomUtil.random.nextLong() + "", "test");
+            TrustedPlayer trustedPlayer = new TrustedPlayer(player, level);
+            tpm.addTrustedPlayer(trustedPlayer);
+        }
         NBTTagCompound tag = new NBTTagCompound();
         tpm.writeToNBT(tag);
         TrustedPlayersManagerTile that = new TrustedPlayersManagerTile(null);
