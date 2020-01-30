@@ -42,6 +42,10 @@ public class Pos {
         this.z = z;
     }
 
+    public BlockPos getBlockPos() {
+        return new BlockPos(this.x, this.y, this.z);
+    }
+
     public double distance(Entity entity) {
         return Math.cbrt(Math.pow(x - entity.posX, 2) + Math.pow(y - entity.posY, 2) + Math.pow(z - entity.posZ, 2));
     }
