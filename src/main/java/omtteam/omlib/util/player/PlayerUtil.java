@@ -45,8 +45,7 @@ public class PlayerUtil {
     @ParametersAreNullableByDefault
     public static boolean isPlayerOP(EntityPlayer player) {
         if (player != null) {
-            return player.getServer() != null &&
-                    player.getServer().getPlayerList().getOppedPlayers().getEntry(player.getGameProfile()).getPermissionLevel() == 4;
+            return player.canUseCommand(4, "");
         }
         return false;
     }
