@@ -31,6 +31,7 @@ public abstract class TileEntityTrustedMachine extends TileEntityMachine impleme
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         trustManager.readFromNBT(tag);
+        trustManager.setOwner(this.getOwner());
     }
 
     @Override
