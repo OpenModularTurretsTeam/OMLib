@@ -17,7 +17,7 @@ import omtteam.omlib.api.gui.StringListBox;
 import omtteam.omlib.api.permission.GlobalTrustRegister;
 import omtteam.omlib.api.permission.ITrustedPlayersManager;
 import omtteam.omlib.api.permission.TrustedPlayer;
-import omtteam.omlib.api.permission.TrustedPlayersManagerGlobal;
+import omtteam.omlib.api.permission.TrustedPlayersManager;
 import omtteam.omlib.api.tile.IHasTrustManager;
 import omtteam.omlib.handler.GUIBackSystem;
 import omtteam.omlib.network.OMLibNetworkingHandler;
@@ -211,7 +211,7 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips, ISuppo
         }
         updateList();
         if (isGlobal) {
-            Map.Entry<Player, TrustedPlayersManagerGlobal> entry = GlobalTrustRegister.instance.getEntryFromName(tpm.getOwner().getName());
+            Map.Entry<Player, TrustedPlayersManager> entry = GlobalTrustRegister.instance.getEntryFromName(tpm.getOwner().getName());
             if (entry != null) {
                 tpm.setTrustedPlayers(entry.getValue().getTrustedPlayers());
             }

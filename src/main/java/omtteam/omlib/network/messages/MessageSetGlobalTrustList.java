@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import omtteam.omlib.api.permission.GlobalTrustRegister;
-import omtteam.omlib.api.permission.TrustedPlayersManagerGlobal;
+import omtteam.omlib.api.permission.TrustedPlayersManager;
 import omtteam.omlib.util.player.Player;
 
 import java.util.HashMap;
@@ -18,7 +18,7 @@ import java.util.Map;
  * Created by nico on 23/05/17.
  */
 public class MessageSetGlobalTrustList implements IMessage {
-    private HashMap<Player, TrustedPlayersManagerGlobal> globalTrustList;
+    private HashMap<Player, TrustedPlayersManager> globalTrustList;
 
     public MessageSetGlobalTrustList() {
     }
@@ -33,7 +33,7 @@ public class MessageSetGlobalTrustList implements IMessage {
         int lengthofMap = buf.readInt();
         for (int i = 0; i < lengthofMap; i++) {
             Player owner = Player.readFromByteBuf(buf);
-            TrustedPlayersManagerGlobal tpm = new TrustedPlayersManagerGlobal(owner);
+            TrustedPlayersManager tpm = new TrustedPlayersManager(owner);
             tpm.readFromByteBuf(buf);
             globalTrustList.put(owner, tpm);
         }
@@ -42,7 +42,7 @@ public class MessageSetGlobalTrustList implements IMessage {
     @Override
     public void toBytes(ByteBuf buf) {
         buf.writeInt(globalTrustList.size());
-        for (Map.Entry<Player, TrustedPlayersManagerGlobal> entry : globalTrustList.entrySet()) {
+        for (Map.Entry<Player, TrustedPlayersManager> entry : globalTrustList.entrySet()) {
             Player owner = entry.getKey();
             Player.writeToByteBuf(owner, buf);
             entry.getValue().writeToByteBuf(buf);

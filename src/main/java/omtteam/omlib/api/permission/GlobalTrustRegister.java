@@ -16,6 +16,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import omtteam.omlib.OMLib;
+import omtteam.omlib.handler.OMConfig;
 import omtteam.omlib.network.OMLibNetworkingHandler;
 import omtteam.omlib.network.messages.MessageSetGlobalTrustList;
 import omtteam.omlib.reference.Reference;
@@ -40,7 +41,7 @@ public class GlobalTrustRegister implements ICapabilityProvider, IGlobalTrustReg
     @SuppressWarnings("CanBeFinal")
     @CapabilityInject(IGlobalTrustRegister.class)
     public static Capability<IGlobalTrustRegister> GLOBAL_TRUST_REGISTER = null;
-    private HashMap<Player, TrustedPlayersManagerGlobal> globalTrustList;
+    private HashMap<Player, TrustedPlayersManager> globalTrustList;
 
     private GlobalTrustRegister() {
         globalTrustList = new HashMap<>();
@@ -83,7 +84,7 @@ public class GlobalTrustRegister implements ICapabilityProvider, IGlobalTrustReg
     public NBTBase serializeNBT() {
         NBTTagCompound nbt = new NBTTagCompound();
         NBTTagList list = new NBTTagList();
-        for (Map.Entry<Player, TrustedPlayersManagerGlobal> entry : globalTrustList.entrySet()) {
+        for (Map.Entry<Player, TrustedPlayersManager> entry : globalTrustList.entrySet()) {
             NBTTagCompound tag = new NBTTagCompound();
             entry.getKey().writeToNBT(tag);
             entry.getValue().writeToNBT(tag);
@@ -101,7 +102,7 @@ public class GlobalTrustRegister implements ICapabilityProvider, IGlobalTrustReg
             for (int i = 0; i < list.tagCount(); i++) {
                 NBTTagCompound tag = list.getCompoundTagAt(i);
                 Player owner = Player.readFromNBT(tag);
-                TrustedPlayersManagerGlobal tpm = new TrustedPlayersManagerGlobal(owner);
+                TrustedPlayersManager tpm = new TrustedPlayersManager(owner);
                 tpm.readFromNBT(tag);
                 globalTrustList.put(owner, tpm);
             }
@@ -110,19 +111,19 @@ public class GlobalTrustRegister implements ICapabilityProvider, IGlobalTrustReg
         }
     }
 
-    public HashMap<Player, TrustedPlayersManagerGlobal> getGlobalTrustList() {
+    public HashMap<Player, TrustedPlayersManager> getGlobalTrustList() {
         return globalTrustList;
     }
 
-    public void setGlobalTrustList(@Nullable HashMap<Player, TrustedPlayersManagerGlobal> ownerShareMap) {
+    public void setGlobalTrustList(@Nullable HashMap<Player, TrustedPlayersManager> ownerShareMap) {
         if (ownerShareMap != null) {
             this.globalTrustList = ownerShareMap;
         }
     }
 
     @Nullable
-    public Map.Entry<Player, TrustedPlayersManagerGlobal> getEntryFromName(String name) {
-        for (Map.Entry<Player, TrustedPlayersManagerGlobal> entry : globalTrustList.entrySet()) {
+    public Map.Entry<Player, TrustedPlayersManager> getEntryFromName(String name) {
+        for (Map.Entry<Player, TrustedPlayersManager> entry : globalTrustList.entrySet()) {
             if (entry.getKey().getName().equals(name)) {
                 return entry;
             }
@@ -131,8 +132,8 @@ public class GlobalTrustRegister implements ICapabilityProvider, IGlobalTrustReg
     }
 
     @Nullable
-    private Map.Entry<Player, TrustedPlayersManagerGlobal> getEntry(Player player) {
-        for (Map.Entry<Player, TrustedPlayersManagerGlobal> entry : globalTrustList.entrySet()) {
+    private Map.Entry<Player, TrustedPlayersManager> getEntry(Player player) {
+        for (Map.Entry<Player, TrustedPlayersManager> entry : globalTrustList.entrySet()) {
             if (entry.getKey().equals(player)) {
                 return entry;
             }
@@ -141,14 +142,15 @@ public class GlobalTrustRegister implements ICapabilityProvider, IGlobalTrustReg
     }
 
     public void addTrustedPlayer(Player owner, Player sharePlayer, EnumAccessLevel accessMode, @Nullable ICommandSender sender) {
-        Map.Entry<Player, TrustedPlayersManagerGlobal> entry = getEntry(owner);
+        Map.Entry<Player, TrustedPlayersManager> entry = getEntry(owner);
         if (owner.equals(sharePlayer)) {
             return;
         }
         if (entry == null) {
-            TrustedPlayersManagerGlobal tpm = new TrustedPlayersManagerGlobal(owner);
-            if (tpm.addTrustedPlayer(sharePlayer.getName())) {
-                tpm.getTrustedPlayer(sharePlayer.getName()).setAccessLevel(accessMode);
+            TrustedPlayersManager tpm = new TrustedPlayersManager(owner);
+            TrustedPlayer trustedPlayer = new TrustedPlayer(sharePlayer);
+            trustedPlayer.setAccessLevel(accessMode);
+            if (tpm.addTrustedPlayer(trustedPlayer)) {
                 if (sender != null) {
                     sender.sendMessage(new TextComponentString("Added player " + sharePlayer.getName() + " to your global trust List!"));
                 }
@@ -174,7 +176,7 @@ public class GlobalTrustRegister implements ICapabilityProvider, IGlobalTrustReg
     }
 
     public void removeTrustedPlayer(Player owner, Player trustedPlayer, @Nullable ICommandSender sender) {
-        Map.Entry<Player, TrustedPlayersManagerGlobal> entry = getEntry(owner);
+        Map.Entry<Player, TrustedPlayersManager> entry = getEntry(owner);
         if (owner.equals(trustedPlayer)) {
             if (sender != null) {
                 sender.sendMessage(new TextComponentString("You cannot add/remove yourself to/from your Share List!"));
@@ -198,9 +200,9 @@ public class GlobalTrustRegister implements ICapabilityProvider, IGlobalTrustReg
 
     public void printTrustedPlayers(Player owner, ICommandSender sender) {
         StringBuilder playerList = new StringBuilder();
-        Map.Entry<Player, TrustedPlayersManagerGlobal> entry = getEntry(owner);
+        Map.Entry<Player, TrustedPlayersManager> entry = getEntry(owner);
         if (entry != null) {
-            TrustedPlayersManagerGlobal tpm = entry.getValue();
+            TrustedPlayersManager tpm = entry.getValue();
             for (TrustedPlayer trustedPlayer : tpm.getTrustedPlayers()) {
                 playerList.append(trustedPlayer.getName()).append(" ");
             }
@@ -210,33 +212,46 @@ public class GlobalTrustRegister implements ICapabilityProvider, IGlobalTrustReg
 
     @Nullable
     public TrustedPlayer getTrustedPlayer(Player owner, Player toCheck) {
-        Map.Entry<Player, TrustedPlayersManagerGlobal> entry = getEntry(owner);
+        Map.Entry<Player, TrustedPlayersManager> entry = getEntry(owner);
         if (entry != null) {
-            return entry.getValue().getTrustedPlayer(toCheck);
+            for (TrustedPlayer trustedPlayer : entry.getValue().getTrustedPlayers()) {
+                if ((OMConfig.GENERAL.offlineModeSupport && trustedPlayer.getName().equals(toCheck.getName())) ||
+                        (trustedPlayer.getUuid() != null && trustedPlayer.getUuid().equals(toCheck.getUuid()))) {
+                    return trustedPlayer;
+                }
+            }
         }
         return null;
     }
 
     @Nullable
     public TrustedPlayer getTrustedPlayer(Player owner, String toCheck) {
-        Map.Entry<Player, TrustedPlayersManagerGlobal> entry = getEntry(owner);
+        Map.Entry<Player, TrustedPlayersManager> entry = getEntry(owner);
         if (entry != null) {
-            return entry.getValue().getTrustedPlayer(toCheck);
+            for (TrustedPlayer trustedPlayer : entry.getValue().getTrustedPlayers()) {
+                if (trustedPlayer.getName().equals(toCheck)) {
+                    return trustedPlayer;
+                }
+            }
         }
         return null;
     }
 
     @Nullable
     public TrustedPlayer getTrustedPlayer(Player owner, UUID uuid) {
-        Map.Entry<Player, TrustedPlayersManagerGlobal> entry = getEntry(owner);
+        Map.Entry<Player, TrustedPlayersManager> entry = getEntry(owner);
         if (entry != null) {
-            return entry.getValue().getTrustedPlayer(uuid);
+            for (TrustedPlayer trustedPlayer : entry.getValue().getTrustedPlayers()) {
+                if (trustedPlayer.getUuid().equals(uuid)) {
+                    return trustedPlayer;
+                }
+            }
         }
         return null;
     }
 
     public boolean changePermission(Player owner, String player, EnumAccessLevel level) {
-        Map.Entry<Player, TrustedPlayersManagerGlobal> entry = getEntry(owner);
+        Map.Entry<Player, TrustedPlayersManager> entry = getEntry(owner);
         if (entry != null) {
             for (TrustedPlayer trustedPlayer : entry.getValue().getTrustedPlayers()) {
                 if (trustedPlayer.getName().equalsIgnoreCase(player)) {

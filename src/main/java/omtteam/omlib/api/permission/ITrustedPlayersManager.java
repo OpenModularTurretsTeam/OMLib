@@ -23,8 +23,6 @@ public interface ITrustedPlayersManager extends IHasOwner {
     @ParametersAreNonnullByDefault
     boolean addTrustedPlayer(String name);
 
-    Player getOwner();
-
     default boolean addTrustedPlayer(TrustedPlayer player) {
         for (TrustedPlayer trustedPlayer : getTrustedPlayers()) {
             if (trustedPlayer.equals(player)) {
