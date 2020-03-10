@@ -10,7 +10,6 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import omtteam.omlib.api.network.ISyncable;
 import omtteam.omlib.api.permission.EnumAccessLevel;
 import omtteam.omlib.api.permission.GlobalTrustRegister;
 import omtteam.omlib.api.tile.IHasTrustManager;
@@ -81,8 +80,7 @@ public class MessageAddTrustedPlayer implements IMessage {
                     }
                     if (machine != null && PlayerUtil.isPlayerAdmin(player, machine.getTrustManager())) {
                         machine.getTrustManager().addTrustedPlayer(message.player);
-                        if (machine instanceof ISyncable)
-                            machine.informUpdate();
+                        machine.informUpdate();
                     }
                 } else if (message.isGlobal) {
                     GlobalTrustRegister.instance.addTrustedPlayer(message.owner, new Player(null, message.player), EnumAccessLevel.NONE, null);
