@@ -6,6 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import omtteam.omlib.api.tile.IHasTrustManager;
+import omtteam.omlib.client.gui.TargetSettingsGUI;
 import omtteam.omlib.client.gui.TrustedPlayersGUI;
 
 public class OMGuiHandler implements IGuiHandler {
@@ -41,6 +42,8 @@ public class OMGuiHandler implements IGuiHandler {
         switch (id) {
             case 0:
                 return new TrustedPlayersGUI(player.inventory, (IHasTrustManager) tileEntity);
+            case 1:
+                return new TargetSettingsGUI(player.inventory, tileEntity);
             default:
                 return null;
         }

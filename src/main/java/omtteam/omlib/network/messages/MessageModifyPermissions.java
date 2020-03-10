@@ -10,10 +10,10 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import omtteam.omlib.api.network.ISyncable;
 import omtteam.omlib.api.permission.EnumAccessLevel;
 import omtteam.omlib.api.permission.GlobalTrustRegister;
 import omtteam.omlib.api.tile.IHasTrustManager;
-import omtteam.omlib.network.ISyncable;
 import omtteam.omlib.util.player.Player;
 import omtteam.omlib.util.player.PlayerUtil;
 
@@ -87,7 +87,7 @@ public class MessageModifyPermissions implements IMessage {
                     if (machine != null && PlayerUtil.isPlayerAdmin(player, machine)) {
                         machine.getTrustManager().changePermission(message.player, message.change);
                         if (machine instanceof ISyncable)
-                            ((ISyncable) machine).sendMessageToAllTracking();
+                            machine.informUpdate();
                     }
                 } else if (message.isGlobal) {
                     GlobalTrustRegister.instance.changePermission(message.owner, message.player, EnumAccessLevel.NONE);

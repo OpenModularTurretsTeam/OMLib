@@ -1,11 +1,7 @@
 package omtteam.omlib.util.player;
 
-import omtteam.omlib.api.permission.EnumAccessLevel;
-import omtteam.omlib.api.permission.EnumPlayerAccessType;
-import omtteam.omlib.api.permission.IHasOwner;
-import omtteam.omlib.api.permission.TrustedPlayer;
+import omtteam.omlib.api.permission.*;
 import omtteam.omlib.api.tile.IHasTrustManager;
-import omtteam.omlib.api.tile.TrustedPlayersManagerTile;
 import omtteam.omlib.handler.OMConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -178,20 +174,25 @@ class PlayerUtilTest {
 
     class OwnedBlock implements IHasOwner, IHasTrustManager {
         final Player owner;
-        final TrustedPlayersManagerTile tile = new TrustedPlayersManagerTile(null);
+        final TrustedPlayersManager tile = new TrustedPlayersManager(null);
 
         OwnedBlock(Player owner) {
             this.owner = owner;
         }
 
         @Override
-        public TrustedPlayersManagerTile getTrustManager() {
+        public TrustedPlayersManager getTrustManager() {
             return tile;
         }
 
         @Override
         public Player getOwner() {
             return owner;
+        }
+
+        @Override
+        public void informUpdate() {
+            // nothing to do here
         }
     }
 }

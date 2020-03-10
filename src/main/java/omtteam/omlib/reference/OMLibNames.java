@@ -5,6 +5,7 @@ package omtteam.omlib.reference;
  * This Class
  */
 public class OMLibNames {
+
     public static class Items {
         public static final String debugTool = "debug_tool";
         public static final String fakeSword = "fake_sword";
@@ -17,6 +18,7 @@ public class OMLibNames {
 
     public static class Textures {
         public static final String trustedPlayers = Reference.MOD_ID + ":textures/gui/trusted_players.png";
+        public static final String targetingSettings = Reference.MOD_ID + ":textures/gui/targeting_settings.png";
     }
 
     public static class Localizations {
@@ -51,6 +53,10 @@ public class OMLibNames {
             public static final String ADD_TRUSTED_PLAYER = "gui.omtteam.omlib:add_trusted_player";
             public static final String PERMISSIONS = "gui.omtteam.omlib:permissions";
             public static final String LIGHT_VALUES = "gui.omtteam.omlib:light_values";
+            public static final String ATTACK_PLAYERS = "gui.omtteam.omlib:attack_players";
+            public static final String ATTACK_MOBS = "gui.omtteam.omlib:attack_mobs";
+            public static final String ATTACK_NEUTRALS = "gui.omtteam.omlib:attack_neutrals";
+            public static final String TARGETING_OPTIONS = "gui.omtteam.omlib:targeting_options";
         }
 
         public static class Tooltip {
@@ -65,6 +71,13 @@ public class OMLibNames {
             public static final String TEXT_TRUSTED_PLAYER = "tooltip.omtteam.omlib:tp_text_field";
             public static final String INFO_ACCESS_LEVEL = "tooltip.omtteam.omlib:info_access_level";
             public static final String TRUSTED_PLAYER_GUI = "tooltip.omtteam.omlib:trusted_player_gui";
+            public static final String TARGET_NEUTRALS = "tooltip.omtteam.omlib:target_neutrals";
+            public static final String TARGET_MOBS = "tooltip.omtteam.omlib:target_mobs";
+            public static final String TARGET_PLAYERS = "tooltip.omtteam.omlib:target_players";
+        }
+
+        public static class Text {
+            public static final String STATUS_PERMISSION = "text.omtteam.omlib:status_permission";
         }
     }
 }

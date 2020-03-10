@@ -9,22 +9,36 @@ import omtteam.omlib.util.player.PlayerUtil;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Keridos on 09/02/17.
  * This Class is the non linked version of a TPM, when adding player, csome checks need to be made before calling addTP.
  */
-public class TrustedPlayersManagerGlobal implements ITrustedPlayersManager {
+public class TrustedPlayersManager implements ITrustedPlayersManager {
     protected List<TrustedPlayer> trustedPlayers = new ArrayList<>();
     Player owner;
+    boolean useGlobal;
+    TileEntity tile;
 
-    public TrustedPlayersManagerGlobal(Player owner) {
+    public TrustedPlayersManager(Player owner) {
         this.owner = owner;
+        this.useGlobal = false;
+    }
+
+    public TrustedPlayersManager(Player owner, TileEntity tile) {
+        this.owner = owner;
+        this.useGlobal = false;
+        this.tile = tile;
     }
 
     @Override
     public Player getOwner() {
         return this.owner;
+    }
+
+    public void setOwner(Player owner) {
+        this.owner = owner;
     }
 
     @Override
@@ -63,6 +77,30 @@ public class TrustedPlayersManagerGlobal implements ITrustedPlayersManager {
     }
 
     @Override
+    public TrustedPlayer getTrustedPlayer(String name) {
+        if (useGlobal) {
+            return GlobalTrustRegister.instance.getTrustedPlayer(owner, name);
+        }
+        return ITrustedPlayersManager.super.getTrustedPlayer(name);
+    }
+
+    @Override
+    public TrustedPlayer getTrustedPlayer(UUID uuid) {
+        if (useGlobal) {
+            return GlobalTrustRegister.instance.getTrustedPlayer(owner, uuid);
+        }
+        return ITrustedPlayersManager.super.getTrustedPlayer(uuid);
+    }
+
+    @Override
+    public TrustedPlayer getTrustedPlayer(Player player) {
+        if (useGlobal) {
+            return GlobalTrustRegister.instance.getTrustedPlayer(owner, player);
+        }
+        return ITrustedPlayersManager.super.getTrustedPlayer(player);
+    }
+
+    @Override
     public List<TrustedPlayer> getTrustedPlayers() {
         return trustedPlayers;
     }
@@ -74,21 +112,21 @@ public class TrustedPlayersManagerGlobal implements ITrustedPlayersManager {
 
     @Override
     public boolean useGlobal() {
-        return false;
+        return useGlobal;
     }
 
     @Override
     public void setUseGlobal(boolean useGlobal) {
-        //Do nothing;
+        this.useGlobal = useGlobal;
     }
 
     @Override
     public boolean hasTile() {
-        return false;
+        return tile != null;
     }
 
     @Override
     public TileEntity getTile() {
-        return null;
+        return tile;
     }
 }

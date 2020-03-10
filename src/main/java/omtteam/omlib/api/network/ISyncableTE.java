@@ -1,4 +1,4 @@
-package omtteam.omlib.network;
+package omtteam.omlib.api.network;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
@@ -10,6 +10,8 @@ public interface ISyncableTE extends ISyncable {
     List<EntityPlayerMP> getSyncPlayerList();
 
     TileEntity getTE();
+
+    void informUpdate();
 
     default void scrubSyncPlayerList() {
         ListIterator<EntityPlayerMP> iter = getSyncPlayerList().listIterator();

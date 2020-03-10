@@ -3,6 +3,7 @@ package omtteam.omlib.api.tile;
 import net.minecraft.nbt.NBTTagCompound;
 import omtteam.omlib.api.permission.EnumAccessLevel;
 import omtteam.omlib.api.permission.TrustedPlayer;
+import omtteam.omlib.api.permission.TrustedPlayersManager;
 import omtteam.omlib.handler.OMConfig;
 import omtteam.omlib.util.RandomUtil;
 import omtteam.omlib.util.player.Player;
@@ -13,8 +14,8 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-class TrustedPlayersManagerTileTest {
-    private final TrustedPlayersManagerTile tpm = new TrustedPlayersManagerTile(null);
+class TrustedPlayersManagerTest {
+    private final TrustedPlayersManager tpm = new TrustedPlayersManager(null);
 
     @Test
     void testTrustedPlayerAdditionAndRemoval() {
@@ -63,8 +64,8 @@ class TrustedPlayersManagerTileTest {
         }
         NBTTagCompound tag = new NBTTagCompound();
         tpm.writeToNBT(tag);
-        TrustedPlayersManagerTile that = new TrustedPlayersManagerTile(null);
+        TrustedPlayersManager that = new TrustedPlayersManager(null);
         that.readFromNBT(tag);
-        assertEquals(tpm.trustedPlayers, that.trustedPlayers);
+        assertEquals(tpm.getTrustedPlayers(), that.getTrustedPlayers());
     }
 }
