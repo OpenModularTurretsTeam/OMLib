@@ -54,6 +54,8 @@ public class CommandShareOwner extends CommandBase {
                         Player sharePlayer = new Player(getPlayerUUID(shareName), shareName);
                         Player owner = new Player(getPlayerUUID(sender.getName()), sender.getName());
                         OwnerShareRegister.instance.addSharePlayer(owner, sharePlayer, sender);
+                    } else {
+                        sender.sendMessage(new TextComponentString("Error while adding " + shareName + " to your Share List!"));
                     }
                     break;
                 case "del":

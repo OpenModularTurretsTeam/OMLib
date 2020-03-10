@@ -40,7 +40,7 @@ public class OwnerShareRegister implements ICapabilityProvider, IOwnerShareRegis
     ResourceLocation CAP_KEY = new ResourceLocation(Reference.MOD_ID, "owner_share");
     @SuppressWarnings("CanBeFinal")
     @CapabilityInject(IOwnerShareRegister.class)
-    public static Capability<IOwnerShareRegister> SERVER_REGISTER = null;
+    public static Capability<IOwnerShareRegister> OWNER_SHARE_REGISTER = null;
     private HashMap<Player, ArrayList<Player>> ownerShareMap;
 
     private OwnerShareRegister() {
@@ -49,7 +49,7 @@ public class OwnerShareRegister implements ICapabilityProvider, IOwnerShareRegis
 
     @SubscribeEvent
     public static void onWorldCaps(AttachCapabilitiesEvent<World> event) {
-        if (SERVER_REGISTER != null && !event.getObject().isRemote && event.getObject().provider.getDimension() == 1) {
+        if (OWNER_SHARE_REGISTER != null && !event.getObject().isRemote && event.getObject().provider.getDimension() == 0) {
             event.addCapability(CAP_KEY, instance);
         }
     }
@@ -70,14 +70,14 @@ public class OwnerShareRegister implements ICapabilityProvider, IOwnerShareRegis
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-        return capability == SERVER_REGISTER;
+        return capability == OWNER_SHARE_REGISTER;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     @Nullable
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-        return (T) (capability == SERVER_REGISTER ? this : null);
+        return (T) (capability == OWNER_SHARE_REGISTER ? this : null);
     }
 
     @Override
@@ -154,6 +154,9 @@ public class OwnerShareRegister implements ICapabilityProvider, IOwnerShareRegis
     public void addSharePlayer(Player owner, Player sharePlayer, @Nullable ICommandSender sender) {
         Map.Entry<Player, ArrayList<Player>> entryFound = null;
         if (owner.equals(sharePlayer)) {
+            if (sender != null) {
+                sender.sendMessage(new TextComponentString("Cannot add yourself to the list!"));
+            }
             return;
         }
         for (Map.Entry<Player, ArrayList<Player>> entry : ownerShareMap.entrySet()) {
@@ -174,8 +177,13 @@ public class OwnerShareRegister implements ICapabilityProvider, IOwnerShareRegis
                 if (sender != null) {
                     sender.sendMessage(new TextComponentString("Added player " + sharePlayer.getName() + " to your Share List!"));
                 }
+            } else {
+                if (sender != null) {
+                    sender.sendMessage(new TextComponentString("Error while adding " + sharePlayer.getName() + " to your Share List! Already on list!"));
+                }
             }
         }
+
         OMLibNetworkingHandler.sendMessageToAllPlayers(new MessageSetSharePlayerList(this));
     }
 
