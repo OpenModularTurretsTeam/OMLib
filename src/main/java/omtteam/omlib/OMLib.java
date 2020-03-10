@@ -11,7 +11,6 @@ import omtteam.omlib.handler.OMGuiHandler;
 import omtteam.omlib.init.OMLibBlocks;
 import omtteam.omlib.proxy.CommonProxy;
 import omtteam.omlib.reference.Reference;
-import omtteam.omlib.util.RandomUtil;
 import omtteam.omlib.util.command.CommandChangeOwner;
 import omtteam.omlib.util.command.CommandShareOwner;
 import omtteam.omlib.util.command.CommandToggleDebug;
@@ -44,7 +43,6 @@ public class OMLib {
         logger = event.getModLog();
         OMLibBlocks.initTileEntities();
         checkForMods();
-        RandomUtil.init();
         proxy.preInit();
         NetworkRegistry.INSTANCE.registerGuiHandler(this, OMGuiHandler.getInstance());
     }
