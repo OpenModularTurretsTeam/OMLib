@@ -43,7 +43,7 @@ public class CommandShareOwner extends CommandBase {
         try {
             String shareName;
             String command = params[0];
-            if (params.length < 2 && command.equalsIgnoreCase("add") || command.equalsIgnoreCase("del")) {
+            if (params.length < 2 && (command.equalsIgnoreCase("add") || command.equalsIgnoreCase("del"))) {
                 addChatMessage(sender, new TextComponentString(getUsage(sender)));
                 return;
             }
@@ -55,7 +55,7 @@ public class CommandShareOwner extends CommandBase {
                         Player owner = new Player(getPlayerUUID(sender.getName()), sender.getName());
                         OwnerShareRegister.instance.addSharePlayer(owner, sharePlayer, sender);
                     } else {
-                        sender.sendMessage(new TextComponentString("Error while adding " + shareName + " to your Share List!"));
+                        sender.sendMessage(new TextComponentString("Error while adding " + shareName + " to your share list!"));
                     }
                     break;
                 case "del":
@@ -64,6 +64,8 @@ public class CommandShareOwner extends CommandBase {
                         Player sharePlayer = new Player(getPlayerUUID(shareName), shareName);
                         Player owner = new Player(getPlayerUUID(sender.getName()), sender.getName());
                         OwnerShareRegister.instance.removeSharePlayer(owner, sharePlayer, sender);
+                    } else {
+                        sender.sendMessage(new TextComponentString("Error while removing " + shareName + " from your share list!"));
                     }
                     break;
                 case "list":

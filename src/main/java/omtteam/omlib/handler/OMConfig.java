@@ -10,9 +10,9 @@ public class OMConfig {
 
     public static class ConfigGeneral {
         @Config.Comment("Can OPs access all owned blocks?")
-        public boolean canOPAccessOwnedBlocks;
+        public boolean canOPAccessOwnedBlocks = false;
         @Config.Comment("Should some blocks write debug messages on interaction?")
-        public boolean doDebugChat;
+        public boolean doDebugChat = false;
         @Config.RequiresMcRestart
         @Config.Comment("Which recipes to use. Valid values: auto, enderio, mekanism, vanilla")
         public String recipes = "auto";
