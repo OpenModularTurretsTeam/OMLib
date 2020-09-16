@@ -13,6 +13,8 @@ public class OMConfig {
         public boolean canOPAccessOwnedBlocks = false;
         @Config.Comment("Should some blocks write debug messages on interaction?")
         public boolean doDebugChat = false;
+        @Config.Comment("Should OpenModular Mods print out debug messages in log? (Warning, spammy)")
+        public boolean debugLogging = false;
         @Config.RequiresMcRestart
         @Config.Comment("Which recipes to use. Valid values: auto, enderio, mekanism, vanilla")
         public String recipes = "auto";
