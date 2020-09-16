@@ -16,8 +16,11 @@ import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -33,6 +36,7 @@ import omtteam.omlib.items.IDrawOutline;
 import omtteam.omlib.items.IDrawOutlineBase;
 import omtteam.omlib.network.OMLibNetworkingHandler;
 import omtteam.omlib.network.messages.MessageSetSharePlayerList;
+import omtteam.omlib.reference.Reference;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -47,7 +51,7 @@ import static omtteam.omlib.util.RenderUtil.drawHighlightBox;
  */
 public class OMLibEventHandler {
     private static OMLibEventHandler instance;
-    private List<OMLibNetwork> networks = new ArrayList<>();
+    private final List<OMLibNetwork> networks = new ArrayList<>();
 
     private OMLibEventHandler() {
     }
@@ -57,6 +61,13 @@ public class OMLibEventHandler {
             instance = new OMLibEventHandler();
         }
         return instance;
+    }
+
+    @SubscribeEvent
+    public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+        if (event.getModID().equals(Reference.MOD_ID)) {
+            ConfigManager.sync(Reference.MOD_ID, Config.Type.INSTANCE);
+        }
     }
 
     @SubscribeEvent
