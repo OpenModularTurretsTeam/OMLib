@@ -42,9 +42,11 @@ public class Player {
     }
 
     public static void writeToByteBuf(Player player, ByteBuf buf) {
-        ByteBufUtils.writeUTF8String(buf, player.getName());
-        ByteBufUtils.writeUTF8String(buf, player.getUuid().toString());
-        ByteBufUtils.writeUTF8String(buf, player.getTeamName());
+        if (player != null) {
+            ByteBufUtils.writeUTF8String(buf, player.getName());
+            ByteBufUtils.writeUTF8String(buf, player.getUuid().toString());
+            ByteBufUtils.writeUTF8String(buf, player.getTeamName());
+        }
     }
 
     public static Player readFromByteBuf(ByteBuf buf) {
