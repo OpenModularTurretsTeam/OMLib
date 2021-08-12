@@ -18,6 +18,12 @@ public class Pos {
         this.z = pos.getZ();
     }
 
+    public Pos(Entity entity) {
+        this.x = entity.posX;
+        this.y = entity.posY;
+        this.z = entity.posZ;
+    }
+
     public double getX() {
         return x;
     }

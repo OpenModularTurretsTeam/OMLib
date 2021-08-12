@@ -57,6 +57,7 @@ public class OMLibNames {
             public static final String ATTACK_MOBS = "gui.omtteam.omlib:attack_mobs";
             public static final String ATTACK_NEUTRALS = "gui.omtteam.omlib:attack_neutrals";
             public static final String TARGETING_OPTIONS = "gui.omtteam.omlib:targeting_options";
+            public static final String DAMAGE = "gui.omtteam.omlib:damage";
         }
 
         public static class Tooltip {
