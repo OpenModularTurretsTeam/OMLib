@@ -28,44 +28,44 @@ apply plugin: 'java'
 
 repositories {
     maven { // The repo from which to get waila
-        url "http://mobiusstrip.eu/maven"
+        url "https://mobiusstrip.eu/maven"
     }
     maven { // the repo from which to get NEI and stuff
-        url "http://chickenbones.net/maven/"
+        url "https://chickenbones.net/maven/"
     }
     maven {
-        url "http://maven.cil.li/"
+        url "https://maven.cil.li/"
     }
     maven { // the repo from which to get EnderIO and tterrags mods
-        url "http://maven.tterrag.com/"
+        url "https://maven.tterrag.com/"
     }
     maven { // the repo from which to get EnderIO and tterrags mods
-        url "http://maven2.tterrag.com/"
+        url "https://maven2.tterrag.com/"
     }
     maven {
         name "ic2"
-        url "http://maven.ic2.player.to/"
+        url "https://maven.ic2.player.to/"
     }
     maven {
-        url "http://tehnut.info/maven"
+        url "https://tehnut.info/maven"
     }
     maven {
-        url "http://maven.ironhide.de/"
+        url "https://maven.ironhide.de/"
     }
     maven { // JEI
-        url "http://dvs1.progwml6.com/files/maven"
+        url "https://dvs1.progwml6.com/files/maven"
     }
-    maven { url = "http://dl.tsr.me/artifactory/libs-release-local" }
+    maven { url = "https://dl.tsr.me/artifactory/libs-release-local" }
 
     maven { // CoFH
         name = "Covers Maven"
-        url = "http://maven.covers1624.net"
+        url = "https://maven.covers1624.net"
     }
     maven {
-        url 'http://maven.mcmoddev.com'
+        url 'https://maven.mcmoddev.com'
     }
     maven {
-        url = "http://files.minecraftforge.net/maven"
+        url = "https://files.minecraftforge.net/maven"
     }
 }
 

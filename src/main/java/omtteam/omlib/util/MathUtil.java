@@ -1,9 +1,12 @@
 package omtteam.omlib.util;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import omtteam.omlib.util.world.Pos;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -34,6 +37,19 @@ public class MathUtil {
                 return new AxisAlignedBB(box.maxY, box.minZ, box.minX, box.minY, box.maxZ, box.maxX);
         }
         return box;
+    }
+    
+    public static AxisAlignedBB getAABBAroundBlockPos(BlockPos pos, int range) {
+        return getAABBAroundPos(new Pos(pos), range);
+    }
+
+    public static AxisAlignedBB getAABBAroundEntity(Entity entity, int range) {
+        return getAABBAroundPos(new Pos(entity), range);
+    }
+
+    public static AxisAlignedBB getAABBAroundPos(Pos pos, int range) {
+        return new AxisAlignedBB(pos.getX() - range, pos.getY() - range, pos.getZ() - range,
+                                 pos.getX() + range, pos.getY() + range, pos.getZ() + range);
     }
 
     public static Vec3d getVectorFromYawPitch(float yaw, float pitch) {

@@ -33,6 +33,8 @@ gui.omtteam.omlib:access_type_trusted=Vertrauter Spieler
 gui.omtteam.omlib:access_type_owner=Besitzer
 gui.omtteam.omlib:access_type_op=OP
 gui.omtteam.omlib:light_values=Licht Einstellungen
+gui.omtteam.omlib:targeting_options=Zieloptionen
+gui.omtteam.omlib:damage=Schaden
 
 tooltip.omtteam.omlib:add_trusted_player=Fügt den Spieler der vertrauten Spieler Liste hinzu.
 tooltip.omtteam.omlib:remove_trusted_player=Entfernt den angezeigten Spieler aus der Liste.
@@ -45,5 +47,13 @@ tooltip.omtteam.omlib:tp_increase_access=Zugriffslevel für ausgewählten Spiele
 tooltip.omtteam.omlib:tp_text_field=Name des vertrauten Spielers, der hinzugefügt werden soll.
 tooltip.omtteam.omlib:info_access_level=Zeigt Zugriffslevel des ausgewählten Spielers an, falls ausgewählt.
 tooltip.omtteam.omlib:trusted_player_gui=Zeige die vertraute Spieler Verwaltungs GUI an.
+tooltip.omtteam.omlib:target_mobs=Block greift Mobs an.
+tooltip.omtteam.omlib:target_neutrals=Block greift passive Kreaturen an.
+tooltip.omtteam.omlib:target_players=Block greift (nicht vertraute) Spieler an.
+text.omtteam.omlib:status_permission=Dir fehlt dazu die Berechtigung.
+
 
 item.debug_tool.name=Debug Werkzeug
+
+
+
