@@ -16,8 +16,6 @@ public class OMConfig {
         @Config.RequiresMcRestart
         @Config.Comment("Which recipes to use. Valid values: auto, enderio, mekanism, vanilla")
         public String recipes = "auto";
-        @Config.Comment("Enable compat for offline mode servers?")
-        public boolean offlineModeSupport = false;
         @Config.Comment("Is EU support (IndustrialCraft 2 Energy) enabled?")
         public boolean EUSupport = true;
         @Config.Comment("How much RF is one EU?")

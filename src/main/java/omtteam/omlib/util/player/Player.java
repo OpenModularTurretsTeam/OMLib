@@ -7,7 +7,7 @@ import net.minecraft.scoreboard.Team;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
-import omtteam.omlib.handler.OMConfig;
+import omtteam.omlib.util.GeneralUtil;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -92,8 +92,8 @@ public class Player {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Player player = (Player) o;
-        return (!OMConfig.GENERAL.offlineModeSupport ? getUuid().equals(player.getUuid())
-                : getName().toLowerCase().equals(player.getName().toLowerCase()));
+        return (GeneralUtil.isServerInOnlineMode() ? getUuid().equals(player.getUuid())
+                : getName().equalsIgnoreCase(player.getName()));
     }
 
     @Override
@@ -106,6 +106,9 @@ public class Player {
     @Nullable
     public EntityPlayer getEntityPlayer() {
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+        if (!server.isServerInOnlineMode()) {
+            return server.getPlayerList().getPlayerByUsername(this.name);
+        }
         return server.getPlayerList().getPlayerByUUID(this.uuid);
     }
 

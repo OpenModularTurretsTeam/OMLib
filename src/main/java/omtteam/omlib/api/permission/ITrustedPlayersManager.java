@@ -4,8 +4,8 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import omtteam.omlib.handler.OMConfig;
 import omtteam.omlib.util.DebugHandler;
+import omtteam.omlib.util.GeneralUtil;
 import omtteam.omlib.util.player.Player;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -31,7 +31,7 @@ public interface ITrustedPlayersManager extends IHasOwner {
                 return false;
             }
         }
-        if (!OMConfig.GENERAL.offlineModeSupport && player.getUuid() == null) {
+        if (GeneralUtil.isServerInOnlineMode() && player.getUuid() == null) {
             return false;
         }
         getTrustedPlayers().add(player);
@@ -70,7 +70,7 @@ public interface ITrustedPlayersManager extends IHasOwner {
 
     default TrustedPlayer getTrustedPlayer(Player player) {
         for (TrustedPlayer trustedPlayer : getTrustedPlayers()) {
-            if ((OMConfig.GENERAL.offlineModeSupport && trustedPlayer.getName().equals(player.getName())) ||
+            if ((!GeneralUtil.isServerInOnlineMode() && trustedPlayer.getName().equals(player.getName())) ||
                     (trustedPlayer.getUuid() != null && trustedPlayer.getUuid().equals(player.getUuid()))) {
                 return trustedPlayer;
             }

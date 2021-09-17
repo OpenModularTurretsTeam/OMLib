@@ -1,8 +1,8 @@
 package omtteam.omlib.api.permission;
 
 import net.minecraft.tileentity.TileEntity;
-import omtteam.omlib.handler.OMConfig;
 import omtteam.omlib.util.DebugHandler;
+import omtteam.omlib.util.GeneralUtil;
 import omtteam.omlib.util.player.Player;
 import omtteam.omlib.util.player.PlayerUtil;
 
@@ -31,7 +31,7 @@ public class TrustedPlayersManagerGlobal implements ITrustedPlayersManager {
     @ParametersAreNonnullByDefault
     public boolean addTrustedPlayer(String name) {
         Player player = PlayerUtil.getPlayerFromUsernameCache(name);
-        if (player == null && !OMConfig.GENERAL.offlineModeSupport) {
+        if (player == null && GeneralUtil.isServerInOnlineMode()) {
             DebugHandler.getInstance().sendMessageToDebugChat("Did not find player named " + name + "in the username cache.");
             return false;
         } else if (player == null) {
@@ -41,15 +41,15 @@ public class TrustedPlayersManagerGlobal implements ITrustedPlayersManager {
             TrustedPlayer trustedPlayer = new TrustedPlayer(player.getName());
             trustedPlayer.setUuid(player.getUuid());
 
-            if (trustedPlayer.getUuid() != null || OMConfig.GENERAL.offlineModeSupport) {
+            if (trustedPlayer.getUuid() != null || !GeneralUtil.isServerInOnlineMode()) {
                 for (TrustedPlayer existPlayer : trustedPlayers) {
-                    if (OMConfig.GENERAL.offlineModeSupport) {
-                        if (existPlayer.getName().toLowerCase().equals(name.toLowerCase())) {
+                    if (!GeneralUtil.isServerInOnlineMode()) {
+                        if (existPlayer.getName().equalsIgnoreCase(name)) {
                             DebugHandler.getInstance().sendMessageToDebugChat("Already on trust list!");
                             return false;
                         }
                     } else {
-                        if (existPlayer.getName().toLowerCase().equals(name.toLowerCase()) || trustedPlayer.getUuid().equals(existPlayer.getUuid())) {
+                        if (existPlayer.getName().equalsIgnoreCase(name) || trustedPlayer.getUuid().equals(existPlayer.getUuid())) {
                             return false;
                         }
                     }

@@ -4,6 +4,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -99,5 +100,9 @@ public class GeneralUtil {
         return TextFormatting.GRAY + safeLocalize(OMLibNames.Localizations.GUI.SHIFT_DETAIL_START)
                 + " " + TextFormatting.YELLOW + TextFormatting.ITALIC + safeLocalize(OMLibNames.Localizations.GUI.SHIFT)
                 + TextFormatting.RESET + TextFormatting.GRAY + " " + safeLocalize(OMLibNames.Localizations.GUI.SHIFT_DETAIL_END);
+    }
+
+    public static boolean isServerInOnlineMode() {
+        return FMLCommonHandler.instance().getMinecraftServerInstance().isServerInOnlineMode();
     }
 }

@@ -5,7 +5,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
 import omtteam.omlib.api.permission.OwnerShareRegister;
-import omtteam.omlib.handler.OMConfig;
+import omtteam.omlib.util.GeneralUtil;
 import omtteam.omlib.util.player.Player;
 
 import javax.annotation.Nonnull;
@@ -50,7 +50,7 @@ public class CommandShareOwner extends CommandBase {
             switch (command) {
                 case "add":
                     shareName = params[1];
-                    if (!OMConfig.GENERAL.offlineModeSupport && getPlayerUUID(shareName) != null) {
+                    if (GeneralUtil.isServerInOnlineMode() && getPlayerUUID(shareName) != null) {
                         Player sharePlayer = new Player(getPlayerUUID(shareName), shareName);
                         Player owner = new Player(getPlayerUUID(sender.getName()), sender.getName());
                         OwnerShareRegister.instance.addSharePlayer(owner, sharePlayer, sender);
@@ -58,7 +58,7 @@ public class CommandShareOwner extends CommandBase {
                     break;
                 case "del":
                     shareName = params[1];
-                    if (!OMConfig.GENERAL.offlineModeSupport && getPlayerUUID(shareName) != null) {
+                    if (GeneralUtil.isServerInOnlineMode() && getPlayerUUID(shareName) != null) {
                         Player sharePlayer = new Player(getPlayerUUID(shareName), shareName);
                         Player owner = new Player(getPlayerUUID(sender.getName()), sender.getName());
                         OwnerShareRegister.instance.removeSharePlayer(owner, sharePlayer, sender);

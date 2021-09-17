@@ -5,9 +5,9 @@ import net.minecraftforge.common.UsernameCache;
 import omtteam.omlib.api.permission.GlobalTrustRegister;
 import omtteam.omlib.api.permission.ITrustedPlayersManager;
 import omtteam.omlib.api.permission.TrustedPlayer;
-import omtteam.omlib.handler.OMConfig;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 import omtteam.omlib.util.DebugHandler;
+import omtteam.omlib.util.GeneralUtil;
 import omtteam.omlib.util.player.Player;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -57,12 +57,12 @@ public class TrustedPlayersManagerTile implements ITrustedPlayersManager {
                 player = new Player(null, name);
             }
 
-            if (!foundPlayer && !OMConfig.GENERAL.offlineModeSupport) {
+            if (!foundPlayer && GeneralUtil.isServerInOnlineMode()) {
                 DebugHandler.getInstance().sendMessageToDebugChat("Did not find player named " + name + "in the username cache.");
                 return false;
             }
 
-            if (OMConfig.GENERAL.offlineModeSupport) {
+            if (!GeneralUtil.isServerInOnlineMode()) {
                 if (isPlayerOwner(player, ownedBlock)) {
                     DebugHandler.getInstance().sendMessageToDebugChat("You cannot add an owner!");
                     return false;
@@ -74,15 +74,15 @@ public class TrustedPlayersManagerTile implements ITrustedPlayersManager {
                 }
             }
 
-            if (trustedPlayer.getUuid() != null || OMConfig.GENERAL.offlineModeSupport) {
+            if (trustedPlayer.getUuid() != null || !GeneralUtil.isServerInOnlineMode()) {
                 for (TrustedPlayer existPlayer : trustedPlayers) {
-                    if (OMConfig.GENERAL.offlineModeSupport) {
-                        if (existPlayer.getName().toLowerCase().equals(name.toLowerCase())) {
+                    if (!GeneralUtil.isServerInOnlineMode()) {
+                        if (existPlayer.getName().equalsIgnoreCase(name)) {
                             DebugHandler.getInstance().sendMessageToDebugChat("Already on trust list!");
                             return false;
                         }
                     } else {
-                        if (existPlayer.getName().toLowerCase().equals(name.toLowerCase()) || trustedPlayer.getUuid().equals(existPlayer.getUuid())) {
+                        if (existPlayer.getName().equalsIgnoreCase(name) || trustedPlayer.getUuid().equals(existPlayer.getUuid())) {
                             return false;
                         }
                     }

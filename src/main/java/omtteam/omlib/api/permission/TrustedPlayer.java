@@ -1,6 +1,6 @@
 package omtteam.omlib.api.permission;
 
-import omtteam.omlib.handler.OMConfig;
+import omtteam.omlib.util.GeneralUtil;
 import omtteam.omlib.util.player.Player;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -78,7 +78,7 @@ public class TrustedPlayer {
         return hacked == that.hacked &&
                 name.equals(that.name) &&
                 accessLevel == that.accessLevel &&
-                (OMConfig.GENERAL.offlineModeSupport || Objects.equals(uuid, that.uuid));
+                (!GeneralUtil.isServerInOnlineMode() || Objects.equals(uuid, that.uuid));
     }
 
     @Override
