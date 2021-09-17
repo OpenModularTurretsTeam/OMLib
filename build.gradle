@@ -27,45 +27,43 @@ apply plugin: 'idea'
 apply plugin: 'java'
 
 repositories {
+    maven { // The repo from which to get VS
+        url "https://maven.daporkchop.net/"
+    }
     maven { // The repo from which to get waila
-        url "http://mobiusstrip.eu/maven"
+        url "https://www.mobiusstrip.eu/maven"
     }
     maven { // the repo from which to get NEI and stuff
-        url "http://chickenbones.net/maven/"
+        url "https://chickenbones.net/maven/"
     }
     maven {
-        url "http://maven.cil.li/"
+        url "https://maven.cil.li/"
     }
     maven { // the repo from which to get EnderIO and tterrags mods
-        url "http://maven.tterrag.com/"
-    }
-    maven { // the repo from which to get EnderIO and tterrags mods
-        url "http://maven2.tterrag.com/"
+        url "https://maven.tterrag.com/"
     }
     maven {
         name "ic2"
-        url "http://maven.ic2.player.to/"
+        url "https://maven.ic2.player.to/"
     }
     maven {
-        url "http://tehnut.info/maven"
-    }
-    maven {
-        url "http://maven.ironhide.de/"
+        url "https://maven.ironhide.de/"
     }
     maven { // JEI
-        url "http://dvs1.progwml6.com/files/maven"
+        url "https://dvs1.progwml6.com/files/maven"
     }
-    maven { url = "http://dl.tsr.me/artifactory/libs-release-local" }
 
     maven { // CoFH
         name = "Covers Maven"
-        url = "http://maven.covers1624.net"
+        url = "https://maven.covers1624.net/"
     }
     maven {
-        url 'http://maven.mcmoddev.com'
+        url 'https://maven.mcmoddev.com/'
     }
     maven {
-        url = "http://files.minecraftforge.net/maven"
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://modmaven.k-4u.nl"
     }
 }
 
@@ -125,7 +123,7 @@ dependencies {
     deobfCompile "cofh:RedstoneFlux:${minecraft_version_short}-${redstoneflux_version}:deobf"
     compile "net.darkhax.tesla:Tesla-${minecraft_version}:${tesla_version}"
     deobfCompile "net.industrial-craft:industrialcraft-2:${ic2_version}"
-    deobfCompile "mcp.mobius.waila:Hwyla:${hwyla_version}_${minecraft_version_short}"
+    deobfCompile "mcp.mobius.waila:Hwyla:${hwyla_version}_${minecraft_version_short}:api"
     deobfCompile "mcjty.theoneprobe:TheOneProbe-${minecraft_version_short}:${minecraft_version_short}-${top_version}"
     deobfCompile "li.cil.oc:OpenComputers:MC${minecraft_version_short}.1-${oc_version}"
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.2.0"

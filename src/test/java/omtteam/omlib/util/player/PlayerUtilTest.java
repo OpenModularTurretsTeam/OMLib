@@ -6,7 +6,7 @@ import omtteam.omlib.api.permission.IHasOwner;
 import omtteam.omlib.api.permission.TrustedPlayer;
 import omtteam.omlib.api.tile.IHasTrustManager;
 import omtteam.omlib.api.tile.TrustedPlayersManagerTile;
-import omtteam.omlib.handler.OMConfig;
+import omtteam.omlib.util.GeneralUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,7 +29,7 @@ class PlayerUtilTest {
 
     @BeforeEach
     void setUp() {
-        OMConfig.GENERAL.offlineModeSupport = false;
+        GeneralUtil.offlineMode = false;
         playerNone = new Player(UUID.randomUUID(), "playerNone", "test");
         playerUntrusted = new Player(UUID.randomUUID(), "playerUntrusted", "test");
         playerAdmin = new Player(UUID.randomUUID(), "playerAdmin", "test");
@@ -52,7 +52,7 @@ class PlayerUtilTest {
     }
 
     void setOfflineMode() {
-        OMConfig.GENERAL.offlineModeSupport = true;
+        GeneralUtil.offlineMode = true;
         playerNone = new Player(null, "playerNone", "test");
         playerUntrusted = new Player(null, "playerUntrusted", "test");
         playerAdmin = new Player(null, "playerAdmin", "test");

@@ -18,6 +18,9 @@ import javax.annotation.Nullable;
  */
 @SuppressWarnings({"unused"})
 public class GeneralUtil {
+    // For Unit Testing:
+    public static boolean offlineMode = false;
+
     public static Item getItem(String modid, String name) {
         Item item;
         item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(modid + ":" + name));
@@ -103,6 +106,9 @@ public class GeneralUtil {
     }
 
     public static boolean isServerInOnlineMode() {
-        return FMLCommonHandler.instance().getMinecraftServerInstance().isServerInOnlineMode();
+        // Return testing variable if server not available (for Unit testing)
+        if (FMLCommonHandler.instance().getSidedDelegate() != null) {
+            return FMLCommonHandler.instance().getMinecraftServerInstance().isServerInOnlineMode();
+        } else return !offlineMode;
     }
 }
