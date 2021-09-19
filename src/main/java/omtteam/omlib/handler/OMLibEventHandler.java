@@ -32,7 +32,10 @@ import omtteam.omlib.init.OMLibItems;
 import omtteam.omlib.items.IDrawOutline;
 import omtteam.omlib.items.IDrawOutlineBase;
 import omtteam.omlib.network.OMLibNetworkingHandler;
+import omtteam.omlib.network.messages.MessageSetOnlineMode;
 import omtteam.omlib.network.messages.MessageSetSharePlayerList;
+import omtteam.omlib.util.GeneralUtil;
+import omtteam.omlib.util.player.PlayerUtil;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -47,7 +50,7 @@ import static omtteam.omlib.util.RenderUtil.drawHighlightBox;
  */
 public class OMLibEventHandler {
     private static OMLibEventHandler instance;
-    private List<OMLibNetwork> networks = new ArrayList<>();
+    private final List<OMLibNetwork> networks = new ArrayList<>();
 
     private OMLibEventHandler() {
     }
@@ -63,6 +66,7 @@ public class OMLibEventHandler {
     public void playerJoinEvent(EntityJoinWorldEvent event) {
         if (!event.getWorld().isRemote && event.getEntity() instanceof EntityPlayerMP) {
             OMLibNetworkingHandler.sendMessageToPlayer(new MessageSetSharePlayerList(OwnerShareRegister.instance), (EntityPlayerMP) event.getEntity());
+            OMLibNetworkingHandler.sendMessageToPlayer(new MessageSetOnlineMode(GeneralUtil.isServerInOnlineMode(), PlayerUtil.isPlayerOP((EntityPlayerMP) event.getEntity())), (EntityPlayerMP) event.getEntity());
         }
     }
 

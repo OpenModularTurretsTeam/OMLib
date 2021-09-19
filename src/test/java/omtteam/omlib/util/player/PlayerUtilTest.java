@@ -29,7 +29,7 @@ class PlayerUtilTest {
 
     @BeforeEach
     void setUp() {
-        GeneralUtil.offlineMode = false;
+        GeneralUtil.onlineMode = true;
         playerNone = new Player(UUID.randomUUID(), "playerNone", "test");
         playerUntrusted = new Player(UUID.randomUUID(), "playerUntrusted", "test");
         playerAdmin = new Player(UUID.randomUUID(), "playerAdmin", "test");
@@ -52,7 +52,7 @@ class PlayerUtilTest {
     }
 
     void setOfflineMode() {
-        GeneralUtil.offlineMode = true;
+        GeneralUtil.onlineMode = false;
         playerNone = new Player(null, "playerNone", "test");
         playerUntrusted = new Player(null, "playerUntrusted", "test");
         playerAdmin = new Player(null, "playerAdmin", "test");

@@ -4,10 +4,12 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.UsernameCache;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import omtteam.omlib.api.permission.*;
 import omtteam.omlib.api.tile.IHasTrustManager;
 import omtteam.omlib.handler.OMConfig;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
+import omtteam.omlib.util.GeneralUtil;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -52,9 +54,11 @@ public class PlayerUtil {
 
     @ParametersAreNullableByDefault
     public static boolean isPlayerOP(Player player) {
-        if (player != null) {
+        if (player != null && FMLCommonHandler.instance().getEffectiveSide().isServer()) {
             EntityPlayer entityPlayer = player.getEntityPlayer();
             return isPlayerOP(entityPlayer);
+        } else if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+            return GeneralUtil.clientsidePlayerOP;
         }
         return false;
     }
@@ -107,7 +111,7 @@ public class PlayerUtil {
     /**
      * @param player the player to check
      * @param block  the block to check against
-     * @return the type of the players access to the block sorted by owner > trusted > op > none
+     * @return the type of the players access to the block sorted by owner > op > trusted > none
      */
     @ParametersAreNonnullByDefault
     public static EnumPlayerAccessType getPlayerAccessType(Player player, Object block) {
@@ -119,12 +123,11 @@ public class PlayerUtil {
             Player owner = ownedBlock.getOwner();
             if (player.equals(owner) || OwnerShareRegister.instance.isPlayerSharedOwner(owner, player)) {
                 return EnumPlayerAccessType.OWNER;
+            } else if (OMConfig.GENERAL.canOPAccessOwnedBlocks && isPlayerOP(player)) {
+                return EnumPlayerAccessType.OP;
+            } else if (getTrustedPlayer(player, ownedBlock) != null) {
+                return EnumPlayerAccessType.TRUSTED;
             }
-        }
-        if (getTrustedPlayer(player, ownedBlock) != null) {
-            return EnumPlayerAccessType.TRUSTED;
-        } else if (OMConfig.GENERAL.canOPAccessOwnedBlocks && isPlayerOP(player)) {
-            return EnumPlayerAccessType.OP;
         }
         return EnumPlayerAccessType.NONE;
     }
@@ -161,8 +164,10 @@ public class PlayerUtil {
     @ParametersAreNonnullByDefault
     public static boolean isPlayerAdmin(Player player, IHasOwner ownedBlock) {
         TrustedPlayer trustedPlayer = getTrustedPlayer(player, ownedBlock);
-        return isPlayerOwner(player, ownedBlock) || (trustedPlayer != null &&
-                trustedPlayer.getAccessLevel().equals(EnumAccessLevel.ADMIN));
+        return isPlayerOwner(player, ownedBlock)
+                || getPlayerAccessType(player, ownedBlock).equals(EnumPlayerAccessType.OP)
+                || (trustedPlayer != null
+                && trustedPlayer.getAccessLevel().equals(EnumAccessLevel.ADMIN));
     }
 
     @ParametersAreNonnullByDefault

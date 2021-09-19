@@ -19,7 +19,7 @@ class TrustedPlayersManagerTileTest {
     @Test
     void testTrustedPlayerAdditionAndRemoval() {
         Player player = new Player(UUID.randomUUID(), "test", "test");
-        GeneralUtil.offlineMode = true;
+        GeneralUtil.onlineMode = false;
         for (EnumAccessLevel level : EnumAccessLevel.values()) {
             TrustedPlayer trustedPlayer = new TrustedPlayer(player, level);
             tpm.addTrustedPlayer(trustedPlayer);
@@ -35,7 +35,7 @@ class TrustedPlayersManagerTileTest {
             assertNull(tpm.getTrustedPlayer(player), "removed trustedPlayer needs to be null");
             tpm.getTrustedPlayers().clear();
         }
-        GeneralUtil.offlineMode = false;
+        GeneralUtil.onlineMode = true;
         for (EnumAccessLevel level : EnumAccessLevel.values()) {
             TrustedPlayer trustedPlayer = new TrustedPlayer(player, level);
             tpm.addTrustedPlayer(trustedPlayer);

@@ -18,8 +18,9 @@ import javax.annotation.Nullable;
  */
 @SuppressWarnings({"unused"})
 public class GeneralUtil {
-    // For Unit Testing:
-    public static boolean offlineMode = false;
+    // For Unit Testing and clientside:
+    public static boolean onlineMode = true;
+    public static boolean clientsidePlayerOP = false;
 
     public static Item getItem(String modid, String name) {
         Item item;
@@ -106,9 +107,9 @@ public class GeneralUtil {
     }
 
     public static boolean isServerInOnlineMode() {
-        // Return testing variable if server not available (for Unit testing)
-        if (FMLCommonHandler.instance().getSidedDelegate() != null) {
+        // Return local variable if server not available (for Unit testing and clientside)
+        if (FMLCommonHandler.instance().getSidedDelegate() != null && FMLCommonHandler.instance().getMinecraftServerInstance() != null) {
             return FMLCommonHandler.instance().getMinecraftServerInstance().isServerInOnlineMode();
-        } else return !offlineMode;
+        } else return onlineMode;
     }
 }

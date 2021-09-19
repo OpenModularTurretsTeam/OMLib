@@ -37,6 +37,8 @@ public class OMLibNetworkingHandler {
 
         INSTANCE.registerMessage(MessageRemoveTrustedPlayer.MessageHandlerRemoveTrustedPlayer.class,
                                  MessageRemoveTrustedPlayer.class, 8, Side.SERVER);
+        INSTANCE.registerMessage(MessageSetOnlineMode.MessageHandlerSetOnlineMode.class,
+                                 MessageSetOnlineMode.class, 9, Side.CLIENT);
     }
 
     public static void sendMessageToAllPlayers(IMessage message) {

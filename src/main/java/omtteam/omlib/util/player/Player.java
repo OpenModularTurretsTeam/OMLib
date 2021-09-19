@@ -106,10 +106,12 @@ public class Player {
     @Nullable
     public EntityPlayer getEntityPlayer() {
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-        if (!server.isServerInOnlineMode()) {
-            return server.getPlayerList().getPlayerByUsername(this.name);
+        if (server != null) {
+            if (!server.isServerInOnlineMode()) {
+                return server.getPlayerList().getPlayerByUsername(this.name);
+            } else return server.getPlayerList().getPlayerByUUID(this.uuid);
         }
-        return server.getPlayerList().getPlayerByUUID(this.uuid);
+        return null;
     }
 
     private String getTeamNameFromServer() {
