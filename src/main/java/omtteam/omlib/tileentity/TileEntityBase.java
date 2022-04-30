@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
@@ -61,5 +62,29 @@ public abstract class TileEntityBase extends TileEntity {
 
     public void setUpdateNBT(boolean shouldUpdateNBT) {
         this.updateNBT = shouldUpdateNBT;
+    }
+
+    // Abstraction Functions
+
+    public NBTTagCompound saveToNBT(@Nonnull NBTTagCompound tag) {
+        return super.writeToNBT(tag);
+    }
+
+    public void loadFromNBT(@Nonnull NBTTagCompound tag) {
+        super.readFromNBT(tag);
+    }
+
+    // Functions calling the abstraction ones
+
+    @Override
+    @ParametersAreNonnullByDefault
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        return this.saveToNBT(compound);
+    }
+
+    @Override
+    @ParametersAreNonnullByDefault
+    public void readFromNBT(NBTTagCompound compound) {
+        this.loadFromNBT(compound);
     }
 }

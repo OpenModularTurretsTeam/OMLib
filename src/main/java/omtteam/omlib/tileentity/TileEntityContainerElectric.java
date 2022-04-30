@@ -19,16 +19,16 @@ import javax.annotation.Nullable;
 @SuppressWarnings("WeakerAccess")
 public abstract class TileEntityContainerElectric extends TileEntityElectric {
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
-        super.writeToNBT(nbtTagCompound);
+    public NBTTagCompound saveToNBT(NBTTagCompound nbtTagCompound) {
+        super.saveToNBT(nbtTagCompound);
 
         writeInventoryToNBT(nbtTagCompound);
         return nbtTagCompound;
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbtTagCompound) {
-        super.readFromNBT(nbtTagCompound);
+    public void loadFromNBT(NBTTagCompound nbtTagCompound) {
+        super.loadFromNBT(nbtTagCompound);
         readInventoryFromNBT(nbtTagCompound);
     }
 

@@ -6,6 +6,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 import omtteam.omlib.network.messages.*;
+import omtteam.omlib.network.messages.render.MessageRenderLightning;
 import omtteam.omlib.network.messages.render.MessageRenderRay;
 import omtteam.omlib.network.messages.render.MessageSpawnParticleQuad;
 import omtteam.omlib.reference.Reference;
@@ -40,6 +41,8 @@ public class OMLibNetworkingHandler {
                                  MessageRemoveTrustedPlayer.class, 8, Side.SERVER);
         INSTANCE.registerMessage(MessageSpawnParticleQuad.MessageHandlerSpawnParticleQuad.class,
                                  MessageSpawnParticleQuad.class, 9, Side.CLIENT);
+        INSTANCE.registerMessage(MessageRenderLightning.MessageHandlerRenderLightning.class,
+                                 MessageRenderLightning.class, 10, Side.CLIENT);
     }
 
     public static void sendMessageToAllPlayers(IMessage message) {

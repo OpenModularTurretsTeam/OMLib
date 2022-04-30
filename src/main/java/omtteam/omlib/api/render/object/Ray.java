@@ -14,9 +14,11 @@ import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class Ray extends RenderObject {
-    private double xEnd, yEnd, zEnd;
-    private ColorOM color;
-    private boolean bloom;
+    private final double xEnd;
+    private final double yEnd;
+    private final double zEnd;
+    private final ColorOM color;
+    private final boolean bloom;
 
     public Ray(double x, double y, double z, double xEnd, double yEnd, double zEnd, float r, float g, float b, float alpha, int duration, boolean bloom) {
         super(x, y, z, duration);
@@ -37,6 +39,7 @@ public class Ray extends RenderObject {
     }
 
     public void render(RenderGlobal renderGlobal, float partialTick) {//TODO: bloom
+        duration -= partialTick;
         try {
             GlStateManager.pushMatrix();
             GlStateManager.enableBlend();

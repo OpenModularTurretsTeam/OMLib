@@ -57,18 +57,18 @@ public class MathUtil {
         float f1 = MathHelper.sin(-yaw * 0.017453292F - (float) Math.PI);
         float f2 = -MathHelper.cos(-pitch * 0.017453292F);
         float f3 = MathHelper.sin(-pitch * 0.017453292F);
-        return new Vec3d((double) (f1 * f2), (double) f3, (double) (f * f2)).normalize();
+        return new Vec3d(f1 * f2, f3, f * f2).normalize();
+    }
+
+    public static float getYawFromVector(Vec3d vec) {
+        return (float) Math.atan2(vec.x, vec.y);
+    }
+
+    public static float getPitchFromVector(Vec3d vec) {
+        return (float) -Math.asin(vec.z);
     }
 
     public static Vec3d getVelocityVectorFromYawPitch(float yaw, float pitch, float velocity) {
         return getVectorFromYawPitch(yaw, pitch).scale(velocity);
-    }
-
-    public static float getRotationXYFromYawPitch(float yaw, float pitch) {
-        return (float) ((pitch + 270F) / 90F * (Math.PI / 2F));
-    }
-
-    public static float getRotationXZFromYawPitch(float yaw, float pitch) {
-        return (float) ((yaw - 90F) / 90F * (Math.PI / 2F));
     }
 }

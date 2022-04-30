@@ -17,10 +17,10 @@ import javax.annotation.Nullable;
  * This Class is the abstract class handling Inventory Functions.
  */
 @SuppressWarnings("WeakerAccess")
-public abstract class TileEntityContainer extends TileEntityOwnedBlock {
+public abstract class TileEntityContainer extends TileEntityOwnedBlock { // TODO: Strategy Pattern for Features
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
-        super.writeToNBT(nbtTagCompound);
+    public NBTTagCompound saveToNBT(NBTTagCompound nbtTagCompound) {
+        super.saveToNBT(nbtTagCompound);
 
         NBTTagCompound inv = new NBTTagCompound();
         writeInventoryToNBT(nbtTagCompound);
@@ -29,7 +29,7 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock {
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbtTagCompound) {
+    public void loadFromNBT(NBTTagCompound nbtTagCompound) {
         super.readFromNBT(nbtTagCompound);
         readInventoryFromNBT(nbtTagCompound);
     }

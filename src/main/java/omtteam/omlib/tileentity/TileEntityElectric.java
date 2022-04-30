@@ -41,8 +41,8 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock {
     protected boolean wasAddedToEnergyNet = false;
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
-        super.writeToNBT(nbtTagCompound);
+    public NBTTagCompound saveToNBT(NBTTagCompound nbtTagCompound) {
+        super.saveToNBT(nbtTagCompound);
         nbtTagCompound.setInteger("maxStorage", this.storage.getMaxEnergyStored());
         nbtTagCompound.setInteger("energyStored", this.storage.getEnergyStored());
         nbtTagCompound.setInteger("maxIO", this.storage.getMaxReceive());
@@ -50,8 +50,8 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock {
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbtTagCompound) {
-        super.readFromNBT(nbtTagCompound);
+    public void loadFromNBT(NBTTagCompound nbtTagCompound) {
+        super.loadFromNBT(nbtTagCompound);
         this.storage.setCapacity(nbtTagCompound.getInteger("maxStorage"));
         this.storage.setEnergyStored(nbtTagCompound.getInteger("energyStored"));
         this.storage.setMaxReceive(nbtTagCompound.getInteger("maxIO"));

@@ -14,8 +14,8 @@ import java.util.Iterator;
  * This Class
  */
 public class EntityUtil {
-    public static Class<? extends Entity> findClassById(String id) {
-        EntityEntry entry = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(id));
+    public static Class<? extends Entity> findClassById(ResourceLocation id) {
+        EntityEntry entry = ForgeRegistries.ENTITIES.getValue(id);
         return entry == null ? null : entry.getEntityClass();
     }
 

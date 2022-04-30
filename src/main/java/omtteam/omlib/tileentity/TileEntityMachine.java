@@ -63,8 +63,8 @@ public abstract class TileEntityMachine extends TileEntityContainerElectric {
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        super.writeToNBT(tag);
+    public NBTTagCompound saveToNBT(NBTTagCompound tag) {
+        super.saveToNBT(tag);
         tag.setBoolean("active", active);
         tag.setBoolean("redstone", redstone);
         if (this.getTank() != null) {
@@ -76,8 +76,8 @@ public abstract class TileEntityMachine extends TileEntityContainerElectric {
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        super.readFromNBT(tag);
+    public void loadFromNBT(NBTTagCompound tag) {
+        super.loadFromNBT(tag);
         if (this.getTank() != null && tag.hasKey("tank")) {
             this.getTank().readFromNBT(tag.getCompoundTag("tank"));
         }

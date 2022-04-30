@@ -12,7 +12,7 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class RenderManager {
     private static RenderManager instance;
-    private List<RenderObject> renderListWorldLastEvent;
+    private final List<RenderObject> renderListWorldLastEvent;
 
     private RenderManager() {
         renderListWorldLastEvent = new ArrayList<>();
@@ -34,7 +34,7 @@ public class RenderManager {
         while (iterator.hasNext()) {
             RenderObject renderObject = iterator.next();
             renderObject.render(renderGlobal, partialTicks);
-            if (renderObject.decreaseDuration()) {
+            if (renderObject.isFinished()) {
                 iterator.remove();
             }
         }

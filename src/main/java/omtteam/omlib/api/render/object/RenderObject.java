@@ -7,17 +7,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public abstract class RenderObject {
     protected double x, y, z;
-    protected int duration;
+    protected double duration;
 
-    RenderObject(double x, double y, double z, int duration) {
+    RenderObject(double x, double y, double z, double duration) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.duration = duration;
     }
 
-    public boolean decreaseDuration() {
-        duration--;
+    public boolean isFinished() {
         return duration <= 0;
     }
 

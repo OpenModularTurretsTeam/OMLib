@@ -24,10 +24,10 @@ public abstract class TileEntityOwnedBlock extends TileEntityBase implements IHa
 
     @Override
     @ParametersAreNonnullByDefault
-    public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
-        super.writeToNBT(nbtTagCompound);
+    public NBTTagCompound saveToNBT(NBTTagCompound nbtTagCompound) {
+        super.saveToNBT(nbtTagCompound);
         NBTTagCompound tag = new NBTTagCompound();
-        if (this.getOwner() != null) {
+        if (this.owner != null) {
             this.owner.writeToNBT(tag);
             nbtTagCompound.setTag("owner", tag);
         }
@@ -37,8 +37,8 @@ public abstract class TileEntityOwnedBlock extends TileEntityBase implements IHa
 
     @Override
     @ParametersAreNonnullByDefault
-    public void readFromNBT(NBTTagCompound nbtTagCompound) {
-        super.readFromNBT(nbtTagCompound);
+    public void loadFromNBT(NBTTagCompound nbtTagCompound) {
+        super.loadFromNBT(nbtTagCompound);
 
         if (nbtTagCompound.hasKey("ownerName")) { // TODO: Remove in 1.13
             UUID uuid = null;
@@ -65,7 +65,7 @@ public abstract class TileEntityOwnedBlock extends TileEntityBase implements IHa
 
     @Override
     public Player getOwner() {
-        return owner;
+        return owner != null ? owner : new Player(UUID.randomUUID(), "no_owner");
     }
 
     public void setOwner(Player owner) {

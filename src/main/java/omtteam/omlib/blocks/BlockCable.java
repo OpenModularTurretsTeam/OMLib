@@ -39,7 +39,7 @@ public class BlockCable extends BlockAbstractTileEntity {
     @Nonnull
     @Override
     @ParametersAreNonnullByDefault
-    public TileEntity createTileEntity(World world, IBlockState state) {
+    public TileEntity createTileEntity_OM(World world, IBlockState state) {
         return new TileEntityCable();
     }
 

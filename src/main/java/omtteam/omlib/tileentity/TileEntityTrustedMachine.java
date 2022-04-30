@@ -21,15 +21,15 @@ public abstract class TileEntityTrustedMachine extends TileEntityMachine impleme
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        super.writeToNBT(tag);
+    public NBTTagCompound saveToNBT(NBTTagCompound tag) {
+        super.saveToNBT(tag);
         trustManager.writeToNBT(tag);
         return tag;
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        super.readFromNBT(tag);
+    public void loadFromNBT(NBTTagCompound tag) {
+        super.loadFromNBT(tag);
         trustManager.readFromNBT(tag);
         trustManager.setOwner(this.getOwner());
     }

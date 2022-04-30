@@ -11,4 +11,6 @@ import net.minecraft.world.World;
  */
 public interface IDrawOutline {
     AxisAlignedBB getRenderOutline(EnumFacing facing, World world, BlockPos pos);
+
+    boolean canPlace(EnumFacing facing, World world, BlockPos pos);
 }

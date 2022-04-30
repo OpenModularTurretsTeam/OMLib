@@ -4,13 +4,11 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import omtteam.omlib.tileentity.TileEntityContainerElectric;
 import omtteam.omlib.util.inventory.InvUtil;
@@ -39,13 +37,13 @@ public abstract class BlockAbstractTileEntity extends BlockAbstract {
     @Override
     @Nonnull
     @ParametersAreNonnullByDefault
-    public abstract TileEntity createTileEntity(World world, IBlockState state);
-
-    @Override
-    @ParametersAreNonnullByDefault
-    public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
-        return false;
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        return createTileEntity_OM(world, state);
     }
+
+    @Nonnull
+    @ParametersAreNonnullByDefault
+    public abstract TileEntity createTileEntity_OM(World world, IBlockState state);
 
     @Override
     @ParametersAreNonnullByDefault
