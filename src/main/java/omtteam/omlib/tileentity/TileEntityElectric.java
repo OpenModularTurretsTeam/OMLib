@@ -1,20 +1,14 @@
 package omtteam.omlib.tileentity;
 
-import ic2.api.energy.event.EnergyTileLoadEvent;
-import ic2.api.energy.event.EnergyTileUnloadEvent;
 import mcp.MethodsReturnNonnullByDefault;
 import net.darkhax.tesla.capability.TeslaCapabilities;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.common.Optional;
 import omtteam.omlib.compatibility.OMLibModCompatibility;
-import omtteam.omlib.handler.OMConfig;
 import omtteam.omlib.power.OMEnergyStorage;
-import omtteam.omlib.power.ic2.BaseOMEUReceiverWrapper;
-import omtteam.omlib.power.ic2.EUCapabilities;
 import omtteam.omlib.power.rf.BaseRFReceiverWrapper;
 import omtteam.omlib.power.rf.RFCapabilities;
 import omtteam.omlib.power.tesla.BaseOMTeslaReceiverWrapper;
@@ -55,30 +49,6 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock {
         this.storage.setCapacity(nbtTagCompound.getInteger("maxStorage"));
         this.storage.setEnergyStored(nbtTagCompound.getInteger("energyStored"));
         this.storage.setMaxReceive(nbtTagCompound.getInteger("maxIO"));
-    }
-
-    @Override
-    public void onLoad() {
-        if (IC2Loaded && OMConfig.GENERAL.EUSupport && !wasAddedToEnergyNet && !this.getWorld().isRemote) {
-            addToIc2EnergyNetwork();
-            wasAddedToEnergyNet = true;
-        }
-    }
-
-    @Override
-    public void invalidate() {
-        super.invalidate();
-        onChunkUnload();
-    }
-
-    @Override
-    public void onChunkUnload() {
-        if (wasAddedToEnergyNet &&
-                OMLibModCompatibility.IC2Loaded) {
-            removeFromIc2EnergyNetwork();
-
-            wasAddedToEnergyNet = false;
-        }
     }
 
     //-------------------------- Energy API Functions --------------------------------------------------
@@ -132,11 +102,6 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock {
                 return getTeslaCapability(capability, facing);
             }
         }
-        if (IC2Loaded) {
-            if (hasEUCapability(capability, facing) && getEUCapability(capability, facing) != null) {
-                return getEUCapability(capability, facing);
-            }
-        }
         if (CoFHApiLoaded) {
             if (hasRFCapability(capability, facing) && getRFCapability(capability, facing) != null) {
                 return getRFCapability(capability, facing);
@@ -157,11 +122,6 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock {
         // not.
         if (OMLibModCompatibility.TeslaLoaded) {
             if (hasTeslaCapability(capability, facing)) {
-                return true;
-            }
-        }
-        if (IC2Loaded) {
-            if (hasEUCapability(capability, facing)) {
                 return true;
             }
         }
@@ -212,16 +172,6 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock {
         }
     }
 
-    @Optional.Method(modid = IC2ModId)
-    private BaseOMEUReceiverWrapper getEUContainer() {
-        if (euContainer instanceof BaseOMEUReceiverWrapper) {
-            return (BaseOMEUReceiverWrapper) euContainer;
-        } else {
-            euContainer = new BaseOMEUReceiverWrapper(this, EnumFacing.DOWN);
-            return (BaseOMEUReceiverWrapper) euContainer;
-        }
-    }
-
     @Optional.Method(modid = TeslaModId)
     private boolean hasTeslaCapability(Capability<?> capability, EnumFacing facing) {
         return (capability == TeslaCapabilities.CAPABILITY_CONSUMER);
@@ -235,33 +185,5 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock {
             return (T) getTeslaContainer();
         }
         return null;
-    }
-
-    @Optional.Method(modid = IC2ModId)
-    private boolean hasEUCapability(Capability<?> capability, EnumFacing facing) {
-        return (capability == EUCapabilities.CAPABILITY_CONSUMER);
-    }
-
-    @Optional.Method(modid = IC2ModId)
-    @SuppressWarnings({"unchecked"})
-    @Nullable
-    private <T> T getEUCapability(Capability<T> capability, EnumFacing facing) {
-        if (capability == EUCapabilities.CAPABILITY_CONSUMER) {
-            return (T) getEUContainer();
-        }
-        return null;
-    }
-
-    @Optional.Method(modid = IC2ModId)
-    protected void addToIc2EnergyNetwork() {
-        if (!world.isRemote) {
-            EnergyTileLoadEvent event = new EnergyTileLoadEvent(this.getEUContainer());
-            MinecraftForge.EVENT_BUS.post(event);
-        }
-    }
-
-    @Optional.Method(modid = IC2ModId)
-    private void removeFromIc2EnergyNetwork() {
-        MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this.getEUContainer()));
     }
 }
