@@ -18,9 +18,9 @@ public class StringListBox extends GuiButton {
     public int lineHeight;
     public boolean dragging;
     public int selectedItem;
-    private int fontColor = 0xff404040;
-    private int selectedColor = 0xff404040;
-    private int selectedFontColor = 0xffA0A0A0;
+    private final int fontColor = 0xff404040;
+    private final int selectedColor = 0xff404040;
+    private final int selectedFontColor = 0xffA0A0A0;
     private int scrollTop;
     private List<String> items;
     private int sliderHeight;

@@ -91,7 +91,7 @@ public class Player {
         if (o == null || getClass() != o.getClass()) return false;
         Player player = (Player) o;
         return (!OMConfig.GENERAL.offlineModeSupport ? getUuid().equals(player.getUuid())
-                : getName().toLowerCase().equals(player.getName().toLowerCase()));
+                : getName().equalsIgnoreCase(player.getName()));
     }
 
     @Override

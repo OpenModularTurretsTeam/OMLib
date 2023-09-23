@@ -26,7 +26,7 @@ public class OMLib {
     public static OMLib instance;
 
     @SuppressWarnings("unused")
-    @SidedProxy(clientSide = "omtteam.omlib.proxy.ClientProxy", serverSide = "omtteam.omlib.proxy" + "" + ".CommonProxy")
+    @SidedProxy(clientSide = "omtteam.omlib.proxy.ClientProxy", serverSide = "omtteam.omlib.proxy" + ".CommonProxy")
     public static CommonProxy proxy;
 
     @SuppressWarnings("unused")

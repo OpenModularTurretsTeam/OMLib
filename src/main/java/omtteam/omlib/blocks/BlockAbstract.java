@@ -94,6 +94,12 @@ public abstract class BlockAbstract extends Block {
         this.onNeighborChange_OM(world, pos, neighbor);
     }
 
+    @Override
+    @ParametersAreNonnullByDefault
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos neighbor) {
+        this.neighborChanged_OM(state, worldIn, pos, blockIn, neighbor);
+    }
+
     // ---------------------------------------------------------------------------------------------------
     // Internal Abstraction Functions
 
@@ -145,5 +151,10 @@ public abstract class BlockAbstract extends Block {
     @ParametersAreNonnullByDefault
     protected void onNeighborChange_OM(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
         super.onNeighborChange(world, pos, neighbor);
+    }
+
+    @ParametersAreNonnullByDefault
+    protected void neighborChanged_OM(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos neighbor) {
+        super.neighborChanged(state, worldIn, pos, blockIn, neighbor);
     }
 }

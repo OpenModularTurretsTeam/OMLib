@@ -237,7 +237,7 @@ public class OwnerShareRegister implements ICapabilityProvider, IOwnerShareRegis
                 }
             }
         }
-        sender.sendMessage(new TextComponentString("Players on your share list: " + playerList.toString()));
+        sender.sendMessage(new TextComponentString("Players on your share list: " + playerList));
     }
 
     public boolean isPlayerSharedOwner(Player owner, Player shareCheck) {

@@ -14,7 +14,7 @@ import java.util.List;
 
 @WailaPlugin
 public class OMLibWailaPlugin implements IWailaPlugin {
-    private static List<IOMLibWailaDataProvider> providers = new ArrayList<>();
+    private static final List<IOMLibWailaDataProvider> providers = new ArrayList<>();
 
     public static void addDataProvider(IOMLibWailaDataProvider provider) {
         providers.add(provider);

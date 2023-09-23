@@ -207,7 +207,7 @@ public class GlobalTrustRegister implements ICapabilityProvider, IGlobalTrustReg
                 playerList.append(trustedPlayer.getName()).append(" ");
             }
         }
-        sender.sendMessage(new TextComponentString("Players on your share list: " + playerList.toString()));
+        sender.sendMessage(new TextComponentString("Players on your share list: " + playerList));
     }
 
     @Nullable

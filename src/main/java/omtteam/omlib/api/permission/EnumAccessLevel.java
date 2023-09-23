@@ -12,8 +12,8 @@ public enum EnumAccessLevel {
     CHANGE_SETTINGS("change_settings", OMLibNames.Localizations.GUI.ACCESS_LEVEL_CHANGE_SETTINGS),
     ADMIN("admin", OMLibNames.Localizations.GUI.ACCESS_LEVEL_ADMIN);
 
-    private String name;
-    private String unlocalizedName;
+    private final String name;
+    private final String unlocalizedName;
 
     EnumAccessLevel(String name, String unlocalizedName) {
         this.name = name;

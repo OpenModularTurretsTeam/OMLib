@@ -58,12 +58,12 @@ public class TrustedPlayersManager implements ITrustedPlayersManager {
             if (trustedPlayer.getUuid() != null || OMConfig.GENERAL.offlineModeSupport) {
                 for (TrustedPlayer existPlayer : trustedPlayers) {
                     if (OMConfig.GENERAL.offlineModeSupport) {
-                        if (existPlayer.getName().toLowerCase().equals(name.toLowerCase())) {
+                        if (existPlayer.getName().equalsIgnoreCase(name)) {
                             DebugHandler.getInstance().sendMessageToDebugChat("Already on trust list!");
                             return false;
                         }
                     } else {
-                        if (existPlayer.getName().toLowerCase().equals(name.toLowerCase()) || trustedPlayer.getUuid().equals(existPlayer.getUuid())) {
+                        if (existPlayer.getName().equalsIgnoreCase(name) || trustedPlayer.getUuid().equals(existPlayer.getUuid())) {
                             return false;
                         }
                     }

@@ -20,7 +20,7 @@ import static java.util.UUID.randomUUID;
 public class OMLibNetwork {
     private Map<BlockPos, INetworkTile> devices = new HashMap<>();
     private World world;
-    private UUID uuid;
+    private final UUID uuid;
     private String name;
     private Player owner;
 

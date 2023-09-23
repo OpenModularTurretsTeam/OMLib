@@ -3,12 +3,12 @@ package omtteam.omlib.api.gui;
 import net.minecraft.world.World;
 
 public class GuiParameters {
-    private Object mod;
-    private int modGuiId;
-    private World world;
-    private int posX;
-    private int posY;
-    private int posZ;
+    private final Object mod;
+    private final int modGuiId;
+    private final World world;
+    private final int posX;
+    private final int posY;
+    private final int posZ;
 
     public GuiParameters(Object mod, int modGuiId, World world, int posX, int posY, int posZ) {
         this.mod = mod;

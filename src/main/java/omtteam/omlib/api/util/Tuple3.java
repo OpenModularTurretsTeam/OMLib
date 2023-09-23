@@ -3,7 +3,7 @@ package omtteam.omlib.api.util;
 import java.util.Objects;
 
 public class Tuple3<A, B, C> extends Tuple<A, B> {
-    private C c;
+    private final C c;
 
     public Tuple3(A a, B b, C c) {
         super(a, b);

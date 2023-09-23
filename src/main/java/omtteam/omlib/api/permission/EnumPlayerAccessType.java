@@ -12,8 +12,8 @@ public enum EnumPlayerAccessType {
     TRUSTED("trusted", OMLibNames.Localizations.GUI.ACCCESS_TYPE_TRUSTED),
     OP("op", OMLibNames.Localizations.GUI.ACCCESS_TYPE_OP);
 
-    private String name;
-    private String unlocalizedName;
+    private final String name;
+    private final String unlocalizedName;
 
     EnumPlayerAccessType(String name, String unlocalizedName) {
         this.name = name;

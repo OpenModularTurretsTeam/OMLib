@@ -51,8 +51,8 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips, ISuppo
     private int waitForServerTrustedPlayers = -1;
     private boolean addedToSyncList;
     private int accessLevel = 0;
-    private boolean isGlobal;
-    private List<String> trustedPlayers = new ArrayList<>();
+    private final boolean isGlobal;
+    private final List<String> trustedPlayers = new ArrayList<>();
     private StringListBox listBox;
 
     public TrustedPlayersGUI(InventoryPlayer inventoryPlayer, IHasTrustManager tile) {
