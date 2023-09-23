@@ -104,37 +104,37 @@ public abstract class BlockAbstract extends Block {
     // Internal Abstraction Functions
 
     @Nonnull
-    protected AxisAlignedBB getBoundingBox_OM(IBlockState state, IBlockAccess source, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox_OM(IBlockState state, IBlockAccess source, BlockPos pos) {
         return super.getBoundingBox(state, source, pos);
     }
 
     @Nonnull
-    protected BlockStateContainer createBlockState_OM() {
+    public BlockStateContainer createBlockState_OM() {
         return super.createBlockState();
     }
 
     @ParametersAreNonnullByDefault
-    protected boolean isOpaqueCube_OM(IBlockState state) {
+    public boolean isOpaqueCube_OM(IBlockState state) {
         return super.isOpaqueCube(state);
     }
 
     @ParametersAreNonnullByDefault
-    protected boolean isFullBlock_OM(IBlockState state) {
+    public boolean isFullBlock_OM(IBlockState state) {
         return super.isFullBlock(state);
     }
 
     @ParametersAreNonnullByDefault
-    protected boolean isFullCube_OM(IBlockState state) {
+    public boolean isFullCube_OM(IBlockState state) {
         return super.isFullCube(state);
     }
 
     @ParametersAreNonnullByDefault
-    protected boolean canPlaceBlockAt_OM(World worldIn, BlockPos pos) {
+    public boolean canPlaceBlockAt_OM(World worldIn, BlockPos pos) {
         return super.canPlaceBlockAt(worldIn, pos);
     }
 
     @ParametersAreNonnullByDefault
-    protected void onBlockPlacedBy_OM(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+    public void onBlockPlacedBy_OM(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }
 
@@ -144,17 +144,17 @@ public abstract class BlockAbstract extends Block {
     }
 
     @ParametersAreNonnullByDefault
-    protected boolean causesSuffocation_OM(IBlockState state) {
+    public boolean causesSuffocation_OM(IBlockState state) {
         return super.causesSuffocation(state);
     }
 
     @ParametersAreNonnullByDefault
-    protected void onNeighborChange_OM(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
+    public void onNeighborChange_OM(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
         super.onNeighborChange(world, pos, neighbor);
     }
 
     @ParametersAreNonnullByDefault
-    protected void neighborChanged_OM(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos neighbor) {
+    public void neighborChanged_OM(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos neighbor) {
         super.neighborChanged(state, worldIn, pos, blockIn, neighbor);
     }
 }
