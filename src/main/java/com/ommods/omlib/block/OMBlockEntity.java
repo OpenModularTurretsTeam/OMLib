@@ -14,6 +14,7 @@ public abstract class OMBlockEntity extends BlockEntity {
         super(pType, pPos, pBlockState);
     }
 
+
     public OMPlayer getOwner() {
         return owner;
     }
