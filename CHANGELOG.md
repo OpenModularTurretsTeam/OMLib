@@ -8,6 +8,8 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 
 ## [Unreleased]
 
+## [4.0.0-alpha.1] - 2026-10-23
+
 ### Changed
 
 - Members of the owner's scoreboard team count as trusted (lowest access level) for owned blocks
