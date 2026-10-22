@@ -1,10 +1,12 @@
 package omtteam.omlib.api.permission;
 
+import omtteam.omlib.core.security.AccessLevel;
 import omtteam.omlib.reference.OMLibNames;
 import omtteam.omlib.util.GeneralUtil;
 
 /**
- * This enum contains the different trust levels for trusted players.
+ * This enum contains the different trust levels for trusted players: the Minecraft side (translations) of
+ * {@link AccessLevel}, with the same order (the ordinal is saved).
  */
 public enum EnumAccessLevel {
     NONE("none", OMLibNames.Localizations.GUI.ACCESS_LEVEL_NONE),
@@ -30,5 +32,13 @@ public enum EnumAccessLevel {
 
     public String getLocalizedName() {
         return GeneralUtil.safeLocalize(unlocalizedName);
+    }
+
+    public AccessLevel toCore() {
+        return AccessLevel.valueOf(name());
+    }
+
+    public static EnumAccessLevel fromCore(AccessLevel level) {
+        return valueOf(level.name());
     }
 }

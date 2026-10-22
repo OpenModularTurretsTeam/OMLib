@@ -30,7 +30,7 @@ public abstract class TileEntityContainer extends TileEntityOwnedBlock { // TODO
 
     @Override
     public void loadFromNBT(NBTTagCompound nbtTagCompound) {
-        super.readFromNBT(nbtTagCompound);
+        super.loadFromNBT(nbtTagCompound);
         readInventoryFromNBT(nbtTagCompound);
     }
 

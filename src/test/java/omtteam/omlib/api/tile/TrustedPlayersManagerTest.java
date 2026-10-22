@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 class TrustedPlayersManagerTest {
-    private final TrustedPlayersManager tpm = new TrustedPlayersManager(null);
+    private TrustedPlayersManager tpm = new TrustedPlayersManager(null);
 
     @Test
     void testTrustedPlayerAdditionAndRemoval() {
@@ -27,14 +27,14 @@ class TrustedPlayersManagerTest {
             assertEquals(trustedPlayer, tpm.getTrustedPlayer(player.getName()), "trustedPlayer needs to be gettable by name");
             assertEquals(trustedPlayer, tpm.getTrustedPlayer(player.getUuid()), "trustedPlayer needs to be gettable by uuid");
             assertEquals(trustedPlayer, tpm.getTrustedPlayer(player), "trustedPlayer needs to be gettable by player");
-            tpm.getTrustedPlayers().clear();
+            tpm = new TrustedPlayersManager(null); // getTrustedPlayers() is a copy since 4.0.0
         }
         for (EnumAccessLevel level : EnumAccessLevel.values()) {
             TrustedPlayer trustedPlayer = new TrustedPlayer(player, level);
             tpm.addTrustedPlayer(trustedPlayer);
             tpm.removeTrustedPlayer(player.getName());
             assertNull(tpm.getTrustedPlayer(player), "removed trustedPlayer needs to be null");
-            tpm.getTrustedPlayers().clear();
+            tpm = new TrustedPlayersManager(null); // getTrustedPlayers() is a copy since 4.0.0
         }
         OMConfig.GENERAL.offlineModeSupport = false;
         for (EnumAccessLevel level : EnumAccessLevel.values()) {
@@ -42,20 +42,20 @@ class TrustedPlayersManagerTest {
             tpm.addTrustedPlayer(trustedPlayer);
             assertEquals(trustedPlayer, tpm.getTrustedPlayer(player.getName()), "trustedPlayer needs to be gettable by name");
             assertEquals(trustedPlayer, tpm.getTrustedPlayer(player), "trustedPlayer needs to be gettable by player");
-            tpm.getTrustedPlayers().clear();
+            tpm = new TrustedPlayersManager(null); // getTrustedPlayers() is a copy since 4.0.0
         }
         for (EnumAccessLevel level : EnumAccessLevel.values()) {
             TrustedPlayer trustedPlayer = new TrustedPlayer(player, level);
             tpm.addTrustedPlayer(trustedPlayer);
             tpm.removeTrustedPlayer(player.getName());
             assertNull(tpm.getTrustedPlayer(player), "removed trustedPlayer needs to be null");
-            tpm.getTrustedPlayers().clear();
+            tpm = new TrustedPlayersManager(null); // getTrustedPlayers() is a copy since 4.0.0
         }
     }
 
     @Test
     void checkNBT() {
-        tpm.getTrustedPlayers().clear();
+        tpm = new TrustedPlayersManager(null);
         RandomUtil.init();
         for (EnumAccessLevel level : EnumAccessLevel.values()) {
             Player player = new Player(UUID.randomUUID(), RandomUtil.random.nextLong() + "", "test");

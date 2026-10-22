@@ -1,64 +1,32 @@
 // For those who want the bleeding edge
 buildscript {
     repositories {
-        jcenter()
         mavenCentral()
-        mavenLocal()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
+        maven { url = "https://maven.minecraftforge.net/" }
+        maven { url = "https://plugins.gradle.org/m2/" }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.3'
     }
 }
 plugins {
-    id "com.matthewprenger.cursegradle" version "1.1.0"
+    id "com.matthewprenger.cursegradle" version "1.4.0"
 }
 
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'maven-publish'
-apply plugin: 'org.junit.platform.gradle.plugin'
 apply plugin: 'idea'
 apply plugin: 'java'
+// tests, core isolation and changelog tasks, shared with the workspace build
+apply from: "gradle/mod-common.gradle"
 
 repositories {
-    maven { // The repo from which to get VS
-        url "https://maven.daporkchop.net/"
-    }
-    maven { // The repo from which to get waila
-        url "http://www.mobiusstrip.eu/maven"
-    }
-    maven { // the repo from which to get NEI and stuff
-        url "http://chickenbones.net/maven/"
-    }
-    maven {
-        url "https://maven.cil.li/"
-    }
-    maven { // the repo from which to get EnderIO and tterrags mods
-        url "https://maven.tterrag.com/"
-    }
-    maven { // JEI
-        url "https://dvs1.progwml6.com/files/maven"
-    }
-    maven { // CoFH
-        name = "Covers Maven"
-        url = "http://maven.covers1624.net"
-    }
-    maven {
-        url "https://maven.mcmoddev.com"
-    }
-    maven {
-        url = "https://maven.minecraftforge.net/"
-    }
-    maven {
-        url = "https://maven.blamejared.com/"
-    }
+    maven { url = "https://maven.blamejared.com/" }  // JEI, Tesla
+    maven { url = "https://maven.covers1624.net/" }  // RedstoneFlux
+    maven { url = "https://maven.cil.li/" }          // OpenComputers
+    maven { url = "https://modmaven.dev/" }          // The One Probe
+    // Hwyla; keep last, it redirects unknown paths to a non-maven site
+    maven { url = "https://maven.tehnut.info/" }
 }
 
 sourceCompatibility = targetCompatibility = 1.8
@@ -76,7 +44,6 @@ if (hasProperty('appendBuildNumber')) {
 group = "${group_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "${mod_id}-${minecraft_version}"
 
-
 minecraft {
     version = "${forge_version}"
     runDir = "run"
@@ -91,7 +58,6 @@ minecraft {
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
     useDepAts = true
 }
-
 
 processResources {
     // this will ensure that this task is redone when the versions change.
@@ -116,13 +82,9 @@ dependencies {
     deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}:api"
     deobfCompile "cofh:RedstoneFlux:${minecraft_version_short}-${redstoneflux_version}:deobf"
     compile "net.darkhax.tesla:Tesla-${minecraft_version_short}:${tesla_version}"
-    deobfCompile "mcp.mobius.waila:Hwyla:${hwyla_version}_${minecraft_version_short}:api"
+    deobfCompile "mcp.mobius.waila:Hwyla:${hwyla_version}_${minecraft_version}:api"
     deobfCompile "mcjty.theoneprobe:TheOneProbe-${minecraft_version_short}:${minecraft_version_short}-${top_version}"
     deobfCompile "li.cil.oc:OpenComputers:MC${minecraft_version_short}.1-${oc_version}"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:5.2.0"
-    testCompile("org.junit.jupiter:junit-jupiter-api:5.2.0")
-    testCompile("org.junit.platform:junit-platform-launcher:1.1.0")
-    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.2.0")
 }
 
 task deobfJar(type: Jar) {
@@ -130,10 +92,6 @@ task deobfJar(type: Jar) {
     classifier = 'dev'
 }
 
-junitPlatform {
-    platformVersion '1.0.3'
-    enableStandardTestTask true
-}
 
 tasks.build.dependsOn deobfJar, sourceJar
 
@@ -154,42 +112,27 @@ publishing {
     }
 }
 
-//// DETECTING COMMIT NAME AND ACTIVATING CURSE RELEASE \\\\
+//// CURSE RELEASE \\\\
+// release_type (alpha, beta or release) is set by the CI release job from the git tag
 
-def commit_release_type = getCommmitReleaseType()
-
-def getCommmitReleaseType() {
-    if (project.hasProperty("curseforge_key")) {
-        def stdout = new ByteArrayOutputStream()
-        try {
-            exec {
-                commandLine 'git', 'log', '-1', '--pretty=tformat:%s'
-                standardOutput = stdout
-            }
-        } catch (Exception e) {
-            System.print("SKIPPING CURSE RELEASE - FAILED TO RETRIEVE LAST COMMIT")
-            e.printStackTrace()
-            return 'none'
-        }
-        String commit = stdout.toString().trim()
-
-        if (commit.startsWith("CRelease") || commit.startsWith("crelease")) {
-            System.out.println("FOUND NEW RELEASE - COMMIT: ".concat(commit)); return 'release'
-        } else if (commit.startsWith("CBeta") || commit.startsWith("cbeta")) {
-            System.out.println("FOUND NEW BETA - COMMIT: ".concat(commit)); return 'beta'
-        } else if (commit.startsWith("CAlpha") || commit.startsWith("calpha")) {
-            System.out.println("FOUND NEW ALPHA - COMMIT: ".concat(commit)); return 'alpha'
-        } else {
-            System.out.println("SKIPPING CURSE RELEASE - COMMIT: " + commit); return 'none'
-        }
-    }
-    System.out.println("SKIPPING CURSE RELEASE - NO CURSE API KEY")
-    return 'none'
+def curse_release_type = findProperty("release_type") ?: "none"
+if (!(curse_release_type in ["none", "alpha", "beta", "release"])) {
+    throw new GradleException("Unknown release_type '${curse_release_type}', expected alpha, beta or release")
 }
 
-tasks.curseforge.enabled = project.hasProperty("curseforge_key") && commit_release_type != 'none'
+// The CHANGELOG.md section of the release tag (CI passes -Pchangelog_version); a release without one fails
+def releaseNotes = ""
+if (curse_release_type != "none") {
+    def changelogVersion = findProperty("changelog_version")
+    releaseNotes = changelogVersion ? changelogSection(changelogVersion) : null
+    if (!releaseNotes) {
+        throw new GradleException("CHANGELOG.md has no section for '${changelogVersion}'; run ./gradlew releaseChangelog -Pchangelog_version=<tag without v> first")
+    }
+}
+
+tasks.curseforge.enabled = project.hasProperty("curseforge_key") && curse_release_type != 'none'
 curseforge {
-    if (project.hasProperty("curseforge_key") && commit_release_type != 'none') {
+    if (project.hasProperty("curseforge_key") && curse_release_type != 'none') {
         System.out.println("ATTEMPTING CURSE RELEASE")
         apiKey = project.properties["curseforge_key"]
     } else {
@@ -197,6 +140,8 @@ curseforge {
     }
     project {
         id = curse_project_id
+        addGameVersion '1.12.2'
+        addGameVersion 'Forge'
 
         relations {
             optionalDependency 'ompd'
@@ -205,21 +150,21 @@ curseforge {
         }
 
         mainArtifact(jar) {
-            releaseType = commit_release_type
-            changelog = file("${projectDir}/change_log.html").text
-            changelogType = 'html'
+            releaseType = curse_release_type
+            changelog = releaseNotes
+            changelogType = "markdown"
         }
 
         addArtifact(sourceJar) {
             releaseType = 'alpha'
-            changelog = file("${projectDir}/change_log.html").text
-            changelogType = 'html'
+            changelog = releaseNotes
+            changelogType = "markdown"
         }
 
         addArtifact(deobfJar) {
             releaseType = 'alpha'
-            changelog = file("${projectDir}/change_log.html").text
-            changelogType = 'html'
+            changelog = releaseNotes
+            changelogType = "markdown"
         }
     }
 }

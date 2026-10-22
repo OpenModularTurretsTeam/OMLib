@@ -14,16 +14,13 @@ import omtteam.omlib.api.gui.GuiParameters;
 import omtteam.omlib.api.gui.IHasTooltips;
 import omtteam.omlib.api.gui.ISupportsBackSystem;
 import omtteam.omlib.api.gui.StringListBox;
-import omtteam.omlib.api.permission.GlobalTrustRegister;
 import omtteam.omlib.api.permission.ITrustedPlayersManager;
 import omtteam.omlib.api.permission.TrustedPlayer;
-import omtteam.omlib.api.permission.TrustedPlayersManager;
 import omtteam.omlib.api.tile.IHasTrustManager;
 import omtteam.omlib.handler.GUIBackSystem;
 import omtteam.omlib.network.OMLibNetworkingHandler;
 import omtteam.omlib.network.messages.*;
 import omtteam.omlib.reference.OMLibNames;
-import omtteam.omlib.util.player.Player;
 import omtteam.omlib.util.player.PlayerUtil;
 import org.lwjgl.opengl.GL11;
 
@@ -32,7 +29,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static omtteam.omlib.util.GeneralUtil.safeLocalize;
 import static omtteam.omlib.util.player.PlayerUtil.addChatMessage;
@@ -51,14 +47,12 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips, ISuppo
     private int waitForServerTrustedPlayers = -1;
     private boolean addedToSyncList;
     private int accessLevel = 0;
-    private final boolean isGlobal;
     private final List<String> trustedPlayers = new ArrayList<>();
     private StringListBox listBox;
 
     public TrustedPlayersGUI(InventoryPlayer inventoryPlayer, IHasTrustManager tile) {
         super();
         this.tpm = tile.getTrustManager();
-        this.isGlobal = !tpm.hasTile();
         player = inventoryPlayer.player;
     }
 
@@ -210,12 +204,6 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips, ISuppo
             waitForServerTrustedPlayers--;
         }
         updateList();
-        if (isGlobal) {
-            Map.Entry<Player, TrustedPlayersManager> entry = GlobalTrustRegister.instance.getEntryFromName(tpm.getOwner().getName());
-            if (entry != null) {
-                tpm.setTrustedPlayers(entry.getValue().getTrustedPlayers());
-            }
-        }
     }
 
     @Override
@@ -328,27 +316,27 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips, ISuppo
     }
 
     private void sendChangeToServerAddTrusted() {
-        MessageAddTrustedPlayer message = new MessageAddTrustedPlayer(textFieldAddTrustedPlayer.getText(), tpm.getTile(), isGlobal, tpm.getOwner());
+        MessageAddTrustedPlayer message = new MessageAddTrustedPlayer(textFieldAddTrustedPlayer.getText(), tpm.getTile());
 
         OMLibNetworkingHandler.INSTANCE.sendToServer(message);
     }
 
     private void sendChangeToServerRemoveTrusted() {
         MessageRemoveTrustedPlayer message = new MessageRemoveTrustedPlayer(tpm.getTrustedPlayers().get(
-                listBox.selectedItem).getName(), tpm.getTile(), isGlobal, tpm.getOwner());
+                listBox.selectedItem).getName(), tpm.getTile());
 
         OMLibNetworkingHandler.INSTANCE.sendToServer(message);
     }
 
     private void sendChangeToServerModifyPermissions(String player, Integer change) {
-        MessageModifyPermissions message = new MessageModifyPermissions(player, tpm.getTile(), isGlobal, tpm.getOwner(), change);
+        MessageModifyPermissions message = new MessageModifyPermissions(player, tpm.getTile(), change);
 
         OMLibNetworkingHandler.INSTANCE.sendToServer(message);
     }
 
     @Override
     public void onGuiClosed() {
-        if (!isGlobal) {
+        if (tpm.hasTile()) {
             OMLibNetworkingHandler.INSTANCE.sendToServer(new MessageCloseGUITile(tpm.getTile()));
         }
         super.onGuiClosed();

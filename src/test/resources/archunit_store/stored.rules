@@ -1,0 +1,3 @@
+#
+#Thu Oct 22 02:13:37 CEST 2026
+no\ classes\ that\ reside\ outside\ of\ package\ 'omtteam.omlib.client..'\ and\ have\ simple\ name\ not\ ending\ with\ 'ClientProxy'\ should\ depend\ on\ classes\ that\ reside\ in\ a\ package\ 'omtteam.omlib.client..',\ because\ client\ classes\ do\ not\ exist\ on\ a\ dedicated\ server=f95e40d2-55e2-45fb-af64-11efba3efe7d

@@ -11,10 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import omtteam.omlib.api.network.ISyncable;
-import omtteam.omlib.api.permission.EnumAccessLevel;
-import omtteam.omlib.api.permission.GlobalTrustRegister;
 import omtteam.omlib.api.tile.IHasTrustManager;
-import omtteam.omlib.util.player.Player;
 import omtteam.omlib.util.player.PlayerUtil;
 
 import javax.annotation.Nullable;
@@ -24,13 +21,11 @@ public class MessageModifyPermissions implements IMessage {
     private int x, y, z, change;
     private String player;
     private boolean hasTile;
-    private boolean isGlobal;
-    private Player owner;
 
     public MessageModifyPermissions() {
     }
 
-    public MessageModifyPermissions(String player, @Nullable TileEntity te, boolean isGlobal, Player owner, int change) {
+    public MessageModifyPermissions(String player, @Nullable TileEntity te, int change) {
         if (te != null) {
             this.x = te.getPos().getX();
             this.y = te.getPos().getY();
@@ -38,8 +33,6 @@ public class MessageModifyPermissions implements IMessage {
             this.hasTile = true;
         }
         this.player = player;
-        this.isGlobal = isGlobal;
-        this.owner = owner;
         this.change = change;
     }
 
@@ -50,9 +43,7 @@ public class MessageModifyPermissions implements IMessage {
         this.z = buf.readInt();
 
         this.player = ByteBufUtils.readUTF8String(buf);
-        this.owner = Player.readFromByteBuf(buf);
         this.hasTile = buf.readBoolean();
-        this.isGlobal = buf.readBoolean();
         this.change = buf.readInt();
     }
 
@@ -63,9 +54,7 @@ public class MessageModifyPermissions implements IMessage {
         buf.writeInt(this.z);
 
         ByteBufUtils.writeUTF8String(buf, this.player);
-        Player.writeToByteBuf(owner, buf);
         buf.writeBoolean(this.hasTile);
-        buf.writeBoolean(this.isGlobal);
         buf.writeInt(this.change);
     }
 
@@ -89,8 +78,6 @@ public class MessageModifyPermissions implements IMessage {
                         if (machine instanceof ISyncable)
                             machine.informUpdate();
                     }
-                } else if (message.isGlobal) {
-                    GlobalTrustRegister.instance.changePermission(message.owner, message.player, EnumAccessLevel.NONE);
                 }
             });
             return null;

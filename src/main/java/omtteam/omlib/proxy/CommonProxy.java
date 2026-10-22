@@ -1,7 +1,6 @@
 package omtteam.omlib.proxy;
 
 import net.minecraftforge.common.MinecraftForge;
-import omtteam.omlib.api.permission.GlobalTrustRegister;
 import omtteam.omlib.api.permission.OwnerShareRegister;
 import omtteam.omlib.handler.OMLibEventHandler;
 import omtteam.omlib.network.OMLibNetworkingHandler;
@@ -12,7 +11,6 @@ public class CommonProxy {
     public void preInit() {
         initHandlers();
         OwnerShareRegister.preInit();
-        GlobalTrustRegister.preInit();
         RandomUtil.init();
     }
 

@@ -11,9 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import omtteam.omlib.api.network.ISyncable;
-import omtteam.omlib.api.permission.GlobalTrustRegister;
 import omtteam.omlib.api.tile.IHasTrustManager;
-import omtteam.omlib.util.player.Player;
 import omtteam.omlib.util.player.PlayerUtil;
 
 import javax.annotation.Nullable;
@@ -22,13 +20,11 @@ public class MessageRemoveTrustedPlayer implements IMessage {
     private int x, y, z;
     private String player;
     private boolean hasTile;
-    private boolean isGlobal;
-    private Player owner;
 
     public MessageRemoveTrustedPlayer() {
     }
 
-    public MessageRemoveTrustedPlayer(String player, @Nullable TileEntity te, boolean isGlobal, Player owner) {
+    public MessageRemoveTrustedPlayer(String player, @Nullable TileEntity te) {
         if (te != null) {
             this.x = te.getPos().getX();
             this.y = te.getPos().getY();
@@ -36,8 +32,6 @@ public class MessageRemoveTrustedPlayer implements IMessage {
             this.hasTile = true;
         }
         this.player = player;
-        this.isGlobal = isGlobal;
-        this.owner = owner;
     }
 
     @Override
@@ -47,9 +41,7 @@ public class MessageRemoveTrustedPlayer implements IMessage {
         this.z = buf.readInt();
 
         this.player = ByteBufUtils.readUTF8String(buf);
-        this.owner = Player.readFromByteBuf(buf);
         this.hasTile = buf.readBoolean();
-        this.isGlobal = buf.readBoolean();
     }
 
     @Override
@@ -59,9 +51,7 @@ public class MessageRemoveTrustedPlayer implements IMessage {
         buf.writeInt(this.z);
 
         ByteBufUtils.writeUTF8String(buf, this.player);
-        Player.writeToByteBuf(owner, buf);
         buf.writeBoolean(this.hasTile);
-        buf.writeBoolean(this.isGlobal);
     }
 
     public static class MessageHandlerRemoveTrustedPlayer implements IMessageHandler<MessageRemoveTrustedPlayer, IMessage> {
@@ -83,8 +73,6 @@ public class MessageRemoveTrustedPlayer implements IMessage {
                         if (machine instanceof ISyncable)
                             machine.informUpdate();
                     }
-                } else if (message.isGlobal) {
-                    GlobalTrustRegister.instance.removeTrustedPlayer(message.owner, new Player(null, message.player), null);
                 }
             });
             return null;

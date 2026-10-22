@@ -28,8 +28,7 @@ public class OMLibNetworkingHandler {
                                  3, Side.CLIENT);
         INSTANCE.registerMessage(MessageRenderRay.MessageHandlerRenderRay.class, MessageRenderRay.class,
                                  4, Side.CLIENT);
-        INSTANCE.registerMessage(MessageSetGlobalTrustList.MessageHandlerSetGlobalTrustList.class,
-                                 MessageSetGlobalTrustList.class, 5, Side.CLIENT);
+        // 5 was MessageSetGlobalTrustList (global trust lists, removed in 4.0.0)
 
         INSTANCE.registerMessage(MessageModifyPermissions.MessageHandlerModifyPermissions.class,
                                  MessageModifyPermissions.class, 6, Side.SERVER);
