@@ -12,10 +12,6 @@ public class OMLibNames {
         public static final String multiTool = "multi_tool";
     }
 
-    public static class Blocks {
-        public static final String networkCable = "network_cable";
-    }
-
     public static class Textures {
         public static final String trustedPlayers = Reference.MOD_ID + ":textures/gui/trusted_players.png";
         public static final String targetingSettings = Reference.MOD_ID + ":textures/gui/targeting_settings.png";

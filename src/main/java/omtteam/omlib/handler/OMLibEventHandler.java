@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -30,7 +31,6 @@ import omtteam.omlib.api.gui.ISupportsBackSystem;
 import omtteam.omlib.api.network.OMLibNetwork;
 import omtteam.omlib.api.permission.OwnerShareRegister;
 import omtteam.omlib.api.render.RenderManager;
-import omtteam.omlib.init.OMLibBlocks;
 import omtteam.omlib.init.OMLibItems;
 import omtteam.omlib.items.IDrawOutline;
 import omtteam.omlib.items.IDrawOutlineBase;
@@ -50,6 +50,8 @@ import static omtteam.omlib.util.RenderUtil.drawHighlightBox;
  * This Class is the EventHandler for OMLib.
  */
 public class OMLibEventHandler {
+    private static final ResourceLocation REMOVED_CABLE = new ResourceLocation(Reference.MOD_ID, "network_cable");
+
     private static OMLibEventHandler instance;
     private final List<OMLibNetwork> networks = new ArrayList<>();
 
@@ -82,9 +84,19 @@ public class OMLibEventHandler {
         OMLibItems.init(event.getRegistry());
     }
 
+    /** The network cable was removed in 4.0.0; worlds and inventories drop it silently. */
     @SubscribeEvent
-    public void blockRegisterEvent(RegistryEvent.Register<Block> event) {
-        OMLibBlocks.initBlocks(event.getRegistry());
+    public void missingBlockMappings(RegistryEvent.MissingMappings<Block> event) {
+        for (RegistryEvent.MissingMappings.Mapping<Block> mapping : event.getAllMappings()) {
+            if (REMOVED_CABLE.equals(mapping.key)) mapping.ignore();
+        }
+    }
+
+    @SubscribeEvent
+    public void missingItemMappings(RegistryEvent.MissingMappings<Item> event) {
+        for (RegistryEvent.MissingMappings.Mapping<Item> mapping : event.getAllMappings()) {
+            if (REMOVED_CABLE.equals(mapping.key)) mapping.ignore();
+        }
     }
 
     @SubscribeEvent

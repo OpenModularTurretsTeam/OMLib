@@ -20,6 +20,7 @@ Before a release, `./gradlew releaseChangelog -Pchangelog_version=<tag without v
 ### Removed
 
 - Global trust lists: they could not be turned on in game
+- The unfinished network cable block (it crashed the client with missing model variants); placed cables disappear
 
 ## [3.2.0]
 
