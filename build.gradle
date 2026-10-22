@@ -19,6 +19,8 @@ apply plugin: 'idea'
 apply plugin: 'java'
 // tests, core isolation and changelog tasks, shared with the workspace build
 apply from: "gradle/mod-common.gradle"
+// local releases to CurseForge and Modrinth (./gradlew -b build.gradle release)
+apply from: "gradle/release.gradle"
 
 repositories {
     maven { url = "https://maven.blamejared.com/" }  // JEI, Tesla
@@ -32,13 +34,6 @@ repositories {
 sourceCompatibility = targetCompatibility = 1.8
 compileJava {
     sourceCompatibility = targetCompatibility = '1.8'
-}
-
-version = "${mod_version}"
-if (hasProperty('appendBuildNumber')) {
-    version = version + "-" + appendBuildNumber.toString()
-} else {
-    version = version + "-0"
 }
 
 group = "${group_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -112,32 +107,16 @@ publishing {
     }
 }
 
-//// CURSE RELEASE \\\\
-// release_type (alpha, beta or release) is set by the CI release job from the git tag
+//// CURSEFORGE RELEASE \\\\
+// uploaded by `./gradlew -b build.gradle release` (gradle/release.gradle) with curseforge_token from ~/.gradle/gradle.properties
 
-def curse_release_type = findProperty("release_type") ?: "none"
-if (!(curse_release_type in ["none", "alpha", "beta", "release"])) {
-    throw new GradleException("Unknown release_type '${curse_release_type}', expected alpha, beta or release")
-}
-
-// The CHANGELOG.md section of the release tag (CI passes -Pchangelog_version); a release without one fails
-def releaseNotes = ""
-if (curse_release_type != "none") {
-    def changelogVersion = findProperty("changelog_version")
-    releaseNotes = changelogVersion ? changelogSection(changelogVersion) : null
-    if (!releaseNotes) {
-        throw new GradleException("CHANGELOG.md has no section for '${changelogVersion}'; run ./gradlew releaseChangelog -Pchangelog_version=<tag without v> first")
-    }
-}
-
-tasks.curseforge.enabled = project.hasProperty("curseforge_key") && curse_release_type != 'none'
+def curseforgeEnabled = releasing && project.hasProperty("curseforge_token")
+tasks.curseforge.enabled = curseforgeEnabled
 curseforge {
-    if (project.hasProperty("curseforge_key") && curse_release_type != 'none') {
-        System.out.println("ATTEMPTING CURSE RELEASE")
-        apiKey = project.properties["curseforge_key"]
-    } else {
+    if (!curseforgeEnabled) {
         return
     }
+    apiKey = findProperty("curseforge_token")
     project {
         id = curse_project_id
         addGameVersion '1.12.2'
@@ -150,7 +129,7 @@ curseforge {
         }
 
         mainArtifact(jar) {
-            releaseType = curse_release_type
+            releaseType = releaseChannel
             changelog = releaseNotes
             changelogType = "markdown"
         }
@@ -168,3 +147,7 @@ curseforge {
         }
     }
 }
+
+// OMT and OMPD build their releases against this OMLib release from mavenLocal
+tasks.release.dependsOn "publishToMavenLocal"
+tasks.publishToMavenLocal.dependsOn "build"
