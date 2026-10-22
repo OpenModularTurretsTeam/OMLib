@@ -39,6 +39,10 @@ public class OMLibNetworkingHandler {
                                  MessageSpawnParticleQuad.class, 9, Side.CLIENT);
         INSTANCE.registerMessage(OMLib.proxy.clientMessageHandler(MessageRenderLightning.class),
                                  MessageRenderLightning.class, 10, Side.CLIENT);
+        INSTANCE.registerMessage(MessageOpenCamoMenu.MessageHandlerOpenCamoMenu.class, MessageOpenCamoMenu.class,
+                                 11, Side.SERVER);
+        INSTANCE.registerMessage(MessageCamoLight.MessageHandlerCamoLight.class, MessageCamoLight.class,
+                                 12, Side.SERVER);
     }
 
     public static void sendMessageToAllPlayers(IMessage message) {

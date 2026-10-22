@@ -1,6 +1,7 @@
 package omtteam.omlib.api.render.camo;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import omtteam.omlib.network.MessageCamoSettings;
 import omtteam.omlib.network.OMLibNetworkingHandler;
@@ -43,6 +44,18 @@ public interface ICamoSupport {
 
     @Nonnull
     TileEntityOwnedBlock getOwnedBlock();
+
+    /** Whether camouflage is enabled for this block at all (OMT: config {@code allowBaseCamo}). */
+    boolean isCamoEnabled();
+
+    /** Whether light value and opacity of this block can be adjusted (OMT: tier 4 and 5 bases). */
+    boolean supportsLight();
+
+    /** Server-side permission check for setting or resetting the disguise. */
+    boolean canSetCamo(EntityPlayer player);
+
+    /** Server-side permission check for changing light value and opacity. */
+    boolean canChangeLight(EntityPlayer player);
 
     default void updateCamoSettingsToPlayers() {
         OMLibNetworkingHandler.INSTANCE.sendToAllTracking(new MessageCamoSettings((ICamoSupport) this.getOwnedBlock()),

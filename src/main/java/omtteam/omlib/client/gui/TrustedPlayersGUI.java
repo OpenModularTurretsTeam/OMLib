@@ -12,10 +12,12 @@ import net.minecraft.util.text.TextComponentString;
 import omtteam.omlib.OMLib;
 import omtteam.omlib.api.permission.ITrustedPlayersManager;
 import omtteam.omlib.api.permission.TrustedPlayer;
+import omtteam.omlib.api.render.camo.ICamoSupport;
 import omtteam.omlib.api.tile.IHasTrustManager;
 import omtteam.omlib.network.MessageAddTrustedPlayer;
 import omtteam.omlib.network.MessageCloseGUITile;
 import omtteam.omlib.network.MessageModifyPermissions;
+import omtteam.omlib.network.MessageOpenCamoMenu;
 import omtteam.omlib.network.MessageOpenGUITile;
 import omtteam.omlib.network.MessageRemoveTrustedPlayer;
 import omtteam.omlib.network.OMLibNetworkingHandler;
@@ -310,7 +312,15 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips, ISuppo
             }
         }
         if (guibutton.id == 6) { //back button
-            GUIBackSystem.getInstance().openLastGui(player);
+            if (GUIBackSystem.getInstance().size() > 1) {
+                GUIBackSystem.getInstance().openLastGui(player);
+            } else if (tpm.getTile() instanceof ICamoSupport) {
+                // opened from the camouflage menu of a block without another GUI (the camouflage trap)
+                GUIBackSystem.getInstance().clearStack();
+                OMLibNetworkingHandler.INSTANCE.sendToServer(new MessageOpenCamoMenu(tpm.getTile().getPos()));
+            } else {
+                player.closeScreen();
+            }
         }
     }
 

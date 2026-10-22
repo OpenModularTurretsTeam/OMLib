@@ -13,6 +13,7 @@ Before a release, `./gradlew releaseChangelog -Pchangelog_version=<tag without v
 - Members of the owner's scoreboard team count as trusted (lowest access level) for owned blocks
 - Stored energy above a lowered capacity is cut off
 - For addon authors: the client-only GUI and render helpers moved from `omtteam.omlib.api.gui` / `api.render` to `omtteam.omlib.client.gui` / `client.render` (`ColorOM`, `ICamoSupport` and `RenderBlockStateContainer` stay)
+- For addon authors: `ICamoSupport` has four new methods (`isCamoEnabled`, `supportsLight`, `canSetCamo`, `canChangeLight`)
 
 ### Fixed
 
@@ -22,8 +23,12 @@ Before a release, `./gradlew releaseChangelog -Pchangelog_version=<tag without v
 
 - Global trust lists: they could not be turned on in game
 - The unfinished network cable block (it crashed the client with missing model variants); placed cables disappear
+- Setting camouflage by right-clicking with a block (and resetting it by sneaking empty-handed); the camouflage menu does it now
 
-## [3.2.0]
+### Added
+
+- Camouflage menu for camouflaged blocks: a disguise slot (click with a block to set it, empty-handed to reset) and, where supported, light value and opacity sliders## [3.2.0]
+- Memory card rules (`core.card`: card data, who may copy and write, trust list copying) shared by turret bases and camouflage traps
 
 ### Changed
 

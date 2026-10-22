@@ -30,6 +30,22 @@ public class GUIBackSystem {
         }
     }
 
+    /** Number of GUIs on the stack; the open GUI is the newest one if it supports the back system itself. */
+    public int size() {
+        return guiList.size();
+    }
+
+    /**
+     * Reopens the newest GUI on the stack, for screens that are not on the stack themselves (the camouflage menu). It
+     * is taken off the stack, opening it puts it back.
+     */
+    public void openTopGui(EntityPlayer player) {
+        ISupportsBackSystem gui = guiList.pop();
+        if (gui.getGuiParameters() != null) {
+            ClientUtil.openGuiFromParameters(player, gui.getGuiParameters());
+        }
+    }
+
     public void clearStack() {
         guiList = new Stack<>();
     }

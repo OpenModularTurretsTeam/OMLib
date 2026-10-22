@@ -14,10 +14,13 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import omtteam.omlib.CommonProxy;
+import omtteam.omlib.api.render.camo.ICamoSupport;
 import omtteam.omlib.api.tile.IHasTrustManager;
+import omtteam.omlib.client.gui.CamoGui;
 import omtteam.omlib.client.gui.TargetSettingsGUI;
 import omtteam.omlib.client.gui.TrustedPlayersGUI;
 import omtteam.omlib.client.network.ClientMessageHandlers;
+import omtteam.omlib.handler.OMGuiHandler;
 import omtteam.omlib.registry.OMLibItems;
 
 import javax.annotation.Nullable;
@@ -65,6 +68,8 @@ public class ClientProxy extends CommonProxy {
                 return new TrustedPlayersGUI(player.inventory, (IHasTrustManager) tileEntity);
             case 1:
                 return new TargetSettingsGUI(player.inventory, tileEntity);
+            case OMGuiHandler.CAMO_GUI:
+                return tileEntity instanceof ICamoSupport ? new CamoGui(player.inventory, (ICamoSupport) tileEntity) : null;
             default:
                 return null;
         }

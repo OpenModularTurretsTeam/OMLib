@@ -264,6 +264,11 @@ public class PlayerUtil {
         return temporary;
     }
 
+    /** The core view of a player (identity and operator status) for rules in {@code omtteam.omlib.core}. */
+    public static PlayerInfo getPlayerInfo(EntityPlayer player) {
+        return info(player);
+    }
+
     private static PlayerInfo info(EntityPlayer player) {
         return new PlayerInfo(player.getUniqueID(), player.getName(), isPlayerOP(player));
     }

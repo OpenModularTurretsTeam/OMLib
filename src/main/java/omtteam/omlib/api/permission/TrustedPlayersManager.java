@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 import omtteam.omlib.core.security.AccessLevel;
+import omtteam.omlib.core.security.AccessProfile;
 import omtteam.omlib.core.security.PlayerIdentity;
 import omtteam.omlib.core.security.SecurityEnvironment;
 import omtteam.omlib.core.security.TrustManager;
@@ -42,9 +43,19 @@ public class TrustedPlayersManager implements ITrustedPlayersManager {
 
     /** @param environment where the core looks up teams, config and shared owners */
     public TrustedPlayersManager(Player owner, TileEntity tile, SecurityEnvironment environment) {
+        this(owner, tile, environment, AccessProfile.ALL);
+    }
+
+    /**
+     * @param environment where the core looks up teams, config and shared owners
+     * @param profile     the access levels the block uses (the camouflage trap:
+     *                    {@link AccessProfile#TRUSTED_AND_ADMIN})
+     */
+    public TrustedPlayersManager(Player owner, TileEntity tile, SecurityEnvironment environment,
+                                 AccessProfile profile) {
         // callers mark their tile entity dirty after changes, as in 3.x
         this.core = new TrustManager(environment, () -> {
-        });
+        }, profile);
         this.environment = environment;
         this.tile = tile;
         setOwner(owner);

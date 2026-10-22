@@ -43,9 +43,10 @@ class ArchitectureTest {
      */
     private static final List<Set<String>> KNOWN_CYCLES = Arrays.asList(
             // one large loop through almost every package (tile entities, network, handlers, permissions, items, compat)
+            // container joined with the camouflage menu (ContainerCamo needs ICamoSupport; approved by the user)
             set("(root)", "api.network", "api.permission", "api.render.camo", "api.tile", "compat", "compat.theoneprobe",
-                    "config", "handler", "item", "network", "power.rf", "power.tesla", "registry", "tileentity", "util",
-                    "util.command", "util.player"));
+                    "config", "container", "handler", "item", "network", "power.rf", "power.tesla", "registry",
+                    "tileentity", "util", "util.command", "util.player"));
 
     private static JavaClasses classes;
 

@@ -54,3 +54,11 @@ tooltip.omtteam.omlib:target_players=If the tile attacks (non-trusted) players.
 item.debug_tool.name=Debug Tool
 
 text.omtteam.omlib:status_permission=You do not have permission to do that.
+
+# 4.0.0 camouflage menu
+text.omlib.camo.disguise=Disguise
+text.omlib.camo.light_value=Light Value
+text.omlib.camo.light_opacity=Light Opacity
+text.omlib.camo_not_allowed=You may not change the disguise of this block.
+text.omlib.camo_invalid=That block cannot be used as camouflage. Use a full block without a tile entity.
+tooltip.omlib.camouflage_slot=Click with a block to use it as camouflage, click empty-handed to reset.
