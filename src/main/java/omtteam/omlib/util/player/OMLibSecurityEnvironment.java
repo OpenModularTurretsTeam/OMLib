@@ -4,9 +4,9 @@ import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import omtteam.omlib.api.permission.OwnerShareRegister;
+import omtteam.omlib.config.OMConfig;
 import omtteam.omlib.core.security.PlayerIdentity;
 import omtteam.omlib.core.security.SecurityEnvironment;
-import omtteam.omlib.handler.OMConfig;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;

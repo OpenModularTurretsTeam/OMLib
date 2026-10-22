@@ -7,7 +7,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.common.Optional;
-import omtteam.omlib.compatibility.OMLibModCompatibility;
+import omtteam.omlib.compat.OMLibModCompatibility;
 import omtteam.omlib.power.OMEnergyStorage;
 import omtteam.omlib.power.rf.BaseRFReceiverWrapper;
 import omtteam.omlib.power.rf.RFCapabilities;
@@ -16,7 +16,7 @@ import omtteam.omlib.power.tesla.BaseOMTeslaReceiverWrapper;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static omtteam.omlib.compatibility.OMLibModCompatibility.*;
+import static omtteam.omlib.compat.OMLibModCompatibility.*;
 
 /**
  * Created by Keridos on 27/04/17.

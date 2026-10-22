@@ -8,7 +8,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
-import omtteam.omlib.handler.OMConfig;
+import omtteam.omlib.config.OMConfig;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 import omtteam.omlib.util.player.Player;
 

@@ -5,7 +5,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
 import omtteam.omlib.api.permission.OwnerShareRegister;
-import omtteam.omlib.handler.OMConfig;
+import omtteam.omlib.config.OMConfig;
 import omtteam.omlib.util.player.Player;
 
 import javax.annotation.Nonnull;

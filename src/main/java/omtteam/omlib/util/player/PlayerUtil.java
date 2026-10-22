@@ -10,11 +10,11 @@ import omtteam.omlib.api.permission.IHasOwner;
 import omtteam.omlib.api.permission.ITrustedPlayersManager;
 import omtteam.omlib.api.permission.TrustedPlayer;
 import omtteam.omlib.api.tile.IHasTrustManager;
+import omtteam.omlib.config.OMConfig;
 import omtteam.omlib.core.security.AccessLevel;
 import omtteam.omlib.core.security.PlayerIdentity;
 import omtteam.omlib.core.security.PlayerInfo;
 import omtteam.omlib.core.security.TrustManager;
-import omtteam.omlib.handler.OMConfig;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 
 import javax.annotation.Nullable;

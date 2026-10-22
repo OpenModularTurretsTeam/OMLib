@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.Optional;
 import omtteam.omlib.power.OMEnergyStorage;
 import omtteam.omlib.tileentity.TileEntityElectric;
 
-import static omtteam.omlib.compatibility.OMLibModCompatibility.CoFHApiModId;
+import static omtteam.omlib.compat.OMLibModCompatibility.CoFHApiModId;
 
 /**
  * A Receiver for Energy, credits go to the ender IO devs :)

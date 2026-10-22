@@ -7,7 +7,7 @@ import net.minecraft.scoreboard.Team;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
-import omtteam.omlib.handler.OMConfig;
+import omtteam.omlib.config.OMConfig;
 
 import javax.annotation.Nullable;
 import java.util.UUID;

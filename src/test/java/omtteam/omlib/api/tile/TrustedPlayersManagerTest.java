@@ -4,7 +4,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import omtteam.omlib.api.permission.EnumAccessLevel;
 import omtteam.omlib.api.permission.TrustedPlayer;
 import omtteam.omlib.api.permission.TrustedPlayersManager;
-import omtteam.omlib.handler.OMConfig;
+import omtteam.omlib.config.OMConfig;
 import omtteam.omlib.util.RandomUtil;
 import omtteam.omlib.util.player.Player;
 import org.junit.jupiter.api.Test;

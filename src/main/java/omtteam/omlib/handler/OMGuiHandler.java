@@ -5,9 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
-import omtteam.omlib.api.tile.IHasTrustManager;
-import omtteam.omlib.client.gui.TargetSettingsGUI;
-import omtteam.omlib.client.gui.TrustedPlayersGUI;
+import omtteam.omlib.OMLib;
 
 public class OMGuiHandler implements IGuiHandler {
     private static OMGuiHandler instance;
@@ -34,18 +32,6 @@ public class OMGuiHandler implements IGuiHandler {
 
     @Override
     public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-        TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
-        if (tileEntity == null) {
-            return null;
-        }
-
-        switch (id) {
-            case 0:
-                return new TrustedPlayersGUI(player.inventory, (IHasTrustManager) tileEntity);
-            case 1:
-                return new TargetSettingsGUI(player.inventory, tileEntity);
-            default:
-                return null;
-        }
+        return OMLib.proxy.getClientGuiElement(id, player, world, x, y, z);
     }
 }

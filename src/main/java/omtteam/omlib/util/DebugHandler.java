@@ -4,7 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.util.text.TextComponentString;
-import omtteam.omlib.handler.OMConfig;
+import omtteam.omlib.config.OMConfig;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package omtteam.omlib.reference;
 
-import static omtteam.omlib.compatibility.OMLibModCompatibility.*;
+import static omtteam.omlib.compat.OMLibModCompatibility.*;
 
 public class Reference {
     public static final String MOD_ID = "omlib";

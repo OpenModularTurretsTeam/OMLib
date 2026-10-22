@@ -5,10 +5,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
-import omtteam.omlib.network.messages.*;
-import omtteam.omlib.network.messages.render.MessageRenderLightning;
-import omtteam.omlib.network.messages.render.MessageRenderRay;
-import omtteam.omlib.network.messages.render.MessageSpawnParticleQuad;
+import omtteam.omlib.OMLib;
 import omtteam.omlib.reference.Reference;
 
 /**
@@ -18,15 +15,15 @@ public class OMLibNetworkingHandler {
     public final static SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID);
 
     public static void initNetworking() {
-        INSTANCE.registerMessage(MessageSetSharePlayerList.MessageHandlerSetSharePlayerList.class,
+        INSTANCE.registerMessage(OMLib.proxy.clientMessageHandler(MessageSetSharePlayerList.class),
                                  MessageSetSharePlayerList.class, 0, Side.CLIENT);
         INSTANCE.registerMessage(MessageOpenGUITile.MessageHandlerOpenGUITile.class, MessageOpenGUITile.class,
                                  1, Side.SERVER);
         INSTANCE.registerMessage(MessageCloseGUITile.MessageHandlerCloseGUITile.class, MessageCloseGUITile.class,
                                  2, Side.SERVER);
-        INSTANCE.registerMessage(MessageCamoSettings.MessageHandlerCamoSettings.class, MessageCamoSettings.class,
+        INSTANCE.registerMessage(OMLib.proxy.clientMessageHandler(MessageCamoSettings.class), MessageCamoSettings.class,
                                  3, Side.CLIENT);
-        INSTANCE.registerMessage(MessageRenderRay.MessageHandlerRenderRay.class, MessageRenderRay.class,
+        INSTANCE.registerMessage(OMLib.proxy.clientMessageHandler(MessageRenderRay.class), MessageRenderRay.class,
                                  4, Side.CLIENT);
         // 5 was MessageSetGlobalTrustList (global trust lists, removed in 4.0.0)
 
@@ -38,9 +35,9 @@ public class OMLibNetworkingHandler {
 
         INSTANCE.registerMessage(MessageRemoveTrustedPlayer.MessageHandlerRemoveTrustedPlayer.class,
                                  MessageRemoveTrustedPlayer.class, 8, Side.SERVER);
-        INSTANCE.registerMessage(MessageSpawnParticleQuad.MessageHandlerSpawnParticleQuad.class,
+        INSTANCE.registerMessage(OMLib.proxy.clientMessageHandler(MessageSpawnParticleQuad.class),
                                  MessageSpawnParticleQuad.class, 9, Side.CLIENT);
-        INSTANCE.registerMessage(MessageRenderLightning.MessageHandlerRenderLightning.class,
+        INSTANCE.registerMessage(OMLib.proxy.clientMessageHandler(MessageRenderLightning.class),
                                  MessageRenderLightning.class, 10, Side.CLIENT);
     }
 

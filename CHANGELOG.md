@@ -12,6 +12,7 @@ Before a release, `./gradlew releaseChangelog -Pchangelog_version=<tag without v
 
 - Members of the owner's scoreboard team count as trusted (lowest access level) for owned blocks
 - Stored energy above a lowered capacity is cut off
+- For addon authors: the client-only GUI and render helpers moved from `omtteam.omlib.api.gui` / `api.render` to `omtteam.omlib.client.gui` / `client.render` (`ColorOM`, `ICamoSupport` and `RenderBlockStateContainer` stay)
 
 ### Fixed
 

@@ -42,12 +42,10 @@ class ArchitectureTest {
      * so does a cycle that shrank or disappeared until it is updated here, so the list always shows the real state.
      */
     private static final List<Set<String>> KNOWN_CYCLES = Arrays.asList(
-            // one large loop through almost every package (blocks, tile entities, network, handlers, proxy, client GUI)
-            set("(root)", "api.network", "api.permission", "api.render.camo", "api.tile", "blocks", "client.gui",
-                    "compatibility", "compatibility.theoneprobe", "handler", "init", "items", "network",
-                    "network.messages", "network.messages.render", "power.rf", "power.tesla", "proxy", "tileentity",
-                    "util", "util.command", "util.player"),
-            set("api.render", "api.render.object"));
+            // one large loop through almost every package (tile entities, network, handlers, permissions, items, compat)
+            set("(root)", "api.network", "api.permission", "api.render.camo", "api.tile", "compat", "compat.theoneprobe",
+                    "config", "handler", "item", "network", "power.rf", "power.tesla", "registry", "tileentity", "util",
+                    "util.command", "util.player"));
 
     private static JavaClasses classes;
 

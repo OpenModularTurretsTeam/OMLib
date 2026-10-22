@@ -1,6 +1,6 @@
 package omtteam.omlib.api.permission;
 
-import omtteam.omlib.handler.OMConfig;
+import omtteam.omlib.config.OMConfig;
 import omtteam.omlib.util.player.Player;
 
 import javax.annotation.ParametersAreNonnullByDefault;

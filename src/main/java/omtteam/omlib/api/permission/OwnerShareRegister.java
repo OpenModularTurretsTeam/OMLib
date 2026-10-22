@@ -16,8 +16,8 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import omtteam.omlib.OMLib;
+import omtteam.omlib.network.MessageSetSharePlayerList;
 import omtteam.omlib.network.OMLibNetworkingHandler;
-import omtteam.omlib.network.messages.MessageSetSharePlayerList;
 import omtteam.omlib.reference.Reference;
 import omtteam.omlib.util.player.Player;
 

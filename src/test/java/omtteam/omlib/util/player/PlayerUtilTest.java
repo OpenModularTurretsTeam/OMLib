@@ -1,8 +1,12 @@
 package omtteam.omlib.util.player;
 
-import omtteam.omlib.api.permission.*;
+import omtteam.omlib.api.permission.EnumAccessLevel;
+import omtteam.omlib.api.permission.EnumPlayerAccessType;
+import omtteam.omlib.api.permission.IHasOwner;
+import omtteam.omlib.api.permission.TrustedPlayer;
+import omtteam.omlib.api.permission.TrustedPlayersManager;
 import omtteam.omlib.api.tile.IHasTrustManager;
-import omtteam.omlib.handler.OMConfig;
+import omtteam.omlib.config.OMConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
