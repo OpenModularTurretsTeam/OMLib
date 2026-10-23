@@ -125,7 +125,7 @@ public class StringListBox extends GuiButton {
         Minecraft mc = FMLClientHandler.instance().getClient();
         ScaledResolution scaler = new ScaledResolution(mc);
         GL11.glScissor(x * scaler.getScaleFactor(), mc.displayHeight - (y + height) * scaler.getScaleFactor(), (width - SCROLL_WIDTH) * scaler.getScaleFactor(), height * scaler.getScaleFactor());
-        if (items.size() > 0) {
+        if (!items.isEmpty()) {
             selectedItem = Math.max(0, selectedItem);
             for (String row : items) {
                 if (row.equals(items.get(selectedItem))) {

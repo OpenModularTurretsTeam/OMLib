@@ -11,6 +11,7 @@ import net.minecraft.util.text.TextComponentString;
 import omtteam.omlib.OMLib;
 import omtteam.omlib.api.network.ISyncableTE;
 import omtteam.omlib.api.tile.IHasTargetingSettings;
+import omtteam.omlib.handler.OMGuiHandler;
 import omtteam.omlib.network.MessageCloseGUITile;
 import omtteam.omlib.network.MessageOpenGUITile;
 import omtteam.omlib.network.OMLibNetworkingHandler;
@@ -186,14 +187,19 @@ public class TargetSettingsGUI extends GuiScreen implements IHasTooltips, ISuppo
 
     @Override
     public void onGuiClosed() {
-        OMLibNetworkingHandler.INSTANCE.sendToServer(new MessageCloseGUITile(syncHandler.getTE()));
+        if (syncHandler != null) {
+            OMLibNetworkingHandler.INSTANCE.sendToServer(new MessageCloseGUITile(syncHandler.getTE()));
+        }
         super.onGuiClosed();
     }
 
     @Override
     @Nullable
     public GuiParameters getGuiParameters() {
-        return new GuiParameters(OMLib.instance, 1, player.getEntityWorld(),
+        if (syncHandler == null) {
+            return null;
+        }
+        return new GuiParameters(OMLib.instance, OMGuiHandler.TARGET_SETTINGS_GUI, player.getEntityWorld(),
                                  syncHandler.getTE().getPos().getX(),
                                  syncHandler.getTE().getPos().getY(),
                                  syncHandler.getTE().getPos().getZ());

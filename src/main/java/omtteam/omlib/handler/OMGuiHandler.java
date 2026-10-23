@@ -32,13 +32,10 @@ public class OMGuiHandler implements IGuiHandler {
     public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
         TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
 
-        switch (id) {
-            case CAMO_GUI:
-                return tileEntity instanceof ICamoSupport
-                        ? new ContainerCamo(player.inventory, (ICamoSupport) tileEntity) : null;
-            default:
-                return null;
+        if (id == CAMO_GUI && tileEntity instanceof ICamoSupport) {
+            return new ContainerCamo(player.inventory, (ICamoSupport) tileEntity);
         }
+        return null;
     }
 
     @Override

@@ -14,6 +14,7 @@ import omtteam.omlib.api.permission.ITrustedPlayersManager;
 import omtteam.omlib.api.permission.TrustedPlayer;
 import omtteam.omlib.api.render.camo.ICamoSupport;
 import omtteam.omlib.api.tile.IHasTrustManager;
+import omtteam.omlib.handler.OMGuiHandler;
 import omtteam.omlib.network.MessageAddTrustedPlayer;
 import omtteam.omlib.network.MessageCloseGUITile;
 import omtteam.omlib.network.MessageModifyPermissions;
@@ -199,7 +200,7 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips, ISuppo
     @Override
     public void updateScreen() {
         super.updateScreen();
-        if (waitForServerTrustedPlayers >= 0 && this.tpm.getTrustedPlayers().size() > 0) {
+        if (waitForServerTrustedPlayers >= 0 && !this.tpm.getTrustedPlayers().isEmpty()) {
             waitForServerTrustedPlayers = -1;
         } else if (waitForServerTrustedPlayers >= 0) {
             waitForServerTrustedPlayers--;
@@ -219,7 +220,7 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips, ISuppo
             try {
                 super.mouseClicked(i, j, k);
             } catch (IOException e) {
-                e.printStackTrace();
+                OMLib.getLogger().error("Failed to handle a mouse click in the trusted players GUI", e);
             }
         }
     }
@@ -249,7 +250,7 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips, ISuppo
 
         if (guibutton.id == 1) { //add trusted player
             if (PlayerUtil.isPlayerAdmin(player, (IHasTrustManager) tpm.getTile())) {
-                if (!textFieldAddTrustedPlayer.getText().equals("") || !textFieldAddTrustedPlayer.getText().isEmpty()) {
+                if (!textFieldAddTrustedPlayer.getText().isEmpty()) {
                     sendChangeToServerAddTrusted();
                     textFieldAddTrustedPlayer.setText("");
                     waitForServerTrustedPlayers = 20;
@@ -260,55 +261,49 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips, ISuppo
         }
 
         if (guibutton.id == 2) { //remove trusted player
-            if (this.tpm.getTrustedPlayers().size() < listBox.selectedItem) {
+            if (listBox.selectedItem < 0 || listBox.selectedItem >= tpm.getTrustedPlayers().size()) {
                 return;
             }
 
-            if (tpm.getTrustedPlayers().size() > 0) {
-                if (this.tpm.getTrustedPlayers().get(
-                        listBox.selectedItem) != null && PlayerUtil.isPlayerAdmin(player, (IHasTrustManager) tpm.getTile())) {
-                    sendChangeToServerRemoveTrusted();
-                    tpm.removeTrustedPlayer(tpm.getTrustedPlayers().get(listBox.selectedItem).getName());
-                    if (!player.getUniqueID().equals(tpm.getOwner().getUuid()) && (tpm.getTrustedPlayers().size() == 0 || PlayerUtil.isPlayerAdmin(player, (IHasTrustManager) tpm.getTile()))) {
-                        mc.displayGuiScreen(null);
-                        return;
-                    }
-                    this.initGui();
-                } else {
-                    addChatMessage(player, new TextComponentString(safeLocalize("status.ownership")));
+            if (this.tpm.getTrustedPlayers().get(
+                    listBox.selectedItem) != null && PlayerUtil.isPlayerAdmin(player, (IHasTrustManager) tpm.getTile())) {
+                sendChangeToServerRemoveTrusted();
+                tpm.removeTrustedPlayer(tpm.getTrustedPlayers().get(listBox.selectedItem).getName());
+                if (!player.getUniqueID().equals(tpm.getOwner().getUuid()) && (tpm.getTrustedPlayers().isEmpty() || PlayerUtil.isPlayerAdmin(player, (IHasTrustManager) tpm.getTile()))) {
+                    mc.displayGuiScreen(null);
+                    return;
                 }
+                this.initGui();
+            } else {
+                addChatMessage(player, new TextComponentString(safeLocalize("status.ownership")));
             }
         }
 
         if (guibutton.id == 3) { // decrease permission level by 1
-            if (this.tpm.getTrustedPlayers().size() < listBox.selectedItem) {
+            if (listBox.selectedItem < 0 || listBox.selectedItem >= tpm.getTrustedPlayers().size()) {
                 return;
             }
 
-            if (tpm.getTrustedPlayers().size() > 0) {
-                if (PlayerUtil.isPlayerAdmin(player, (IHasTrustManager) tpm.getTile()) && this.tpm.getTrustedPlayers().get(
-                        listBox.selectedItem) != null) {
-                    sendChangeToServerModifyPermissions(
-                            this.tpm.getTrustedPlayers().get(listBox.selectedItem).getName(), -1);
-                } else {
-                    addChatMessage(player, new TextComponentString(safeLocalize("status.ownership")));
-                }
+            if (PlayerUtil.isPlayerAdmin(player, (IHasTrustManager) tpm.getTile()) && this.tpm.getTrustedPlayers().get(
+                    listBox.selectedItem) != null) {
+                sendChangeToServerModifyPermissions(
+                        this.tpm.getTrustedPlayers().get(listBox.selectedItem).getName(), -1);
+            } else {
+                addChatMessage(player, new TextComponentString(safeLocalize("status.ownership")));
             }
         }
 
         if (guibutton.id == 4) { //increase permission level by 1
-            if (this.tpm.getTrustedPlayers().size() < listBox.selectedItem) {
+            if (listBox.selectedItem < 0 || listBox.selectedItem >= tpm.getTrustedPlayers().size()) {
                 return;
             }
 
-            if (tpm.getTrustedPlayers().size() > 0) {
-                if (PlayerUtil.isPlayerAdmin(player, (IHasTrustManager) tpm.getTile()) && this.tpm.getTrustedPlayers().get(
-                        listBox.selectedItem) != null) {
-                    sendChangeToServerModifyPermissions(
-                            this.tpm.getTrustedPlayers().get(listBox.selectedItem).getName(), 1);
-                } else {
-                    addChatMessage(player, new TextComponentString(safeLocalize("status.ownership")));
-                }
+            if (PlayerUtil.isPlayerAdmin(player, (IHasTrustManager) tpm.getTile()) && this.tpm.getTrustedPlayers().get(
+                    listBox.selectedItem) != null) {
+                sendChangeToServerModifyPermissions(
+                        this.tpm.getTrustedPlayers().get(listBox.selectedItem).getName(), 1);
+            } else {
+                addChatMessage(player, new TextComponentString(safeLocalize("status.ownership")));
             }
         }
         if (guibutton.id == 6) { //back button
@@ -355,7 +350,7 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips, ISuppo
     @Nullable
     public GuiParameters getGuiParameters() {
         if (tpm.hasTile()) {
-            return new GuiParameters(OMLib.instance, 0, player.getEntityWorld(),
+            return new GuiParameters(OMLib.instance, OMGuiHandler.TRUSTED_PLAYERS_GUI, player.getEntityWorld(),
                                      tpm.getTile().getPos().getX(),
                                      tpm.getTile().getPos().getY(),
                                      tpm.getTile().getPos().getZ());

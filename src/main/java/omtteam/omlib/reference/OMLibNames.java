@@ -25,10 +25,7 @@ public class OMLibNames {
             public static final String FALSE = "gui.omtteam.omlib:false";
             public static final String YES = "gui.omtteam.omlib:yes";
             public static final String NO = "gui.omtteam.omlib:no";
-            public static final String FACING = "gui.omtteam.omlib:facing";
             public static final String ACTIVE = "gui.omtteam.omlib:active";
-            public static final String NEXT = "gui.omtteam.omlib:next";
-            public static final String PREVIOUS = "gui.omtteam.omlib:previous";
             public static final String BACK = "gui.omtteam.omlib:back";
             public static final String INVERTED = "gui.omtteam.omlib:inverted";
             public static final String NONINVERTED = "gui.omtteam.omlib:noninverted";
@@ -48,12 +45,10 @@ public class OMLibNames {
             public static final String TRUSTED_PLAYERS = "gui.omtteam.omlib:trusted_players";
             public static final String ADD_TRUSTED_PLAYER = "gui.omtteam.omlib:add_trusted_player";
             public static final String PERMISSIONS = "gui.omtteam.omlib:permissions";
-            public static final String LIGHT_VALUES = "gui.omtteam.omlib:light_values";
             public static final String ATTACK_PLAYERS = "gui.omtteam.omlib:attack_players";
             public static final String ATTACK_MOBS = "gui.omtteam.omlib:attack_mobs";
             public static final String ATTACK_NEUTRALS = "gui.omtteam.omlib:attack_neutrals";
             public static final String TARGETING_OPTIONS = "gui.omtteam.omlib:targeting_options";
-            public static final String DAMAGE = "gui.omtteam.omlib:damage";
         }
 
         public static class Tooltip {

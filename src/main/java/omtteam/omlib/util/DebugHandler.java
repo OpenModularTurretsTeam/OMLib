@@ -10,6 +10,8 @@ import java.util.List;
 
 /**
  * Created by nico on 21/05/17.
+ * TODO: nothing calls sendMessageToDebugChat yet, so doDebugChat and /omlib debug have no effect; send the
+ *  blocks' debug messages through it (together with the debugLogging helper, see OMLib.getLogger)
  */
 public class DebugHandler {
     private static DebugHandler instance;

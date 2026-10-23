@@ -30,9 +30,7 @@ import static omtteam.omlib.compat.OMLibModCompatibility.*;
 public abstract class TileEntityElectric extends TileEntityOwnedBlock {
     protected OMEnergyStorage storage;
     protected Object teslaContainer;
-    protected Object euContainer;
     protected Object rfContainer;
-    protected boolean wasAddedToEnergyNet = false;
 
     @Override
     public NBTTagCompound saveToNBT(NBTTagCompound nbtTagCompound) {
@@ -69,28 +67,6 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock {
         return 0;
     }
 
-    public void setCapacity(int maxStorage, @Nullable EnumFacing facing) {
-        OMEnergyStorage storage = (OMEnergyStorage) this.getCapability(CapabilityEnergy.ENERGY, facing);
-        if (storage != null) {
-            storage.setCapacity(maxStorage);
-        }
-    }
-
-    public void setEnergyStored(int energy, @Nullable EnumFacing facing) {
-        OMEnergyStorage storage = (OMEnergyStorage) this.getCapability(CapabilityEnergy.ENERGY, facing);
-        if (storage != null) {
-            storage.setEnergyStored(energy);
-        }
-    }
-
-    public int extractEnergy(int energy, @Nullable EnumFacing facing) {
-        OMEnergyStorage storage = (OMEnergyStorage) this.getCapability(CapabilityEnergy.ENERGY, facing);
-        if (storage != null) {
-            return storage.extractEnergy(energy, false);
-        }
-        return 0;
-    }
-
     //--------------------------------------------------------------------------------------------------
 
     @SuppressWarnings({"unchecked"})
@@ -98,13 +74,13 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock {
     @Nullable
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         if (OMLibModCompatibility.TeslaLoaded) {
-            if (hasTeslaCapability(capability, facing) && getTeslaCapability(capability, facing) != null) {
-                return getTeslaCapability(capability, facing);
+            if (hasTeslaCapability(capability) && getTeslaCapability(capability) != null) {
+                return getTeslaCapability(capability);
             }
         }
         if (CoFHApiLoaded) {
-            if (hasRFCapability(capability, facing) && getRFCapability(capability, facing) != null) {
-                return getRFCapability(capability, facing);
+            if (hasRFCapability(capability) && getRFCapability(capability) != null) {
+                return getRFCapability(capability);
             }
         }
         if (capability == CapabilityEnergy.ENERGY) {
@@ -121,12 +97,12 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock {
         // system. It can be used by other things to see if the TileEntity uses a capability or
         // not.
         if (OMLibModCompatibility.TeslaLoaded) {
-            if (hasTeslaCapability(capability, facing)) {
+            if (hasTeslaCapability(capability)) {
                 return true;
             }
         }
         if (CoFHApiLoaded) {
-            if (hasRFCapability(capability, facing)) {
+            if (hasRFCapability(capability)) {
                 return true;
             }
         }
@@ -138,15 +114,15 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock {
     }
 
     @Optional.Method(modid = CoFHApiModId)
-    private boolean hasRFCapability(Capability<?> capability, EnumFacing facing) {
+    private boolean hasRFCapability(Capability<?> capability) {
         return (capability == RFCapabilities.CAPABILITY_CONSUMER);
     }
 
     @Optional.Method(modid = CoFHApiModId)
     @SuppressWarnings({"unchecked"})
     @Nullable
-    private <T> T getRFCapability(Capability<T> capability, EnumFacing facing) {
-        if (capability == TeslaCapabilities.CAPABILITY_CONSUMER) {
+    private <T> T getRFCapability(Capability<T> capability) {
+        if (capability == RFCapabilities.CAPABILITY_CONSUMER) {
             return (T) getRFContainer();
         }
         return null;
@@ -173,14 +149,14 @@ public abstract class TileEntityElectric extends TileEntityOwnedBlock {
     }
 
     @Optional.Method(modid = TeslaModId)
-    private boolean hasTeslaCapability(Capability<?> capability, EnumFacing facing) {
+    private boolean hasTeslaCapability(Capability<?> capability) {
         return (capability == TeslaCapabilities.CAPABILITY_CONSUMER);
     }
 
     @Optional.Method(modid = TeslaModId)
     @SuppressWarnings({"unchecked"})
     @Nullable
-    private <T> T getTeslaCapability(Capability<T> capability, EnumFacing facing) {
+    private <T> T getTeslaCapability(Capability<T> capability) {
         if (capability == TeslaCapabilities.CAPABILITY_CONSUMER) {
             return (T) getTeslaContainer();
         }

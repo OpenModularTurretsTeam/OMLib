@@ -10,18 +10,11 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import omtteam.omlib.api.network.OMLibNetwork;
 import omtteam.omlib.api.permission.OwnerShareRegister;
 import omtteam.omlib.network.MessageSetSharePlayerList;
 import omtteam.omlib.network.OMLibNetworkingHandler;
 import omtteam.omlib.reference.Reference;
 import omtteam.omlib.registry.OMLibItems;
-
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by Keridos on 17/05/17.
@@ -31,7 +24,6 @@ public class OMLibEventHandler {
     private static final ResourceLocation REMOVED_CABLE = new ResourceLocation(Reference.MOD_ID, "network_cable");
 
     private static OMLibEventHandler instance;
-    private final List<OMLibNetwork> networks = new ArrayList<>();
 
     private OMLibEventHandler() {
     }
@@ -76,38 +68,4 @@ public class OMLibEventHandler {
             if (REMOVED_CABLE.equals(mapping.key)) mapping.ignore();
         }
     }
-
-    @SubscribeEvent
-    public void tickEvent(TickEvent.WorldTickEvent event) {
-        for (OMLibNetwork network : networks) {
-            if (network.getWorld().provider.getDimension() == event.world.provider.getDimension()) {
-                network.tick();
-            }
-        }
-    }
-
-    private List<OMLibNetwork> getNetworkList() {
-        return networks;
-    }
-
-    public void registerNetwork(OMLibNetwork network) {
-        networks.add(network);
-    }
-
-    public void removeNetwork(OMLibNetwork network) {
-        networks.remove(network);
-    }
-
-    @Nullable
-    public OMLibNetwork getNetwork(UUID uuid) {
-        OMLibNetwork network = null;
-        for (OMLibNetwork net : networks) {
-            if (net.getUuid().equals(uuid)) {
-                network = net;
-                break;
-            }
-        }
-        return network;
-    }
 }
-

@@ -10,6 +10,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import omtteam.omlib.OMLib;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Random;
@@ -65,7 +66,7 @@ public class Lightning extends RenderObject {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            OMLib.getLogger().error("Failed to render lightning", e);
         } finally {
             GlStateManager.disableBlend();
             GlStateManager.enableTexture2D();

@@ -8,6 +8,18 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 
 ## [Unreleased]
 
+### Fixed
+
+- Machines answered other mods' Redstone Flux (RF) capability requests with nothing, and crashed with Redstone Flux installed but not Tesla
+- Camouflaged blocks could render as grass while their tile entity was missing
+- The trusted players GUI crashed on the remove and permission buttons when no player was selected
+- The target settings GUI crashed when closed for machines without client sync
+
+### Removed
+
+- The IC2 config options `EUSupport` and `EUtoRFRatio` (they had no effect since IC2 support was removed)
+- For addon authors: the unused device network API (`api.network.OMLibNetwork`, `INetworkTile`, `IPowerExchangeTile`, `IController`, `INameController`) and helpers (`Tuple3`, `EntityUtil`, `ItemUtil`, `ItemStackList`, `PropertyTools`, `BlockingAbstractGui`)
+
 ## [4.0.0-alpha.1] - 2026-10-23
 
 ### Changed

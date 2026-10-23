@@ -12,9 +12,5 @@ public class RandomUtil {
     public static void init() {
         random = new Random();
     }
-
-    public static double nextDouble(double offset, double factor) {
-        return (random.nextDouble() + offset) + factor;
-    }
 }
 

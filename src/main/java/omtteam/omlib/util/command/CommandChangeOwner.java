@@ -77,10 +77,5 @@ public class CommandChangeOwner extends CommandBase {
             addChatMessage(sender, new TextComponentString("Dimension and coordinates must be numbers"));
         }
     }
-
-    @Override
-    public int getRequiredPermissionLevel() {
-        return 4;
-    }
 }
 

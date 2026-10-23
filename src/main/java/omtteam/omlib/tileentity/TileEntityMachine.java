@@ -19,7 +19,6 @@ public abstract class TileEntityMachine extends TileEntityContainerElectric {
     protected boolean active;
     protected boolean redstone = false;
     protected EnumMachineMode mode;
-    protected FluidTank tank = new FluidTank(4000);
 
     public TileEntityMachine() {
         super();

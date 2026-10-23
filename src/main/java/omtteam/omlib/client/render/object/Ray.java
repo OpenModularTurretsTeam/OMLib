@@ -20,15 +20,6 @@ public class Ray extends RenderObject {
     private final ColorOM color;
     private final boolean bloom;
 
-    public Ray(double x, double y, double z, double xEnd, double yEnd, double zEnd, float r, float g, float b, float alpha, int duration, boolean bloom) {
-        super(x, y, z, duration);
-        this.xEnd = xEnd;
-        this.yEnd = yEnd;
-        this.zEnd = zEnd;
-        this.color = new ColorOM(r, g, b, alpha);
-        this.bloom = bloom;
-    }
-
     public Ray(double x, double y, double z, double xEnd, double yEnd, double zEnd, ColorOM color, int duration, boolean bloom) {
         super(x, y, z, duration);
         this.xEnd = xEnd;

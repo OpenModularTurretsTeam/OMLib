@@ -50,10 +50,5 @@ public class CommandToggleDebug extends CommandBase {
             addChatMessage(sender, new TextComponentString("Please supply a valid command"));
         }
     }
-
-    @Override
-    public int getRequiredPermissionLevel() {
-        return 4;
-    }
 }
 

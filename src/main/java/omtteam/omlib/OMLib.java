@@ -31,6 +31,7 @@ public class OMLib {
     public static CreativeTabs modularTurretsTab;
     private static Logger logger;
 
+    // TODO: add a debug log helper here that only logs while OMConfig.GENERAL.debugLogging is on, and use it for the mods' debug output
     public static Logger getLogger() {
         return logger;
     }

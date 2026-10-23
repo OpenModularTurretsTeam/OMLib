@@ -46,7 +46,7 @@ public class MessageSetSharePlayerList implements IMessage {
             Player owner = entry.getKey();
             Player.writeToByteBuf(owner, buf);
             buf.writeInt(entry.getValue().size());
-            if (entry.getValue().size() > 0) {
+            if (!entry.getValue().isEmpty()) {
                 for (Player player : entry.getValue()) {
                     Player.writeToByteBuf(player, buf);
                 }

@@ -18,21 +18,6 @@ public class MessageRenderRay implements IMessage {
     public MessageRenderRay() {
     }
 
-    public MessageRenderRay(double x, double y, double z, double xEnd, double yEnd, double zEnd, ColorOM color, int duration, boolean bloom) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.xEnd = xEnd;
-        this.yEnd = yEnd;
-        this.zEnd = zEnd;
-        this.r = color.r;
-        this.g = color.g;
-        this.b = color.b;
-        this.a = color.a;
-        this.duration = duration;
-        this.bloom = bloom;
-    }
-
     public MessageRenderRay(Vec3d start, Vec3d end, ColorOM color, int duration, boolean bloom) {
         this.x = start.x;
         this.y = start.y;

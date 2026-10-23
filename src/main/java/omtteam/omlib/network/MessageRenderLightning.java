@@ -15,16 +15,6 @@ public class MessageRenderLightning implements IMessage {
     public MessageRenderLightning() {
     }
 
-    public MessageRenderLightning(double x, double y, double z, double xEnd, double yEnd, double zEnd, int duration) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.xEnd = xEnd;
-        this.yEnd = yEnd;
-        this.zEnd = zEnd;
-        this.duration = duration;
-    }
-
     public MessageRenderLightning(Vec3d start, Vec3d end, int duration) {
         this.x = start.x;
         this.y = start.y;

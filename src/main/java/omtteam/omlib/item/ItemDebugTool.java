@@ -52,7 +52,7 @@ public class ItemDebugTool extends Item {
                 }
                 if (tileEntity instanceof IDebugTile) {
                     List<String> debugInfo = ((IDebugTile) tileEntity).getDebugInfo();
-                    if (debugInfo.size() >= 1) {
+                    if (!debugInfo.isEmpty()) {
                         for (String debug : debugInfo) {
                             playerIn.sendMessage(new TextComponentString(debug));
                         }

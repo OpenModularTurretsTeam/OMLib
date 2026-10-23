@@ -132,16 +132,6 @@ public class OwnerShareRegister implements ICapabilityProvider, IOwnerShareRegis
     }
 
     @Nullable
-    public Map.Entry<Player, ArrayList<Player>> getEntryFromName(String name) {
-        for (Map.Entry<Player, ArrayList<Player>> entry : ownerShareMap.entrySet()) {
-            if (entry.getKey().getName().equals(name)) {
-                return entry;
-            }
-        }
-        return null;
-    }
-
-    @Nullable
     private Map.Entry<Player, ArrayList<Player>> getEntry(Player player) {
         for (Map.Entry<Player, ArrayList<Player>> entry : ownerShareMap.entrySet()) {
             if (entry.getKey().equals(player)) {
