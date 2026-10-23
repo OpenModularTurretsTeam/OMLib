@@ -13,6 +13,7 @@ class TargetingSettingsTest {
         assertFalse(settings.isTargetPlayers());
         assertTrue(settings.isTargetMobs());
         assertFalse(settings.isTargetPassive());
+        assertFalse(new TargetingSettings(false, false, false, 0, 0).isTargetMobs());
         assertEquals(0, settings.getRange());
         assertEquals(0, settings.getMaxRange());
     }
@@ -42,6 +43,15 @@ class TargetingSettingsTest {
         assertEquals(6, settings.getRange());
         settings.setMaxRange(20);
         assertEquals(6, settings.getRange());
+    }
+
+    @Test
+    void rangeEqualToTheMaximumIsAccepted() {
+        TargetingSettings settings = new TargetingSettings(false, true, false, 0, 10);
+        settings.setRange(10);
+        assertEquals(10, settings.getRange());
+        settings.setRange(0);
+        assertEquals(0, settings.getRange());
     }
 
     @Test

@@ -73,9 +73,12 @@ class EnergyStoreTest {
         assertEquals(100, store.getAmount());
         assertFalse(store.consume(150));
         assertEquals(100, store.getAmount());
+        assertTrue(store.consume(100), "exactly the stored amount");
+        assertEquals(0, store.getAmount());
+        store.generate(100);
         assertFalse(store.consume(-1));
         assertTrue(store.consume(0));
-        assertEquals(2, changes, "generate and the one real consumption");
+        assertEquals(4, changes, "the generations and the two real consumptions");
     }
 
     @Test
@@ -119,6 +122,13 @@ class EnergyStoreTest {
         assertEquals(1000, store.getAmount());
         store.setAmountUnchecked(-5);
         assertEquals(0, store.getAmount());
+    }
+
+    @Test
+    void limitsAreReported() {
+        assertEquals(1000, store.getCapacity());
+        assertEquals(100, store.getMaxInsert());
+        assertEquals(40, store.getMaxExtract());
     }
 
     @Test

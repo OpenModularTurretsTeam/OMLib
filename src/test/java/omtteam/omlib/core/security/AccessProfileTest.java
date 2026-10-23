@@ -50,6 +50,12 @@ class AccessProfileTest {
     }
 
     @Test
+    void ofBuildsTheProfileOfTheGivenLevels() {
+        assertEquals(TRAP, AccessProfile.of(AccessLevel.ADMIN, AccessLevel.NONE));
+        assertEquals(AccessProfile.ALL, AccessProfile.of(AccessLevel.values()));
+    }
+
+    @Test
     void aProfileNeedsTheBaselineAndAdmin() {
         assertThrows(IllegalArgumentException.class, () -> AccessProfile.of(AccessLevel.ADMIN));
         assertThrows(IllegalArgumentException.class, () -> AccessProfile.of(AccessLevel.NONE, AccessLevel.OPEN_GUI));

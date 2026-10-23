@@ -98,6 +98,7 @@ class TrustManagerTest {
             environment.operatorsCanAccess = true;
             assertEquals(Optional.of(AccessLevel.OPEN_GUI), manager.getAccessLevel(op));
             assertFalse(manager.canChangeSettings(op));
+            assertFalse(manager.canOpenGui(STRANGER), "the option only applies to operators");
         }
 
         @Test
@@ -316,6 +317,23 @@ class TrustManagerTest {
             assertEquals(1, manager.getTrustedPlayers().size());
             assertEquals(AccessLevel.ADMIN, manager.getTrustedPlayer(ALICE.uuid()).get().getAccessLevel());
             assertEquals(1, changes);
+        }
+
+        /** Memory cards load into a base that already has a list: the old entries must go. */
+        @Test
+        void loadReplacesTheWholeList() {
+            trust(ALICE, AccessLevel.ADMIN);
+            manager.load(OWNER.identity(), Arrays.asList(new TrustedPlayer(BOB.identity(), AccessLevel.NONE)));
+            assertEquals(Arrays.asList(BOB.uuid()), manager.getTrustedPlayers().stream().map(TrustedPlayer::getUuid).collect(Collectors.toList()));
+            assertFalse(manager.getTrustedPlayer(ALICE.uuid()).isPresent());
+        }
+
+        @Test
+        void isOwnerByUuid() {
+            assertTrue(manager.isOwner(OWNER.uuid()));
+            assertFalse(manager.isOwner(ALICE.uuid()));
+            assertFalse(new TrustManager(environment, () -> {
+            }).isOwner(OWNER.uuid()), "no owner yet");
         }
 
         @Test

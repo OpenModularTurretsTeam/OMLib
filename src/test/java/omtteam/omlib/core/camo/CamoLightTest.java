@@ -15,6 +15,13 @@ class CamoLightTest {
     }
 
     @Test
+    void valuesInsideTheRangeAreKept() {
+        CamoLight light = new CamoLight(7, 3);
+        assertEquals(7, light.value());
+        assertEquals(3, light.opacity());
+    }
+
+    @Test
     void defaultIsDarkAndOpaque() {
         assertEquals(0, CamoLight.DEFAULT.value());
         assertEquals(CamoLight.MAX, CamoLight.DEFAULT.opacity());
