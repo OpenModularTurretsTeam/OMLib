@@ -23,7 +23,7 @@ public class ItemMultiTool extends Item {
     public ItemMultiTool() {
         super();
         this.setRegistryName(Reference.MOD_ID, OMLibNames.Items.multiTool);
-        this.setUnlocalizedName(OMLibNames.Items.multiTool);
+        this.setTranslationKey(OMLibNames.Items.multiTool);
     }
 
     @Nonnull

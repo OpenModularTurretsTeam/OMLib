@@ -47,7 +47,7 @@ public abstract class BlockAbstractTileEntity extends BlockAbstract {
 
     @Override
     @ParametersAreNonnullByDefault
-    public EnumPushReaction getMobilityFlag(IBlockState state) {
+    public EnumPushReaction getPushReaction(IBlockState state) {
         return EnumPushReaction.BLOCK;
     }
 

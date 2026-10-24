@@ -28,7 +28,7 @@ public class ItemDebugTool extends Item {
     public ItemDebugTool() {
         super();
         this.setRegistryName(Reference.MOD_ID, OMLibNames.Items.debugTool);
-        this.setUnlocalizedName(OMLibNames.Items.debugTool);
+        this.setTranslationKey(OMLibNames.Items.debugTool);
     }
 
     @Nonnull

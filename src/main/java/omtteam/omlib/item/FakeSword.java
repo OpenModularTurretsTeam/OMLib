@@ -13,6 +13,6 @@ public class FakeSword extends ItemSword {
     public FakeSword(ToolMaterial material) {
         super(material);
         this.setRegistryName(Reference.MOD_ID, OMLibNames.Items.fakeSword);
-        this.setUnlocalizedName(OMLibNames.Items.fakeSword);
+        this.setTranslationKey(OMLibNames.Items.fakeSword);
     }
 }
