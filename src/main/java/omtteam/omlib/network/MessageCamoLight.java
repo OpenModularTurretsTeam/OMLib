@@ -48,9 +48,9 @@ public class MessageCamoLight implements IMessage {
         CamoSettings settings = host.getCamoSettings();
         settings.setLightValue(CamoLight.clamp(value));
         settings.setLightOpacity(CamoLight.clamp(opacity));
-        host.getOwnedBlock().markDirty();
+        host.getCamoTileEntity().markDirty();
         host.updateCamoSettingsToPlayers();
-        host.getOwnedBlock().getWorld().checkLight(host.getOwnedBlock().getPos());
+        host.getCamoTileEntity().getWorld().checkLight(host.getCamoTileEntity().getPos());
     }
 
     public static class MessageHandlerCamoLight implements IMessageHandler<MessageCamoLight, IMessage> {
