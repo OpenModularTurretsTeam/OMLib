@@ -25,7 +25,6 @@ out/
 # Other Stuff
 Thumbs.db
 *.hprof
-settings.gradle
 *.log
 
 # Claude Code (local settings, worktrees)

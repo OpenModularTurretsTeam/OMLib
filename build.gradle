@@ -1,100 +1,84 @@
-// For those who want the bleeding edge
-buildscript {
-    repositories {
-        mavenCentral()
-        maven { url = "https://maven.minecraftforge.net/" }
-        maven { url = "https://plugins.gradle.org/m2/" }
-    }
-    dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+// Forge 1.12.2 build: RetroFuturaGradle (the maintained 1.12.2 toolchain) on current Gradle. Gradle runs on Java 17+,
+// the mod is compiled and tested with the Java 8 toolchain. The OMTTeam 1.12 workspace builds this file too.
+plugins {
+    id "java"
+    id "maven-publish"
+    id "com.gtnewhorizons.retrofuturagradle"
+}
+
+// version, tests, core isolation, coverage, PIT, dependency map, changelog tasks, source tokens
+apply from: file("gradle/mod-common.gradle")
+// local releases to CurseForge and Modrinth (./gradlew release), see gradle/release.gradle
+apply from: file("gradle/release.gradle")
+
+group = group_id
+base.archivesName = "${mod_id}-${minecraft_version}"
+
+java {
+    withSourcesJar()
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(8)
+        // Azul covers the most platforms for Java 8 toolchains
+        vendor = JvmVendorSpec.AZUL
     }
 }
-apply plugin: 'net.minecraftforge.gradle.forge'
-apply plugin: 'maven-publish'
-apply plugin: 'idea'
-apply plugin: 'java'
-// tests, core isolation and changelog tasks, shared with the workspace build
-apply from: "gradle/mod-common.gradle"
-// local releases to CurseForge and Modrinth (./gradlew -b build.gradle release), see gradle/release.gradle
-apply from: "gradle/release.gradle"
+
+sourceSets.main.java.srcDir "src/api/java"
+
+minecraft {
+    mcVersion = minecraft_version
+    mcpMappingChannel = mcp_mapping_channel
+    mcpMappingVersion = mcp_mapping_version
+    username = "Developer"
+}
+
+// the tokens FG2's `replace` filled in (gradle/mod-common.gradle)
+sourceTokens["@VERSION@"] = version.toString()
 
 repositories {
     maven { url = "https://maven.blamejared.com/" }  // JEI, Tesla
     maven { url = "https://maven.covers1624.net/" }  // RedstoneFlux
     maven { url = "https://maven.cil.li/" }          // OpenComputers
     maven { url = "https://modmaven.dev/" }          // The One Probe
-    // Hwyla; keep last, it redirects unknown paths to a non-maven site
-    maven { url = "https://maven.tehnut.info/" }
-}
-
-sourceCompatibility = targetCompatibility = 1.8
-compileJava {
-    sourceCompatibility = targetCompatibility = '1.8'
-}
-
-group = "${group_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "${mod_id}-${minecraft_version}"
-
-minecraft {
-    version = "${forge_version}"
-    runDir = "run"
-
-    replace "@VERSION@", project.version
-    // the mappings can be changed at any time, and must be in the following format.
-    // snapshot_YYYYMMDD   snapshot are built nightly.
-    // stable_#            stables are built at the discretion of the MCP team.
-    // Use non-default mappings at your own risk. they may not always work.
-    // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings = "snapshot_20171212"
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
-    useDepAts = true
-}
-
-processResources {
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-
-        // replace version and mcversion
-        expand 'version': project.version, 'mcversion': project.minecraft.version
-    }
-
-    // copy everything else, thats not the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+    maven {
+        url = "https://maven.tehnut.info/"            // Hwyla
+        // only Hwyla: the site answers unknown paths (e.g. Forge's Scala libraries) with an HTML page
+        content { includeGroup "mcp.mobius.waila" }
     }
 }
 
 dependencies {
-    deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}:api"
-    deobfCompile "cofh:RedstoneFlux:${minecraft_version_short}-${redstoneflux_version}:deobf"
-    compile "net.darkhax.tesla:Tesla-${minecraft_version_short}:${tesla_version}"
-    deobfCompile "mcp.mobius.waila:Hwyla:${hwyla_version}_${minecraft_version}:api"
-    deobfCompile "mcjty.theoneprobe:TheOneProbe-${minecraft_version_short}:${minecraft_version_short}-${top_version}"
-    deobfCompile "li.cil.oc:OpenComputers:MC${minecraft_version_short}.1-${oc_version}"
+    // @ParametersAreNullableByDefault (the JSR-305 of Minecraft's libraries is older than FG2's)
+    compileOnly "com.google.code.findbugs:jsr305:3.0.2"
+    implementation rfg.deobf("mezz.jei:jei_${minecraft_version}:${jei_version}:api")
+    implementation rfg.deobf("cofh:RedstoneFlux:${minecraft_version_short}-${redstoneflux_version}:deobf")
+    implementation "net.darkhax.tesla:Tesla-${minecraft_version_short}:${tesla_version}"
+    implementation rfg.deobf("mcp.mobius.waila:Hwyla:${hwyla_version}_${minecraft_version}:api")
+    implementation rfg.deobf("mcjty.theoneprobe:TheOneProbe-${minecraft_version_short}:${minecraft_version_short}-${top_version}")
+    // compile only: OpenComputers crashes at runtime without AE2
+    compileOnly rfg.deobf("li.cil.oc:OpenComputers:MC${minecraft_version_short}.1-${oc_version}")
 }
 
-task deobfJar(type: Jar) {
-    from sourceSets.main.output
-    classifier = 'dev'
+processResources {
+    def props = [version: version.toString(), mcversion: minecraft_version]
+    inputs.properties(props)
+    filesMatching("mcmod.info") { expand(props) }
 }
 
-tasks.build.dependsOn deobfJar, sourceJar
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+}
 
+// reobfJar (SRG names) is the jar players install; jar is the dev jar (MCP names)
 publishing {
-    tasks.publish.dependsOn 'build'
     publications {
         mavenJava(MavenPublication) {
-            groupId group_prefix
-            version minecraft_version + "-" + project.version
-            artifactId mod_id
-            artifact jar
-            artifact sourceJar
-            artifact deobfJar
+            groupId = group_prefix
+            artifactId = mod_id
+            version = "${minecraft_version}-${project.version}"
+            artifact tasks.reobfJar
+            artifact(tasks.jar) { classifier = "dev" }
+            artifact tasks.sourcesJar
         }
     }
     repositories {
@@ -103,5 +87,5 @@ publishing {
 }
 
 // OMT and OMPD build their releases against this OMLib release from mavenLocal
-tasks.release.dependsOn "publishToMavenLocal"
-tasks.publishToMavenLocal.dependsOn "build"
+tasks.named("release") { dependsOn "publishToMavenLocal" }
+tasks.named("publishToMavenLocal") { dependsOn "build" }
