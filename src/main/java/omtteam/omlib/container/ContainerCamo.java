@@ -115,7 +115,7 @@ public class ContainerCamo extends Container {
 
     /** An empty stack resets the disguise, a block sets it; anything else is ignored. */
     private void setDisguiseFrom(EntityPlayerMP player, ItemStack stack) {
-        if (host.getOwnedBlock().isInvalid() || !host.isCamoEnabled()) {
+        if (host.getCamoTileEntity().isInvalid() || !host.isCamoEnabled()) {
             return;
         }
         if (!host.canSetCamo(player)) {
@@ -128,14 +128,14 @@ public class ContainerCamo extends Container {
             return;
         }
         host.setCamoState(disguise);
-        host.getOwnedBlock().markDirty();
+        host.getCamoTileEntity().markDirty();
         display.setInventorySlotContents(0, itemFor(host));
     }
 
     @Override
     @ParametersAreNonnullByDefault
     public boolean canInteractWith(EntityPlayer player) {
-        TileEntity tileEntity = host.getOwnedBlock();
+        TileEntity tileEntity = host.getCamoTileEntity();
         if (player.getEntityWorld().isRemote) {
             return true;
         }

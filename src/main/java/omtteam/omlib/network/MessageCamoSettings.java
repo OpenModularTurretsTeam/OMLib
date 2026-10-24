@@ -1,11 +1,11 @@
 package omtteam.omlib.network;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import omtteam.omlib.api.render.camo.ICamoSupport;
-import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 
 import java.util.Objects;
 
@@ -21,10 +21,10 @@ public class MessageCamoSettings implements IMessage {
     }
 
     public MessageCamoSettings(ICamoSupport block) {
-        TileEntityOwnedBlock ownedBlock = block.getOwnedBlock();
-        this.x = ownedBlock.getPos().getX();
-        this.y = ownedBlock.getPos().getY();
-        this.z = ownedBlock.getPos().getZ();
+        TileEntity host = block.getCamoTileEntity();
+        this.x = host.getPos().getX();
+        this.y = host.getPos().getY();
+        this.z = host.getPos().getZ();
         this.lightValue = block.getCamoSettings().getLightValue();
         this.lightOpacity = block.getCamoSettings().getLightOpacity();
         this.camoBlockRegName = Objects.requireNonNull(block.getCamoState().getBlock().getRegistryName()).toString();

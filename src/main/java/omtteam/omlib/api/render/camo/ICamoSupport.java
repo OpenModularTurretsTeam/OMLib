@@ -2,10 +2,10 @@ package omtteam.omlib.api.render.camo;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import omtteam.omlib.network.MessageCamoSettings;
 import omtteam.omlib.network.OMLibNetworkingHandler;
-import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 import omtteam.omlib.util.camo.CamoSettings;
 
 import javax.annotation.Nonnull;
@@ -42,8 +42,12 @@ public interface ICamoSupport {
     @Nonnull
     CamoSettings getCamoSettings();
 
+    /**
+     * The tile entity holding this disguise, usually the implementing tile entity itself. Any tile entity can host a
+     * camouflage; ownership is not needed (the permissions are {@link #canSetCamo} and {@link #canChangeLight}).
+     */
     @Nonnull
-    TileEntityOwnedBlock getOwnedBlock();
+    TileEntity getCamoTileEntity();
 
     /** Whether camouflage is enabled for this block at all (OMT: config {@code allowBaseCamo}). */
     boolean isCamoEnabled();
@@ -58,11 +62,11 @@ public interface ICamoSupport {
     boolean canChangeLight(EntityPlayer player);
 
     default void updateCamoSettingsToPlayers() {
-        OMLibNetworkingHandler.INSTANCE.sendToAllTracking(new MessageCamoSettings((ICamoSupport) this.getOwnedBlock()),
+        OMLibNetworkingHandler.INSTANCE.sendToAllTracking(new MessageCamoSettings(this),
                                                           new NetworkRegistry.TargetPoint(
-                                                                  this.getOwnedBlock().getWorld().provider.getDimension(),
-                                                                  this.getOwnedBlock().getPos().getX(),
-                                                                  this.getOwnedBlock().getPos().getY(),
-                                                                  this.getOwnedBlock().getPos().getZ(), 20));
+                                                                  this.getCamoTileEntity().getWorld().provider.getDimension(),
+                                                                  this.getCamoTileEntity().getPos().getX(),
+                                                                  this.getCamoTileEntity().getPos().getY(),
+                                                                  this.getCamoTileEntity().getPos().getZ(), 20));
     }
 }

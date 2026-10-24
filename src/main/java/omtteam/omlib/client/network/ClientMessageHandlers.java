@@ -75,8 +75,8 @@ public final class ClientMessageHandlers {
                 base.getCamoSettings().setLightOpacity(message.getLightOpacity());
                 base.setCamoState(Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(
                         new ResourceLocation(message.getCamoBlockRegName()))).getStateFromMeta(message.getCamoBlockMeta()));
-                base.getOwnedBlock().markDirty();
-                base.getOwnedBlock().getWorld().checkLight(base.getOwnedBlock().getPos());
+                base.getCamoTileEntity().markDirty();
+                base.getCamoTileEntity().getWorld().checkLight(base.getCamoTileEntity().getPos());
             }
         });
         return null;

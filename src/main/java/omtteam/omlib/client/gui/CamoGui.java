@@ -82,8 +82,8 @@ public class CamoGui extends GuiContainer {
             GUIBackSystem.getInstance().openTopGui(mc.player);
         } else if (button.id == TRUSTED) {
             mc.player.openGui(OMLib.instance, OMGuiHandler.TRUSTED_PLAYERS_GUI, mc.world,
-                    host.getOwnedBlock().getPos().getX(), host.getOwnedBlock().getPos().getY(),
-                    host.getOwnedBlock().getPos().getZ());
+                    host.getCamoTileEntity().getPos().getX(), host.getCamoTileEntity().getPos().getY(),
+                    host.getCamoTileEntity().getPos().getZ());
         }
     }
 
@@ -92,7 +92,7 @@ public class CamoGui extends GuiContainer {
         boolean dragging = valueSlider != null && (valueSlider.dragging || opacitySlider.dragging);
         super.mouseReleased(mouseX, mouseY, state);
         if (dragging) {
-            OMLibNetworkingHandler.INSTANCE.sendToServer(new MessageCamoLight(host.getOwnedBlock().getPos(),
+            OMLibNetworkingHandler.INSTANCE.sendToServer(new MessageCamoLight(host.getCamoTileEntity().getPos(),
                     valueSlider.getValueInt(), opacitySlider.getValueInt()));
         }
     }
