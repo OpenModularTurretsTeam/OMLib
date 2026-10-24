@@ -8,6 +8,10 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 
 ## [Unreleased]
 
+### Changed
+
+- The jar files are named `omlib-<version>-mc1.12.2-forge.jar` (Minecraft version with `mc`, as on 1.20.1+)
+
 ### Fixed
 
 - Loading a world kept the owner share lists (`/omlib share`) of the world opened before it in the same game
