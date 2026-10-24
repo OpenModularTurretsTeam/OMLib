@@ -20,6 +20,10 @@ public class MathUtil {
         return (int) Math.floor(number);
     }
 
+    /**
+     * Turns a box modelled facing south (its z extent along the facing) so that its z extent lies along {@code facing}.
+     * Only swaps axes, it does not mirror: meant for boxes centred on the origin, like the turret hit boxes.
+     */
     @ParametersAreNonnullByDefault
     public static AxisAlignedBB rotateAABB(AxisAlignedBB box, EnumFacing facing) {
         switch (facing) {

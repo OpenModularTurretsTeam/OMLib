@@ -104,6 +104,8 @@ public class OwnerShareRegister implements ICapabilityProvider, IOwnerShareRegis
     public void deserializeNBT(NBTBase nbtIn) {
         if (nbtIn instanceof NBTTagCompound) {
             NBTTagCompound nbt = (NBTTagCompound) nbtIn;
+            // one instance for the whole game: drop the lists of a world loaded before
+            ownerShareMap.clear();
             NBTTagList list = nbt.getTagList("list", nbt.getId());
             for (int i = 0; i < list.tagCount(); i++) {
                 NBTTagCompound tag = list.getCompoundTagAt(i);

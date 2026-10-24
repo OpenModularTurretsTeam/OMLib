@@ -8,6 +8,10 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 
 ## [Unreleased]
 
+### Fixed
+
+- Loading a world kept the owner share lists (`/omlib share`) of the world opened before it in the same game
+
 ## [4.0.0-beta.1] - 2026-10-24
 
 ### Changed
