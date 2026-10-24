@@ -8,6 +8,8 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 
 ## [Unreleased]
 
+## [4.0.0-beta.1] - 2026-10-24
+
 ### Changed
 
 - For addon authors: `ICamoSupport.getOwnedBlock()` is now `getCamoTileEntity()` and returns any `TileEntity`, so camouflage hosts no longer need to be owned blocks
