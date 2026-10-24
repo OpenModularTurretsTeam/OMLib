@@ -41,9 +41,8 @@ repositories {
     maven { url = "https://maven.cil.li/" }          // OpenComputers
     maven { url = "https://modmaven.dev/" }          // The One Probe
     maven {
-        url = "https://maven.tehnut.info/"            // Hwyla
-        // only Hwyla: the site answers unknown paths (e.g. Forge's Scala libraries) with an HTML page
-        content { includeGroup "mcp.mobius.waila" }
+        url = "https://cursemaven.com/"              // Hwyla from CurseForge (maven.tehnut.info no longer serves it)
+        content { includeGroup "curse.maven" }
     }
 }
 
@@ -53,7 +52,8 @@ dependencies {
     implementation rfg.deobf("mezz.jei:jei_${minecraft_version}:${jei_version}:api")
     implementation rfg.deobf("cofh:RedstoneFlux:${minecraft_version_short}-${redstoneflux_version}:deobf")
     implementation "net.darkhax.tesla:Tesla-${minecraft_version_short}:${tesla_version}"
-    implementation rfg.deobf("mcp.mobius.waila:Hwyla:${hwyla_version}_${minecraft_version}:api")
+    // Hwyla (the full mod, deobfuscated); optional at runtime, the plugin is only loaded by Hwyla
+    compileOnly rfg.deobf("curse.maven:hwyla-253449:${hwyla_curse_file_id}")
     implementation rfg.deobf("mcjty.theoneprobe:TheOneProbe-${minecraft_version_short}:${minecraft_version_short}-${top_version}")
     // compile only: OpenComputers crashes at runtime without AE2
     compileOnly rfg.deobf("li.cil.oc:OpenComputers:MC${minecraft_version_short}.1-${oc_version}")
