@@ -124,7 +124,8 @@ public class PlayerUtil {
         return getPlayerAccessType(info(player), block);
     }
 
-    private static EnumPlayerAccessType getPlayerAccessType(@Nullable PlayerInfo player, Object block) {
+    /** Package-private for tests: a {@link Player} has no operator flag without a running server. */
+    static EnumPlayerAccessType getPlayerAccessType(@Nullable PlayerInfo player, Object block) {
         TrustManager manager = block instanceof IHasOwner ? core((IHasOwner) block) : null;
         if (player != null && manager != null) {
             if (manager.isOwner(player)) {

@@ -83,7 +83,8 @@ public class TrustedPlayer {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, accessLevel, uuid, hacked);
+        // like equals: the UUID does not count in offline mode
+        return Objects.hash(name, accessLevel, OMConfig.GENERAL.offlineModeSupport ? null : uuid, hacked);
     }
 
     public Map<String, String> asMap() {

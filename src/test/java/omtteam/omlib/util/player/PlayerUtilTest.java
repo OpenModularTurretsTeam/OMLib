@@ -7,6 +7,7 @@ import omtteam.omlib.api.permission.TrustedPlayer;
 import omtteam.omlib.api.permission.TrustedPlayersManager;
 import omtteam.omlib.api.tile.IHasTrustManager;
 import omtteam.omlib.config.OMConfig;
+import omtteam.omlib.core.security.PlayerInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -174,6 +175,33 @@ class PlayerUtilTest {
         assertEquals(EnumPlayerAccessType.TRUSTED, PlayerUtil.getPlayerAccessType(playerCanOpenGUI, ownedBlock));
         assertEquals(EnumPlayerAccessType.TRUSTED, PlayerUtil.getPlayerAccessType(playerNone, ownedBlock));
         assertEquals(EnumPlayerAccessType.NONE, PlayerUtil.getPlayerAccessType(playerUntrusted, ownedBlock));
+    }
+
+    @Test
+    void operatorsHaveAccessIfTheConfigAllowsIt() {
+        boolean configured = OMConfig.GENERAL.canOPAccessOwnedBlocks;
+        PlayerInfo operator = new PlayerInfo(playerUntrusted.getUuid(), playerUntrusted.getName(), true);
+        PlayerInfo operatorOwner = new PlayerInfo(owner.getUuid(), owner.getName(), true);
+        try {
+            OMConfig.GENERAL.canOPAccessOwnedBlocks = true;
+            assertEquals(EnumPlayerAccessType.OP, PlayerUtil.getPlayerAccessType(operator, ownedBlock));
+            assertEquals(EnumPlayerAccessType.OWNER, PlayerUtil.getPlayerAccessType(operatorOwner, ownedBlock),
+                    "owner before operator");
+            assertEquals(EnumPlayerAccessType.NONE, PlayerUtil.getPlayerAccessType(
+                    new PlayerInfo(playerUntrusted.getUuid(), playerUntrusted.getName(), false), ownedBlock));
+            OMConfig.GENERAL.canOPAccessOwnedBlocks = false;
+            assertEquals(EnumPlayerAccessType.NONE, PlayerUtil.getPlayerAccessType(operator, ownedBlock));
+        } finally {
+            OMConfig.GENERAL.canOPAccessOwnedBlocks = configured;
+        }
+    }
+
+    @Test
+    void theOwnerOfTheTrustListWinsOverTheBlockOwner() {
+        OwnedBlock block = new OwnedBlock(owner);
+        block.tile.setOwner(playerAdmin);
+        assertEquals(EnumPlayerAccessType.OWNER, PlayerUtil.getPlayerAccessType(playerAdmin, block));
+        assertEquals(EnumPlayerAccessType.NONE, PlayerUtil.getPlayerAccessType(owner, block));
     }
 
     class OwnedBlock implements IHasOwner, IHasTrustManager {

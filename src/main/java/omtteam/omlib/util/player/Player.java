@@ -10,6 +10,8 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import omtteam.omlib.config.OMConfig;
 
 import javax.annotation.Nullable;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -94,11 +96,11 @@ public class Player {
                 : getName().equalsIgnoreCase(player.getName()));
     }
 
+    /** Like {@link #equals}: the UUID, or the name in any case in offline mode. */
     @Override
     public int hashCode() {
-        int result = getUuid() != null ? getUuid().hashCode() : 0;
-        result = 31 * result + getName().toLowerCase().hashCode();
-        return result;
+        return OMConfig.GENERAL.offlineModeSupport ? getName().toLowerCase(Locale.ROOT).hashCode()
+                : Objects.hashCode(getUuid());
     }
 
     @Nullable

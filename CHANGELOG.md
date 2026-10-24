@@ -11,6 +11,7 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 ### Fixed
 
 - Loading a world kept the owner share lists (`/omlib share`) of the world opened before it in the same game
+- A renamed player (or, in offline mode, a player with another UUID) could be missed in lookups of players and trusted players: their hash ignored how they are compared
 
 ## [4.0.0-beta.1] - 2026-10-24
 
