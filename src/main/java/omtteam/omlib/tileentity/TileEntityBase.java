@@ -5,9 +5,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -16,43 +13,31 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
  * Created by Keridos on 27/11/16.
- * This Class
+ * The 3.x tile entity base of the OMT mods on top of {@link TileEntitySynced}: subclasses save and load through
+ * {@link #saveToNBT} / {@link #loadFromNBT} (calling super first), clients get the full saved data, and every update
+ * packet also re-renders the block (camouflage, light settings).
  */
 @SuppressWarnings({"EmptyMethod", "WeakerAccess"})
 @MethodsReturnNonnullByDefault
-public abstract class TileEntityBase extends TileEntity {
+public abstract class TileEntityBase extends TileEntitySynced {
     protected boolean updateNBT = false;
 
     @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound nbtTagCompound = new NBTTagCompound();
-        this.writeToNBT(nbtTagCompound);
-        return new SPacketUpdateTileEntity(this.pos, 2, nbtTagCompound);
+    protected void readData(NBTTagCompound tag) {
+        loadFromNBT(tag);
+    }
+
+    @Override
+    protected void writeData(NBTTagCompound tag) {
+        saveToNBT(tag);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-        this.readFromNBT(pkt.getNbtCompound());
+        super.onDataPacket(net, pkt);
         IBlockState state = this.getWorld().getBlockState(pos);
         this.getWorld().notifyBlockUpdate(pos, state, state, 3);
-    }
-
-    @Override
-    @ParametersAreNonnullByDefault
-    public void handleUpdateTag(NBTTagCompound tag) {
-        super.handleUpdateTag(tag);
-    }
-
-    @Override
-    public NBTTagCompound getUpdateTag() {
-        return this.writeToNBT(super.getUpdateTag());
-    }
-
-    @Override
-    @ParametersAreNonnullByDefault
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
-        return oldState.getBlock() != newState.getBlock();
     }
 
     public void markBlockForUpdate() {
@@ -66,25 +51,14 @@ public abstract class TileEntityBase extends TileEntity {
 
     // Abstraction Functions
 
+    /** Saves the data of this tile entity; position and id are written by {@link TileEntitySynced} before. */
+    @ParametersAreNonnullByDefault
     public NBTTagCompound saveToNBT(@Nonnull NBTTagCompound tag) {
-        return super.writeToNBT(tag);
+        return tag;
     }
 
+    /** Loads what {@link #saveToNBT} saved; the position is read by {@link TileEntitySynced} before. */
+    @ParametersAreNonnullByDefault
     public void loadFromNBT(@Nonnull NBTTagCompound tag) {
-        super.readFromNBT(tag);
-    }
-
-    // Functions calling the abstraction ones
-
-    @Override
-    @ParametersAreNonnullByDefault
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        return this.saveToNBT(compound);
-    }
-
-    @Override
-    @ParametersAreNonnullByDefault
-    public void readFromNBT(NBTTagCompound compound) {
-        this.loadFromNBT(compound);
     }
 }
