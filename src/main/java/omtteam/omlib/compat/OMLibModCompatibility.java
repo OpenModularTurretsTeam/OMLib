@@ -25,6 +25,8 @@ public class OMLibModCompatibility {
     public static final String WailaModID = "waila";
     public static final String OMTModID = "openmodularturrets";
     public static final String OMPDModID = "ompd";
+    /** Rifted Valkyrium and Valkyrien Skies 1 (ships, see {@code compat.valkyrien}). */
+    public static final String ValkyrienSkiesModID = "valkyrienskies";
     public static boolean IC2Loaded = false;
     public static boolean TeslaLoaded = false;
     public static boolean CoFHApiLoaded = false;
@@ -37,6 +39,7 @@ public class OMLibModCompatibility {
     public static boolean MekanismLoaded = false;
     public static boolean OMTLoaded = false;
     public static boolean OMPDLoaded = false;
+    public static boolean ValkyrienSkiesLoaded = false;
 
     public static void checkForMods() {
         IC2Loaded = Loader.isModLoaded(IC2ModId);
@@ -50,6 +53,7 @@ public class OMLibModCompatibility {
         MekanismLoaded = Loader.isModLoaded(OMLibModCompatibility.MekModID);
         OMTLoaded = Loader.isModLoaded(OMLibModCompatibility.OMTModID);
         OMPDLoaded = Loader.isModLoaded(OMLibModCompatibility.OMPDModID);
+        ValkyrienSkiesLoaded = Loader.isModLoaded(ValkyrienSkiesModID);
 
         printDetectedMods();
     }
@@ -62,6 +66,7 @@ public class OMLibModCompatibility {
         foundMods += OpenComputersLoaded ? "OpenComputers " : "";
         foundMods += TOPLoaded ? "TheOneProbe " : "";
         foundMods += WailaLoaded ? "Waila/Hwyla " : "";
+        foundMods += ValkyrienSkiesLoaded ? "ValkyrienSkies " : "";
         OMLib.getLogger().info(foundMods);
     }
 

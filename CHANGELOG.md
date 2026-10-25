@@ -102,6 +102,7 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 - Ownership Wand (creative, operators only) for mapmakers: right-click makes you the owner of an owned block, sneak-right-click removes its owner; it spreads to the connected blocks of the same owner unless switched off with a sneak-right-click into the air (as on 1.20.1+)
 - The owner of a camouflage trap can disown it from its camouflage menu after a confirmation; the trust list is cleared and anyone can claim it
 - For mod developers: `api.permission.IOwnedHost` (owner, claim, clear; implemented by `TileEntityOwnedBlock`), `handler.ClaimSpread`, `block.UnownedMarker` (green sparkle on unowned blocks), `api.block.IPlainLookingBlock` (blocks with a tile entity that may still be a disguise) and `IDrawOutline.canPlace` with the player
+- `compat.valkyrien.ShipFrame` / `ShipFrames`: converts positions and directions between the world and the ship space of Rifted Valkyrium / Valkyrien Skies 1 ships, for blocks on ships (no conversion without a ship mod)
 
 ### Changed
 
