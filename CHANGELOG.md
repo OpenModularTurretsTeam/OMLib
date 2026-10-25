@@ -29,6 +29,7 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 - Changes in OMLib's config GUI were only applied after a restart
 - The debug tool crashed a dedicated server when used on a turret base
 - Items dropped from a broken machine lost data other mods keep on the item stack (capabilities)
+- Camouflaged blocks could create their tile entity on the chunk render thread (block model, block colour), which can crash or corrupt the world; for mod developers: `WorldUtil.getTileEntity(IBlockAccess, BlockPos)` looks up a tile entity without creating it
 
 ## [4.0.0-beta.1] - 2026-10-24
 

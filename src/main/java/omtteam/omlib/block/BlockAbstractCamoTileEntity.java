@@ -12,6 +12,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import omtteam.omlib.api.render.camo.ICamoSupport;
 import omtteam.omlib.api.render.camo.RenderBlockStateContainer;
+import omtteam.omlib.util.world.WorldUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -56,7 +57,7 @@ public abstract class BlockAbstractCamoTileEntity extends BlockAbstractTileEntit
             return state;
         }
         // Without a camo tile entity (not loaded yet, or another block's) the block renders as itself
-        TileEntity tileEntity = world.getTileEntity(pos);
+        TileEntity tileEntity = WorldUtil.getTileEntity(world, pos);
         IExtendedBlockState extendedState = (IExtendedBlockState) state;
         IBlockState camoState = tileEntity instanceof ICamoSupport ? ((ICamoSupport) tileEntity).getCamoState() : extendedState.getClean();
         return extendedState.withProperty(RENDERBLOCKSTATE, new RenderBlockStateContainer(camoState));

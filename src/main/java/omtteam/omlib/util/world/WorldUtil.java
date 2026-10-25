@@ -10,8 +10,12 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.ChunkCache;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -22,6 +26,19 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public class WorldUtil {
+    /**
+     * The tile entity at {@code pos} without creating one: {@link ChunkCache} (the chunk renderer's view, used by
+     * {@code getExtendedState}, {@code getActualState}, block colours and light values) would otherwise create a missing
+     * tile entity off the main thread.
+     */
+    @Nullable
+    public static TileEntity getTileEntity(IBlockAccess world, BlockPos pos) {
+        if (world instanceof ChunkCache) {
+            return ((ChunkCache) world).getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK);
+        }
+        return world.getTileEntity(pos);
+    }
+
     public static ArrayList<TileEntity> getTouchingTileEntities(World world, BlockPos pos) {
         ArrayList<TileEntity> list = new ArrayList<>();
         for (EnumFacing facing : EnumFacing.VALUES) {
