@@ -6,12 +6,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
+import omtteam.omlib.api.block.IPlainLookingBlock;
 
 import javax.annotation.Nullable;
 
 /**
  * Which blocks may be used as a disguise, and the item form of one (1.20.1+ {@code CamoRules}). The rules are those of
- * 3.x {@code handleCamoActivation}: a full block that is drawn from a model and has no tile entity.
+ * 3.x {@code handleCamoActivation}: a full block that is drawn from a model and has no tile entity, unless the block is
+ * an {@link IPlainLookingBlock} (such as OMPD's hardened blocks).
  */
 public final class CamoRules {
     private CamoRules() {
@@ -21,7 +23,8 @@ public final class CamoRules {
     public static boolean isValidDisguise(IBlockState state) {
         Block block = state.getBlock();
         // camouflaged blocks have a tile entity, so they are excluded too
-        return block.isFullBlock(state) && state.getMaterial() != Material.AIR && !block.hasTileEntity(state)
+        return block.isFullBlock(state) && state.getMaterial() != Material.AIR
+                && (!block.hasTileEntity(state) || block instanceof IPlainLookingBlock)
                 && state.getRenderType() == EnumBlockRenderType.MODEL;
     }
 

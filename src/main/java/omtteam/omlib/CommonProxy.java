@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import omtteam.omlib.api.permission.OwnerShareRegister;
 import omtteam.omlib.config.ConfigSync;
 import omtteam.omlib.handler.OMLibEventHandler;
+import omtteam.omlib.handler.OwnershipInteraction;
 import omtteam.omlib.network.OMLibNetworkingHandler;
 import omtteam.omlib.reference.Reference;
 import omtteam.omlib.util.RandomUtil;
@@ -26,6 +27,7 @@ public class CommonProxy {
         OMLibNetworkingHandler.initNetworking();
         ConfigSync.register(Reference.MOD_ID);
         MinecraftForge.EVENT_BUS.register(OMLibEventHandler.getInstance());
+        MinecraftForge.EVENT_BUS.register(new OwnershipInteraction());
     }
 
     public void init() {
