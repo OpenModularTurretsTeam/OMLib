@@ -1,10 +1,7 @@
 package omtteam.omlib.power.tesla;
 
 import net.darkhax.tesla.api.ITeslaConsumer;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.energy.CapabilityEnergy;
-import omtteam.omlib.power.OMEnergyStorage;
-import omtteam.omlib.tileentity.TileEntityElectric;
+import net.minecraftforge.energy.IEnergyStorage;
 
 /**
  * A Receiver for Energy, credits go to the ender IO devs :)
@@ -12,21 +9,14 @@ import omtteam.omlib.tileentity.TileEntityElectric;
 
 public class BaseOMTeslaReceiverWrapper implements ITeslaConsumer {
 
-    private final TileEntityElectric tile;
-    private final EnumFacing facing;
+    private final IEnergyStorage storage;
 
-    @SuppressWarnings("SameParameterValue")
-    public BaseOMTeslaReceiverWrapper(TileEntityElectric tile, EnumFacing facing) {
-        this.tile = tile;
-        this.facing = facing;
+    public BaseOMTeslaReceiverWrapper(IEnergyStorage storage) {
+        this.storage = storage;
     }
 
     @Override
     public long givePower(long power, boolean simulated) {
-        OMEnergyStorage storage = (OMEnergyStorage) tile.getCapability(CapabilityEnergy.ENERGY, facing);
-        if (storage != null) {
-            return storage.receiveEnergy((int) power, simulated);
-        }
-        return 0;
+        return storage.receiveEnergy((int) Math.min(power, Integer.MAX_VALUE), simulated);
     }
 }

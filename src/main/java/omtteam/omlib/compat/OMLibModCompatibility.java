@@ -23,7 +23,6 @@ public class OMLibModCompatibility {
     public static final String TCModID = "thaumcraft";
     public static final String TOPModID = "theoneprobe";
     public static final String WailaModID = "waila";
-    public static final String OMTCModID = "omtcontrol";
     public static final String OMTModID = "openmodularturrets";
     public static final String OMPDModID = "ompd";
     public static boolean IC2Loaded = false;
@@ -37,7 +36,6 @@ public class OMLibModCompatibility {
     public static boolean EnderIOLoaded = false;
     public static boolean MekanismLoaded = false;
     public static boolean OMTLoaded = false;
-    public static boolean OMTCLoaded = false;
     public static boolean OMPDLoaded = false;
 
     public static void checkForMods() {
@@ -51,7 +49,6 @@ public class OMLibModCompatibility {
         EnderIOLoaded = Loader.isModLoaded(OMLibModCompatibility.EIOModID);
         MekanismLoaded = Loader.isModLoaded(OMLibModCompatibility.MekModID);
         OMTLoaded = Loader.isModLoaded(OMLibModCompatibility.OMTModID);
-        OMTCLoaded = Loader.isModLoaded(OMLibModCompatibility.OMTCModID);
         OMPDLoaded = Loader.isModLoaded(OMLibModCompatibility.OMPDModID);
 
         printDetectedMods();

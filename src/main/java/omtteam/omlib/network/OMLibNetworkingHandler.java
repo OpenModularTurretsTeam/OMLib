@@ -43,6 +43,8 @@ public class OMLibNetworkingHandler {
                                  11, Side.SERVER);
         INSTANCE.registerMessage(MessageCamoLight.MessageHandlerCamoLight.class, MessageCamoLight.class,
                                  12, Side.SERVER);
+        INSTANCE.registerMessage(OMLib.proxy.clientMessageHandler(MessageConfigSync.class), MessageConfigSync.class,
+                                 13, Side.CLIENT);
     }
 
     public static void sendMessageToAllPlayers(IMessage message) {

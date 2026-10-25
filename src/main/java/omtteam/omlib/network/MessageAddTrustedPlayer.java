@@ -1,11 +1,8 @@
 package omtteam.omlib.network;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -57,21 +54,19 @@ public class MessageAddTrustedPlayer implements IMessage {
         @Override
         public IMessage onMessage(MessageAddTrustedPlayer messageIn, MessageContext ctxIn) {
             final MessageAddTrustedPlayer message = messageIn;
-            final MessageContext ctx = ctxIn;
-            ((WorldServer) ctx.getServerHandler().player.getEntityWorld()).addScheduledTask(() -> {
-                World world = ctx.getServerHandler().player.getEntityWorld();
-                EntityPlayerMP player = ctx.getServerHandler().player;
-                if (message.hasTile) {
-                    TileEntity entity = world.getTileEntity(new BlockPos(message.x, message.y, message.z));
-                    IHasTrustManager machine = null;
-                    if (entity instanceof IHasTrustManager) {
-                        machine = (IHasTrustManager) entity;
-                    }
-                    if (machine != null && PlayerUtil.isPlayerAdmin(player, machine.getTrustManager())) {
-                        machine.getTrustManager().addTrustedPlayer(message.player);
-                        machine.informUpdate();
-                    }
+            PacketValidation.schedule(ctxIn, player -> {
+                if (!message.hasTile) {
+                    return;
                 }
+                PacketValidation.find(player, new BlockPos(message.x, message.y, message.z), IHasTrustManager.class)
+                        .ifPresent(machine -> {
+                            if (!PlayerUtil.isPlayerAdmin(player, machine.getTrustManager())) {
+                                PacketValidation.sendNoPermission(player);
+                                return;
+                            }
+                            machine.getTrustManager().addTrustedPlayer(message.player);
+                            machine.informUpdate();
+                        });
             });
             return null;
         }

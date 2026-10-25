@@ -5,17 +5,23 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 /**
  * Reads a tile entity inventory from the layouts written over the versions:
- * a list under "Items", the same list inside an "Inventory" compound (3.x), or the item handler list under "Slots".
+ * a list under "Items", the same list inside an "Inventory" compound (3.x), or the item handler list under "Slots";
+ * writes the "Items" list.
  */
-final class InventoryNbt {
+public final class InventoryNbt {
     private InventoryNbt() {
     }
 
-    static void read(IItemHandlerModifiable inventory, NBTTagCompound tagCompound) {
+    public static void write(IItemHandler inventory, NBTTagCompound tagCompound) {
+        tagCompound.setTag("Items", CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.writeNBT(inventory, null));
+    }
+
+    public static void read(IItemHandlerModifiable inventory, NBTTagCompound tagCompound) {
         if (tagCompound.getTagId("Items") == Constants.NBT.TAG_LIST) {
             readItemList(inventory, tagCompound.getTagList("Items", Constants.NBT.TAG_COMPOUND));
         } else if (tagCompound.hasKey("Inventory") && // TODO: this should be removed on 1.13

@@ -1,8 +1,6 @@
 package omtteam.omlib.network;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -56,17 +54,12 @@ public class MessageCamoLight implements IMessage {
     public static class MessageHandlerCamoLight implements IMessageHandler<MessageCamoLight, IMessage> {
         @Override
         public IMessage onMessage(MessageCamoLight message, MessageContext ctx) {
-            EntityPlayerMP player = ctx.getServerHandler().player;
-            player.getServerWorld().addScheduledTask(() -> {
-                TileEntity tileEntity = player.getEntityWorld().getTileEntity(message.pos);
-                if (!(tileEntity instanceof ICamoSupport) || player.getDistanceSqToCenter(message.pos) > 64) {
-                    return;
-                }
-                ICamoSupport host = (ICamoSupport) tileEntity;
-                if (host.isCamoEnabled() && host.supportsLight() && host.canChangeLight(player)) {
-                    applyLight(host, message.value, message.opacity);
-                }
-            });
+            PacketValidation.schedule(ctx, player ->
+                    PacketValidation.find(player, message.pos, ICamoSupport.class).ifPresent(host -> {
+                        if (host.isCamoEnabled() && host.supportsLight() && host.canChangeLight(player)) {
+                            applyLight(host, message.value, message.opacity);
+                        }
+                    }));
             return null;
         }
     }

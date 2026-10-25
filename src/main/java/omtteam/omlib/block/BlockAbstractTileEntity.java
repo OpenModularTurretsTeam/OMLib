@@ -10,7 +10,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import omtteam.omlib.tileentity.TileEntityContainerElectric;
+import net.minecraftforge.items.IItemHandler;
 import omtteam.omlib.util.inventory.InvUtil;
 
 import javax.annotation.Nonnull;
@@ -57,36 +57,32 @@ public abstract class BlockAbstractTileEntity extends BlockAbstract {
         return EnumBlockRenderType.MODEL;
     }
 
-    protected void dropItems(World worldIn, BlockPos pos) {
-        if (worldIn.getTileEntity(pos) instanceof TileEntityContainerElectric) {
-            TileEntityContainerElectric entity = (TileEntityContainerElectric) worldIn.getTileEntity(pos);
-            Random rand = new Random();
-            if (entity != null) {
-                for (int i = 0; i < entity.getInventory().getSlots(); i++) {
-                    ItemStack item = entity.getInventory().getStackInSlot(i);
-
-                    if (!item.isEmpty()) {
-                        float rx = rand.nextFloat() * 0.8F + 0.1F;
-                        float ry = rand.nextFloat() * 0.8F + 0.1F;
-                        float rz = rand.nextFloat() * 0.8F + 0.1F;
-
-                        EntityItem entityItem = new EntityItem(worldIn, pos.getX() + rx, pos.getY() + ry, pos.getZ() + rz,
-                                                               new ItemStack(item.getItem(), InvUtil.getStackSize(item),
-                                                                             item.getItemDamage()));
-
-                        if (item.hasTagCompound()) {
-                            entityItem.getItem().setTagCompound(item.getTagCompound().copy());
-                        }
-
-                        float factor = 0.05F;
-                        entityItem.motionX = rand.nextGaussian() * factor;
-                        entityItem.motionY = rand.nextGaussian() * factor + 0.2F;
-                        entityItem.motionZ = rand.nextGaussian() * factor;
-                        worldIn.spawnEntity(entityItem);
-                        InvUtil.setStackSize(item, 0);
-                    }
-                }
+    /** Spills the stacks of {@code inventory} into the world at {@code pos}. */
+    protected void dropItems(World worldIn, BlockPos pos, IItemHandler inventory) {
+        Random rand = new Random();
+        for (int i = 0; i < inventory.getSlots(); i++) {
+            ItemStack item = inventory.getStackInSlot(i);
+            if (item.isEmpty()) {
+                continue;
             }
+            float rx = rand.nextFloat() * 0.8F + 0.1F;
+            float ry = rand.nextFloat() * 0.8F + 0.1F;
+            float rz = rand.nextFloat() * 0.8F + 0.1F;
+
+            EntityItem entityItem = new EntityItem(worldIn, pos.getX() + rx, pos.getY() + ry, pos.getZ() + rz,
+                                                   new ItemStack(item.getItem(), InvUtil.getStackSize(item),
+                                                                 item.getItemDamage()));
+
+            if (item.hasTagCompound()) {
+                entityItem.getItem().setTagCompound(item.getTagCompound().copy());
+            }
+
+            float factor = 0.05F;
+            entityItem.motionX = rand.nextGaussian() * factor;
+            entityItem.motionY = rand.nextGaussian() * factor + 0.2F;
+            entityItem.motionZ = rand.nextGaussian() * factor;
+            worldIn.spawnEntity(entityItem);
+            InvUtil.setStackSize(item, 0);
         }
     }
 }

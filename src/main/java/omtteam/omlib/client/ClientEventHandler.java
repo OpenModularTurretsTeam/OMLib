@@ -1,5 +1,6 @@
 package omtteam.omlib.client;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -14,11 +15,13 @@ import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import omtteam.omlib.client.gui.GUIBackSystem;
 import omtteam.omlib.client.gui.ISupportsBackSystem;
 import omtteam.omlib.client.render.RenderManager;
+import omtteam.omlib.config.ConfigSync;
 import omtteam.omlib.item.IDrawOutline;
 import omtteam.omlib.item.IDrawOutlineBase;
 
@@ -33,6 +36,12 @@ public class ClientEventHandler {
     @SubscribeEvent
     public void renderRegisterEvent(ModelRegistryEvent event) {
         ClientProxy.registerItemModels();
+    }
+
+    /** Back to the local config values after leaving a server ({@link ConfigSync}); fired on the network thread. */
+    @SubscribeEvent
+    public void onDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
+        Minecraft.getMinecraft().addScheduledTask(ConfigSync::restoreLocal);
     }
 
     @SubscribeEvent

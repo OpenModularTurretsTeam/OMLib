@@ -4,13 +4,13 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.config.Config;
-import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import omtteam.omlib.api.permission.OwnerShareRegister;
+import omtteam.omlib.config.ConfigSync;
 import omtteam.omlib.network.MessageSetSharePlayerList;
 import omtteam.omlib.network.OMLibNetworkingHandler;
 import omtteam.omlib.reference.Reference;
@@ -35,10 +35,18 @@ public class OMLibEventHandler {
         return instance;
     }
 
+    /** An instance method: the handler is registered as an instance, so Forge 1.12 skips static methods. */
     @SubscribeEvent
-    public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+    public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
         if (event.getModID().equals(Reference.MOD_ID)) {
-            ConfigManager.sync(Reference.MOD_ID, Config.Type.INSTANCE);
+            ConfigSync.syncLocal(Reference.MOD_ID);
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.player instanceof EntityPlayerMP) {
+            ConfigSync.sendTo((EntityPlayerMP) event.player);
         }
     }
 

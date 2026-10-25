@@ -17,7 +17,9 @@ import omtteam.omlib.api.render.camo.ICamoSupport;
 import omtteam.omlib.client.render.RenderManager;
 import omtteam.omlib.client.render.object.Lightning;
 import omtteam.omlib.client.render.object.Ray;
+import omtteam.omlib.config.ConfigSync;
 import omtteam.omlib.network.MessageCamoSettings;
+import omtteam.omlib.network.MessageConfigSync;
 import omtteam.omlib.network.MessageRenderLightning;
 import omtteam.omlib.network.MessageRenderRay;
 import omtteam.omlib.network.MessageSetSharePlayerList;
@@ -42,6 +44,7 @@ public final class ClientMessageHandlers {
         register(MessageRenderRay.class, ClientMessageHandlers::renderRay);
         register(MessageRenderLightning.class, ClientMessageHandlers::renderLightning);
         register(MessageSpawnParticleQuad.class, ClientMessageHandlers::spawnParticleQuad);
+        register(MessageConfigSync.class, ClientMessageHandlers::configSync);
     }
 
     private ClientMessageHandlers() {
@@ -58,6 +61,11 @@ public final class ClientMessageHandlers {
 
     private static <M extends IMessage> void register(Class<M> type, IMessageHandler<M, IMessage> handler) {
         HANDLERS.put(type, handler);
+    }
+
+    private static IMessage configSync(MessageConfigSync message, MessageContext ctx) {
+        Minecraft.getMinecraft().addScheduledTask(() -> ConfigSync.apply(message.getModId(), message.getJson()));
+        return null;
     }
 
     private static IMessage setSharePlayerList(MessageSetSharePlayerList message, MessageContext ctx) {

@@ -8,14 +8,26 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 
 ## [Unreleased]
 
+### Added
+
+- The server sends its OMLib config values (`omlib.cfg`, e.g. OP access and offline mode support) to clients when they join, so GUIs show the server's rules; after leaving, the client uses its own config again
+
 ### Changed
 
 - The jar files are named `omlib-<version>-mc1.12.2-forge.jar` (Minecraft version with `mc`, as on 1.20.1+)
+
+### Removed
+
+- For mod developers: the tile entity base classes `TileEntityElectric`, `TileEntityContainerElectric`, `TileEntityMachine`, `TileEntityTrustedMachine` and `TileEntityContainer`; tile entities hold the helpers `power.EnergyCapabilities` and `tileentity.InventoryNbt` instead (same NBT keys)
 
 ### Fixed
 
 - Loading a world kept the owner share lists (`/omlib share`) of the world opened before it in the same game
 - A renamed player (or, in offline mode, a player with another UUID) could be missed in lookups of players and trusted players: their hash ignored how they are compared
+- Clients could make the server load or generate chunks anywhere by sending trust list, camouflage or GUI messages for far-away positions; these messages now need the block loaded and the player within reach
+- Players without access to a block could receive its updates (trust list, settings) by sending its GUI-open message
+- Changes in OMLib's config GUI were only applied after a restart
+- The debug tool crashed a dedicated server when used on a turret base
 
 ## [4.0.0-beta.1] - 2026-10-24
 
