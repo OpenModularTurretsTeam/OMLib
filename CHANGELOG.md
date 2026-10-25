@@ -11,6 +11,7 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 ### Added
 
 - For mod developers: tile entity base `tileentity.TileEntitySynced` (data hooks `readData` / `writeData`, separate client data `writeClientData`, `syncToClient`, `remesh`; from OpenModularLighting); `TileEntityBase` now builds on it and behaves as before
+- For mod developers: `container.WindowValues` syncs int values of a container to its GUI as window properties (two 16-bit halves each)
 - The server sends its OMLib config values (`omlib.cfg`, e.g. OP access and offline mode support) to clients when they join, so GUIs show the server's rules; after leaving, the client uses its own config again
 
 ### Changed
