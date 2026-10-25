@@ -45,6 +45,7 @@ public class OMLibNetworkingHandler {
                                  12, Side.SERVER);
         INSTANCE.registerMessage(OMLib.proxy.clientMessageHandler(MessageConfigSync.class), MessageConfigSync.class,
                                  13, Side.CLIENT);
+        INSTANCE.registerMessage(MessageDisown.MessageHandlerDisown.class, MessageDisown.class, 14, Side.SERVER);
     }
 
     public static void sendMessageToAllPlayers(IMessage message) {

@@ -21,5 +21,10 @@ public class OMConfig {
         public String recipes = "auto";
         @Config.Comment("Enable compat for offline mode servers?")
         public boolean offlineModeSupport = false;
+        @Config.Comment("Claiming a block without an owner also claims the unowned turret bases, camouflage traps and passive defense blocks connected to it (turrets connect too). At most this many blocks are walked per claim, the Ownership Wand uses the same limit.")
+        @Config.RangeInt(min = 1, max = 65536)
+        public int claimSpreadLimit = 1024;
+        @Config.Comment("Fake players of machines may claim blocks without an owner by right-clicking them.")
+        public boolean fakePlayersCanClaim = false;
     }
 }

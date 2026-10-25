@@ -4,6 +4,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.client.config.GuiSlider;
 import omtteam.omlib.OMLib;
 import omtteam.omlib.api.render.camo.ICamoSupport;
@@ -12,6 +13,7 @@ import omtteam.omlib.container.ContainerCamo;
 import omtteam.omlib.core.camo.CamoLight;
 import omtteam.omlib.handler.OMGuiHandler;
 import omtteam.omlib.network.MessageCamoLight;
+import omtteam.omlib.network.MessageOpenCamoMenu;
 import omtteam.omlib.network.OMLibNetworkingHandler;
 import omtteam.omlib.reference.OMLibNames;
 import omtteam.omlib.util.player.PlayerUtil;
@@ -30,6 +32,7 @@ public class CamoGui extends GuiContainer {
     private static final int SLIDER_OPACITY_Y = 72;
     private static final int BACK = 0;
     private static final int TRUSTED = 1;
+    private static final int DISOWN = 4;
 
     private final ContainerCamo container;
     private final ICamoSupport host;
@@ -73,6 +76,11 @@ public class CamoGui extends GuiContainer {
                     20, safeLocalize(OMLibNames.Localizations.GUI.TRUSTED_PLAYERS));
             trusted.enabled = PlayerUtil.isPlayerAdmin(mc.player, (IHasTrustManager) host);
             buttonList.add(trusted);
+            // the camouflage trap's owner; outside the panel, whose row is full
+            if (DisownConfirm.isOwner(mc.player, (IHasTrustManager) host)) {
+                buttonList.add(DisownConfirm.button(DISOWN, guiLeft + xSize + 4, guiTop + ContainerCamo.PHANTOM_Y - 1,
+                        80));
+            }
         }
     }
 
@@ -80,6 +88,10 @@ public class CamoGui extends GuiContainer {
     protected void actionPerformed(GuiButton button) {
         if (button.id == BACK) {
             GUIBackSystem.getInstance().openTopGui(mc.player);
+        } else if (button.id == DISOWN) {
+            // "No" asks the server for the camouflage menu again
+            BlockPos pos = host.getCamoTileEntity().getPos();
+            DisownConfirm.ask(pos, () -> OMLibNetworkingHandler.INSTANCE.sendToServer(new MessageOpenCamoMenu(pos)));
         } else if (button.id == TRUSTED) {
             mc.player.openGui(OMLib.instance, OMGuiHandler.TRUSTED_PLAYERS_GUI, mc.world,
                     host.getCamoTileEntity().getPos().getX(), host.getCamoTileEntity().getPos().getY(),

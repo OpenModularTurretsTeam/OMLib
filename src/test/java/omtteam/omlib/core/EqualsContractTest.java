@@ -6,6 +6,7 @@ import omtteam.omlib.core.camo.CamoLight;
 import omtteam.omlib.core.security.AccessProfile;
 import omtteam.omlib.core.security.PlayerIdentity;
 import omtteam.omlib.core.security.PlayerInfo;
+import omtteam.omlib.core.world.BlockPosition;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -13,6 +14,11 @@ import org.junit.jupiter.api.Test;
  * constructors reject or copy their arguments, so those fields are never null.
  */
 class EqualsContractTest {
+    @Test
+    void blockPosition() {
+        EqualsVerifier.forClass(BlockPosition.class).verify();
+    }
+
     @Test
     void camoLight() {
         EqualsVerifier.forClass(CamoLight.class).verify();

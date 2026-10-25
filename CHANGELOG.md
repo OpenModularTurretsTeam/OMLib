@@ -14,10 +14,15 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 - For mod developers: `container.WindowValues` syncs int values of a container to its GUI as window properties (two 16-bit halves each)
 - For mod developers: `util.inventory.InvUtil.dropItems` spills an inventory when its block breaks, `inventory.AutomationItemHandler` is the hopper/pipe view of a machine's slots (insert what the slots accept, extract by a rule)
 - The server sends its OMLib config values (`omlib.cfg`, e.g. OP access and offline mode support) to clients when they join, so GUIs show the server's rules; after leaving, the client uses its own config again
+- Right-clicking an owned block without an owner (turret base, turret, camouflage trap, hardened block/wall/fence) claims it and the unowned blocks connected to it (up to `claimSpreadLimit`, default 1024); machines' fake players only claim if `fakePlayersCanClaim` is set (as on 1.20.1+)
+- Ownership Wand (creative, operators only) for mapmakers: right-click makes you the owner of an owned block, sneak-right-click removes its owner; it spreads to the connected blocks of the same owner unless switched off with a sneak-right-click into the air (as on 1.20.1+)
+- The owner of a camouflage trap can disown it from its camouflage menu after a confirmation; the trust list is cleared and anyone can claim it
+- For mod developers: `api.permission.IOwnedHost` (owner, claim, clear; implemented by `TileEntityOwnedBlock`), `handler.ClaimSpread`, `block.UnownedMarker` (green sparkle on unowned blocks), `api.block.IPlainLookingBlock` (blocks with a tile entity that may still be a disguise) and `IDrawOutline.canPlace` with the player
 
 ### Changed
 
 - The jar files are named `omlib-<version>-mc1.12.2-forge.jar` (Minecraft version with `mc`, as on 1.20.1+)
+- Owned blocks without an owner no longer count as owned by a placeholder player; they stay unowned until someone claims them
 
 ### Removed
 

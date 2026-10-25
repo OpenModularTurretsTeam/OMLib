@@ -66,7 +66,7 @@ public class ClientEventHandler {
             double d1 = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTicks;
             double d2 = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTicks;
             float[] color = new float[3];
-            if (item.canPlace(facing, event.getPlayer().getEntityWorld(), blockpos)) {
+            if (item.canPlace(facing, event.getPlayer().getEntityWorld(), blockpos, player)) {
                 color[0] = 0F;
                 color[1] = 1F;
                 color[2] = 1F;

@@ -35,6 +35,7 @@ public class ClientProxy extends CommonProxy {
     static void registerItemModels() {
         registerItemModel(OMLibItems.debugTool, 0);
         registerItemModel(OMLibItems.multiTool, 0);
+        registerItemModel(OMLibItems.ownershipWand, 0);
     }
 
     @SuppressWarnings("SameParameterValue")

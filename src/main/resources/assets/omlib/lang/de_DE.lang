@@ -52,3 +52,23 @@ item.debug_tool.name=Debug Werkzeug
 
 
 
+item.ownership_wand.name=Besitzstab
+text.omlib.claimed=%s Blöcke in Besitz genommen
+text.omlib.claimed_limit=%s Blöcke in Besitz genommen (Limit erreicht, erneut klicken für mehr)
+text.omlib.unowned=niemand (Rechtsklick zum Übernehmen)
+text.omlib.disowned=Dieser Block gehört dir nicht mehr
+gui.omlib.disown=Aufgeben
+gui.omlib.disown.title=Diesen Block aufgeben?
+tooltip.omlib.disown=Block aufgeben: Er verliert Besitzer und Vertrauensliste und kann von jedem übernommen werden
+gui.omlib.disown.warning=Besitzer und Vertrauensliste werden entfernt. Eine Geschützbasis feuert nicht mehr (außer herrenlose Basen sind in der Konfiguration aktiv), und jeder kann sie samt Inhalt per Rechtsklick übernehmen.
+text.omlib.wand.claimed=%s Blöcke gehören jetzt dir
+text.omlib.wand.game_masters_only=Nur Operatoren im Kreativmodus können den Besitzstab benutzen
+text.omlib.wand.reset=Besitzer von %s Blöcken entfernt
+text.omlib.wand.spread_off=Besitzstab: nur der angeklickte Block
+text.omlib.wand.spread_on=Besitzstab: breitet sich auf verbundene Blöcke desselben Besitzers aus
+tooltip.omlib.ownership_wand.desc1=Rechtsklick auf einen Block mit Besitzer: selbst Besitzer werden
+tooltip.omlib.ownership_wand.desc2=Schleichen + Rechtsklick: Besitzer entfernen
+tooltip.omlib.ownership_wand.desc3=Schleichen + Rechtsklick in die Luft: Ausbreitung umschalten
+tooltip.omlib.ownership_wand.desc4=Solange gehalten: Geschützschüsse wirken nicht auf dich
+tooltip.omlib.ownership_wand.spread_off=Ändert nur den angeklickten Block
+tooltip.omlib.ownership_wand.spread_on=Breitet sich auf verbundene Blöcke desselben Besitzers aus

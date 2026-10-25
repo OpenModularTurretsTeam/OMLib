@@ -14,6 +14,7 @@ import omtteam.omlib.util.player.OMLibSecurityEnvironment;
 import omtteam.omlib.util.player.Player;
 import omtteam.omlib.util.player.PlayerUtil;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -71,13 +72,24 @@ public class TrustedPlayersManager implements ITrustedPlayersManager {
         return this.owner;
     }
 
-    /** An owner without a UUID (legacy saves) gets the offline UUID of its name in the core. */
-    public void setOwner(Player owner) {
+    /**
+     * An owner without a UUID (legacy saves) gets the offline UUID of its name in the core; {@code null} (a block
+     * without owner) removes the owner and keeps the list.
+     */
+    public void setOwner(@Nullable Player owner) {
         this.owner = owner;
-        PlayerIdentity identity = OMLibSecurityEnvironment.toIdentity(owner);
+        PlayerIdentity identity = owner == null ? null : OMLibSecurityEnvironment.toIdentity(owner);
         if (identity != null) {
             core.setOwner(identity);
+        } else if (owner == null && core.getOwner() != null) {
+            core.load(null, copyEntries());
         }
+    }
+
+    /** Removes the owner and clears the trust list (disowning). */
+    public void clearOwner() {
+        this.owner = null;
+        core.clearOwner();
     }
 
     // ---- reading ----

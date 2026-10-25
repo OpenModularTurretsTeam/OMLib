@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -286,6 +287,38 @@ class TrustManagerTest {
 
     @Nested
     class OwnerAndLoading {
+        @Test
+        void clearOwnerRemovesOwnerAndTrustList() {
+            trust(ALICE, AccessLevel.ADMIN);
+            changes = 0;
+            manager.clearOwner();
+            assertNull(manager.getOwner());
+            assertEquals(Collections.emptyList(), manager.getTrustedPlayers());
+            assertFalse(manager.canOpenGui(OWNER));
+            assertFalse(manager.isAdmin(ALICE));
+            assertEquals(1, changes);
+        }
+
+        @Test
+        void claimTakesAnUnownedBlock() {
+            manager.clearOwner();
+            changes = 0;
+            assertTrue(manager.claim(ALICE.identity()));
+            assertTrue(manager.isOwner(ALICE));
+            assertEquals(1, changes);
+        }
+
+        @Test
+        void claimNeverTakesAnOwnedBlock() {
+            trust(ALICE, AccessLevel.ADMIN);
+            changes = 0;
+            assertFalse(manager.claim(ALICE.identity()));
+            assertFalse(manager.claim(OWNER.identity()), "not even by its owner");
+            assertTrue(manager.isOwner(OWNER));
+            assertEquals(AccessLevel.ADMIN, manager.getTrustedPlayer(ALICE.uuid()).get().getAccessLevel());
+            assertEquals(0, changes);
+        }
+
         @Test
         void baseWithoutOwnerGrantsNothing() {
             TrustManager empty = new TrustManager(environment, () -> {
