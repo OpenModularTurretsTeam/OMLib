@@ -16,7 +16,7 @@ import omtteam.omlib.util.player.PlayerUtil;
 import static omtteam.omlib.util.GeneralUtil.safeLocalize;
 
 /**
- * The owner's "Disown" button (OMT's turret base GUI, the camouflage trap's menu) and its confirmation (1.20.1+
+ * The owner's "Disown" button (OMT's configure screen of a turret base, the camouflage trap's menu) and its confirmation (1.20.1+
  * {@code DisownConfirm}). The server checks ownership again; open menus of the block close themselves once nobody owns
  * it.
  */
