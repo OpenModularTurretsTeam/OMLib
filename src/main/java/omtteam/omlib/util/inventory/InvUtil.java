@@ -1,8 +1,12 @@
 package omtteam.omlib.util.inventory;
 
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nonnull;
 
@@ -103,5 +107,17 @@ public class InvUtil {
         }
         stack.setCount(amount);
         return stack;
+    }
+
+    /** Spills all stacks of {@code inventory} at {@code pos} (as a chest does) and empties the slots. */
+    public static void dropItems(World world, BlockPos pos, IItemHandlerModifiable inventory) {
+        for (int slot = 0; slot < inventory.getSlots(); slot++) {
+            ItemStack stack = inventory.getStackInSlot(slot);
+            if (!stack.isEmpty()) {
+                // a copy keeps everything of the stack (also capability data of other mods)
+                InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack.copy());
+                inventory.setStackInSlot(slot, ItemStack.EMPTY);
+            }
+        }
     }
 }
