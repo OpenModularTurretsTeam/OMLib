@@ -13,7 +13,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 import omtteam.omlib.util.inventory.InvUtil;
 
-import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Random;
 
@@ -35,13 +34,11 @@ public abstract class BlockAbstractTileEntity extends BlockAbstract {
     }
 
     @Override
-    @Nonnull
     @ParametersAreNonnullByDefault
     public TileEntity createTileEntity(World world, IBlockState state) {
         return createTileEntity_OM(world, state);
     }
 
-    @Nonnull
     @ParametersAreNonnullByDefault
     public abstract TileEntity createTileEntity_OM(World world, IBlockState state);
 
@@ -69,13 +66,9 @@ public abstract class BlockAbstractTileEntity extends BlockAbstract {
             float ry = rand.nextFloat() * 0.8F + 0.1F;
             float rz = rand.nextFloat() * 0.8F + 0.1F;
 
+            // a copy keeps everything of the stack (also capability data of other mods)
             EntityItem entityItem = new EntityItem(worldIn, pos.getX() + rx, pos.getY() + ry, pos.getZ() + rz,
-                                                   new ItemStack(item.getItem(), InvUtil.getStackSize(item),
-                                                                 item.getItemDamage()));
-
-            if (item.hasTagCompound()) {
-                entityItem.getItem().setTagCompound(item.getTagCompound().copy());
-            }
+                                                   item.copy());
 
             float factor = 0.05F;
             entityItem.motionX = rand.nextGaussian() * factor;

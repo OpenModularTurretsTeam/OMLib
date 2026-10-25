@@ -17,6 +17,7 @@ import omtteam.omlib.reference.Reference;
 import omtteam.omlib.tileentity.TileEntityOwnedBlock;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
 
@@ -32,6 +33,7 @@ public class ItemDebugTool extends Item {
 
     @Nonnull
     @Override
+    @ParametersAreNonnullByDefault
     public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!worldIn.isRemote) {
             TileEntity tileEntity = worldIn.getTileEntity(pos);

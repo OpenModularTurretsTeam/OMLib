@@ -1,6 +1,7 @@
 package omtteam.omlib.tileentity;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
@@ -18,7 +19,10 @@ public final class InventoryNbt {
     }
 
     public static void write(IItemHandler inventory, NBTTagCompound tagCompound) {
-        tagCompound.setTag("Items", CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.writeNBT(inventory, null));
+        NBTBase items = CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.writeNBT(inventory, null);
+        if (items != null) {
+            tagCompound.setTag("Items", items);
+        }
     }
 
     public static void read(IItemHandlerModifiable inventory, NBTTagCompound tagCompound) {

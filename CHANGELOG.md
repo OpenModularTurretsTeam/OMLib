@@ -28,6 +28,7 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 - Players without access to a block could receive its updates (trust list, settings) by sending its GUI-open message
 - Changes in OMLib's config GUI were only applied after a restart
 - The debug tool crashed a dedicated server when used on a turret base
+- Items dropped from a broken machine lost data other mods keep on the item stack (capabilities)
 
 ## [4.0.0-beta.1] - 2026-10-24
 

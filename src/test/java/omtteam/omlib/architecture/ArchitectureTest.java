@@ -41,7 +41,7 @@ class ArchitectureTest {
      * in a loop. This list is a ratchet. A new cycle, or a package joining one, fails {@link #noNewPackageCycles}, and
      * so does a cycle that shrank or disappeared until it is updated here, so the list always shows the real state.
      */
-    private static final List<Set<String>> KNOWN_CYCLES = Arrays.asList(
+    private static final List<Set<String>> KNOWN_CYCLES = Collections.singletonList(
             // one large loop through almost every package (tile entities, network, handlers, permissions, items, compat)
             // container joined with the camouflage menu (ContainerCamo needs ICamoSupport; approved by the user);
             // power.rf and power.tesla left it with the energy helper (EnergyCapabilities, 2026-10-25)
