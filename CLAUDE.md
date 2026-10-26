@@ -1,6 +1,6 @@
 # CLAUDE.md — OMLib (1.20.1+)
 
-The library of the Open Modular mods (OpenModularTurrets `../OMT1.20.1+`, OpenModularLighting `../OpenModularLighting`), a mod of its own (`omlib`) that the mods bundle jar-in-jar.
+The library of the Open Modular mods (OpenModularTurrets `../OpenModularTurrets`, OpenModularLighting `../OpenModularLighting`), a mod of its own (`omlib`) that the mods bundle jar-in-jar.
 Read `README.md` for the layout and how the mods use it.
 It is built like the mods: Stonecutter nodes `<minecraft version>-<loader>` (1.20.1 Fabric/Forge, 1.21.1 Fabric/NeoForge, 1.21.11 Fabric/NeoForge), Mojang mappings, the `mod-common` convention plugin from `build-logic/`.
 The same rules apply as in the mods' `CLAUDE.md`: committed source in the `1.21.1-fabric` state, loader-specific classes in `platform/<loader>` packages (no loader conditions in gameplay-agnostic code), no new dependency without asking, Markdown with one sentence per line, no Fabric API or Team Reborn Energy outside `platform/fabric`.
