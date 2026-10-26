@@ -8,6 +8,8 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 
 ## [Unreleased]
 
+## [4.0.0-beta.4] - 2026-10-27
+
 ### Added
 
 - Camouflage hosts can accept transparent blocks (glass, ice, leaves) as a disguise (`ICamoSupport.acceptsTransparentDisguises`)
