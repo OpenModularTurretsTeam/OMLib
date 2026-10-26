@@ -18,7 +18,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * {@link InteractionResult#PASS} lets vanilla continue (e.g. placing a held block).
  * <p>
  * The library's loader entrypoints register that event once for all mods. A click goes to the {@link Interceptor}s first
- * (mods register them at start-up, for things that act on any block, such as a wand or a settings card), then to the
+ * (the library has its own for the ownership wand and for claiming; mods register theirs at start-up, for things that act on any block, such as a settings card), then to the
  * block's own {@link #onUse}.
  */
 public interface InteractiveBlock {
@@ -57,9 +57,14 @@ public interface InteractiveBlock {
         return InteractionResult.PASS;
     }
 
-    /** The interceptors (an interface cannot hold private state). */
+    /**
+     * The interceptors (an interface cannot hold private state). The library's own come first: the ownership wand,
+     * then claiming an unowned block.
+     */
     final class Interceptors {
-        private static final List<Interceptor> LIST = new CopyOnWriteArrayList<>();
+        private static final List<Interceptor> LIST = new CopyOnWriteArrayList<>(List.of(
+                (player, level, hand, hit) -> WandInteraction.use(player, level, hand, hit.getBlockPos()),
+                ClaimInteraction::use));
 
         private Interceptors() {
         }
