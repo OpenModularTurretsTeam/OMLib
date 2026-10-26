@@ -47,12 +47,14 @@ tasks.jar { from(client.output) }
 tasks.named<Jar>("sourcesJar") { from(client.allSource) }
 
 // The mods build this library as a nested build and take the jar from this local repository (build/maven): the
-// reobfuscated one (SRG names), which their legacy ModDevGradle remaps
+// reobfuscated one (SRG names), which their legacy ModDevGradle remaps for the dev runs, and the same jar with the dev
+// names (classifier dev) for the game test runs, which have no remapping
 publishing {
     publications {
         create<MavenPublication>("omlib") {
             artifactId = "omlib"
             artifact(tasks.named<Jar>("reobfJar"))
+            artifact(tasks.named<Jar>("jar")) { classifier = "dev" }
             artifact(tasks.named<Jar>("sourcesJar")) { classifier = "sources" }
         }
     }
