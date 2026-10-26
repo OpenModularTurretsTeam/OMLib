@@ -1,0 +1,10 @@
+{
+  "gui.omlib.back": "Zurück",
+  "gui.omlib.disguise": "Tarnblock",
+  "gui.omlib.light_opacity": "Lichtdurchlässigkeit",
+  "gui.omlib.light_value": "Lichtwert",
+  "tooltip.omlib.camouflage_slot": "Mit einem Block anklicken, um ihn als Tarnung zu nutzen, mit leerer Hand anklicken zum Zurücksetzen.",
+  "message.omlib.camo_invalid": "Dieser Block kann nicht als Tarnung genutzt werden.",
+  "message.omlib.not_owner": "Du besitzt diesen Block nicht, oder hast dazu keine Berechtigung.",
+  "message.omlib.no_permission": "Dir fehlt dazu die Berechtigung."
+}

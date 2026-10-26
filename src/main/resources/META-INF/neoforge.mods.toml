@@ -1,0 +1,25 @@
+modLoader = "javafml"
+loaderVersion = "${neoforge_loader_range}"
+license = "MIT (code), CC-BY-NC-SA-4.0 (art)"
+
+[[mods]]
+modId = "${mod_id}"
+version = "${version}"
+displayName = "${mod_name}"
+authors = "Keridos"
+description = "Library of the Open Modular mods: loader platform services, version compatibility, energy and item transfer, config and the camouflage menu."
+displayURL = "https://github.com/OpenModularTurretsTeam/OMLib"
+
+[[dependencies.${mod_id}]]
+modId = "neoforge"
+type = "required"
+versionRange = "[${neoforge_version},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "minecraft"
+type = "required"
+versionRange = "${minecraft_dependency}"
+ordering = "NONE"
+side = "BOTH"

@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "omlib",
+  "version": "${version}",
+  "name": "OMLib",
+  "description": "Library of the Open Modular mods: loader platform services, version compatibility, energy and item transfer, config and the camouflage menu.",
+  "authors": [
+    "Keridos"
+  ],
+  "contact": {
+    "homepage": "https://github.com/OpenModularTurretsTeam/OMLib"
+  },
+  "license": [
+    "MIT",
+    "CC-BY-NC-SA-4.0"
+  ],
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "omtteam.omlib.platform.fabric.OMLibFabric"
+    ],
+    "client": [
+      "omtteam.omlib.client.platform.fabric.OMLibFabricClient"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "minecraft": "${minecraft_dependency}",
+    "java": ">=${java_version}",
+    "fabric-api": "*"
+  }
+}

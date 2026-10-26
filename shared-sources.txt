@@ -1,0 +1,14 @@
+# Files that the OpenModular mods still keep as identical copies (see tools/shared_sources.py); what they shared in code
+# has moved into the library itself (src/ of this repository).
+# Paths are relative to a mod root; @pkg@ stands for the mod's package folder (omtteam/openmodularturrets ...).
+# The mod's package, id, name and class prefix (OMT, OML ...) are normalised before comparing.
+# "path | mod_id,mod_id" limits an entry to those mods.
+gradle/wrapper/gradle-wrapper.properties
+src/client/java/@pkg@/client/network/ClientPacketHandlers.java
+src/gametest/mc1.21.11-/java/@pkg@/gametest/GameTest.java
+src/gametest/mc1.21.11-/java/@pkg@/gametest/GameTestCases.java
+src/gametest/mc1.21.11-/java/@pkg@/gametest/platform/fabric/FabricGameTestRegistration.java
+src/gametest/mc1.21.11-/java/@pkg@/gametest/platform/neoforge/NeoForgeGameTestRegistration.java
+src/gametest/resources/META-INF/mods.toml
+src/gametest/resources/META-INF/neoforge.mods.toml
+gradle/pmd/ruleset.xml

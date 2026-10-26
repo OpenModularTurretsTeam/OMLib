@@ -1,0 +1,12 @@
+.gradle/
+build/
+.kotlin/
+.idea/
+__pycache__/
+versions/*/build/
+versions/*/run/
+run/
+# Minecraft's log4j setup writes logs/latest.log into the working directory of anything that loads game
+# classes (unit tests)
+/logs/
+versions/*/logs/

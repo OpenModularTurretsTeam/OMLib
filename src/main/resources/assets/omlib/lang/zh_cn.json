@@ -1,0 +1,10 @@
+{
+  "gui.omlib.back": "Back",
+  "gui.omlib.disguise": "Disguise",
+  "gui.omlib.light_opacity": "Light Opacity",
+  "gui.omlib.light_value": "Light Value",
+  "tooltip.omlib.camouflage_slot": "Click with a block to use it as camouflage, click empty-handed to reset.",
+  "message.omlib.camo_invalid": "That block cannot be used as camouflage.",
+  "message.omlib.not_owner": "You do not own this block, or you don't have permission to do that.",
+  "message.omlib.no_permission": "You do not have permission to do that."
+}
