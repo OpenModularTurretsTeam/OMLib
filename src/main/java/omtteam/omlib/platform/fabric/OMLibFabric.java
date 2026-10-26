@@ -1,6 +1,10 @@
 package omtteam.omlib.platform.fabric;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import omtteam.omlib.block.InteractiveBlock;
+import omtteam.omlib.network.ConfigSync;
 import omtteam.omlib.platform.Platform;
 import omtteam.omlib.startup.OMLibStartup;
 
@@ -13,6 +17,8 @@ public final class OMLibFabric implements ModInitializer {
     public void onInitialize() {
         Platform.ensureInstalled();
         OMLibStartup.init();
+        UseBlockCallback.EVENT.register(InteractiveBlock::handleUse);
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> ConfigSync.onPlayerJoin(handler.getPlayer()));
         OMLibStartup.registrationSteps().forEach(step -> step.register().run());
     }
 }

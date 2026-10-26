@@ -4,7 +4,6 @@
 # The mod's package, id, name and class prefix (OMT, OML ...) are normalised before comparing.
 # "path | mod_id,mod_id" limits an entry to those mods.
 gradle/wrapper/gradle-wrapper.properties
-src/client/java/@pkg@/client/network/ClientPacketHandlers.java
 src/gametest/mc1.21.11-/java/@pkg@/gametest/GameTest.java
 src/gametest/mc1.21.11-/java/@pkg@/gametest/GameTestCases.java
 src/gametest/mc1.21.11-/java/@pkg@/gametest/platform/fabric/FabricGameTestRegistration.java

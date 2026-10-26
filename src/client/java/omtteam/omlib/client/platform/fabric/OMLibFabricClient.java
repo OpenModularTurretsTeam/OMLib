@@ -2,6 +2,7 @@ package omtteam.omlib.client.platform.fabric;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.client.gui.screens.MenuScreens;
 import omtteam.omlib.client.OMLibClient;
 import omtteam.omlib.client.camo.CamoModels;
@@ -18,7 +19,9 @@ public final class OMLibFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ClientPlatform.ensureInstalled();
+        OMLibClient.init();
         OMLibClient.registerScreens(MenuScreens::register);
+        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> OMLibClient.onDisconnect());
         ModelLoadingPlugin.register(plugin -> {
             //? if >=1.21.11 {
             /*plugin.modifyBlockModelAfterBake().register((model, context) ->

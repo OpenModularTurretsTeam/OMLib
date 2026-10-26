@@ -1,11 +1,18 @@
 package omtteam.omlib.platform.neoforge;
 
 import net.neoforged.bus.api.IEventBus;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionResult;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import omtteam.omlib.OMLib;
+import omtteam.omlib.block.InteractiveBlock;
+import omtteam.omlib.network.ConfigSync;
 import omtteam.omlib.platform.Platform;
 import omtteam.omlib.registry.RegistrationStep;
 import omtteam.omlib.startup.OMLibStartup;
@@ -32,6 +39,23 @@ public final class OMLibNeoForge {
         modBus.addListener(this::onCommonSetup);
         modBus.addListener((RegisterPayloadHandlersEvent event) ->
                 ((NeoForgeNetwork) Platform.network()).applyRegistrations(event, OMLib.MOD_ID));
+        NeoForge.EVENT_BUS.addListener(OMLibNeoForge::onRightClickBlock);
+        NeoForge.EVENT_BUS.addListener(OMLibNeoForge::onPlayerLoggedIn);
+    }
+
+    private static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            ConfigSync.onPlayerJoin(player);
+        }
+    }
+
+    private static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+        InteractionResult result = InteractiveBlock.handleUse(event.getEntity(), event.getLevel(), event.getHand(),
+                event.getHitVec());
+        if (result != InteractionResult.PASS) {
+            event.setCanceled(true);
+            event.setCancellationResult(result);
+        }
     }
 
     private void onRegister(RegisterEvent event) {

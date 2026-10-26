@@ -1,7 +1,9 @@
 package omtteam.omlib.client.platform.forge;
 
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import omtteam.omlib.client.OMLibClient;
@@ -17,6 +19,8 @@ import omtteam.omlib.client.platform.ClientPlatform;
 public final class OMLibForgeClient {
     public OMLibForgeClient(IEventBus modBus) {
         ClientPlatform.ensureInstalled();
+        OMLibClient.init();
+        MinecraftForge.EVENT_BUS.addListener((ClientPlayerNetworkEvent.LoggingOut event) -> OMLibClient.onDisconnect());
         // no screen event on Forge 1.20.1: on the main thread during client setup
         modBus.addListener((FMLClientSetupEvent event) -> event.enqueueWork(() ->
                 OMLibClient.registerScreens(MenuScreens::register)));

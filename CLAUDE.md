@@ -17,6 +17,8 @@ The same rules apply as in the mods' `CLAUDE.md`: committed source in the `1.21.
 - The platform services are created on first use (`Platform`, `ClientPlatform`), never relying on which mod's entrypoint runs first.
 - NeoForge payloads: a mod applies the registrations of its own namespace in its own `RegisterPayloadHandlersEvent` (`NeoForgeNetwork.applyRegistrations`).
 - Reflection on config objects (`ConfigWriter`, `ConfigRanges`) finds the sections in the package of the config root's class.
+- A `ConfigManager` must not validate in its constructor (a mod's defaults may depend on state set up after it); `load()` validates.
+- `InteractiveBlock` interceptors run in registration order, first non-PASS wins; they are for behaviour that applies to any block, not for a mod's own blocks (those implement `onUse`).
 
 ## Working with the mods
 

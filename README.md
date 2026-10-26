@@ -10,9 +10,11 @@ This branch starts from a clean history; the Minecraft 1.12 library lives on the
 - `src/main/java/omtteam/omlib/` and `src/client/java/omtteam/omlib/client/` are the library code, in the same package layout the mods had before:
   - `platform` is the loader abstraction (`Platform`, `LoaderInfo`, `Fuel`, `Network`, `Menus`, `Energy`) with the Fabric, NeoForge and Forge implementations in `platform/<loader>`.
     The services are created on first use, so it does not matter which mod starts first.
-  - `compat` hides the differences between Minecraft versions (`VersionCompat`, `NbtCompat`, `BlockCompat`, `NetworkCompat`, `MenuCompat`, `CompatBlockEntity`, `CommonTags`); `client.compat` has the client side (`ClientCompat`).
+  - `compat` hides the differences between Minecraft versions (`VersionCompat`, `NbtCompat`, `BlockCompat`, `NetworkCompat`, `MenuCompat`, `CompatBlockEntity`, `CompatEntityBlock` with `BlockCodec`, `CommonTags`); `client.compat` has the client side (`ClientCompat`).
+  - `block.InteractiveBlock` is the right-click handling for all mods: blocks implement `onUse`, and mods add `Interceptor`s that see every click first (a wand, a settings card); the library registers the loader's event once.
   - `core.energy` (`EnergyStore`, `EnergyAccess`, `EnergyGroup`) and `inventory.ItemAccess` describe energy and items other blocks may use, and `blockentity.TransferHost` marks the block entities that expose them; the loaders' lookups and capabilities are registered from the mod's list of such block entity types.
-  - `config` is the annotation-based JSON config (`@Comment`, `@Range`, `ConfigWriter`, `ConfigRanges`, `ConfigValidator`, `ConfigMigration`).
+  - `config` is the annotation-based JSON config (`@Comment`, `@Range`, `ConfigWriter`, `ConfigRanges`, `ConfigValidator`, `ConfigMigration`) and `ConfigManager<T>`, which loads, migrates, validates and writes a mod's file and holds the server's config on clients.
+    The library sends every manager's config to joining players in one packet (`omlib:config_sync`, routed by mod id) and resets them when the player leaves; a mod keeps a small facade class (`OMTConfig`, `OMLConfig`) around its manager.
   - `camo`, `menu`, `network` and `client` hold the camouflage menu: `CamoHost`, `CamoBlock`, `CamoData`, `DisguiseRules`, the menu, its packets and screen, and the models that draw a disguise.
     The library registers the menu type and the packets (namespace `omlib`) itself; a mod provides its rules and hosts.
 - `src/main/resources/assets/omlib/lang/` has the texts of the library's screens and messages.
@@ -54,11 +56,13 @@ The mod's metadata declares the dependency (`omlib` in `fabric.mod.json`, `[[dep
 
 What the mod provides to the library:
 
-- **Entrypoints:** the mod no longer installs the platform services; it calls `FabricBlockLookups.register(ModBlockEntities.transferTypes())` (Fabric), `NeoForgeCapabilities.register(event, types)` in its own `RegisterCapabilitiesEvent` (NeoForge) and, on NeoForge, applies its packets in its own `RegisterPayloadHandlersEvent` with `((NeoForgeNetwork) Platform.network()).applyRegistrations(event, MOD_ID)`.
+- **Entrypoints:** the mod no longer installs the platform services, the right-click event, the join and disconnect events or the config sync packet; it calls `FabricBlockLookups.register(ModBlockEntities.transferTypes())` (Fabric), `NeoForgeCapabilities.register(event, types)` in its own `RegisterCapabilitiesEvent` (NeoForge) and, on NeoForge, applies its packets in its own `RegisterPayloadHandlersEvent` with `((NeoForgeNetwork) Platform.network()).applyRegistrations(event, MOD_ID)`.
   Forge attaches the capabilities to every `TransferHost` from the library's own entrypoint.
 - **Camouflage:** a block that can be disguised implements `CamoBlock` (with `overlayTintIndex()` if part of its own model stays visible on top); its block entity implements `CamoHost` and returns its `DisguiseRules`.
   The library registers the menu, packets, screen and model wrapping once for all mods.
 - **Config:** a mod's config object is a plain class with `@Comment` / `@Range` fields; its sections are the classes in the same package.
+  The mod creates one `ConfigManager` (`new ConfigManager<>(MOD_ID, ConfigData.class, ConfigData::new, ConfigData::validate, steps)`) and calls `load()` at start-up.
+- **Interactions:** `InteractiveBlock.addInterceptor(...)` at start-up, for things that act on any block.
 
 ## Building
 
@@ -83,7 +87,7 @@ Cloning a mod needs the submodule: `git clone --recurse-submodules <mod url>` or
 
 ## Shared sources
 
-A few files are still copies in the mods (the game test stand-ins for Minecraft 1.21.11, the PMD ruleset, the Gradle wrapper properties, the client packet handlers).
+A few files are still copies in the mods (the game test stand-ins for Minecraft 1.21.11, the PMD ruleset, the Gradle wrapper properties).
 They differ only by the mod's package, id, name and class prefix, which the tool normalises before comparing; `shared-sources.txt` lists them.
 
 ```bash

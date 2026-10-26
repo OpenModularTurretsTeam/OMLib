@@ -1,8 +1,12 @@
 package omtteam.omlib.platform.forge;
 
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -10,6 +14,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.RegisterEvent;
 import omtteam.omlib.OMLib;
+import omtteam.omlib.block.InteractiveBlock;
+import omtteam.omlib.network.ConfigSync;
 import omtteam.omlib.platform.Platform;
 import omtteam.omlib.registry.RegistrationStep;
 import omtteam.omlib.startup.OMLibStartup;
@@ -39,8 +45,25 @@ public final class OMLibForge {
         modBus.addListener(this::onRegister);
         modBus.addListener(this::onCommonSetup);
         MinecraftForge.EVENT_BUS.addGenericListener(BlockEntity.class, ForgeBlockCapabilities::attach);
+        MinecraftForge.EVENT_BUS.addListener(OMLibForge::onRightClickBlock);
+        MinecraftForge.EVENT_BUS.addListener(OMLibForge::onPlayerLoggedIn);
         if (FMLEnvironment.dist == Dist.CLIENT) {
             startClient(modBus);
+        }
+    }
+
+    private static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            ConfigSync.onPlayerJoin(player);
+        }
+    }
+
+    private static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+        InteractionResult result = InteractiveBlock.handleUse(event.getEntity(), event.getLevel(), event.getHand(),
+                event.getHitVec());
+        if (result != InteractionResult.PASS) {
+            event.setCanceled(true);
+            event.setCancellationResult(result);
         }
     }
 
