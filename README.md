@@ -15,6 +15,8 @@ This branch starts from a clean history; the Minecraft 1.12 library lives on the
   - `core.energy` (`EnergyStore`, `EnergyAccess`, `EnergyGroup`) and `inventory.ItemAccess` describe energy and items other blocks may use, and `blockentity.TransferHost` marks the block entities that expose them; the loaders' lookups and capabilities are registered from the mod's list of such block entity types.
   - `config` is the annotation-based JSON config (`@Comment`, `@Range`, `ConfigWriter`, `ConfigRanges`, `ConfigValidator`, `ConfigMigration`) and `ConfigManager<T>`, which loads, migrates, validates and writes a mod's file and holds the server's config on clients.
     The library sends every manager's config to joining players in one packet (`omlib:config_sync`, routed by mod id) and resets them when the player leaves; a mod keeps a small facade class (`OMTConfig`, `OMLConfig`) around its manager.
+  - `core.security`, `security`, `blockentity.OwnedBlockEntity`, `block` (claiming), `item.OwnershipWandItem` and the trust packets are security and ownership: owner, trusted players and access levels (`TrustManager`, no Minecraft), the Minecraft side (`OwnedHost`, `TrustHost`, `PlayerAdapter`, `PlayerLookup`, `SecurityNbt`), claiming unowned blocks (`ClaimInteraction`, `ClaimSpread` over `core.world.FloodFill`, `ClaimLink`), the map maker's wand, the trusted player screen (`client.screen.TrustedPlayersScreen`, `DisownConfirm`) and its packets (`omlib:add_trusted_player` and others).
+    The library registers the wand and claiming as the first `InteractiveBlock` interceptors; a mod supplies its rules through `OwnershipSettings`.
   - `camo`, `menu`, `network` and `client` hold the camouflage menu: `CamoHost`, `CamoBlock`, `CamoData`, `DisguiseRules`, the menu, its packets and screen, and the models that draw a disguise.
     The library registers the menu type and the packets (namespace `omlib`) itself; a mod provides its rules and hosts.
 - `src/main/resources/assets/omlib/lang/` has the texts of the library's screens and messages.
@@ -63,6 +65,9 @@ What the mod provides to the library:
 - **Config:** a mod's config object is a plain class with `@Comment` / `@Range` fields; its sections are the classes in the same package.
   The mod creates one `ConfigManager` (`new ConfigManager<>(MOD_ID, ConfigData.class, ConfigData::new, ConfigData::validate, steps)`) and calls `load()` at start-up.
 - **Interactions:** `InteractiveBlock.addInterceptor(...)` at start-up, for things that act on any block.
+- **Ownership:** a block entity with an owner implements `OwnedHost` (or `TrustHost` with a `TrustManager`, built with `new LevelSecurityEnvironment(this::getLevel, settings)` and saved with `SecurityNbt`) and returns the mod's `OwnershipSettings` (operator access, damage to trusted players, claim spread limit, fake players claiming); a block with only an owner extends `OwnedBlockEntity`.
+  A block that belongs to another block or joins the claims around it implements `ClaimLink` (a turret: owner = its base, connects claims).
+  The mod registers an item of `OwnershipWandItem` under its own id and calls `UnownedMarker.animateTick` from its owned blocks.
 
 ## Building
 
