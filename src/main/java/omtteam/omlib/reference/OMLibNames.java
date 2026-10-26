@@ -42,6 +42,7 @@ public class OMLibNames {
             public static final String ACCCESS_TYPE_TRUSTED = "gui.omtteam.omlib:access_type_trusted";
             public static final String ACCCESS_TYPE_OWNER = "gui.omtteam.omlib:access_type_owner";
             public static final String ACCCESS_TYPE_OP = "gui.omtteam.omlib:access_type_op";
+            public static final String TRUSTED = "gui.omtteam.omlib:trusted";
             public static final String TRUSTED_PLAYERS = "gui.omtteam.omlib:trusted_players";
             public static final String ADD_TRUSTED_PLAYER = "gui.omtteam.omlib:add_trusted_player";
             public static final String PERMISSIONS = "gui.omtteam.omlib:permissions";

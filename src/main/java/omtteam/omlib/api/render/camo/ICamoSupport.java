@@ -55,6 +55,14 @@ public interface ICamoSupport {
     /** Whether light value and opacity of this block can be adjusted (OMT: tier 4 and 5 bases). */
     boolean supportsLight();
 
+    /**
+     * Whether the camouflage menu also accepts full blocks that are not opaque (glass, ice, leaves) as a disguise.
+     * Off by default: such a disguise shows the world behind the block (OMPD: config of the camouflage trap).
+     */
+    default boolean acceptsTransparentDisguises() {
+        return false;
+    }
+
     /** Server-side permission check for setting or resetting the disguise. */
     boolean canSetCamo(EntityPlayer player);
 

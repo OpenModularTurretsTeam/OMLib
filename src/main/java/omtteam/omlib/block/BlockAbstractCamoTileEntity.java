@@ -4,6 +4,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.property.IExtendedBlockState;
@@ -68,5 +69,23 @@ public abstract class BlockAbstractCamoTileEntity extends BlockAbstractTileEntit
     @ParametersAreNonnullByDefault
     public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
         return true;
+    }
+
+    /**
+     * Neighbours hide their faces against this block only if the disguise hides them too: leaves and glass are full
+     * blocks but see-through, and culling against them would show the world behind the camouflaged block.
+     */
+    @Override
+    @ParametersAreNonnullByDefault
+    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
+        TileEntity tileEntity = WorldUtil.getTileEntity(world, pos);
+        if (tileEntity instanceof ICamoSupport && ((ICamoSupport) tileEntity).isCamoEnabled()) {
+            IBlockState camoState = ((ICamoSupport) tileEntity).getCamoState();
+            // Without a disguise the state is the block's own: asking it again at the same position never ends
+            if (camoState != null && !(camoState.getBlock() instanceof BlockAbstractCamoTileEntity)) {
+                return camoState.doesSideBlockRendering(world, pos, face);
+            }
+        }
+        return super.doesSideBlockRendering(state, world, pos, face);
     }
 }

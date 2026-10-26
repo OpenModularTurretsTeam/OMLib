@@ -19,6 +19,7 @@ gui.omtteam.omlib:shift=Shift
 gui.omtteam.omlib:shift_detail_start=Drücke
 gui.omtteam.omlib:shift_detail_end=für Details.
 gui.omtteam.omlib:trusted_players=Vertraute Spieler
+gui.omtteam.omlib:trusted=Vertraut
 gui.omtteam.omlib:add_trusted_player=Füge vertrauten Spieler hinzu
 gui.omtteam.omlib:permissions=Permissions
 gui.omtteam.omlib:access_level_none=Kein Zugriff

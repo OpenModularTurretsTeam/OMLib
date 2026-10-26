@@ -19,6 +19,7 @@ gui.omtteam.omlib:shift=Shift
 gui.omtteam.omlib:shift_detail_start=Press
 gui.omtteam.omlib:shift_detail_end=for details.
 gui.omtteam.omlib:trusted_players=信任玩家
+gui.omtteam.omlib:trusted=信任
 gui.omtteam.omlib:add_trusted_player=添加信任的玩家
 gui.omtteam.omlib:permissions=权限
 gui.omtteam.omlib:access_level_none=None

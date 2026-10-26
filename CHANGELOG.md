@@ -8,6 +8,19 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 
 ## [Unreleased]
 
+### Added
+
+- Camouflage hosts can accept transparent blocks (glass, ice, leaves) as a disguise (`ICamoSupport.acceptsTransparentDisguises`)
+
+### Changed
+
+- The trusted players button of the camouflage trap menu reads "Trusted" and fits its label
+
+### Fixed
+
+- Camouflaged blocks with a see-through disguise such as leaves no longer make the neighbouring blocks look transparent
+- The disguise slot of the camouflage menu shows a new disguise at once instead of after reopening the menu
+
 ## [4.0.0-beta.3] - 2026-10-26
 
 ### Changed

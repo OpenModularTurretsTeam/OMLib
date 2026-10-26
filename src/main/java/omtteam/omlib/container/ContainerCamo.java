@@ -10,6 +10,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.SPacketSetSlot;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.TextComponentTranslation;
 import omtteam.omlib.api.render.camo.ICamoSupport;
@@ -122,7 +123,7 @@ public class ContainerCamo extends Container {
             player.sendMessage(new TextComponentTranslation("text.omlib.camo_not_allowed"));
             return;
         }
-        IBlockState disguise = stack.isEmpty() ? host.getDefaultCamoState() : CamoRules.disguiseFor(stack);
+        IBlockState disguise = stack.isEmpty() ? host.getDefaultCamoState() : CamoRules.disguiseFor(stack, host.acceptsTransparentDisguises());
         if (disguise == null) {
             player.sendMessage(new TextComponentTranslation("text.omlib.camo_invalid"));
             return;
@@ -130,6 +131,9 @@ public class ContainerCamo extends Container {
         host.setCamoState(disguise);
         host.getCamoTileEntity().markDirty();
         display.setInventorySlotContents(0, itemFor(host));
+        // vanilla sends no slot updates while it handles a click packet and then counts the stack as sent, so the
+        // change of this phantom slot has to be sent by hand
+        player.connection.sendPacket(new SPacketSetSlot(windowId, PHANTOM_SLOT, display.getStackInSlot(0)));
     }
 
     @Override

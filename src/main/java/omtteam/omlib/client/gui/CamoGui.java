@@ -80,8 +80,8 @@ public class CamoGui extends GuiContainer {
             buttonList.add(new GuiButton(BACK, guiLeft + xSize - 58, guiTop + ContainerCamo.PHANTOM_Y - 1, 50, 20,
                     safeLocalize(OMLibNames.Localizations.GUI.BACK)));
         } else if (host instanceof IHasTrustManager) {
-            GuiButton trusted = new GuiButton(TRUSTED, guiLeft + xSize - 72, guiTop + ContainerCamo.PHANTOM_Y - 1, 64,
-                    20, safeLocalize(OMLibNames.Localizations.GUI.TRUSTED_PLAYERS));
+            GuiButton trusted = new GuiButton(TRUSTED, guiLeft + xSize - 8 - 64, guiTop + ContainerCamo.PHANTOM_Y - 1, 64,
+                    20, safeLocalize(OMLibNames.Localizations.GUI.TRUSTED));
             trusted.enabled = PlayerUtil.isPlayerAdmin(mc.player, (IHasTrustManager) host);
             buttonList.add(trusted);
             // the camouflage trap's owner; outside the panel, whose row is full
