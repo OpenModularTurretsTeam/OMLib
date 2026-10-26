@@ -15,7 +15,6 @@ public class OMLibNames {
 
     public static class Textures {
         public static final String trustedPlayers = Reference.MOD_ID + ":textures/gui/trusted_players.png";
-        public static final String targetingSettings = Reference.MOD_ID + ":textures/gui/targeting_settings.png";
     }
 
     public static class Localizations {

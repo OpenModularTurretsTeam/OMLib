@@ -12,7 +12,6 @@ import omtteam.omlib.container.ContainerCamo;
 public class OMGuiHandler implements IGuiHandler {
     /** GUI ids of OMLib (opened with {@code OMLib.instance}). */
     public static final int TRUSTED_PLAYERS_GUI = 0;
-    public static final int TARGET_SETTINGS_GUI = 1;
     /** The camouflage menu; open it on the server ({@code MessageOpenCamoMenu.open}), it has a container. */
     public static final int CAMO_GUI = 2;
 
