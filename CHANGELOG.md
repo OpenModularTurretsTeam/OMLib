@@ -8,6 +8,10 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 
 ## [Unreleased]
 
+### Changed
+
+- The camouflage menu has a dark grey background like the turret base GUI instead of the vanilla light grey
+
 ## [4.0.0-beta.2] - 2026-10-26
 
 ### Added

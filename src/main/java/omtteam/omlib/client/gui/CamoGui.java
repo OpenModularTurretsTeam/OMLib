@@ -27,6 +27,14 @@ import static omtteam.omlib.util.GeneralUtil.safeLocalize;
  */
 public class CamoGui extends GuiContainer {
     private static final int SLOT_SIZE = 18;
+    /** Dark grey as in the turret base GUI textures, instead of the vanilla light grey. */
+    private static final int PANEL = 0xFF585858;
+    private static final int PANEL_LIGHT = 0xFF767676;
+    private static final int PANEL_SHADOW = 0xFF323232;
+    private static final int SLOT = 0xFF464646;
+    private static final int SLOT_SHADOW = 0xFF232323;
+    private static final int SLOT_LIGHT = 0xFF9A9A9A;
+    private static final int LABEL_COLOR = 0x000000;
     private static final int SLIDER_WIDTH = 160;
     private static final int SLIDER_VALUE_Y = 48;
     private static final int SLIDER_OPACITY_Y = 72;
@@ -123,9 +131,9 @@ public class CamoGui extends GuiContainer {
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         fontRenderer.drawString(safeLocalize("text.omlib.camo.disguise") + ":", 8, ContainerCamo.PHANTOM_Y + 5,
-                0x404040);
+                LABEL_COLOR);
         fontRenderer.drawString(safeLocalize("container.inventory"), 8,
-                ContainerCamo.inventoryTop(container.showsLight()) - 11, 0x404040);
+                ContainerCamo.inventoryTop(container.showsLight()) - 11, LABEL_COLOR);
     }
 
     @Override
@@ -133,19 +141,19 @@ public class CamoGui extends GuiContainer {
         int right = guiLeft + xSize;
         int bottom = guiTop + ySize;
         drawRect(guiLeft, guiTop, right, bottom, 0xFF000000);
-        drawRect(guiLeft + 1, guiTop + 1, right - 1, bottom - 1, 0xFFC6C6C6);
-        drawRect(guiLeft + 1, guiTop + 1, right - 1, guiTop + 2, 0xFFFFFFFF);
-        drawRect(guiLeft + 1, guiTop + 1, guiLeft + 2, bottom - 1, 0xFFFFFFFF);
-        drawRect(right - 2, guiTop + 2, right - 1, bottom - 1, 0xFF555555);
-        drawRect(guiLeft + 2, bottom - 2, right - 1, bottom - 1, 0xFF555555);
+        drawRect(guiLeft + 1, guiTop + 1, right - 1, bottom - 1, PANEL);
+        drawRect(guiLeft + 1, guiTop + 1, right - 1, guiTop + 2, PANEL_LIGHT);
+        drawRect(guiLeft + 1, guiTop + 1, guiLeft + 2, bottom - 1, PANEL_LIGHT);
+        drawRect(right - 2, guiTop + 2, right - 1, bottom - 1, PANEL_SHADOW);
+        drawRect(guiLeft + 2, bottom - 2, right - 1, bottom - 1, PANEL_SHADOW);
         for (Slot slot : container.inventorySlots) {
             int x = guiLeft + slot.xPos - 1;
             int y = guiTop + slot.yPos - 1;
-            drawRect(x, y, x + SLOT_SIZE, y + SLOT_SIZE, 0xFF8B8B8B);
-            drawRect(x, y, x + SLOT_SIZE - 1, y + 1, 0xFF373737);
-            drawRect(x, y, x + 1, y + SLOT_SIZE - 1, 0xFF373737);
-            drawRect(x + 1, y + SLOT_SIZE - 1, x + SLOT_SIZE, y + SLOT_SIZE, 0xFFFFFFFF);
-            drawRect(x + SLOT_SIZE - 1, y + 1, x + SLOT_SIZE, y + SLOT_SIZE, 0xFFFFFFFF);
+            drawRect(x, y, x + SLOT_SIZE, y + SLOT_SIZE, SLOT);
+            drawRect(x, y, x + SLOT_SIZE - 1, y + 1, SLOT_SHADOW);
+            drawRect(x, y, x + 1, y + SLOT_SIZE - 1, SLOT_SHADOW);
+            drawRect(x + 1, y + SLOT_SIZE - 1, x + SLOT_SIZE, y + SLOT_SIZE, SLOT_LIGHT);
+            drawRect(x + SLOT_SIZE - 1, y + 1, x + SLOT_SIZE, y + SLOT_SIZE, SLOT_LIGHT);
         }
     }
 }
