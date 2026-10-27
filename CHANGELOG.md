@@ -8,6 +8,8 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 
 ## [Unreleased]
 
+## [4.0.0-beta.5] - 2026-10-27
+
 ### Added
 
 - Inventories whose slots hold more than one stack (`LargeStackHandler` / `LargeStackItemHandler`, with container slots, container and GUI, as on 1.20.1+): saved, synced and filled by hoppers and pipes up to the slot limit; counts from four digits on are drawn smaller, the tooltip shows count and limit
