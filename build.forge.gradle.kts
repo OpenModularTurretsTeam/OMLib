@@ -43,6 +43,10 @@ val packMetadata = tasks.register("modPackMetadata") {
 }
 sourceSets.main { resources.srcDir(packMetadata) }
 
+// Forge 1.20.1 has no common (c:) tags, only its own forge: tags; the mods' recipes and CommonTags use the c: ids of
+// Fabric 1.20.1, so the library defines them here from the matching forge: tags (c:wrenches has none and stays empty).
+sourceSets.main { resources.srcDir(rootProject.file("src/main/forge/resources")) }
+
 tasks.jar { from(client.output) }
 tasks.named<Jar>("sourcesJar") { from(client.allSource) }
 
