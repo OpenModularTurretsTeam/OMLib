@@ -8,11 +8,13 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import omtteam.omlib.inventory.LargeStackNbt;
 
 /**
  * Reads a tile entity inventory from the layouts written over the versions:
  * a list under "Items", the same list inside an "Inventory" compound (3.x), or the item handler list under "Slots";
- * writes the "Items" list.
+ * writes the "Items" list. Counts above one stack (a {@link omtteam.omlib.inventory.LargeStackHandler}) are kept by
+ * {@link LargeStackNbt}.
  */
 public final class InventoryNbt {
     private InventoryNbt() {
@@ -20,6 +22,9 @@ public final class InventoryNbt {
 
     public static void write(IItemHandler inventory, NBTTagCompound tagCompound) {
         NBTBase items = CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.writeNBT(inventory, null);
+        if (items instanceof NBTTagList) {
+            LargeStackNbt.writeLargeCounts((NBTTagList) items, inventory);
+        }
         if (items != null) {
             tagCompound.setTag("Items", items);
         }
@@ -46,7 +51,7 @@ public final class InventoryNbt {
             byte slot = tag.getByte("Slot");
 
             if (slot >= 0 && slot < inventory.getSlots()) {
-                inventory.setStackInSlot(slot, new ItemStack(tag));
+                inventory.setStackInSlot(slot, LargeStackNbt.withLargeCount(tag, new ItemStack(tag)));
             }
         }
     }

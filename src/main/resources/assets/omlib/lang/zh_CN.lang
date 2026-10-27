@@ -64,3 +64,4 @@ tooltip.omlib.ownership_wand.desc3=潜行 + 对空气右键：切换扩散
 tooltip.omlib.ownership_wand.desc4=手持时：炮塔的射击对你无效
 tooltip.omlib.ownership_wand.spread_off=只改变点击的方块
 tooltip.omlib.ownership_wand.spread_on=扩散到同一所有者的相连方块
+tooltip.omlib.slot_count=此槽位：%s / %s

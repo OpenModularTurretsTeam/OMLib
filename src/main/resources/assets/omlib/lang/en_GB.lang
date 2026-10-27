@@ -77,3 +77,4 @@ tooltip.omlib.ownership_wand.desc3=Sneak + right-click into the air: switch spre
 tooltip.omlib.ownership_wand.desc4=While held: turret shots do not affect you
 tooltip.omlib.ownership_wand.spread_off=Changes only the clicked block
 tooltip.omlib.ownership_wand.spread_on=Spreads to connected blocks of the same owner
+tooltip.omlib.slot_count=%s / %s in this slot
