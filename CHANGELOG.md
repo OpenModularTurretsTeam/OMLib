@@ -8,6 +8,10 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 
 ## [Unreleased]
 
+### Changed
+
+- Trusted admins of a turret base can change its disguise in the camouflage menu, not only the owner (camouflage traps already allowed their admins)
+
 ## [4.0.0-beta.4] - 2026-10-27
 
 ### Added

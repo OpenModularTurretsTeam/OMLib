@@ -205,7 +205,7 @@ public class TrustManager {
         return hasAccess(player, AccessLevel.ADMIN);
     }
 
-    /** Owner-only actions (camo handling, removing attachments). */
+    /** Owner-only actions (disowning, removing attachments). */
     public boolean canPerformOwnerAction(PlayerInfo player) {
         return isOwner(player);
     }
