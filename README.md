@@ -77,6 +77,10 @@ What the mod provides to the library:
 ./gradlew "Set active project to 1.20.1-fabric"   # Stonecutter: switch the active node (switch back to 1.21.1-fabric before committing)
 ```
 
+The unit tests (`src/test`) run on every node, so the version-specific code they reach (`NbtCompat`, the packet codecs) is checked on each Minecraft version.
+`check` also prints their line coverage per package (JaCoCo, active node only; report in `versions/1.21.1-fabric/build/reports/jacoco/test/html/index.html`).
+Code that needs a world (claiming, the wand, the packet handlers, the menus, the loader adapters) is tested by the mods' game tests.
+
 `chiseledPublish` uploads every node to CurseForge / Modrinth when `curseforge_project_id` / `modrinth_project_id` are set; the mods bundle the library, so this is optional.
 The nodes publish into one Maven repository, so the build runs without Gradle's parallel mode.
 The mods rebuild the library when its sources change (the bootstrap compares a hash of them); `OMLIB_SKIP_BUILD=1` skips that.
