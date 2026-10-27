@@ -179,7 +179,7 @@ public final class TrustManager {
         return hasAccess(player, AccessLevel.ADMIN);
     }
 
-    /** Owner-only actions (OMLib camo handling, removing attached expanders). */
+    /** Owner-only actions: disowning the block (admins cannot). */
     public boolean canPerformOwnerAction(PlayerInfo player) {
         return isOwner(player);
     }
