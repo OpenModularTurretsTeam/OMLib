@@ -38,6 +38,7 @@
   "tooltip.omlib.ownership_wand.spread_off": "Меняет только выбранный блок",
   "tooltip.omlib.ownership_wand.spread_on": "Распространяется на соединённые блоки того же владельца",
   "tooltip.omlib.remove_trusted_player": "Удаляет выбранного игрока из списка доверенных.",
+  "tooltip.omlib.slot_count": "%s / %s в этой ячейке",
   "tooltip.omlib.tp_can_administer": "Игрок может управлять блоком (доверенные игроки и разрушение).",
   "tooltip.omlib.tp_can_change_settings": "Игрок может менять настройки блока.",
   "tooltip.omlib.tp_can_manage": "Игрок может управлять блоком (меню и доверенные игроки).",

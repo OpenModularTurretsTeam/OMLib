@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import com.mojang.authlib.GameProfile;
@@ -70,6 +71,8 @@ import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.level.storage.TagValueInput;
 import net.minecraft.world.level.storage.TagValueOutput;
 *///?}
+
+import omtteam.omlib.compat.nbt.NbtCompat;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -329,18 +332,39 @@ public final class VersionCompat {
     }
 
     /**
-     * Writes a slot list to {@code tag} under {@code "Items"} (vanilla container format).
+     * Writes a slot list to {@code tag} under {@code "Items"} (vanilla container format). A stack above its max stack
+     * size (in a {@link omtteam.omlib.inventory.LargeStackContainer}) is written with count 1, and its entry gets the
+     * real count under {@value #LARGE_COUNT_KEY}: vanilla's own count stops at 99 (127 on 1.20.1).
      */
     public static void saveItems(CompoundTag tag, NonNullList<ItemStack> items, HolderLookup.Provider registries) {
+        NonNullList<ItemStack> saved = items;
+        boolean large = items.stream().anyMatch(VersionCompat::isLargeStack);
+        if (large) {
+            saved = NonNullList.withSize(items.size(), ItemStack.EMPTY);
+            for (int i = 0; i < items.size(); i++) {
+                ItemStack stack = items.get(i);
+                saved.set(i, isLargeStack(stack) ? stack.copyWithCount(1) : stack);
+            }
+        }
         //? if >=1.21.11 {
         /*TagValueOutput output = TagValueOutput.createWithContext(ProblemReporter.DISCARDING, registries);
-        ContainerHelper.saveAllItems(output, items);
+        ContainerHelper.saveAllItems(output, saved);
         tag.merge(output.buildResult());
         *///?} else if >=1.21 {
-        ContainerHelper.saveAllItems(tag, items, registries);
+        ContainerHelper.saveAllItems(tag, saved, registries);
         //?} else {
-        /*ContainerHelper.saveAllItems(tag, items);
+        /*ContainerHelper.saveAllItems(tag, saved);
         *///?}
+        if (large) {
+            ListTag list = NbtCompat.getCompoundList(tag, "Items");
+            for (int i = 0; i < list.size(); i++) {
+                CompoundTag entry = NbtCompat.getCompound(list, i);
+                int slot = savedSlot(entry);
+                if (slot < items.size() && isLargeStack(items.get(slot))) {
+                    entry.putInt(LARGE_COUNT_KEY, items.get(slot).getCount());
+                }
+            }
+        }
     }
 
     /**
@@ -354,6 +378,26 @@ public final class VersionCompat {
         //?} else {
         /*ContainerHelper.loadAllItems(tag, items);
         *///?}
+        ListTag list = NbtCompat.getCompoundList(tag, "Items");
+        for (int i = 0; i < list.size(); i++) {
+            CompoundTag entry = NbtCompat.getCompound(list, i);
+            int slot = savedSlot(entry);
+            if (slot < items.size() && NbtCompat.hasNumber(entry, LARGE_COUNT_KEY) && !items.get(slot).isEmpty()) {
+                items.get(slot).setCount(Math.max(1, NbtCompat.getInt(entry, LARGE_COUNT_KEY, 1)));
+            }
+        }
+    }
+
+    /** Entry key of the real count of a stack above its max stack size, see {@link #saveItems}. */
+    private static final String LARGE_COUNT_KEY = "OMLibCount";
+
+    private static boolean isLargeStack(ItemStack stack) {
+        return stack.getCount() > stack.getMaxStackSize();
+    }
+
+    /** The slot of an entry of a vanilla slot list (an unsigned byte). */
+    private static int savedSlot(CompoundTag entry) {
+        return NbtCompat.getInt(entry, "Slot", 0) & 0xFF;
     }
 
     // ---- Custom item data (NBT on 1.20.1, CUSTOM_DATA component on 1.21+) ----

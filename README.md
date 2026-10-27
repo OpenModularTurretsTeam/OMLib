@@ -19,6 +19,8 @@ This branch starts from a clean history; the Minecraft 1.12 library lives on the
     The library registers the wand and claiming as the first `InteractiveBlock` interceptors; a mod supplies its rules through `OwnershipSettings`.
   - `camo`, `menu`, `network` and `client` hold the camouflage menu: `CamoHost`, `CamoBlock`, `CamoData`, `DisguiseRules`, the menu, its packets and screen, and the models that draw a disguise.
     The library registers the menu type and the packets (namespace `omlib`) itself; a mod provides its rules and hosts.
+  - `inventory.LargeStackContainer`, `menu.LargeStackSlot`, `menu.LargeStackMenu` and `client.screen.LargeStackScreen` are containers whose slots hold more than one stack: the container names each slot's limit (`getSlotLimit`), which the menu slots, the loader adapters of `ItemAccess` and `VersionCompat.saveItems` / `loadItems` follow.
+    The cursor and the player's inventory only ever get normal stacks out of such a slot; the menu syncs the counts on 1.20.1 (the stack's data carries the real count there) and the screen draws counts from four digits on in a smaller font, with count and limit in the tooltip.
 - `src/main/resources/assets/omlib/lang/` has the texts of the library's screens and messages.
 - `build-logic/` is a Gradle included build with the shared build logic of this repository and of the mods: the `mod-common` convention plugin and `convertFabricData`.
 - `tools/shared_sources.py` and `shared-sources.txt` keep the few source files that the mods still copy from each other identical (see below).

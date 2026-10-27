@@ -38,6 +38,7 @@
   "tooltip.omlib.ownership_wand.spread_off": "Ändert nur den angeklickten Block",
   "tooltip.omlib.ownership_wand.spread_on": "Breitet sich auf verbundene Blöcke desselben Besitzers aus",
   "tooltip.omlib.remove_trusted_player": "Entfernt den ausgewählten Spieler aus der Liste.",
+  "tooltip.omlib.slot_count": "%s / %s in diesem Slot",
   "tooltip.omlib.tp_can_administer": "Spieler kann den Block verwalten (vertraute Spieler + abbauen).",
   "tooltip.omlib.tp_can_change_settings": "Spieler kann die Einstellungen des Blocks ändern.",
   "tooltip.omlib.tp_can_manage": "Spieler kann den Block verwalten (Menüs und vertraute Spieler).",

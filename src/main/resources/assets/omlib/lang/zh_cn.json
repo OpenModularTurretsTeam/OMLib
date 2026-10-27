@@ -38,6 +38,7 @@
   "tooltip.omlib.ownership_wand.spread_off": "只改变点击的方块",
   "tooltip.omlib.ownership_wand.spread_on": "扩散到同一所有者的相连方块",
   "tooltip.omlib.remove_trusted_player": "将选中的玩家从信任列表中移除。",
+  "tooltip.omlib.slot_count": "此槽位：%s / %s",
   "tooltip.omlib.tp_can_administer": "信任的玩家可以管理这个方块（能够信任其他玩家或者拆卸方块）。",
   "tooltip.omlib.tp_can_change_settings": "玩家可以更改该方块的设置。",
   "tooltip.omlib.tp_can_manage": "玩家可以管理该方块（菜单和信任的玩家）。",

@@ -19,6 +19,8 @@ The same rules apply as in the mods' `CLAUDE.md`: committed source in the `1.21.
 - Reflection on config objects (`ConfigWriter`, `ConfigRanges`) finds the sections in the package of the config root's class.
 - A `ConfigManager` must not validate in its constructor (a mod's defaults may depend on state set up after it); `load()` validates.
 - The NBT keys of the security classes (`Owner`, `TrustedPlayers`, `UUID`, `Name`, `AccessLevel`) and the ids of the wand's data (`OwnershipWandNoSpread`) are part of the mods' saves: do not change them.
+- `OMLibCount`, the key of a count above one stack in the item lists of `VersionCompat.saveItems`, is part of the mods' saves too (on 1.20.1 it also carries the count of a synced stack, `LargeStackMenu`).
+  Vanilla saves such a stack with a count of 1, so a save read without the key loses the extra items but stays loadable.
 - Ownership rules that a mod decides (config values) come through `OwnershipSettings`; never read a mod's config from the library.
 - `InteractiveBlock` interceptors run in registration order (the library's own, the ownership wand and claiming, come first), first non-PASS wins; they are for behaviour that applies to any block, not for a mod's own blocks (those implement `onUse`).
 
