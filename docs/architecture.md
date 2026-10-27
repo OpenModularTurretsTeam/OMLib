@@ -79,17 +79,17 @@ Packages below `omtteam.omlib`:
 | `api` | what other mods use: `api.permission` (`IHasOwner`, `IOwnedHost`, `ITrustedPlayersManager`, `TrustedPlayersManager`, `EnumAccessLevel`, the owner-share register), `api.tile` (`IHasTrustManager`, `IOwnedBlockAddon`, `IDebugTile`, `IHasTargetingSettings`), `api.render.camo` (`ICamoSupport`), `api.block` (`IHasItemBlock`, `IPlainLookingBlock`), `api.network` (`ISyncable`) |
 | `block` | `BlockAbstract`, `BlockAbstractTileEntity` (drops the inventory on break), `BlockAbstractCamoTileEntity` (the camouflage block with its unlisted `RENDERBLOCKSTATE` property), the abstract wall and pane, `UnownedMarker` |
 | `tileentity` | `TileEntitySynced` (read/write data and the client copy), `TileEntityBase` (the 3.x `saveToNBT` / `loadFromNBT` hooks on top of it), `TileEntityOwnedBlock` (owner, claim, disown), `InventoryNbt` |
-| `container` | `ContainerCamo` (the camouflage menu), `WindowValues` (int values as two 16-bit window properties) |
+| `container` | `ContainerCamo` (the camouflage menu), `WindowValues` (int values as two 16-bit window properties), `LargeStackContainer` and `LargeStackSlot` (slots holding more than one stack: clicks, shift-click and the sync of counts above a byte) |
 | `network` | all messages, `OMLibNetworkingHandler` (registration), `PacketValidation` (the server-side checks every C2S handler starts with) |
 | `handler` | `OMGuiHandler` (GUI ids), `OMLibEventHandler`, `OwnershipInteraction` (wand and claiming), `ClaimSpread` |
 | `config` | `OMConfig` (Forge `@Config`), `ConfigSync` (server → client sync of `@Config` values), `RecipeConfigFactory` (the recipe condition) |
 | `power` | `OMEnergyStorage`, `EnergyCapabilities`, `EnergyAccessStorage` (Forge Energy over a core `EnergyAccess`); `power.rf` and `power.tesla` wrap it for Redstone Flux and Tesla |
-| `inventory`, `util.inventory` | `AutomationItemHandler` (the hopper / pipe view of a machine's slots), `InvUtil.dropItems` |
+| `inventory`, `util.inventory` | `AutomationItemHandler` (the hopper / pipe view of a machine's slots), `LargeStackHandler` and `LargeStackItemHandler` (slot limits above the item's stack size), `LargeStackNbt` (counts above a byte in the `OMLibCount` key), `InvUtil.dropItems` |
 | `item` | the wrench (`ItemMultiTool`), `ItemOwnershipWand`, `ItemDebugTool`, the outline interfaces (`IDrawOutline`) |
 | `registry`, `reference` | `OMLibItems`; `Reference` (ids, version) and `OMLibNames` |
 | `util` | `GeneralUtil`, `MathUtil`, `RandomUtil`, the 3.x facades `EnumMachineMode` and `TargetingSettings`; `util.player` (`PlayerUtil` and `OMLibSecurityEnvironment`), `util.camo` (`CamoRules`, `CamoSettings`), `util.world` (`WorldUtil.getTileEntity`, `BlockUtil`, `Pos`), `util.command` (`/omlib` commands) |
 | `compat` | Hwyla, The One Probe and OpenComputers integration (`AbstractOMDriver`, …) |
-| `client` | `ClientProxy`, `ClientEventHandler`; `client.gui` (trust list, camouflage and disown screens, the back system, tooltips), `client.render` (render manager, ray and lightning objects, the camouflage baked model and block colour), `client.network` (`ClientMessageHandlers`) |
+| `client` | `ClientProxy`, `ClientEventHandler`; `client.gui` (trust list, camouflage and disown screens, the back system, tooltips, `LargeStackGui` for containers with large slots), `client.render` (render manager, ray and lightning objects, the camouflage baked model and block colour), `client.network` (`ClientMessageHandlers`) |
 
 `./gradlew dependencyMap` draws these packages and every import between them as an interactive page.
 

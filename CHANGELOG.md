@@ -8,6 +8,10 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 
 ## [Unreleased]
 
+### Added
+
+- Inventories whose slots hold more than one stack (`LargeStackHandler` / `LargeStackItemHandler`, with container slots, container and GUI, as on 1.20.1+): saved, synced and filled by hoppers and pipes up to the slot limit; counts from four digits on are drawn smaller, the tooltip shows count and limit
+
 ### Changed
 
 - Trusted admins of a turret base can change its disguise in the camouflage menu, not only the owner (camouflage traps already allowed their admins)

@@ -73,3 +73,4 @@ tooltip.omlib.ownership_wand.desc3=Schleichen + Rechtsklick in die Luft: Ausbrei
 tooltip.omlib.ownership_wand.desc4=Solange gehalten: Geschützschüsse wirken nicht auf dich
 tooltip.omlib.ownership_wand.spread_off=Ändert nur den angeklickten Block
 tooltip.omlib.ownership_wand.spread_on=Breitet sich auf verbundene Blöcke desselben Besitzers aus
+tooltip.omlib.slot_count=%s / %s in diesem Slot
