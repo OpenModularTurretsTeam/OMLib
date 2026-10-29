@@ -8,6 +8,8 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 
 ## [Unreleased]
 
+## [4.0.0-beta.6] - 2026-10-29
+
 ### Added
 
 - Lightning render messages carry a colour
