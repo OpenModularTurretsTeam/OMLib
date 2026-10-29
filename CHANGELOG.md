@@ -8,12 +8,20 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 
 ## [Unreleased]
 
+### Changed
+
+- The camouflage trap's trust list names its lowest level "Trusted" and explains both levels when hovering "Permissions", as on 1.20.1+
+- Trust list tooltips and the disown confirmation use the texts of 1.20.1+
+- The camouflage menu shows the block's name as its title, and the camouflage trap's Trusted and Disown buttons have tooltips
+- The Ownership Wand tooltip lists the turret immunity line last, below the spreading line
+
 ### Fixed
 
 - Picking a camouflaged block (turret base, camouflage trap) gives its disguise instead of revealing the block
 - The Multi Tool showed a raw name and was in no creative tab
 - The access level tooltip of the trust list appeared over the player list; it now shows when hovering the "Permissions" label
 - A negative maximum range could make the targeting range negative
+- Missing German camouflage menu texts and untranslated Chinese trust list tooltips
 
 ## [4.0.0-beta.5] - 2026-10-27
 

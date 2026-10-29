@@ -1,9 +1,11 @@
 package omtteam.omlib.client.gui;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.client.config.GuiSlider;
 import omtteam.omlib.OMLib;
@@ -18,12 +20,14 @@ import omtteam.omlib.network.OMLibNetworkingHandler;
 import omtteam.omlib.reference.OMLibNames;
 import omtteam.omlib.util.player.PlayerUtil;
 
+import javax.annotation.Nullable;
+
 import static omtteam.omlib.util.GeneralUtil.safeLocalize;
 
 /**
  * Camouflage GUI (1.20.1+ {@code CamoScreen}): the disguise slot and, for hosts with adjustable light, the light value
  * and opacity sliders. Opened from another GUI it has a Back button, otherwise (the camouflage trap) its admins get the
- * trusted players button. Drawn without a texture.
+ * trusted players button. Drawn without a texture, titled with the block's name.
  */
 public class CamoGui extends GuiContainer {
     private static final int SLOT_SIZE = 18;
@@ -46,6 +50,7 @@ public class CamoGui extends GuiContainer {
     private final ICamoSupport host;
     private GuiSlider valueSlider;
     private GuiSlider opacitySlider;
+    private String title = "";
 
     public CamoGui(InventoryPlayer inventory, ICamoSupport host) {
         this(new ContainerCamo(inventory, host));
@@ -63,6 +68,7 @@ public class CamoGui extends GuiContainer {
     public void initGui() {
         super.initGui();
         buttonList.clear();
+        title = blockName();
         if (container.showsLight()) {
             boolean editable = host.canChangeLight(mc.player);
             valueSlider = new GuiSlider(2, guiLeft + 8, guiTop + SLIDER_VALUE_Y, SLIDER_WIDTH, 20,
@@ -90,6 +96,14 @@ public class CamoGui extends GuiContainer {
                         80));
             }
         }
+    }
+
+    /** The name of the host's own block (its item, so the tier of a turret base shows), never of its disguise. */
+    private String blockName() {
+        BlockPos pos = host.getCamoTileEntity().getPos();
+        IBlockState state = mc.world.getBlockState(pos);
+        ItemStack own = state.getBlock().getItem(mc.world, pos, state);
+        return own.isEmpty() ? state.getBlock().getLocalizedName() : own.getDisplayName();
     }
 
     @Override
@@ -126,10 +140,26 @@ public class CamoGui extends GuiContainer {
         if (hovered != null && hovered.slotNumber == ContainerCamo.PHANTOM_SLOT && !hovered.getHasStack()) {
             drawHoveringText(safeLocalize("tooltip.omlib.camouflage_slot"), mouseX, mouseY);
         }
+        for (GuiButton button : buttonList) {
+            String tooltip = button.isMouseOver() ? tooltipKey(button.id) : null;
+            if (tooltip != null) {
+                drawHoveringText(safeLocalize(tooltip), mouseX, mouseY);
+            }
+        }
+    }
+
+    /** The tooltip of a button, as 1.20.1+ gives the trap's Trusted button and every Disown button one. */
+    @Nullable
+    private static String tooltipKey(int buttonId) {
+        if (buttonId == TRUSTED) {
+            return OMLibNames.Localizations.Tooltip.TRUSTED_PLAYER_GUI;
+        }
+        return buttonId == DISOWN ? "tooltip.omlib.disown" : null;
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        fontRenderer.drawString(title, 8, 6, LABEL_COLOR);
         fontRenderer.drawString(safeLocalize("text.omlib.camo.disguise") + ":", 8, ContainerCamo.PHANTOM_Y + 5,
                 LABEL_COLOR);
         fontRenderer.drawString(safeLocalize("container.inventory"), 8,

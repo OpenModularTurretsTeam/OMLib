@@ -108,9 +108,11 @@ public class ItemOwnershipWand extends Item {
     @SideOnly(Side.CLIENT)
     @ParametersAreNonnullByDefault
     public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
-        for (int line = 1; line <= 4; line++) {
+        for (int line = 1; line <= 3; line++) {
             tooltip.add(TextFormatting.GRAY + safeLocalize(PREFIX + "desc" + line));
         }
         tooltip.add(TextFormatting.AQUA + safeLocalize(PREFIX + (isSpreading(stack) ? "spread_on" : "spread_off")));
+        // the turret immunity last, as on 1.20.1+ (where OMT appends it)
+        tooltip.add(TextFormatting.GRAY + safeLocalize(PREFIX + "desc4"));
     }
 }

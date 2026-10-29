@@ -21,8 +21,9 @@ gui.omtteam.omlib:shift_detail_end=für Details.
 gui.omtteam.omlib:trusted_players=Vertraute Spieler
 gui.omtteam.omlib:trusted=Vertraut
 gui.omtteam.omlib:add_trusted_player=Füge vertrauten Spieler hinzu
-gui.omtteam.omlib:permissions=Permissions
+gui.omtteam.omlib:permissions=Rechte
 gui.omtteam.omlib:access_level_none=Kein Zugriff
+gui.omtteam.omlib:access_level_trusted=Vertraut
 gui.omtteam.omlib:access_level_open_gui=GUI öffnen
 gui.omtteam.omlib:access_level_change_settings=Einstellungen ändern
 gui.omtteam.omlib:access_level_admin=Administrator
@@ -32,12 +33,14 @@ gui.omtteam.omlib:access_type_owner=Besitzer
 gui.omtteam.omlib:access_type_op=OP
 gui.omtteam.omlib:targeting_options=Zieloptionen
 
-tooltip.omtteam.omlib:add_trusted_player=Fügt den Spieler der vertrauten Spieler Liste hinzu.
-tooltip.omtteam.omlib:remove_trusted_player=Entfernt den angezeigten Spieler aus der Liste.
+tooltip.omtteam.omlib:add_trusted_player=Fügt den Spieler der Vertrauensliste hinzu.
+tooltip.omtteam.omlib:remove_trusted_player=Entfernt den ausgewählten Spieler aus der Liste.
 tooltip.omtteam.omlib:tp_none=Spieler kann das GUI nicht öffnen.
 tooltip.omtteam.omlib:tp_can_open_gui=Spieler kann das GUI öffnen.
-tooltip.omtteam.omlib:tp_can_change_settings=Spieler kann die Parameter der Basis ändern.
-tooltip.omtteam.omlib:tp_can_administer=Spieler kann die Basis administr. (vertraute Sp. + abbauen).
+tooltip.omtteam.omlib:tp_can_change_settings=Spieler kann die Einstellungen des Blocks ändern.
+tooltip.omtteam.omlib:tp_can_administer=Spieler kann den Block verwalten (vertraute Spieler + abbauen).
+tooltip.omtteam.omlib:tp_trusted=Spieler ist vertraut, kann den Block aber nicht verwalten.
+tooltip.omtteam.omlib:tp_can_manage=Spieler kann den Block verwalten (Menüs und vertraute Spieler).
 tooltip.omtteam.omlib:tp_decrease_access=Zugriffslevel für ausgewählten Spieler reduzieren.
 tooltip.omtteam.omlib:tp_increase_access=Zugriffslevel für ausgewählten Spieler erhöhen.
 tooltip.omtteam.omlib:tp_text_field=Name des vertrauten Spielers, der hinzugefügt werden soll.
@@ -51,6 +54,12 @@ text.omtteam.omlib:status_permission=Dir fehlt dazu die Berechtigung.
 
 item.debug_tool.name=Debug Werkzeug
 item.multi_tool.name=Multiwerkzeug
+text.omlib.camo.disguise=Tarnblock
+text.omlib.camo.light_value=Lichtwert
+text.omlib.camo.light_opacity=Lichtdurchlässigkeit
+text.omlib.camo_not_allowed=You may not change the disguise of this block.
+text.omlib.camo_invalid=That block cannot be used as camouflage. Use a full block without a tile entity.
+tooltip.omlib.camouflage_slot=Mit einem Block anklicken, um ihn als Tarnung zu nutzen, mit leerer Hand anklicken zum Zurücksetzen.
 
 
 
@@ -62,7 +71,7 @@ text.omlib.disowned=Dieser Block gehört dir nicht mehr
 gui.omlib.disown=Aufgeben
 gui.omlib.disown.title=Diesen Block aufgeben?
 tooltip.omlib.disown=Block aufgeben: Er verliert Besitzer und Vertrauensliste und kann von jedem übernommen werden
-gui.omlib.disown.warning=Besitzer und Vertrauensliste werden entfernt. Eine Geschützbasis feuert nicht mehr (außer herrenlose Basen sind in der Konfiguration aktiv), und jeder kann sie samt Inhalt per Rechtsklick übernehmen.
+gui.omlib.disown.warning=Besitzer und Vertrauensliste werden entfernt, und jeder kann den Block (samt verbundener Blöcke) per Rechtsklick übernehmen.
 text.omlib.wand.claimed=%s Blöcke gehören jetzt dir
 text.omlib.wand.game_masters_only=Nur Operatoren im Kreativmodus können den Besitzstab benutzen
 text.omlib.wand.reset=Besitzer von %s Blöcken entfernt

@@ -10,10 +10,12 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
 import omtteam.omlib.OMLib;
+import omtteam.omlib.api.permission.EnumAccessLevel;
 import omtteam.omlib.api.permission.ITrustedPlayersManager;
 import omtteam.omlib.api.permission.TrustedPlayer;
 import omtteam.omlib.api.render.camo.ICamoSupport;
 import omtteam.omlib.api.tile.IHasTrustManager;
+import omtteam.omlib.core.security.AccessLevel;
 import omtteam.omlib.handler.OMGuiHandler;
 import omtteam.omlib.network.MessageAddTrustedPlayer;
 import omtteam.omlib.network.MessageCloseGUITile;
@@ -80,7 +82,7 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips, ISuppo
         }
 
         for (TrustedPlayer trustedPlayer : tpm.getTrustedPlayers()) {
-            this.trustedPlayers.add(trustedPlayer.getName() + ", " + trustedPlayer.getAccessLevel().getLocalizedName());
+            this.trustedPlayers.add(entryText(trustedPlayer));
         }
 
         this.buttonList.clear();
@@ -149,19 +151,25 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips, ISuppo
                 if (listBox.selectedItem >= 0 && tpm.getTrustedPlayers().size() > listBox.selectedItem) {
                     TrustedPlayer trustedPlayer = tpm.getTrustedPlayers().get(listBox.selectedItem);
                     if (trustedPlayer != null) {
-                        switch (trustedPlayer.getAccessLevel()) {
-                            case ADMIN:
-                                tooltip.add(safeLocalize(OMLibNames.Localizations.Tooltip.TP_CAN_ADMINISTER));
-                                break;
-                            case CHANGE_SETTINGS:
-                                tooltip.add(safeLocalize(OMLibNames.Localizations.Tooltip.TP_CAN_CHANGE_SETTINGS));
-                                break;
-                            case OPEN_GUI:
-                                tooltip.add(safeLocalize(OMLibNames.Localizations.Tooltip.TP_CAN_OPEN_GUI));
-                                break;
-                            case NONE:
-                                tooltip.add(safeLocalize(OMLibNames.Localizations.Tooltip.TP_NONE));
-                                break;
+                        if (isSimpleProfile()) {
+                            tooltip.add(safeLocalize(trustedPlayer.getAccessLevel() == EnumAccessLevel.NONE
+                                    ? OMLibNames.Localizations.Tooltip.TP_TRUSTED
+                                    : OMLibNames.Localizations.Tooltip.TP_CAN_MANAGE));
+                        } else {
+                            switch (trustedPlayer.getAccessLevel()) {
+                                case ADMIN:
+                                    tooltip.add(safeLocalize(OMLibNames.Localizations.Tooltip.TP_CAN_ADMINISTER));
+                                    break;
+                                case CHANGE_SETTINGS:
+                                    tooltip.add(safeLocalize(OMLibNames.Localizations.Tooltip.TP_CAN_CHANGE_SETTINGS));
+                                    break;
+                                case OPEN_GUI:
+                                    tooltip.add(safeLocalize(OMLibNames.Localizations.Tooltip.TP_CAN_OPEN_GUI));
+                                    break;
+                                case NONE:
+                                    tooltip.add(safeLocalize(OMLibNames.Localizations.Tooltip.TP_NONE));
+                                    break;
+                            }
                         }
                     }
                 } else {
@@ -174,6 +182,19 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips, ISuppo
         }
         if (!tooltip.isEmpty())
             this.drawHoveringText(tooltip, guiLeft + mouseX - k, guiTop + mouseY - l, Minecraft.getMinecraft().fontRenderer);
+    }
+
+    /** Whether the block only knows "trusted" and "admin" ({@code AccessProfile.TRUSTED_AND_ADMIN}). */
+    private boolean isSimpleProfile() {
+        return !tpm.core().getProfile().allows(AccessLevel.OPEN_GUI);
+    }
+
+    /** "name, level"; the lowest level of a block with the simple profile is named "Trusted" (as 1.20.1+). */
+    private String entryText(TrustedPlayer trustedPlayer) {
+        String level = isSimpleProfile() && trustedPlayer.getAccessLevel() == EnumAccessLevel.NONE
+                ? safeLocalize(OMLibNames.Localizations.GUI.ACCESS_LEVEL_TRUSTED)
+                : trustedPlayer.getAccessLevel().getLocalizedName();
+        return trustedPlayer.getName() + ", " + level;
     }
 
     protected void buttonInit() {
@@ -193,7 +214,7 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips, ISuppo
     public void updateList() {
         this.trustedPlayers.clear();
         for (TrustedPlayer trustedPlayer : tpm.getTrustedPlayers()) {
-            this.trustedPlayers.add(trustedPlayer.getName() + ", " + trustedPlayer.getAccessLevel().getLocalizedName());
+            this.trustedPlayers.add(entryText(trustedPlayer));
         }
         if (this.listBox != null) {
             this.listBox.updateList(trustedPlayers);

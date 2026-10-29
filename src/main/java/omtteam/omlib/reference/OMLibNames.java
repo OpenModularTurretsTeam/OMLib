@@ -38,6 +38,8 @@ public class OMLibNames {
             public static final String ACCESS_LEVEL_CHANGE_SETTINGS = "gui.omtteam.omlib:access_level_change_settings";
             public static final String ACCESS_LEVEL_OPEN_GUI = "gui.omtteam.omlib:access_level_open_gui";
             public static final String ACCESS_LEVEL_NONE = "gui.omtteam.omlib:access_level_none";
+            /** {@code NONE} of a block that only knows "trusted" and "admin" (the camouflage trap). */
+            public static final String ACCESS_LEVEL_TRUSTED = "gui.omtteam.omlib:access_level_trusted";
             public static final String ACCCESS_TYPE_NONE = "gui.omtteam.omlib:access_type_none";
             public static final String ACCCESS_TYPE_TRUSTED = "gui.omtteam.omlib:access_type_trusted";
             public static final String ACCCESS_TYPE_OWNER = "gui.omtteam.omlib:access_type_owner";
@@ -59,6 +61,8 @@ public class OMLibNames {
             public static final String TP_CAN_OPEN_GUI = "tooltip.omtteam.omlib:tp_can_open_gui";
             public static final String TP_CAN_CHANGE_SETTINGS = "tooltip.omtteam.omlib:tp_can_change_settings";
             public static final String TP_CAN_ADMINISTER = "tooltip.omtteam.omlib:tp_can_administer";
+            public static final String TP_TRUSTED = "tooltip.omtteam.omlib:tp_trusted";
+            public static final String TP_CAN_MANAGE = "tooltip.omtteam.omlib:tp_can_manage";
             public static final String TP_INCREASE_ACCESS = "tooltip.omtteam.omlib:tp_increase_access";
             public static final String TP_DECREASE_ACCESS = "tooltip.omtteam.omlib:tp_decrease_access";
             public static final String TEXT_TRUSTED_PLAYER = "tooltip.omtteam.omlib:tp_text_field";
