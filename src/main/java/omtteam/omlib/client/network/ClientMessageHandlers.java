@@ -101,7 +101,8 @@ public final class ClientMessageHandlers {
 
     private static IMessage renderLightning(MessageRenderLightning message, MessageContext ctx) {
         Minecraft.getMinecraft().addScheduledTask(() -> RenderManager.getInstance().addRenderObjectToList(
-                new Lightning(message.getStart(), message.getEnd(), message.getDuration(), RandomUtil.random.nextLong())));
+                new Lightning(message.getStart(), message.getEnd(), message.getColor(), message.getDuration(),
+                        RandomUtil.random.nextLong())));
         return null;
     }
 

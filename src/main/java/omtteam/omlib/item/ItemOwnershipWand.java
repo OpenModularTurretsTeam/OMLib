@@ -4,6 +4,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,6 +14,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IRarity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import omtteam.omlib.reference.OMLibNames;
@@ -41,7 +43,15 @@ public class ItemOwnershipWand extends Item {
         this.setRegistryName(Reference.MOD_ID, OMLibNames.Items.ownershipWand);
         this.setTranslationKey(OMLibNames.Items.ownershipWand);
         this.setMaxStackSize(1);
+        // Open Modular Turrets moves it into its own tab when it is installed (ModItems.init), as on 1.20.1+
         this.setCreativeTab(CreativeTabs.TOOLS);
+    }
+
+    /** Epic (purple name), as on 1.20.1+: a map maker's tool. */
+    @Nonnull
+    @Override
+    public IRarity getForgeRarity(ItemStack stack) {
+        return EnumRarity.EPIC;
     }
 
     /** Whether the wand changes the connected blocks of the same owner too (the default), or only the clicked one. */

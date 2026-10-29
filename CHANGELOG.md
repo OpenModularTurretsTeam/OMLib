@@ -8,12 +8,17 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 
 ## [Unreleased]
 
+### Added
+
+- Lightning render messages carry a colour
+D
 ### Changed
 
 - The camouflage trap's trust list names its lowest level "Trusted" and explains both levels when hovering "Permissions", as on 1.20.1+
 - Trust list tooltips and the disown confirmation use the texts of 1.20.1+
 - The camouflage menu shows the block's name as its title, and the camouflage trap's Trusted and Disown buttons have tooltips
 - The Ownership Wand tooltip lists the turret immunity line last, below the spreading line
+- The ownership wand has epic rarity, as on 1.20.1+
 
 ### Fixed
 

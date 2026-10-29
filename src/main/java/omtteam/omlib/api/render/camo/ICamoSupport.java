@@ -57,7 +57,8 @@ public interface ICamoSupport {
 
     /**
      * Whether the camouflage menu also accepts full blocks that are not opaque (glass, ice, leaves) as a disguise.
-     * Off by default: such a disguise shows the world behind the block (OMPD: config of the camouflage trap).
+     * Off by default: such a disguise shows the world behind the block (OMT's turret bases and OMPD's camouflage trap
+     * accept them, as on 1.20.1+).
      */
     default boolean acceptsTransparentDisguises() {
         return false;
