@@ -50,6 +50,7 @@ text.omtteam.omlib:status_permission=Dir fehlt dazu die Berechtigung.
 
 
 item.debug_tool.name=Debug Werkzeug
+item.multi_tool.name=Multiwerkzeug
 
 
 

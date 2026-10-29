@@ -49,6 +49,7 @@ tooltip.omtteam.omlib:target_players=If the tile attacks (non-trusted) players.
 text.omtteam.omlib:status_permission=You do not have permission to do that.
 
 item.debug_tool.name=Debug Tool
+item.multi_tool.name=Multi Tool
 
 # 4.0.0 camouflage menu
 text.omlib.camo.disguise=Disguise

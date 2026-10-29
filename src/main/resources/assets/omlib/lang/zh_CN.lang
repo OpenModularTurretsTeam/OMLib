@@ -44,6 +44,7 @@ tooltip.omtteam.omlib:info_access_level=When a player is selected, this shows th
 tooltip.omtteam.omlib:trusted_player_gui=Open trusted player managment GUI.
 
 item.debug_tool.name=调试工具
+item.multi_tool.name=多功能工具
 item.ownership_wand.name=所有权魔杖
 text.omlib.claimed=已认领 %s 个方块
 text.omlib.claimed_limit=已认领 %s 个方块（已达上限，再次点击以认领更多）

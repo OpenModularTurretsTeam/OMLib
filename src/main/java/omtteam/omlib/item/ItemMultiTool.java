@@ -1,5 +1,6 @@
 package omtteam.omlib.item;
 
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
@@ -24,6 +25,7 @@ public class ItemMultiTool extends Item {
         super();
         this.setRegistryName(Reference.MOD_ID, OMLibNames.Items.multiTool);
         this.setTranslationKey(OMLibNames.Items.multiTool);
+        this.setCreativeTab(CreativeTabs.TOOLS);
     }
 
     @Nonnull

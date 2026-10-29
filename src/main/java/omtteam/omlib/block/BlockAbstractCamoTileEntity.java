@@ -2,11 +2,15 @@ package omtteam.omlib.block;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
@@ -62,6 +66,27 @@ public abstract class BlockAbstractCamoTileEntity extends BlockAbstractTileEntit
         IExtendedBlockState extendedState = (IExtendedBlockState) state;
         IBlockState camoState = tileEntity instanceof ICamoSupport ? ((ICamoSupport) tileEntity).getCamoState() : extendedState.getClean();
         return extendedState.withProperty(RENDERBLOCKSTATE, new RenderBlockStateContainer(camoState));
+    }
+
+    /**
+     * Picking a camouflaged block gives the disguise, so picking does not reveal it (1.20.1+ {@code CamoRules.pickItem});
+     * without a disguise the block itself.
+     */
+    @Override
+    @Nonnull
+    @ParametersAreNonnullByDefault
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+        ItemStack own = super.getPickBlock(state, target, world, pos, player);
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (!(tileEntity instanceof ICamoSupport) || !((ICamoSupport) tileEntity).isCamoEnabled()) {
+            return own;
+        }
+        IBlockState camo = ((ICamoSupport) tileEntity).getCamoState();
+        if (camo.getBlock() == this) {
+            return own;
+        }
+        ItemStack disguise = camo.getBlock().getItem(world, pos, camo);
+        return disguise.isEmpty() ? own : disguise;
     }
 
     @Override

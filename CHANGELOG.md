@@ -8,6 +8,13 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 
 ## [Unreleased]
 
+### Fixed
+
+- Picking a camouflaged block (turret base, camouflage trap) gives its disguise instead of revealing the block
+- The Multi Tool showed a raw name and was in no creative tab
+- The access level tooltip of the trust list appeared over the player list; it now shows when hovering the "Permissions" label
+- A negative maximum range could make the targeting range negative
+
 ## [4.0.0-beta.5] - 2026-10-27
 
 ### Added

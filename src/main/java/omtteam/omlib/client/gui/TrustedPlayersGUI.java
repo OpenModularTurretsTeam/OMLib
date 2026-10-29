@@ -124,7 +124,10 @@ public class TrustedPlayersGUI extends GuiScreen implements IHasTooltips, ISuppo
         if (tooltipToDraw == 0) {
             tooltipToDraw = isMouseOverTextField(textFieldAddTrustedPlayer, mouseX, mouseY) ? 25 : 0;
         }
-        if (tooltipToDraw == 0 && mouseX > guiLeft + 95 && mouseX < guiLeft + 115 && mouseY > guiTop + 135 && mouseY < guiTop + 155) {
+        // hovering the "Permissions" label explains the selected player's level (as 1.20.1+)
+        int labelWidth = Minecraft.getMinecraft().fontRenderer.getStringWidth(safeLocalize(OMLibNames.Localizations.GUI.PERMISSIONS));
+        if (tooltipToDraw == 0 && mouseX >= guiLeft + 186 && mouseX < guiLeft + 186 + labelWidth
+                && mouseY >= guiTop + 218 && mouseY < guiTop + 229) {
             tooltipToDraw = 20;
         }
 

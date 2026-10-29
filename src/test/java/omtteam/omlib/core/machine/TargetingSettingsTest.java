@@ -37,6 +37,14 @@ class TargetingSettingsTest {
     }
 
     @Test
+    void negativeMaxRangeCountsAsZero() {
+        TargetingSettings settings = new TargetingSettings(false, true, false, 5, 10);
+        settings.setMaxRange(-1);
+        assertEquals(0, settings.getMaxRange());
+        assertEquals(0, settings.getRange(), "the range is never negative");
+    }
+
+    @Test
     void loweringTheMaximumLowersTheRange() {
         TargetingSettings settings = new TargetingSettings(false, true, false, 10, 10);
         settings.setMaxRange(6);
