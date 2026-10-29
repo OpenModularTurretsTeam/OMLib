@@ -76,7 +76,7 @@ Packages below `omtteam.omlib`:
 | `core.energy` | `EnergyStore` (the buffer) and `EnergyAccess` (what other blocks may do with it) |
 | `core.machine` | `MachineMode` (redstone control mode, the 3.x ordinals), `TargetingSettings` |
 | `core.camo`, `core.card`, `core.world` | `CamoLight` and `CamoPermissions`; `MemoryCardData` and `MemoryCardRules`; `FloodFill` and `BlockPosition` (the claim spread) |
-| `api` | what other mods use: `api.permission` (`IHasOwner`, `IOwnedHost`, `ITrustedPlayersManager`, `TrustedPlayersManager`, `EnumAccessLevel`, the owner-share register), `api.tile` (`IHasTrustManager`, `IOwnedBlockAddon`, `IDebugTile`, `IHasTargetingSettings`), `api.render.camo` (`ICamoSupport`), `api.block` (`IHasItemBlock`, `IPlainLookingBlock`), `api.network` (`ISyncable`) |
+| `api` | what other mods use: `api.permission` (`IHasOwner`, `IOwnedHost`, `ITrustedPlayersManager`, `TrustedPlayersManager`, `EnumAccessLevel`, the owner-share register), `api.tile` (`IHasTrustManager`, `IOwnedBlockAddon`, `IDebugTile`, `IHasTargetingSettings`), `api.render.camo` (`ICamoSupport`, `DisguiseRules`), `api.block` (`IHasItemBlock`, `IPlainLookingBlock`), `api.network` (`ISyncable`) |
 | `block` | `BlockAbstract`, `BlockAbstractTileEntity` (drops the inventory on break), `BlockAbstractCamoTileEntity` (the camouflage block with its unlisted `RENDERBLOCKSTATE` property), the abstract wall and pane, `UnownedMarker` |
 | `tileentity` | `TileEntitySynced` (read/write data and the client copy), `TileEntityBase` (the 3.x `saveToNBT` / `loadFromNBT` hooks on top of it), `TileEntityOwnedBlock` (owner, claim, disown), `InventoryNbt` |
 | `container` | `ContainerCamo` (the camouflage menu), `WindowValues` (int values as two 16-bit window properties), `LargeStackContainer` and `LargeStackSlot` (slots holding more than one stack: clicks, shift-click and the sync of counts above a byte) |
@@ -138,7 +138,8 @@ The unowned state is shown by `block.UnownedMarker`; `MessageDisown` and `client
 A block with `BlockAbstractCamoTileEntity` and a tile entity implementing `ICamoSupport` can look like another block.
 The player sets it in the **camouflage menu**: the client sends `MessageOpenCamoMenu`, the server checks `canSetCamo`, and opens GUI id 2 (`ContainerCamo` / `client.gui.CamoGui`).
 Clicking its slot with a block sets the disguise (`MessageCamoSettings`), with an empty cursor removes it; blocks with `supportsLight` also get the light sliders (`MessageCamoLight`, rules in `core.camo.CamoLight`).
-`util.camo.CamoRules` decides which blocks are valid (a full block with a normal model and no tile entity); an invalid disguise read from NBT is dropped.
+The host's `DisguiseRules` (`ICamoSupport.getDisguiseRules`) decide which blocks are valid, what a refused block says and the slot's tooltip; the default `DisguiseRules.DEFAULT` uses `util.camo.CamoRules` (a full block with a normal model and no tile entity, see-through ones included, as on 1.20.1+), OML's floodlights only take opaque ones; an invalid disguise read from NBT is dropped.
+Back returns to the GUI the menu was opened from: a host with `hasParentMenu` gets `MessageCamoBack`, and the server lets it open that menu (`openParentMenu`, for parents with a container such as OML's floodlight GUI); otherwise the client's `GUIBackSystem` stack (OMT's configure screen).
 Blocks that already look plain (`IPlainLookingBlock`, e.g. OMPD's hardened block) are valid disguises of their own.
 
 On the client, `client.render.camo.CamoBakedModel` wraps the models of the camouflage blocks and emits the disguise's quads per render layer, `CamoBlockColor` forwards the disguise's tint; the block state travels in the unlisted `RENDERBLOCKSTATE` property.

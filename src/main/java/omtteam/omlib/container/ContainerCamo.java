@@ -14,7 +14,6 @@ import net.minecraft.network.play.server.SPacketSetSlot;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.TextComponentTranslation;
 import omtteam.omlib.api.render.camo.ICamoSupport;
-import omtteam.omlib.util.camo.CamoRules;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -123,9 +122,9 @@ public class ContainerCamo extends Container {
             player.sendMessage(new TextComponentTranslation("text.omlib.camo_not_allowed"));
             return;
         }
-        IBlockState disguise = stack.isEmpty() ? host.getDefaultCamoState() : CamoRules.disguiseFor(stack, host.acceptsTransparentDisguises());
+        IBlockState disguise = stack.isEmpty() ? host.getDefaultCamoState() : host.getDisguiseRules().disguiseFor(stack);
         if (disguise == null) {
-            player.sendMessage(new TextComponentTranslation("text.omlib.camo_invalid"));
+            player.sendMessage(host.getDisguiseRules().invalidMessage());
             return;
         }
         host.setCamoState(disguise);

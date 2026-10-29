@@ -11,7 +11,8 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 ### Added
 
 - Lightning render messages carry a colour
-D
+- Camouflage API as on 1.20.1+: `DisguiseRules` (which blocks a host accepts, its refusal message and slot hint) and a Back button to a host's parent menu (`ICamoSupport.hasParentMenu` / `openParentMenu`, opened by the server)
+
 ### Changed
 
 - The camouflage trap's trust list names its lowest level "Trusted" and explains both levels when hovering "Permissions", as on 1.20.1+
@@ -27,6 +28,10 @@ D
 - The access level tooltip of the trust list appeared over the player list; it now shows when hovering the "Permissions" label
 - A negative maximum range could make the targeting range negative
 - Missing German camouflage menu texts and untranslated Chinese trust list tooltips
+
+### Removed
+
+- `ICamoSupport.acceptsTransparentDisguises`; hosts give their `DisguiseRules` instead
 
 ## [4.0.0-beta.5] - 2026-10-27
 

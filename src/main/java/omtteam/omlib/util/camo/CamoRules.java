@@ -19,7 +19,8 @@ import omtteam.omlib.api.block.IPlainLookingBlock;
 import javax.annotation.Nullable;
 
 /**
- * Which blocks may be used as a disguise, and the item form of one (1.20.1+ {@code CamoRules}). The rules are those of
+ * Which blocks may be used as a disguise, and the block of an item (1.20.1+ {@code CamoRules}); hosts ask their
+ * {@code DisguiseRules}, whose default uses these rules. The rules are those of
  * 3.x {@code handleCamoActivation}: a full block that is drawn from a model and has no tile entity, unless the block is
  * an {@link IPlainLookingBlock} (such as OMPD's hardened blocks).
  */
@@ -38,7 +39,7 @@ public final class CamoRules {
      * test for this, {@code BlockGlass} says it is not one although its collision box is a whole block.
      *
      * @param allowTransparent also accept blocks with a full collision box that are not opaque (glass, ice, leaves),
-     *                         see {@link ICamoSupport#acceptsTransparentDisguises()}
+     *                         as OMLib's default {@code DisguiseRules} do
      */
     @SuppressWarnings("deprecation")
     public static boolean isValidDisguise(IBlockState state, boolean allowTransparent) {
@@ -60,28 +61,19 @@ public final class CamoRules {
         }
     }
 
-    /** The disguise a held stack stands for (the item's block with the item's metadata), if it is a valid one. */
+    /** The block state a held stack stands for (the item's block with the item's metadata), whether valid or not. */
     @Nullable
     @SuppressWarnings("deprecation")
-    public static IBlockState disguiseFor(ItemStack stack) {
-        return disguiseFor(stack, false);
-    }
-
-    /** As {@link #disguiseFor(ItemStack)}, with transparent blocks accepted if {@code allowTransparent}. */
-    @Nullable
-    @SuppressWarnings("deprecation")
-    public static IBlockState disguiseFor(ItemStack stack, boolean allowTransparent) {
+    public static IBlockState stateFor(ItemStack stack) {
         if (!(stack.getItem() instanceof ItemBlock)) {
             return null;
         }
         ItemBlock item = (ItemBlock) stack.getItem();
-        IBlockState state;
         try {
-            state = item.getBlock().getStateFromMeta(item.getMetadata(stack.getMetadata()));
+            return item.getBlock().getStateFromMeta(item.getMetadata(stack.getMetadata()));
         } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
             return null;
         }
-        return isValidDisguise(state, allowTransparent) ? state : null;
     }
 
     /** A world of air for asking a block state for its shape (1.20.1+ {@code EmptyBlockGetter}). */

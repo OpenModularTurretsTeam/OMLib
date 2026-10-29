@@ -14,6 +14,7 @@ import omtteam.omlib.api.tile.IHasTrustManager;
 import omtteam.omlib.container.ContainerCamo;
 import omtteam.omlib.core.camo.CamoLight;
 import omtteam.omlib.handler.OMGuiHandler;
+import omtteam.omlib.network.MessageCamoBack;
 import omtteam.omlib.network.MessageCamoLight;
 import omtteam.omlib.network.MessageOpenCamoMenu;
 import omtteam.omlib.network.OMLibNetworkingHandler;
@@ -27,7 +28,9 @@ import static omtteam.omlib.util.GeneralUtil.safeLocalize;
 /**
  * Camouflage GUI (1.20.1+ {@code CamoScreen}): the disguise slot and, for hosts with adjustable light, the light value
  * and opacity sliders. Opened from another GUI it has a Back button, otherwise (the camouflage trap) its admins get the
- * trusted players button. Drawn without a texture, titled with the block's name.
+ * trusted players button. Back returns to the host's parent menu ({@link ICamoSupport#hasParentMenu()}, opened by the
+ * server) or to the GUI on the client's back stack (OMT's configure screen). Drawn without a texture, titled with the
+ * block's name.
  */
 public class CamoGui extends GuiContainer {
     private static final int SLOT_SIZE = 18;
@@ -82,7 +85,7 @@ public class CamoGui extends GuiContainer {
             buttonList.add(valueSlider);
             buttonList.add(opacitySlider);
         }
-        if (GUIBackSystem.getInstance().size() > 0) {
+        if (host.hasParentMenu() || GUIBackSystem.getInstance().size() > 0) {
             buttonList.add(new GuiButton(BACK, guiLeft + xSize - 58, guiTop + ContainerCamo.PHANTOM_Y - 1, 50, 20,
                     safeLocalize(OMLibNames.Localizations.GUI.BACK)));
         } else if (host instanceof IHasTrustManager) {
@@ -108,7 +111,10 @@ public class CamoGui extends GuiContainer {
 
     @Override
     protected void actionPerformed(GuiButton button) {
-        if (button.id == BACK) {
+        if (button.id == BACK && host.hasParentMenu()) {
+            // the parent menu has a container, so the server opens it
+            OMLibNetworkingHandler.INSTANCE.sendToServer(new MessageCamoBack(host.getCamoTileEntity().getPos()));
+        } else if (button.id == BACK) {
             GUIBackSystem.getInstance().openTopGui(mc.player);
         } else if (button.id == DISOWN) {
             // "No" asks the server for the camouflage menu again
@@ -138,7 +144,7 @@ public class CamoGui extends GuiContainer {
         renderHoveredToolTip(mouseX, mouseY);
         Slot hovered = getSlotUnderMouse();
         if (hovered != null && hovered.slotNumber == ContainerCamo.PHANTOM_SLOT && !hovered.getHasStack()) {
-            drawHoveringText(safeLocalize("tooltip.omlib.camouflage_slot"), mouseX, mouseY);
+            drawHoveringText(safeLocalize(host.getDisguiseRules().slotHint()), mouseX, mouseY);
         }
         for (GuiButton button : buttonList) {
             String tooltip = button.isMouseOver() ? tooltipKey(button.id) : null;
