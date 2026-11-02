@@ -8,6 +8,10 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 
 ## [Unreleased]
 
+### Changed
+
+- First stable 4.0.0 release, no changes since 4.0.0-beta.6
+
 ## [4.0.0-beta.6] - 2026-10-29
 
 ### Added
