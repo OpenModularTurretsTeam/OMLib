@@ -6,6 +6,7 @@ All notable changes to OMLib. The format follows [Keep a Changelog](https://keep
 
 ### Added
 
+- Glow effects for renderers: `GlowGeometry` (spheres and double-sided quads), `OrbitTrailRenderer` (a sphere with a fading trail circling on a `WavyRing`), taken over from OpenModularTurrets
 - Containers whose slots hold more than one stack (`LargeStackContainer`, with menu slots, menu and screen): saved, synced and moved by hoppers and pipes on all loaders; counts from four digits on are drawn smaller, the tooltip shows count and limit
 
 ### Fixed
