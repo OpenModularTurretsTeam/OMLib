@@ -11,6 +11,7 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 ### Fixed
 
 - The fake player's sword no longer shows up in the Combat creative tab and in JEI
+- Adding a player to a trust list says why it failed (unknown name, already trusted, or the owner) instead of doing nothing, as on 1.20.1+
 
 ## [4.0.0] - 2026-11-02
 
