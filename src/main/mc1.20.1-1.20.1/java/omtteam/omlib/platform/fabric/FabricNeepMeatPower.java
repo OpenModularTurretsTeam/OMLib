@@ -6,6 +6,7 @@ import com.neep.neepmeat.transport.blood_network.BloodTransferChangeListener;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import omtteam.omlib.blockentity.TransferHost;
@@ -13,8 +14,8 @@ import omtteam.omlib.core.energy.EnergyAccess;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * NEEPMeat (Fabric, 1.20.1 only): the power of its vascular network charges the energy of the {@link TransferHost}s,
@@ -25,6 +26,10 @@ import java.util.Set;
  * it claims only what the host's energy still accepts per tick (its {@link EnergyAccess#insert} limit and free space)
  * and reports that as its demand, so a full buffer takes nothing. After each server tick the claimed power goes into
  * the host's energy; a sink whose free intake changed asks the network to share its power out again.
+ * <p>
+ * A network forgets its sinks next to a conduit whose chunk unloads without telling them, and finds them again when it
+ * loads. So a side keeps one sink while it is part of a network (found again, it gets its new share instead of a second
+ * sink charging too), and a sink charges nothing while the block it touches is not loaded.
  */
 final class FabricNeepMeatPower {
     static final String MOD_ID = "neepmeat";
@@ -32,8 +37,8 @@ final class FabricNeepMeatPower {
     /** Energy (E) per eJ of NEEPMeat power. */
     private static final long ENERGY_PER_EJ = 1;
 
-    /** Sinks that are part of a network (server thread only). */
-    private static final Set<Sink> CONNECTED = new LinkedHashSet<>();
+    /** The sinks that are part of a network, by host side (changed on the server thread, looked up from any). */
+    private static final Map<Side, Sink> CONNECTED = new ConcurrentHashMap<>();
 
     private static boolean eventsRegistered;
 
@@ -47,12 +52,17 @@ final class FabricNeepMeatPower {
             ServerLifecycleEvents.SERVER_STOPPED.register(server -> CONNECTED.clear());
             eventsRegistered = true;
         }
-        BloodAcceptor.SIDED.registerForBlockEntity(
-                (host, side) -> host.getEnergyAccess(side) == null ? null : new Sink(host, side), type);
+        BloodAcceptor.SIDED.registerForBlockEntity((host, side) -> {
+            if (host.getEnergyAccess(side) == null) {
+                return null;
+            }
+            Sink connected = CONNECTED.get(new Side(host, side));
+            return connected != null ? connected : new Sink(host, side);
+        }, type);
     }
 
     private static void tick() {
-        Iterator<Sink> it = CONNECTED.iterator();
+        Iterator<Sink> it = CONNECTED.values().iterator();
         while (it.hasNext()) {
             Sink sink = it.next();
             if (sink.blockEntity.isRemoved()) {
@@ -63,7 +73,11 @@ final class FabricNeepMeatPower {
         }
     }
 
-    /** A host side as an active sink of a vascular network; one per lookup, kept while a network holds it. */
+    /** A side of a host block entity (compared by identity of the block entity). */
+    private record Side(BlockEntity blockEntity, Direction side) {
+    }
+
+    /** A host side as an active sink of a vascular network; kept in {@link #CONNECTED} while a network holds it. */
     private static final class Sink implements BloodAcceptor {
         private final BlockEntity blockEntity;
         private final TransferHost host;
@@ -83,18 +97,19 @@ final class FabricNeepMeatPower {
 
         @Override
         public Mode getMode() {
-            return Mode.ACTIVE_SINK;
+            return Mode.SINK;
         }
 
         @Override
         public void setChangeListener(@Nullable BloodTransferChangeListener network) {
             this.network = network;
+            Side key = new Side(blockEntity, side);
             if (network != null) {
                 demand = freeIntake();
-                CONNECTED.add(this);
+                CONNECTED.put(key, this);
             } else {
                 claimed = 0;
-                CONNECTED.remove(this);
+                CONNECTED.remove(key, this);
             }
         }
 
@@ -112,10 +127,14 @@ final class FabricNeepMeatPower {
             return (float) claimed / PowerUtil.referencePower();
         }
 
-        /** Charges the host with the claimed power; asks for a new share when its free intake changed. */
+        /**
+         * Charges the host with the claimed power, unless the network may have dropped this sink (the block it touches
+         * is not loaded); asks for a new share when its free intake changed.
+         */
         private void tick() {
             EnergyAccess energy = host.getEnergyAccess(side);
-            if (energy != null && claimed > 0) {
+            Level level = blockEntity.getLevel();
+            if (energy != null && claimed > 0 && level != null && level.isLoaded(blockEntity.getBlockPos().relative(side))) {
                 energy.insert(claimed * ENERGY_PER_EJ, false);
             }
             long intake = freeIntake();
