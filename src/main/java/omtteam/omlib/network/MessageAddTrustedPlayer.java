@@ -1,13 +1,18 @@
 package omtteam.omlib.network;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import omtteam.omlib.api.permission.TrustedPlayer;
+import omtteam.omlib.api.permission.TrustedPlayersManager;
 import omtteam.omlib.api.tile.IHasTrustManager;
+import omtteam.omlib.util.player.Player;
 import omtteam.omlib.util.player.PlayerUtil;
 
 import javax.annotation.Nullable;
@@ -64,11 +69,33 @@ public class MessageAddTrustedPlayer implements IMessage {
                                 PacketValidation.sendNoPermission(player);
                                 return;
                             }
-                            machine.getTrustManager().addTrustedPlayer(message.player);
-                            machine.informUpdate();
+                            if (addTrustedPlayer(player, machine.getTrustManager(), message.player)) {
+                                machine.informUpdate();
+                            }
                         });
             });
             return null;
+        }
+
+        /**
+         * Adds the named player and tells the sender why not if that fails (as on 1.20.1+): unknown name, already on
+         * the list, or the owner. A player from the username cache always has a UUID, so those are the only reasons.
+         */
+        private static boolean addTrustedPlayer(EntityPlayerMP sender, TrustedPlayersManager trust, String name) {
+            Player target = PlayerUtil.getPlayerFromUsernameCache(name);
+            if (target == null) {
+                sender.sendMessage(new TextComponentTranslation("text.omlib.player_not_found", name));
+                return false;
+            }
+            if (trust.addTrustedPlayer(new TrustedPlayer(target))) {
+                return true;
+            }
+            if (trust.getTrustedPlayer(target.getUuid()) != null || trust.getTrustedPlayer(target.getName()) != null) {
+                sender.sendMessage(new TextComponentTranslation("text.omlib.already_trusted", target.getName()));
+            } else {
+                sender.sendMessage(new TextComponentTranslation("text.omlib.owner_not_trustable"));
+            }
+            return false;
         }
     }
 }
