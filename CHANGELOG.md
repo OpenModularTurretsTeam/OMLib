@@ -8,6 +8,8 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 
 ## [Unreleased]
 
+## [4.0.1] - 2026-11-04
+
 ### Fixed
 
 - The fake player's sword no longer shows up in the Combat creative tab and in JEI
