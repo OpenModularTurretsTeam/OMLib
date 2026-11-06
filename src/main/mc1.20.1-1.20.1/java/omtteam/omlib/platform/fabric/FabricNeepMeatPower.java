@@ -22,7 +22,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * at 1 eJ = 1 E. Only loaded when NEEPMeat is installed (compile-only, never bundled).
  * <p>
  * The network carries power, not energy: a sink is told the power it gets (eJ per tick) whenever that changes. Each
- * side of a host that a vascular conduit touches is an active sink, served before NEEPMeat's passive sinks (motors):
+ * side of a host that a vascular conduit touches is a plain sink ({@code SINK}, like NEEPMeat's motors), never an
+ * active one, which would drain the whole network with priority over every other sink:
  * it claims only what the host's energy still accepts per tick (its {@link EnergyAccess#insert} limit and free space)
  * and reports that as its demand, so a full buffer takes nothing. After each server tick the claimed power goes into
  * the host's energy; a sink whose free intake changed asks the network to share its power out again.
@@ -77,7 +78,7 @@ final class FabricNeepMeatPower {
     private record Side(BlockEntity blockEntity, Direction side) {
     }
 
-    /** A host side as an active sink of a vascular network; kept in {@link #CONNECTED} while a network holds it. */
+    /** A host side as a plain sink of a vascular network; kept in {@link #CONNECTED} while a network holds it. */
     private static final class Sink implements BloodAcceptor {
         private final BlockEntity blockEntity;
         private final TransferHost host;
