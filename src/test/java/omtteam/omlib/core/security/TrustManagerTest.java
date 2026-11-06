@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TrustManagerTest {
@@ -400,6 +401,12 @@ class TrustManagerTest {
         void setUpTrap() {
             trap = new TrustManager(environment, () -> changes++, AccessProfile.TRUSTED_AND_ADMIN);
             trap.setOwner(OWNER.identity());
+        }
+
+        @Test
+        void keepsItsProfile() {
+            assertSame(AccessProfile.TRUSTED_AND_ADMIN, trap.getProfile());
+            assertSame(AccessProfile.ALL, manager.getProfile(), "the default profile has all levels");
         }
 
         @Test
