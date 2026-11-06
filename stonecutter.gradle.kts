@@ -41,6 +41,14 @@ tasks.register("chiseledBuild") {
     dependsOn(stonecutter.versions.map { ":${it.project}:build" })
 }
 
+// Checks every version: from the workspace, :<repo>:check names only this (root) project's check, which the nodes' tests
+// need to hang on; inside this folder ./gradlew check runs them anyway (Gradle runs each task once)
+tasks.register("check") {
+    group = "verification"
+    description = "Runs the checks of all Stonecutter versions"
+    dependsOn(stonecutter.versions.map { ":${it.project}:check" })
+}
+
 // Puts the jar of every version into build/maven (what the mods' nested build does per version): ./gradlew chiseledPublishLocal
 tasks.register("chiseledPublishLocal") {
     group = "publishing"

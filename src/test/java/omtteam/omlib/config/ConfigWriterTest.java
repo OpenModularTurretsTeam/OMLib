@@ -106,4 +106,40 @@ class ConfigWriterTest {
         JsonObject json = JsonParser.parseString(text).getAsJsonObject();
         assertEquals(0.5D, json.getAsJsonObject("byId").getAsJsonObject("mod:a").get("chance").getAsDouble());
     }
+
+    static class Layout {
+        int first = 1;
+        int plain = 2;
+        @Range(min = 0)
+        int ranged = 3;
+        Inner section = new Inner();
+        Map<String, Inner> map = new LinkedHashMap<>();
+        int last = 4;
+    }
+
+    @Test
+    void blankLinesSetOffCommentedFieldsSectionsAndMaps() {
+        assertEquals("""
+                {
+                  // Default: 1
+                  "first": 1,
+                  // Default: 2
+                  "plain": 2,
+
+                  // Minimum: 0
+                  // Default: 3
+                  "ranged": 3,
+
+                  "section": {
+                    // Range: 0.0 to 1.0
+                    // Default: 0.25
+                    "chance": 0.25
+                  },
+
+                  "map": {},
+                  // Default: 4
+                  "last": 4
+                }
+                """, ConfigWriter.write(new Layout(), new Layout()));
+    }
 }

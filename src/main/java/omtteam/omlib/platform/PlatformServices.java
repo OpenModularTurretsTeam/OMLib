@@ -3,8 +3,9 @@ package omtteam.omlib.platform;
 import java.util.Objects;
 
 /**
- * Every loader-specific service that shared code calls. Each loader entrypoint creates one and passes it to
- * {@link Platform#install}; a new component makes every entrypoint fail to compile until it supplies it.
+ * Every loader-specific service that shared code calls. {@link Platform} creates the running loader's one on first use
+ * ({@link Platform#ensureInstalled()}); a new component makes each loader's branch there fail to compile until it
+ * supplies it.
  */
 public record PlatformServices(LoaderInfo loaderInfo, Fuel fuel, Network network, Menus menus,
                                Energy energy) {

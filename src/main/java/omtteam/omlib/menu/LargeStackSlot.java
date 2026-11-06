@@ -4,6 +4,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import omtteam.omlib.inventory.LargeStackContainer;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Menu slot of a {@link LargeStackContainer}: it accepts items up to the container's slot limit, but hands out at
@@ -26,12 +27,12 @@ public class LargeStackSlot extends Slot {
 
     /** At most one normal stack (pickup, half pickup, throwing and hotbar swaps all take through here). */
     @Override
-    public ItemStack remove(int amount) {
+    public @NotNull ItemStack remove(int amount) {
         return super.remove(Math.min(amount, getItem().getMaxStackSize()));
     }
 
     @Override
-    public ItemStack getItem() {
+    public @NotNull ItemStack getItem() {
         return hidden ? ItemStack.EMPTY : super.getItem();
     }
 

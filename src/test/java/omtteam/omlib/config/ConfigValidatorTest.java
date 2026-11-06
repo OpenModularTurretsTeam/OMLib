@@ -17,7 +17,9 @@ class ConfigValidatorTest {
         assertEquals(0, v.range("int", 0, 0, 10));
         assertEquals(10, v.range("int", 10, 0, 10));
         assertEquals(0.5, v.range("double", 0.5, 0, 1));
-        assertFalse(v.changed());
+        assertEquals(0.0, v.range("double", 0.0, 0, 1));
+        assertEquals(1.0, v.range("double", 1.0, 0, 1));
+        assertFalse(v.changed(), "values on the bounds are no correction");
     }
 
     @Test

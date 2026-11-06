@@ -107,3 +107,63 @@ tasks.jacocoTestReport {
 tasks.check {
     dependsOn(tasks.jacocoTestReport)
 }
+
+// ---- Mutation testing (PIT): ./gradlew :1.21.1-fabric:pitest, on demand ----
+// Plants small mistakes (flipped conditions, changed boundaries, removed calls) and checks whether a unit test
+// fails. Surviving mistakes show behaviour the tests do not pin down. Report only, not part of check.
+// Only the code the unit tests are written for: the rest (blocks, screens, menus, packet handlers, platform) needs a
+// running game, which the mods' game tests cover. Known survivors that no test can kill: README.md, "Building".
+// Report: versions/<v>/build/reports/pitest/index.html
+val pitest = configurations.create("pitest") {
+    isCanBeConsumed = false
+}
+dependencies {
+    pitest("org.pitest:pitest-command-line:${property("pitest_version")}")
+    pitest("org.pitest:pitest-junit5-plugin:${property("pitest_junit5_version")}")
+}
+val pitestTargets = listOf(
+    "omtteam.omlib.core.*",
+    "omtteam.omlib.config.*",
+    "omtteam.omlib.compat.nbt.*",
+    "omtteam.omlib.compat.network.PacketType",
+    "omtteam.omlib.menu.LongContainerData",
+    "omtteam.omlib.network.CamoPackets*",
+    "omtteam.omlib.network.ConfigSyncPacket",
+    "omtteam.omlib.network.TrustPackets*",
+    "omtteam.omlib.security.SecurityNbt",
+)
+tasks.register<JavaExec>("pitest") {
+    group = "verification"
+    description = "Mutation testing of the unit-tested library code (report in build/reports/pitest)"
+    dependsOn(tasks.testClasses)
+    classpath = pitest + sourceSets.test.get().runtimeClasspath
+    mainClass = "org.pitest.mutationtest.commandline.MutationCoverageReport"
+    javaLauncher = javaToolchains.launcherFor(java.toolchain)
+    val reportDir = layout.buildDirectory.dir("reports/pitest")
+    val sources = sourceSets.main.get().java.srcDirs
+    outputs.dir(reportDir)
+    // fail on a degradation: % of mutations detected, % line coverage of the mutated classes, mutations not detected
+    // (survived or not reached by any test); the values are in gradle.properties
+    val thresholds = listOf(
+        "--mutationThreshold", project.property("pitest_mutation_threshold").toString(),
+        "--coverageThreshold", project.property("pitest_coverage_threshold").toString(),
+        "--maxSurviving", project.property("pitest_max_surviving").toString(),
+    )
+    inputs.property("thresholds", thresholds)
+    argumentProviders.add(CommandLineArgumentProvider {
+        listOf(
+            "--reportDir", reportDir.get().asFile.path,
+            "--targetClasses", pitestTargets.joinToString(","),
+            "--targetTests", "omtteam.omlib.*",
+            // the test configs (config.mod) share the config package
+            "--excludedClasses", "*Test,*Test\$*,omtteam.omlib.config.mod.*",
+            "--sourceDirs", sources.joinToString(","),
+            "--threads", Runtime.getRuntime().availableProcessors().toString(),
+            "--outputFormats", "HTML,XML",
+            "--timestampedReports=false",
+        ) + thresholds
+    })
+    doLast {
+        println("PIT report: ${reportDir.get().asFile.resolve("index.html").toURI()}")
+    }
+}

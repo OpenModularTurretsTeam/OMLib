@@ -62,6 +62,13 @@ class NbtCompatTest {
     }
 
     @Test
+    void aStoredFalseIsReadAsFalse() {
+        CompoundTag tag = new CompoundTag();
+        tag.putBoolean("off", false);
+        assertFalse(NbtCompat.getBoolean(tag, "off", true));
+    }
+
+    @Test
     void missingKeysReadAsTheFallbackOrEmpty() {
         CompoundTag tag = new CompoundTag();
         assertEquals(-1, NbtCompat.getInt(tag, "missing", -1));
