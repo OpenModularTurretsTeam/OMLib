@@ -84,6 +84,20 @@ The unit tests (`src/test`) run on every node, so the version-specific code they
 `check` also prints their line coverage per package (JaCoCo, active node only; report in `versions/1.21.1-fabric/build/reports/jacoco/test/html/index.html`).
 Code that needs a world (claiming, the wand, the packet handlers, the menus, the loader adapters) is tested by the mods' game tests.
 
+`./gradlew :1.21.1-fabric:pitest` (on demand, not part of `check`) runs mutation testing (PIT) on the code the unit tests are written for (`core`, `config`, `compat.nbt`, the packet codecs, `LongContainerData`, `SecurityNbt`; the list is `pitestTargets` in `build.fabric.gradle.kts`); report in `versions/1.21.1-fabric/build/reports/pitest/index.html`.
+It plants small mistakes (a flipped condition, `<` instead of `<=`, a removed call) and runs the unit tests against each one; a mistake no test notices ("survived") marks behaviour the tests do not pin down.
+When one survives, add the missing assertion to the unit test of that class; if it cannot be noticed, add it to the list below with the reason.
+It fails when the results get worse than the thresholds in `gradle.properties` (`pitest_mutation_threshold`, `pitest_coverage_threshold`, `pitest_max_surviving`, the state of 2026-11-06); tighten them when a test kills a survivor (lower `pitest_max_surviving`), and raise it only for a survivor that no test can notice, listed below with its reason.
+
+State on 2026-11-06: 454 of 460 mutations detected (99 %).
+The survivors cannot be noticed:
+
+- `FloodFill.collect`: `limit < 0` instead of `<= 0` (with a limit of 0 the loop adds nothing either), and an empty immutable list instead of the empty `ArrayList` (no caller changes the result).
+- `ConfigValidator.filter`: an empty immutable list for a missing list (the validated lists are only assigned to config fields, never changed).
+- `SecurityNbt.loadTrustedPlayers`: `i <= size` (an index past the end reads an empty tag, which has no UUID and is dropped).
+
+Two mutations are not reached: the public `ConfigManager` constructor (its folder comes from the loader's `Platform`) and `NbtCompat.readBlockState` (needs the block registry); the mods' game tests run both.
+
 `chiseledPublish` uploads every node to CurseForge / Modrinth when `curseforge_project_id` / `modrinth_project_id` are set; the mods bundle the library, so this is optional.
 The nodes publish into one Maven repository, so the build runs without Gradle's parallel mode.
 The mods rebuild the library when its sources change (the bootstrap compares a hash of them); `OMLIB_SKIP_BUILD=1` skips that.

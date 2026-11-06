@@ -177,8 +177,25 @@ tasks {
         }
     }
 
+    // Every item of the mod has a recipe on this node, unless recipe-exempt.txt names it (see RecipeCoverage.kt);
+    // reads the processed resources, so the data converted for NeoForge/Forge is what is checked there
+    val checkRecipes = register("checkRecipes") {
+        group = "verification"
+        description = "Fails if an item has no recipe (and is not in recipe-exempt.txt) or a recipe makes an unknown item"
+        val resources = processResources.map { it.destinationDir }
+        val exemptions = rootProject.file("recipe-exempt.txt")
+        inputs.files(processResources)
+        inputs.files(exemptions)
+        doLast {
+            val problems = recipeCoverageProblems(resources.get(), modId, exemptions)
+            if (problems.isNotEmpty()) {
+                throw GradleException("Recipe check failed:\n" + problems.joinToString("\n"))
+            }
+        }
+    }
+
     check {
-        dependsOn(verifyCoreIsolation)
+        dependsOn(verifyCoreIsolation, checkRecipes)
     }
 
     jar {

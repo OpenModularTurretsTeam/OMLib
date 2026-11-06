@@ -15,6 +15,7 @@ import omtteam.omlib.security.PlayerAdapter;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -66,6 +67,6 @@ public final class WandInteraction {
     }
 
     private static boolean sameOwner(@Nullable UUID a, @Nullable UUID b) {
-        return a == null ? b == null : a.equals(b);
+        return Objects.equals(a, b);
     }
 }
