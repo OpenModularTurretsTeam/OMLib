@@ -5,6 +5,9 @@ import omtteam.omlib.config.ConfigRanges;
 import omtteam.omlib.config.ConfigValidator;
 import omtteam.omlib.config.Range;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /** A config as a mod has it: in a package of its own, with a section class next to it. */
 public class SampleConfig {
     @Comment("Version of this file's layout.") @Range(min = 1)
@@ -12,6 +15,9 @@ public class SampleConfig {
 
     @Comment("Group of values.")
     public Group group = new Group();
+
+    @Comment("A list of names.")
+    public List<String> names = new ArrayList<>(List.of("a"));
 
     public static class Group {
         @Comment("A number.") @Range(min = 1, max = 10)
