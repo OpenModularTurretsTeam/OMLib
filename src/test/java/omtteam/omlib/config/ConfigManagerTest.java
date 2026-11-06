@@ -76,7 +76,7 @@ class ConfigManagerTest {
     }
 
     @Test
-    void theServersConfigReplacesTheActiveOneUntilTheLocalOneIsRestored() throws IOException {
+    void theServersConfigReplacesTheActiveOneUntilTheLocalOneIsRestored() {
         ConfigManager<SampleConfig> manager = manager("sample_sync", List.of());
         manager.load();
         manager.applyServerConfig("{\"configVersion\": 2, \"group\": {\"level\": 2}}");

@@ -1,6 +1,7 @@
 package omtteam.omlib.network;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import omtteam.omlib.core.security.PlayerIdentity;
 import omtteam.omlib.core.security.PlayerInfo;
@@ -27,12 +28,13 @@ public final class TrustPacketHandler {
      */
     public static void handleAdd(TrustPackets.Add packet, ServerPlayer player) {
         String name = packet.name().trim();
-        if (player.level().getServer() == null || authorizeAdd(packet, player).isEmpty()) return;
+        MinecraftServer server = player.level().getServer();
+        if (server == null || authorizeAdd(packet, player).isEmpty()) return;
         if (name.isEmpty()) {
             player.sendSystemMessage(Component.translatable("message.omlib.player_not_found", name));
             return;
         }
-        PlayerLookup.findByName(player.level().getServer(), player, name, target -> {
+        PlayerLookup.findByName(server, player, name, target -> {
             if (player.hasDisconnected()) return;
             authorizeAdd(packet, player).ifPresent(trust -> addTrusted(player, trust, name, target));
         });

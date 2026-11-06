@@ -9,6 +9,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import omtteam.omlib.menu.LargeStackSlot;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +56,7 @@ public abstract class LargeStackScreen<T extends AbstractContainerMenu> extends 
     *///?}
 
     @Override
-    protected List<Component> getTooltipFromContainerItem(ItemStack stack) {
+    protected @NotNull List<Component> getTooltipFromContainerItem(ItemStack stack) {
         List<Component> lines = super.getTooltipFromContainerItem(stack);
         if (hoveredSlot instanceof LargeStackSlot slot) {
             int limit = slot.getMaxStackSize(stack);
