@@ -6,6 +6,7 @@ All notable changes to OMLib. The format follows [Keep a Changelog](https://keep
 
 ### Added
 
+- NEEPMeat (Fabric 1.20.1): its vascular network charges the energy of the mods' blocks (1 eJ = 1 E); a block takes only what its energy still accepts
 - Containers whose slots hold more than one stack (`LargeStackContainer`, with menu slots, menu and screen): saved, synced and moved by hoppers and pipes on all loaders; counts from four digits on are drawn smaller, the tooltip shows count and limit
 
 ### Fixed

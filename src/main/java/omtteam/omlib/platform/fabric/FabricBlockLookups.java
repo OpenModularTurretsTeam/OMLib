@@ -1,6 +1,9 @@
 package omtteam.omlib.platform.fabric;
 
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
+//? if <1.21 {
+/*import net.fabricmc.loader.api.FabricLoader;
+*///?}
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import omtteam.omlib.blockentity.TransferHost;
@@ -10,7 +13,8 @@ import team.reborn.energy.api.EnergyStorage;
 import java.util.List;
 
 /**
- * Fabric API lookups of the {@link TransferHost}s: items and energy, on the sides each host exposes.
+ * Fabric API lookups of the {@link TransferHost}s: items and energy, on the sides each host exposes. On 1.20.1 with
+ * NEEPMeat installed, its vascular network charges their energy too ({@code FabricNeepMeatPower}).
  */
 public final class FabricBlockLookups {
     private FabricBlockLookups() {
@@ -29,5 +33,10 @@ public final class FabricBlockLookups {
             EnergyAccess access = host.getEnergyAccess(side);
             return access == null ? null : FabricEnergyStorages.of(access);
         }, type);
+        //? if <1.21 {
+        /*if (FabricLoader.getInstance().isModLoaded(FabricNeepMeatPower.MOD_ID)) {
+            FabricNeepMeatPower.register(type);
+        }
+        *///?}
     }
 }

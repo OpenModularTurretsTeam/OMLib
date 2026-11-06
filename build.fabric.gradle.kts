@@ -36,6 +36,10 @@ dependencies {
     // Energy API (jar-in-jar; the mods get it through this library)
     modImplementation("teamreborn:energy:${property("team_reborn_energy_version")}")
     include("teamreborn:energy:${property("team_reborn_energy_version")}")
+
+    // NEEPMeat (1.20.1 only; the other nodes have no neepmeat_version): its vascular network powers the transfer
+    // hosts (FabricNeepMeatPower in src/main/mc1.20.1-1.20.1), which is only loaded when NEEPMeat is installed
+    (findProperty("neepmeat_version") as String?)?.let { modCompileOnly("maven.modrinth:neepmeat:$it") }
 }
 
 // The mods build this library as a nested build and take the jar from this local repository (build/maven)
