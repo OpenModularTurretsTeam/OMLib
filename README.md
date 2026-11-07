@@ -103,16 +103,18 @@ The mods rebuild the library when its sources change (the bootstrap compares a h
 
 ## Changing the library
 
-1. Edit the files in `omlib/` of any mod (it is a normal git checkout of this repository) or in a checkout of this repository.
-2. Commit and push in the library.
+1. Edit and commit in a checkout of this repository of its own (in the workspace: `OMLib/`), and build it there (`./gradlew chiseledBuild`).
+   Never edit inside a mod's `omlib/`: the next checkout of the submodule drops the changes, and they would not reach the other mods.
+2. Move each mod's `omlib` to the new commit; without a push, fetch it from the local checkout (`git -C omlib fetch ../../OMLib 1.20.1+ && git -C omlib checkout FETCH_HEAD` from a mod root in the workspace), and build the mod.
 3. In each mod, commit the new submodule pointer (`git add omlib`).
+4. Push the library before the mods, or a fresh clone of a mod cannot check out its submodule.
 
 A mod's build only changes when its pointer moves, so the mods can take an update one at a time.
 Cloning a mod needs the submodule: `git clone --recurse-submodules <mod url>` or, in an existing clone, `git submodule update --init`.
 
 ## Shared sources
 
-A few files are still copies in the mods (the game test stand-ins for Minecraft 1.21.11, the PMD ruleset, the Gradle wrapper properties).
+A few files are still copies in the mods (the game test stand-ins for Minecraft 1.21.11 and their registration classes, the game test mod's `mods.toml` and `neoforge.mods.toml`, the PMD ruleset, the Gradle wrapper properties).
 They differ only by the mod's package, id, name and class prefix, which the tool normalises before comparing; `shared-sources.txt` lists them.
 
 ```bash
@@ -123,5 +125,5 @@ python3 -I omlib/tools/shared_sources.py sync --from . . ../OpenModularLighting 
 
 ## License
 
-The source code is licensed under the [MIT license](LICENSE), and art under the [CC-BY-NC-SA 4.0 license](LICENSE-ART) (this repository contains none so far; [LICENSE-DUAL](LICENSE-DUAL) states both, like in the mods).
+The source code is licensed under the [MIT license](LICENSE), and art under the [CC-BY-NC-SA 4.0 license](LICENSE-ART) (here only the GUI texture of the trusted players screen; [LICENSE-DUAL](LICENSE-DUAL) states both, like in the mods).
 Contributions are covered by the [CLA](CLA.md).

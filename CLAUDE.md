@@ -29,4 +29,7 @@ The same rules apply as in the mods' `CLAUDE.md`: committed source in the `1.21.
 The mods' `omlib/` folders are clones of this repository.
 The mods' settings script builds the library into `omlib/build/maven` whenever its sources changed (`tools/bootstrap.sh`, a hash of the sources) and drops Loom's cached remapped copy of the old build.
 Gradle must not run in parallel here (the nodes write one `maven-metadata.xml`).
-After changing the library, commit it, update the submodule pointer in each mod (`git -C omlib fetch && git -C omlib checkout <commit>`, then `git add omlib`) and build both mods.
+Never edit inside a mod's `omlib/`: work in this repository (the workspace's `OMLib/`), where changes are not lost on the next submodule checkout and reach both mods.
+After changing the library, build it here (`./gradlew chiseledBuild`) and commit it, then move the submodule in each mod straight from this clone, without a push (`git -C OpenModularTurrets/omlib fetch ../../OMLib 1.20.1+ && git -C OpenModularTurrets/omlib checkout FETCH_HEAD` from the workspace root, the same for `OpenModularLighting`), build both mods and commit the pointers (`git add omlib`) when the user asks.
+The library commit must be pushed before a mod that points to it (the workspace's `push.sh` checks that).
+The few files the mods still copy from each other are listed in `shared-sources.txt` (check and sync with `tools/shared_sources.py`, see `README.md`).
