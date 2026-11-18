@@ -194,10 +194,20 @@ public class TrustedPlayersManager implements ITrustedPlayersManager {
         return changeEach(player, (trust, actor, uuid) -> trust.setAccessLevel(actor, uuid, level.toCore()));
     }
 
-    /** Raises or lowers every entry with this name (ignoring case) by that many levels of the block's profile. */
+    /**
+     * Raises or lowers the first entry with this name (ignoring case) by that many levels of the block's profile, and
+     * sets that new level on every entry with the name, as in 3.x; false if there is none or the first entry cannot
+     * move that far.
+     */
     @Override
     public boolean changePermission(String player, int change) {
-        return changeEach(player, (trust, actor, uuid) -> trust.changeAccessLevel(actor, uuid, change));
+        TrustedPlayer entry = getTrustedPlayer(player);
+        if (entry == null) {
+            return false;
+        }
+        AccessLevel newLevel = core.getProfile().step(entry.getAccessLevel().toCore(), change);
+        return newLevel != null
+                && changeEach(player, (trust, actor, uuid) -> trust.setAccessLevel(actor, uuid, newLevel));
     }
 
     /** A change of one trust-list entry through the core. */

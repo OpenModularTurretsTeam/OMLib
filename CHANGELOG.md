@@ -11,7 +11,7 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 ### Changed
 
 - The game rules (`omtteam.omlib.core`) come from the shared core OpenModularCore 1.0.0, the same on every Minecraft version, and are part of the OMLib jar; the memory card rules (`core.card`) are part of OMT's core now
-- Setting a trusted player to an access level the block does not use (for example Open GUI on a camouflage trap) is refused instead of lowered to the nearest level, as on 1.20.1, 1.21.1 and 1.21.11
+- API: `ITrustedPlayersManager.addTrustedPlayer(TrustedPlayer)` and `changePermission(String, EnumAccessLevel)` refuse an access level the block's access profile does not use instead of lowering it, as on 1.20.1, 1.21.1 and 1.21.11
 
 ## [4.0.1] - 2026-11-04
 

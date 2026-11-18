@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagList;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -209,6 +210,27 @@ class TrustedPlayersManagerTest {
         assertEquals(EnumAccessLevel.ADMIN, trap.getTrustedPlayer(alice.getUuid()).getAccessLevel());
         assertFalse(trap.changePermission("Alice", 1), "no level above ADMIN");
         assertFalse(trap.changePermission("Carol", 1), "not on the list");
+    }
+
+    @Test
+    void aStepSetsTheFirstEntrysNewLevelOnEveryEntryWithTheName() {
+        // Two entries of one name, as in a 3.x save with an online and an offline UUID; load drops only duplicate UUIDs.
+        Player aliceOffline = new Player(UUID.randomUUID(), "alice");
+        TrustedPlayersManager manager = new TrustedPlayersManager(owner);
+        manager.setTrustedPlayers(Arrays.asList(new TrustedPlayer(alice, EnumAccessLevel.ADMIN),
+                new TrustedPlayer(aliceOffline, EnumAccessLevel.NONE)));
+
+        assertTrue(manager.changePermission("alice", -1));
+        assertEquals(EnumAccessLevel.CHANGE_SETTINGS, manager.getTrustedPlayer(alice.getUuid()).getAccessLevel());
+        assertEquals(EnumAccessLevel.CHANGE_SETTINGS,
+                manager.getTrustedPlayer(aliceOffline.getUuid()).getAccessLevel(), "set as in 3.x, not stepped");
+
+        manager.setTrustedPlayers(Arrays.asList(new TrustedPlayer(alice, EnumAccessLevel.NONE),
+                new TrustedPlayer(aliceOffline, EnumAccessLevel.ADMIN)));
+        assertFalse(manager.changePermission("Alice", -1), "the first entry cannot move");
+        assertEquals(EnumAccessLevel.NONE, manager.getTrustedPlayer(alice.getUuid()).getAccessLevel());
+        assertEquals(EnumAccessLevel.ADMIN, manager.getTrustedPlayer(aliceOffline.getUuid()).getAccessLevel(),
+                "nothing changed");
     }
 
     @Test
