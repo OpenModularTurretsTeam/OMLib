@@ -11,7 +11,9 @@ Building, running, releases and the rules for working on the code are in the wor
 ## The idea in one paragraph
 
 OMLib gives the other mods **owned blocks**: a block has an owner, a list of trusted players with access levels, and optionally a camouflage.
-The rules (who may do what, how energy is buffered, what a memory card copies, how the claiming of connected blocks spreads) are plain Java in `core`, without any Minecraft class, so they are unit-tested in milliseconds.
+The rules (who may do what, how energy is buffered, how the claiming of connected blocks spreads) are plain Java in `core`, without any Minecraft class, so they are unit-tested in milliseconds.
+The core is not part of this repository: it comes from the shared core, [OpenModularCore](https://github.com/OpenModularTurretsTeam/OpenModularCore) (module `omlib-core-j8`, version `core_version` in `gradle.properties`, from JitPack), the same rules as on every other Minecraft version, downgraded to Java 8.
+The OMLib jars carry its classes (`omtteam/omlib/core`) and the stubs of the Java 9+ API it uses (`omtteam/omlib/jvmdg`), and OMT, OMPD and OML compile against it through OMLib.
 Around it, the game layer translates between Minecraft and the core: tile entity base classes, abstract blocks, the network messages with their server-side validation, the camouflage menu, the energy capabilities and the shared GUI code.
 The 3.x API (`TrustedPlayersManager`, `PlayerUtil`, `TileEntityBase`, …) is kept as a **facade** over the core, so the other mods and their worlds of version 3.x keep working.
 
@@ -22,7 +24,7 @@ flowchart TB
     client["client<br/>GUIs, renderers, camouflage model, client packet handlers<br/><i>client only, via ClientProxy</i>"]
     game["game layer<br/>blocks, tile entities, items, containers, network,<br/>handlers, config, power, api"]
     compat["compat<br/>Hwyla, The One Probe, OpenComputers"]
-    core["core<br/>game rules, plain Java"]
+    core["core (OpenModularCore)<br/>game rules, plain Java"]
     client --> game
     game --> core
     compat --> game
@@ -31,7 +33,7 @@ flowchart TB
 An arrow means "may use".
 The other directions are forbidden and checked by the build (see [Rules the build checks](#rules-the-build-checks)):
 
-- **core** uses only Java and itself: no Minecraft, Forge, `com.mojang`, other mods' packages or non-core OMLib packages.
+- **core** uses only Java and itself: no Minecraft, Forge, `com.mojang`, other mods' packages or non-core OMLib packages (checked in OpenModularCore).
 - **common code** never uses **client** code: client classes do not exist on a dedicated server.
   The `client` package is reached only through the proxy (`@SidedProxy`: `CommonProxy`, `client.ClientProxy`) or through `@SideOnly` methods.
   Forge 1.12 dev environments have no separate client source set, so this is a package rule, not a compile error.
@@ -44,15 +46,15 @@ The core defines small interfaces for what it needs from the game; the game laye
 | --- | --- | --- |
 | `security.SecurityEnvironment` | `util.player.OMLibSecurityEnvironment` (OMT bases supply their own, `OMTSecurityEnvironment`) | scoreboard teams, operator rights, shared owners, offline-mode name matching, whether turrets damage trusted players |
 
-The rest of the core is self-contained value logic that the game layer calls directly: `security.TrustManager` (owner, trust list, access check), `energy.EnergyStore`, `machine.MachineMode`, `card.MemoryCardRules`, `camo.CamoLight`, `world.FloodFill`.
+The rest of the core is self-contained value logic that the game layer calls directly: `security.TrustManager` (owner, trust list, access check), `energy.EnergyStore`, `machine.MachineMode`, `camo.CamoLight`, `world.FloodFill`.
 
 The game-layer classes own one core object each and forward to it (1.12 spelling of "block entities forward to the core"):
 
 | Core | Game-layer owner |
 | --- | --- |
-| `core.security.TrustManager` | `api.permission.TrustedPlayersManager` (implements `ITrustedPlayersManager`; changes by copy + `load`), used by the tile entities of the owned blocks |
+| `core.security.TrustManager` | `api.permission.TrustedPlayersManager` (implements `ITrustedPlayersManager`; changes through the core's change methods, with the owner acting), used by the tile entities of the owned blocks |
 | `core.energy.EnergyStore` | `power.OMEnergyStorage`, the Forge Energy adapter; `power.EnergyCapabilities` exposes it (and RF / Tesla) for a tile entity |
-| `core.machine.MachineMode`, `TargetingSettings` | `util.EnumMachineMode`, `util.TargetingSettings`, the 3.x facades |
+| `core.machine.MachineMode`, `TargetingSettings` | `util.EnumMachineMode` (also reads the saved 3.x ordinals, `byOrdinal`), `util.TargetingSettings`, the 3.x facades |
 
 ## Where things live
 
@@ -62,12 +64,12 @@ Source layout of the repository:
 | --- | --- | --- |
 | `src/main/java` | all code, client code in the `client` package | yes |
 | `src/main/resources` | `mcmod.info` (templated), `assets/omlib` | yes |
-| `src/test/java` | JUnit 5 tests of the core, the config sync, the window values, and the architecture rules | no |
+| `src/test/java` | JUnit 5 tests of the 3.x facades, the config sync, the window values, and the architecture rules (the core's tests are in OpenModularCore) | no |
 | `src/test/resources/archunit_store` | the frozen architecture violations (a ratchet) | no |
 | `src/api/java` | the ComputerCraft API, its own source set, compiled against and not packed | no |
 | `gradle/` | `mod-common.gradle`, `release.gradle`, the dependency map template | no |
 
-Packages below `omtteam.omlib`:
+Packages below `omtteam.omlib` (the `core` ones come from OpenModularCore):
 
 | Package | Responsibility |
 | --- | --- |
@@ -75,7 +77,7 @@ Packages below `omtteam.omlib`:
 | `core.security` | `TrustManager` (owner, trust list, claim, disown, access check), `AccessLevel`, `AccessProfile` (which levels count as what), `PlayerIdentity`, `PlayerInfo`, `TrustedPlayer`, `TrustResult`, `SecurityEnvironment` |
 | `core.energy` | `EnergyStore` (the buffer) and `EnergyAccess` (what other blocks may do with it) |
 | `core.machine` | `MachineMode` (redstone control mode, the 3.x ordinals), `TargetingSettings` |
-| `core.camo`, `core.card`, `core.world` | `CamoLight` and `CamoPermissions`; `MemoryCardData` and `MemoryCardRules`; `FloodFill` and `BlockPosition` (the claim spread) |
+| `core.camo`, `core.world` | `CamoLight` and `CamoPermissions`; `FloodFill`, `BlockPosition` (the claim spread) and `Face` (the memory card rules are part of OMT's core) |
 | `api` | what other mods use: `api.permission` (`IHasOwner`, `IOwnedHost`, `ITrustedPlayersManager`, `TrustedPlayersManager`, `EnumAccessLevel`, the owner-share register), `api.tile` (`IHasTrustManager`, `IOwnedBlockAddon`, `IDebugTile`, `IHasTargetingSettings`), `api.render.camo` (`ICamoSupport`, `DisguiseRules`), `api.block` (`IHasItemBlock`, `IPlainLookingBlock`), `api.network` (`ISyncable`) |
 | `block` | `BlockAbstract`, `BlockAbstractTileEntity` (drops the inventory on break), `BlockAbstractCamoTileEntity` (the camouflage block with its unlisted `RENDERBLOCKSTATE` property), the abstract wall and pane, `UnownedMarker` |
 | `tileentity` | `TileEntitySynced` (read/write data and the client copy), `TileEntityBase` (the 3.x `saveToNBT` / `loadFromNBT` hooks on top of it), `TileEntityOwnedBlock` (owner, claim, disown), `InventoryNbt` |
@@ -160,7 +162,7 @@ The config files are never written with the server's values: a config-changed ha
 
 ### A rule
 
-Put it in `core` with a unit test first, behind a small interface if it needs the game (see `SecurityEnvironment`), and have the tile entity or block forward to it.
+Put it in the shared core (OpenModularCore, see its `CLAUDE.md`) with a unit test first, behind a small interface if it needs the game (see `SecurityEnvironment`), and have the tile entity or block forward to it once a core release with it is in `core_version`.
 Ranges, formulas and access rules are not changed without asking the user.
 
 ### An owned block
@@ -185,15 +187,13 @@ Anything that touches `Minecraft`, rendering or screens goes into `client` and i
 
 ## Rules the build checks
 
-`./gradlew check` fails when one of these is broken:
+`./gradlew check` fails when one of these is broken (the core's own rules, isolation and tests are checked in OpenModularCore):
 
 | Rule | Checked by |
 | --- | --- |
-| core uses only Java and core | `ArchitectureTest.coreDependsOnlyOnCoreAndJava` and the `verifyCoreIsolation` task |
 | common code reaches `client` only through the proxy | `ArchitectureTest.commonCodeReachesClientCodeOnlyThroughTheProxy` (frozen in `src/test/resources/archunit_store`) |
 | no new package cycles, and the known ones only shrink | `ArchitectureTest.noNewPackageCycles` (list `KNOWN_CYCLES`) |
-| core rules behave as specified | unit tests in `src/test` |
-| equals and hashCode of the core value classes | `core.EqualsContractTest` |
+| the 3.x facades behave as specified | unit tests in `src/test` |
 
 `KNOWN_CYCLES` and the frozen store are ratchets: a new cycle, or a package joining one, fails the test, and so does a cycle that shrank or disappeared until the list is updated.
 When the cycle test fails it prints the cycle, the class dependencies inside it (fewest first, the cheapest to cut) and the updated list.
@@ -203,13 +203,10 @@ Never add to either without asking the user.
 
 | Tool | Command | Output |
 | --- | --- | --- |
-| Test coverage of `core` (JaCoCo) | part of `check`, which prints the line coverage per package | `build/reports/jacoco/test/html/index.html` |
-| Mutation testing of `core` (PIT, on demand; fails below `pitest_mutation_threshold` in `gradle.properties`) | `./gradlew pitest` | `build/reports/pitest/index.html` |
 | Dependency map | `./gradlew dependencyMap` | `build/reports/dependency-map/index.html` |
 
 Run Gradle with a JDK 17+ in `JAVA_HOME` (see the workspace `CLAUDE.md`); the mod compiles and tests on the Java 8 toolchain.
-Coverage says which lines the tests run; mutation testing says whether they check the results.
-PIT plants small mistakes in core and runs the unit tests against each one; a survivor marks behaviour the tests do not pin down, unless the change cannot be noticed (an equivalent mutant).
+Test coverage (JaCoCo) and mutation testing (PIT) measure the core, so they run in OpenModularCore; here `check` skips them, as OMLib has no core package of its own.
 
 ## Known weak spots
 
