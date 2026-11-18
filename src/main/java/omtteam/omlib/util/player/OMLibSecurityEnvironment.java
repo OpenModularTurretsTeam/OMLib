@@ -40,7 +40,7 @@ public class OMLibSecurityEnvironment implements SecurityEnvironment {
     }
 
     @Override
-    public boolean turretsDamageTrustedPlayers() {
+    public boolean damageTrustedPlayers() {
         return false;
     }
 

@@ -1,7 +1,7 @@
 // Forge 1.12.2 build: RetroFuturaGradle (the maintained 1.12.2 toolchain) on current Gradle. Gradle runs on Java 17+,
 // the mod is compiled and tested with the Java 8 toolchain. The OMTTeam 1.12 workspace builds this file too.
 plugins {
-    id "java"
+    id "java-library"
     id "maven-publish"
     id "com.gtnewhorizons.retrofuturagradle"
 }
@@ -59,9 +59,28 @@ repositories {
         url = "https://cursemaven.com/"              // Hwyla from CurseForge (maven.tehnut.info no longer serves it)
         content { includeGroup "curse.maven" }
     }
+    // the shared core (OpenModularCore, built by JitPack from its release tags); only the core comes from there
+    maven {
+        url = "https://jitpack.io"
+        content { includeGroup "com.github.OpenModularTurretsTeam.OpenModularCore" }
+    }
+}
+
+// The game rules (omtteam.omlib.core) come from the shared core, OpenModularCore, as the Java 8 module omlib-core-j8:
+// the same rules as every other Minecraft version, downgraded from Java 17 with the Java 9+ API it uses as stubs under
+// omtteam/omlib/jvmdg/. OMT, OMPD and OML compile against it through OMLib (api); the jars carry its classes, so
+// players still install one OMLib jar.
+configurations {
+    // the core module alone (not transitive): its classes go into the OMLib jars
+    coreBundle {
+        canBeConsumed = false
+        transitive = false
+    }
 }
 
 dependencies {
+    api "com.github.OpenModularTurretsTeam.OpenModularCore:omlib-core-j8:${core_version}"
+    coreBundle "com.github.OpenModularTurretsTeam.OpenModularCore:omlib-core-j8:${core_version}"
     // @ParametersAreNullableByDefault (the JSR-305 of Minecraft's libraries is older than FG2's)
     compileOnly "com.google.code.findbugs:jsr305:3.0.2"
     implementation rfg.deobf("mezz.jei:jei_${minecraft_version}:${jei_version}:api")
@@ -84,7 +103,18 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = "UTF-8"
 }
 
-// reobfJar (SRG names) is the jar players install; jar is the dev jar (MCP names)
+// The core classes and their stubs are part of the dev jar, and so of reobfJar (made from it; the core names no
+// Minecraft class, so reobfuscation leaves it alone): the only classes under omtteam/omlib/core and omtteam/omlib/jvmdg
+tasks.named("jar", Jar) {
+    def bundle = configurations.coreBundle
+    inputs.files(bundle)
+    from({ bundle.collect { zipTree(it) } }) {
+        include "omtteam/omlib/core/**", "omtteam/omlib/jvmdg/**"
+    }
+}
+
+// reobfJar (SRG names) is the jar players install; jar is the dev jar (MCP names), which OMT, OMPD and OML compile
+// against standalone (with the core classes in it, so the publication names no dependency)
 publishing {
     publications {
         mavenJava(MavenPublication) {

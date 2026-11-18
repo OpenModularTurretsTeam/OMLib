@@ -42,5 +42,14 @@ public enum EnumMachineMode {
     public static EnumMachineMode fromCore(MachineMode mode) {
         return values()[mode.ordinal()];
     }
+
+    /**
+     * The core mode saved as 3.x ordinal (NBT, memory cards), or {@code fallback} if the value is out of range. The
+     * ordinal is a 1.12 save format, so this lives here and not in the shared core.
+     */
+    public static MachineMode byOrdinal(int ordinal, MachineMode fallback) {
+        EnumMachineMode[] values = values();
+        return ordinal >= 0 && ordinal < values.length ? values[ordinal].toCore() : fallback;
+    }
 }
 
