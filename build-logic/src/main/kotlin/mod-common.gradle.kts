@@ -4,7 +4,8 @@
 import java.util.Properties
 
 plugins {
-    java
+    // java-library for compileOnlyApi (the library publishes its core module for compiling, see OpenModularCore below)
+    `java-library`
     id("me.modmuss50.mod-publish-plugin")
 }
 
@@ -59,6 +60,72 @@ if (!isLibrary) {
             name = "OMLib"
             content { includeGroup("omtteam.omlib") }
         }
+    }
+}
+
+// ---- OpenModularCore: the shared game rules (plain Java, no Minecraft), from JitPack ----
+// gradle.properties names the mod's core module (core_module: omlib-core, omt-core, oml-core) and core_version, which is
+// the same in every mod and workspace (../CLAUDE.md of the workspaces' root, "Shared core logic"). Without core_module
+// the mod has no core.
+// The module's classes are extracted into build/core/classes, which counts as a classes folder of the main source set:
+// - every jar starts from main's output, so the mod's jar bundles them on every loader (Loom remapJar, ModDevGradle
+//   jar, legacy ModDevGradle jar and reobfJar; the core has no Minecraft names, so remapping leaves it alone);
+// - the dev runs, game tests and unit tests load them as part of the mod (Loom's classpath group, ModDevGradle's mod
+//   folders), so no loader needs a plain library on its classpath (NeoForge 1.21.1 and Forge would not load one).
+// Only that module goes into the jar (omt-core's dependency on omlib-core comes with OMLib's jar), and only its
+// <base package>.core classes. For compiling, the module is a compileOnly dependency (compileOnlyApi in the library: its
+// published metadata names omlib-core for the mods' compile classpath, while the classes come with its jar); it is never
+// a runtime dependency, which would put the same classes on the classpath twice.
+val coreGroup = "com.github.OpenModularTurretsTeam.OpenModularCore"
+val coreModule = (findProperty("core_module") as String?)?.takeIf { it.isNotBlank() }
+val corePath = "${basePackage.replace('.', '/')}/core"
+if (coreModule != null) {
+    val coreVersion = (findProperty("core_version") as String?)?.takeIf { it.isNotBlank() }
+        ?: throw GradleException("core_module is set, so gradle.properties needs core_version too")
+    val coreDependency = "$coreGroup:$coreModule:$coreVersion"
+
+    repositories {
+        // JitPack builds OpenModularCore from its git tags; it is asked for nothing else
+        maven("https://jitpack.io") {
+            name = "JitPack"
+            content { includeGroup(coreGroup) }
+        }
+    }
+
+    dependencies {
+        add(if (isLibrary) "compileOnlyApi" else "compileOnly", coreDependency)
+    }
+
+    // The module's own jar, without its dependencies
+    val coreBundle = configurations.create("coreBundle") {
+        description = "The OpenModularCore module whose classes the jar bundles"
+        isCanBeConsumed = false
+        isCanBeResolved = true
+        isTransitive = false
+        attributes {
+            attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage.JAVA_RUNTIME))
+            attribute(Category.CATEGORY_ATTRIBUTE, objects.named(Category.LIBRARY))
+            attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE, objects.named(LibraryElements.JAR))
+            attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
+        }
+    }
+    dependencies { coreBundle(coreDependency) }
+
+    val coreClasses = layout.buildDirectory.dir("core/classes")
+    val extractCore = tasks.register<Sync>("extractCore") {
+        group = "build"
+        description = "Extracts the classes of $coreModule, which the main source set then holds as its own"
+        from(coreBundle.elements.map { jars -> jars.map { zipTree(it.asFile) } })
+        include("$corePath/**")
+        into(coreClasses)
+        doLast {
+            if (destinationDir.resolve(corePath).walkTopDown().none { it.isFile && it.extension == "class" }) {
+                throw GradleException("$coreDependency has no classes in $corePath")
+            }
+        }
+    }
+    sourceSets.main {
+        (output.classesDirs as ConfigurableFileCollection).from(coreClasses).builtBy(extractCore)
     }
 }
 
@@ -157,22 +224,23 @@ tasks {
         useJUnitPlatform()
     }
 
-    // The core game logic must stay independent of Minecraft so it can be unit-tested in isolation
-    val verifyCoreIsolation = register("verifyCoreIsolation") {
+    // The core game logic lives in OpenModularCore (its build checks that it stays free of Minecraft). A class in the
+    // mod's own core package would end up next to the bundled core classes (or replace one of them), so the mod's
+    // sources (any source set, any version folder) must have none.
+    val verifyNoCoreSources = register("verifyNoCoreSources") {
         group = "verification"
-        description = "Fails if the core package imports Minecraft, a loader or other game classes"
-        val coreDir = rootProject.file("src/main/java/${basePackage.replace('.', '/')}/core")
+        description = "Fails if the sources have files in the core package, which comes from OpenModularCore"
+        val sources = rootProject.file("src")
         val root = rootProject.projectDir
-        inputs.dir(coreDir)
+        val coreFolder = "java/$corePath"
+        inputs.dir(sources)
         doLast {
-            val ownPackage = Regex.escape(basePackage)
-            val forbidden = Regex("""^\s*import\s+(static\s+)?(net\.minecraft|net\.fabricmc|net\.neoforged|net\.minecraftforge|com\.mojang|team\.reborn|$ownPackage\.(?!core\b))""")
-            val violations = coreDir.walkTopDown().filter { it.extension == "java" }.flatMap { file ->
-                file.readLines().withIndex().filter { forbidden.containsMatchIn(it.value) }
-                    .map { "${file.relativeTo(root)}:${it.index + 1}: ${it.value.trim()}" }
-            }.toList()
-            if (violations.isNotEmpty()) {
-                throw GradleException("Core logic must not depend on the game:\n" + violations.joinToString("\n"))
+            val strays = sources.walkTopDown()
+                .filter { it.isFile && it.parentFile.invariantSeparatorsPath.let { dir -> dir.endsWith("/$coreFolder") || dir.contains("/$coreFolder/") } }
+                .map { it.relativeTo(root).invariantSeparatorsPath }.sorted().toList()
+            if (strays.isNotEmpty()) {
+                throw GradleException("The core package comes from OpenModularCore ($coreGroup:${coreModule ?: "<core_module>"}); " +
+                    "move these files there or into the game layer:\n" + strays.joinToString("\n"))
             }
         }
     }
@@ -195,7 +263,7 @@ tasks {
     }
 
     check {
-        dependsOn(verifyCoreIsolation, checkRecipes)
+        dependsOn(verifyNoCoreSources, checkRecipes)
     }
 
     jar {

@@ -1,10 +1,16 @@
-package omtteam.omlib.core.world;
+package omtteam.omlib.compat;
 
 import net.minecraft.core.Direction;
+import omtteam.omlib.core.world.BlockPosition;
+import omtteam.omlib.core.world.Face;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * OpenModularCore's {@link Face} against Minecraft's {@link Direction}, on every node: the core cannot see Minecraft, so
+ * this test lives in the game layer. The mods convert between the two by name (OMT) and by ordinal (OML).
+ */
 class FaceTest {
     @Test
     void everyStepIsOneBlockAlongOneAxis() {
@@ -30,7 +36,6 @@ class FaceTest {
         assertEquals(new BlockPosition(4, -7, 12), origin.relative(Face.EAST));
     }
 
-    /** The mods convert between the two by name (OMT) and by ordinal (OML). */
     @Test
     void namesOrderAndStepsMatchMinecraftsDirection() {
         assertEquals(Direction.values().length, Face.values().length);

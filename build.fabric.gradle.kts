@@ -74,7 +74,9 @@ tasks.jacocoTestReport {
     enabled = coverageActive
     dependsOn(tasks.test)
     sourceDirectories.setFrom(sourceSets.main.get().java.srcDirs)
-    classDirectories.setFrom(sourceSets.main.get().output.classesDirs)
+    // only the library's own classes: main's classes folders also hold the bundled OpenModularCore classes (mod-common),
+    // whose coverage the core repository measures
+    classDirectories.setFrom(sourceSets.main.get().java.classesDirectory)
     reports {
         csv.required = true
         xml.required = true
@@ -117,8 +119,8 @@ dependencies {
     pitest("org.pitest:pitest-command-line:${property("pitest_version")}")
     pitest("org.pitest:pitest-junit5-plugin:${property("pitest_junit5_version")}")
 }
+// (The core, omtteam.omlib.core, is mutation-tested in OpenModularCore.)
 val pitestTargets = listOf(
-    "omtteam.omlib.core.*",
     "omtteam.omlib.config.*",
     "omtteam.omlib.compat.nbt.*",
     "omtteam.omlib.compat.network.PacketType",

@@ -60,6 +60,20 @@ publishing {
             artifact(tasks.named<Jar>("reobfJar"))
             artifact(tasks.named<Jar>("jar")) { classifier = "dev" }
             artifact(tasks.named<Jar>("sourcesJar")) { classifier = "sources" }
+            // Single artifacts carry no dependencies: name the core module (compileOnlyApi, see mod-common) in the POM
+            // as the Fabric and NeoForge publications do through their component
+            val compileOnlyApi = configurations.compileOnlyApi.get().dependencies
+            pom.withXml {
+                val dependencies = asNode().appendNode("dependencies")
+                compileOnlyApi.forEach { dependency ->
+                    dependencies.appendNode("dependency").apply {
+                        appendNode("groupId", dependency.group)
+                        appendNode("artifactId", dependency.name)
+                        appendNode("version", dependency.version)
+                        appendNode("scope", "compile")
+                    }
+                }
+            }
         }
     }
     repositories {
