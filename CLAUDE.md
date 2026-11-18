@@ -13,7 +13,8 @@ The same rules apply as in the mods' `CLAUDE.md`: committed source in the `1.21.
   A mod's texts that the library shows come from the mod's `DisguiseRules` (`invalidMessage`, `slotHint`).
 - Public API stays small: classes and methods are public only if a mod uses them.
   A change of a public signature changes both mods; check them (`./gradlew chiseledBuild` in each) before committing.
-- `core/` stays free of Minecraft (`verifyCoreIsolation`).
+- The core (`omtteam.omlib.core`) is not in this repository: it comes from OpenModularCore (`../../OpenModularCore`, module `omlib-core`, `core_module` / `core_version` in `gradle.properties`) and is bundled into the jar by `mod-common`.
+  Never add sources in the core package (`verifyNoCoreSources` fails on them); a core change is made in OpenModularCore, see the root `CLAUDE.md` ("Shared core logic").
 - The platform services are created on first use (`Platform`, `ClientPlatform`), never relying on which mod's entrypoint runs first.
 - NeoForge payloads: a mod applies the registrations of its own namespace in its own `RegisterPayloadHandlersEvent` (`NeoForgeNetwork.applyRegistrations`).
 - Reflection on config objects (`ConfigWriter`, `ConfigRanges`) finds the sections in the package of the config root's class.

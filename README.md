@@ -7,24 +7,44 @@ This branch starts from a clean history; the Minecraft 1.12 library lives on the
 
 ## What is in it
 
-- `src/main/java/omtteam/omlib/` and `src/client/java/omtteam/omlib/client/` are the library code, in the same package layout the mods had before:
+- `src/main/java/omtteam/omlib/` and `src/client/java/omtteam/omlib/client/` are the library code, in the same package layout the mods had before.
+  The game rules without Minecraft, `omtteam.omlib.core` (trust lists, access levels and profiles, energy buffer, camouflage light and permissions, machine mode and targeting settings, faces, positions and flood fill), are not in this repository: they come from the shared core, module `omlib-core` of [OpenModularCore](https://github.com/OpenModularTurretsTeam/OpenModularCore), the same on every Minecraft version, and are bundled into the library's jar (see "The shared core").
   - `platform` is the loader abstraction (`Platform`, `LoaderInfo`, `Fuel`, `Network`, `Menus`, `Energy`) with the Fabric, NeoForge and Forge implementations in `platform/<loader>`.
     The services are created on first use, so it does not matter which mod starts first.
   - `compat` hides the differences between Minecraft versions (`VersionCompat`, `NbtCompat`, `BlockCompat`, `NetworkCompat`, `MenuCompat`, `CompatBlockEntity`, `CompatEntityBlock` with `BlockCodec`, `CommonTags`); `client.compat` has the client side (`ClientCompat`).
   - `block.InteractiveBlock` is the right-click handling for all mods: blocks implement `onUse`, and mods add `Interceptor`s that see every click first (a wand, a settings card); the library registers the loader's event once.
-  - `core.energy` (`EnergyStore`, `EnergyAccess`, `EnergyGroup`) and `inventory.ItemAccess` describe energy and items other blocks may use, and `blockentity.TransferHost` marks the block entities that expose them; the loaders' lookups and capabilities are registered from the mod's list of such block entity types.
+  - `core.energy` (`EnergyStore`, `EnergyAccess`, `EnergyGroup`, from the core) and `inventory.ItemAccess` describe energy and items other blocks may use, and `blockentity.TransferHost` marks the block entities that expose them; the loaders' lookups and capabilities are registered from the mod's list of such block entity types.
   - `config` is the annotation-based JSON config (`@Comment`, `@Range`, `ConfigWriter`, `ConfigRanges`, `ConfigValidator`, `ConfigMigration`) and `ConfigManager<T>`, which loads, migrates, validates and writes a mod's file and holds the server's config on clients.
     The library sends every manager's config to joining players in one packet (`omlib:config_sync`, routed by mod id) and resets them when the player leaves; a mod keeps a small facade class (`OMTConfig`, `OMLConfig`) around its manager.
-  - `core.security`, `security`, `blockentity.OwnedBlockEntity`, `block` (claiming), `item.OwnershipWandItem` and the trust packets are security and ownership: owner, trusted players and access levels (`TrustManager`, no Minecraft), the Minecraft side (`OwnedHost`, `TrustHost`, `PlayerAdapter`, `PlayerLookup`, `SecurityNbt`), claiming unowned blocks (`ClaimInteraction`, `ClaimSpread` over `core.world.FloodFill`, `ClaimLink`), the map maker's wand, the trusted player screen (`client.screen.TrustedPlayersScreen`, `DisownConfirm`) and its packets (`omlib:add_trusted_player` and others).
+  - `core.security`, `security`, `blockentity.OwnedBlockEntity`, `block` (claiming), `item.OwnershipWandItem` and the trust packets are security and ownership: owner, trusted players and access levels (`TrustManager`, in the core), the Minecraft side (`OwnedHost`, `TrustHost`, `PlayerAdapter`, `PlayerLookup`, `SecurityNbt`), claiming unowned blocks (`ClaimInteraction`, `ClaimSpread` over `core.world.FloodFill`, `ClaimLink`), the map maker's wand, the trusted player screen (`client.screen.TrustedPlayersScreen`, `DisownConfirm`) and its packets (`omlib:add_trusted_player` and others).
     The library registers the wand and claiming as the first `InteractiveBlock` interceptors; a mod supplies its rules through `OwnershipSettings`.
   - `camo`, `menu`, `network` and `client` hold the camouflage menu: `CamoHost`, `CamoBlock`, `CamoData`, `DisguiseRules`, the menu, its packets and screen, and the models that draw a disguise.
     The library registers the menu type and the packets (namespace `omlib`) itself; a mod provides its rules and hosts.
   - `inventory.LargeStackContainer`, `menu.LargeStackSlot`, `menu.LargeStackMenu` and `client.screen.LargeStackScreen` are containers whose slots hold more than one stack: the container names each slot's limit (`getSlotLimit`), which the menu slots, the loader adapters of `ItemAccess` and `VersionCompat.saveItems` / `loadItems` follow.
     The cursor and the player's inventory only ever get normal stacks out of such a slot; the menu syncs the counts on 1.20.1 (the stack's data carries the real count there) and the screen draws counts from four digits on in a smaller font, with count and limit in the tooltip.
 - `src/main/resources/assets/omlib/lang/` has the texts of the library's screens and messages.
-- `build-logic/` is a Gradle included build with the shared build logic of this repository and of the mods: the `mod-common` convention plugin and `convertFabricData`.
+- `build-logic/` is a Gradle included build with the shared build logic of this repository and of the mods: the `mod-common` convention plugin (including the wiring of the shared core) and `convertFabricData`.
 - `tools/shared_sources.py` and `shared-sources.txt` keep the few source files that the mods still copy from each other identical (see below).
 - `tools/bootstrap.sh` builds the library for all nodes into `build/maven`; the mods call it from their `settings.gradle.kts`.
+
+## The shared core
+
+The library and each mod build against one module of OpenModularCore, published on JitPack as `com.github.OpenModularTurretsTeam.OpenModularCore:<module>:<version>`.
+`gradle.properties` names it, and `mod-common` does the rest the same way in every repository:
+
+```properties
+core_module=omlib-core      # omt-core in OpenModularTurrets, oml-core in OpenModularLighting
+core_version=1.0.0          # the same in every mod and on every Minecraft version
+```
+
+- The JitPack repository is added with a content filter, so Gradle asks it only for the core.
+- The module is a compile-only dependency (`compileOnlyApi` in the library, so its published metadata names `omlib-core` for compiling a mod against it; `compileOnly` in a mod).
+- `extractCore` unpacks the module's `<base package>.core` classes into `build/core/classes`, a classes folder of the main source set.
+  So every jar bundles them (Loom's `remapJar`, ModDevGradle's `jar`, legacy ModDevGradle's `jar` and `reobfJar`; the core has no Minecraft names, so remapping leaves it alone), and dev runs, game tests and unit tests load them as part of the mod on every loader, without a plain library on the classpath.
+  Only that module's classes go into the jar: a mod gets `omlib-core` with the library's jar.
+- `verifyNoCoreSources` (part of `check`) fails if the sources have files in the core package: a core change is made in OpenModularCore, never as a copy here.
+
+Without `core_module` there is no core wiring.
 
 ## Using it in a mod
 
@@ -57,6 +77,7 @@ The build scripts then get the library's coordinates from `mod-common` (`project
 - Forge 1.20.1: the same with `modImplementation` (the jar is SRG-named and gets remapped).
 
 The mod's metadata declares the dependency (`omlib` in `fabric.mod.json`, `[[dependencies.<mod>]]` with `ordering = "AFTER"` on NeoForge and Forge); `${omlib_version}` is filled in by `mod-common`.
+The mod's own core module is set in its `gradle.properties` (see "The shared core"); the library's jar brings `omlib-core`.
 
 What the mod provides to the library:
 
@@ -79,19 +100,19 @@ What the mod provides to the library:
 ./gradlew "Set active project to 1.20.1-fabric"   # Stonecutter: switch the active node (switch back to 1.21.1-fabric before committing)
 ```
 
-The unit tests (`src/test`) run on every node, so the version-specific code they reach (`NbtCompat`, the packet codecs) is checked on each Minecraft version.
-`check` also prints their line coverage per package (JaCoCo, active node only; report in `versions/1.21.1-fabric/build/reports/jacoco/test/html/index.html`).
+The unit tests (`src/test`) run on every node, so the version-specific code they reach (`NbtCompat`, the packet codecs, `FaceTest`: the core's `Face` against Minecraft's `Direction`) is checked on each Minecraft version.
+The core's own tests, isolation check, architecture rules, coverage and mutation testing run in OpenModularCore.
+`check` also prints their line coverage per package of the library's own classes (JaCoCo, active node only; report in `versions/1.21.1-fabric/build/reports/jacoco/test/html/index.html`).
 Code that needs a world (claiming, the wand, the packet handlers, the menus, the loader adapters) is tested by the mods' game tests.
 
-`./gradlew :1.21.1-fabric:pitest` (on demand, not part of `check`) runs mutation testing (PIT) on the code the unit tests are written for (`core`, `config`, `compat.nbt`, the packet codecs, `LongContainerData`, `SecurityNbt`; the list is `pitestTargets` in `build.fabric.gradle.kts`); report in `versions/1.21.1-fabric/build/reports/pitest/index.html`.
+`./gradlew :1.21.1-fabric:pitest` (on demand, not part of `check`) runs mutation testing (PIT) on the code the unit tests are written for (`config`, `compat.nbt`, the packet codecs, `LongContainerData`, `SecurityNbt`; the list is `pitestTargets` in `build.fabric.gradle.kts`); report in `versions/1.21.1-fabric/build/reports/pitest/index.html`.
 It plants small mistakes (a flipped condition, `<` instead of `<=`, a removed call) and runs the unit tests against each one; a mistake no test notices ("survived") marks behaviour the tests do not pin down.
 When one survives, add the missing assertion to the unit test of that class; if it cannot be noticed, add it to the list below with the reason.
-It fails when the results get worse than the thresholds in `gradle.properties` (`pitest_mutation_threshold`, `pitest_coverage_threshold`, `pitest_max_surviving`, the state of 2026-11-06); tighten them when a test kills a survivor (lower `pitest_max_surviving`), and raise it only for a survivor that no test can notice, listed below with its reason.
+It fails when the results get worse than the thresholds in `gradle.properties` (`pitest_mutation_threshold`, `pitest_coverage_threshold`, `pitest_max_surviving`, the state of 2026-11-18); tighten them when a test kills a survivor (lower `pitest_max_surviving`), and raise it only for a survivor that no test can notice, listed below with its reason.
 
-State on 2026-11-06: 454 of 460 mutations detected (99 %).
+State on 2026-11-18 (since the core moved to OpenModularCore, without it): 245 of 249 mutations detected (98 %), 352 of 375 lines of the mutated classes covered (94 %).
 The survivors cannot be noticed:
 
-- `FloodFill.collect`: `limit < 0` instead of `<= 0` (with a limit of 0 the loop adds nothing either), and an empty immutable list instead of the empty `ArrayList` (no caller changes the result).
 - `ConfigValidator.filter`: an empty immutable list for a missing list (the validated lists are only assigned to config fields, never changed).
 - `SecurityNbt.loadTrustedPlayers`: `i <= size` (an index past the end reads an empty tag, which has no UUID and is dropped).
 
