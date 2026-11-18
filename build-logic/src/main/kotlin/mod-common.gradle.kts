@@ -127,6 +127,26 @@ if (coreModule != null) {
     sourceSets.main {
         (output.classesDirs as ConfigurableFileCollection).from(coreClasses).builtBy(extractCore)
     }
+
+    // A POM knows no compile-only scope: Gradle writes compileOnlyApi as compile scope, which Maven consumers (and Gradle
+    // ones where no .module file is published) also put on the runtime classpath, next to the classes in the jar. So the
+    // POMs name no core module; the .module files keep it for compiling (apiElements only).
+    plugins.withId("maven-publish") {
+        extensions.configure<PublishingExtension> {
+            publications.withType<MavenPublication>().configureEach {
+                pom.withXml {
+                    fun groovy.util.Node.children(name: String) =
+                        children().filterIsInstance<groovy.util.Node>().filter { it.name().toString().endsWith(name) }
+                    asNode().children("dependencies").forEach { dependencies ->
+                        dependencies.children("dependency")
+                            .filter { dependency -> dependency.children("groupId").any { it.text() == coreGroup } }
+                            .forEach { dependencies.remove(it) }
+                        if (dependencies.children().isEmpty()) dependencies.parent().remove(dependencies)
+                    }
+                }
+            }
+        }
+    }
 }
 
 // Loader-specific classes live in .../platform/<loader>/ packages (main and client); other loaders' packages
