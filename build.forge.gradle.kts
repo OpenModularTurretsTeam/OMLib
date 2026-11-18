@@ -60,20 +60,9 @@ publishing {
             artifact(tasks.named<Jar>("reobfJar"))
             artifact(tasks.named<Jar>("jar")) { classifier = "dev" }
             artifact(tasks.named<Jar>("sourcesJar")) { classifier = "sources" }
-            // Single artifacts carry no dependencies: name the core module (compileOnlyApi, see mod-common) in the POM
-            // as the Fabric and NeoForge publications do through their component
-            val compileOnlyApi = configurations.compileOnlyApi.get().dependencies
-            pom.withXml {
-                val dependencies = asNode().appendNode("dependencies")
-                compileOnlyApi.forEach { dependency ->
-                    dependencies.appendNode("dependency").apply {
-                        appendNode("groupId", dependency.group)
-                        appendNode("artifactId", dependency.name)
-                        appendNode("version", dependency.version)
-                        appendNode("scope", "compile")
-                    }
-                }
-            }
+            // Single artifacts carry no dependencies, so the POM names none, the core module included: its classes are in
+            // these jars (see OpenModularCore in mod-common), which is all that compiling against the library needs, and as
+            // a POM dependency (compile scope) it would put the same classes on the consumers' runtime classpath a second time
         }
     }
     repositories {
