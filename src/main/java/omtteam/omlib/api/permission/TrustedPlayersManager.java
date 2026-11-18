@@ -8,8 +8,10 @@ import net.minecraftforge.common.util.Constants;
 import omtteam.omlib.core.security.AccessLevel;
 import omtteam.omlib.core.security.AccessProfile;
 import omtteam.omlib.core.security.PlayerIdentity;
+import omtteam.omlib.core.security.PlayerInfo;
 import omtteam.omlib.core.security.SecurityEnvironment;
 import omtteam.omlib.core.security.TrustManager;
+import omtteam.omlib.core.security.TrustResult;
 import omtteam.omlib.util.player.OMLibSecurityEnvironment;
 import omtteam.omlib.util.player.Player;
 import omtteam.omlib.util.player.PlayerUtil;
@@ -18,6 +20,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.BiFunction;
 
 import static omtteam.omlib.util.player.PlayerUtil.getPlayerUIDUnstable;
 import static omtteam.omlib.util.player.PlayerUtil.getPlayerUUID;
@@ -26,9 +29,15 @@ import static omtteam.omlib.util.player.PlayerUtil.getPlayerUUID;
  * Created by Keridos on 09/02/17.
  * The 3.x trust list of an owned block, now a facade over the core {@link TrustManager}: it converts between the
  * 3.x types ({@link Player}, {@link TrustedPlayer}, {@link EnumAccessLevel}) and the core ones, reads and writes the
- * 3.x NBT and packet formats, and changes the list by copying it and {@link TrustManager#load loading} the copy.
+ * 3.x NBT and packet formats, and changes the list through the core's change methods (see {@link #change}).
  */
 public class TrustedPlayersManager implements ITrustedPlayersManager {
+    /**
+     * The acting owner of changes to a list without owner: no player has this UUID (it is neither a Mojang nor an
+     * offline UUID) or this name.
+     */
+    private static final PlayerIdentity PLACEHOLDER_OWNER = new PlayerIdentity(new UUID(0L, 0L), "");
+
     private final TrustManager core;
     private final SecurityEnvironment environment;
     private final TileEntity tile;
@@ -128,6 +137,9 @@ public class TrustedPlayersManager implements ITrustedPlayersManager {
     }
 
     // ---- changes (no permission checks, see ITrustedPlayersManager) ----
+    // The changes go through the core's change methods, as on 1.20.1/1.21.1/1.21.11: names are resolved to the entries'
+    // UUIDs, the owner acts (the callers have checked the player's rights), and a TrustResult other than SUCCESS is
+    // the 3.x false.
 
     @Override
     public boolean addTrustedPlayer(String name) {
@@ -135,27 +147,30 @@ public class TrustedPlayersManager implements ITrustedPlayersManager {
         return player != null && addTrustedPlayer(new TrustedPlayer(player));
     }
 
+    /**
+     * Adds the player at its level; false if it has no UUID, is the owner, is already on the list (also by name), or
+     * its level is not one of the block's {@link AccessProfile} levels.
+     */
     @Override
     public boolean addTrustedPlayer(TrustedPlayer player) {
         omtteam.omlib.core.security.TrustedPlayer entry = toCore(player);
         if (entry == null || getTrustedPlayer(player.getName()) != null
-                || core.getTrustedPlayer(entry.getIdentity()).isPresent() || isOwner(entry.getIdentity())) {
+                || !core.getProfile().allows(entry.getAccessLevel())) {
             return false;
         }
-        List<omtteam.omlib.core.security.TrustedPlayer> entries = copyEntries();
-        entries.add(entry);
-        core.load(core.getOwner(), entries);
-        return true;
+        return change((trust, actor) -> {
+            TrustResult added = trust.addTrustedPlayer(actor, entry.getIdentity());
+            if (added != TrustResult.SUCCESS || entry.getAccessLevel() == AccessLevel.NONE) {
+                return added;
+            }
+            return trust.setAccessLevel(actor, entry.getUuid(), entry.getAccessLevel());
+        });
     }
 
+    /** Removes every entry with this name (ignoring case). */
     @Override
     public boolean removeTrustedPlayer(String name) {
-        List<omtteam.omlib.core.security.TrustedPlayer> entries = copyEntries();
-        if (!entries.removeIf(entry -> entry.getName().equalsIgnoreCase(name))) {
-            return false;
-        }
-        core.load(core.getOwner(), entries);
-        return true;
+        return changeEach(name, (trust, actor, uuid) -> trust.removeTrustedPlayer(actor, uuid));
     }
 
     @Override
@@ -170,45 +185,71 @@ public class TrustedPlayersManager implements ITrustedPlayersManager {
         core.load(core.getOwner(), entries);
     }
 
+    /**
+     * Sets the level of every entry with this name (ignoring case); false if there is none or the level is not one of
+     * the block's {@link AccessProfile} levels.
+     */
     @Override
     public boolean changePermission(String player, EnumAccessLevel level) {
-        return changeLevel(player, level.toCore());
+        return changeEach(player, (trust, actor, uuid) -> trust.setAccessLevel(actor, uuid, level.toCore()));
     }
 
+    /** Raises or lowers every entry with this name (ignoring case) by that many levels of the block's profile. */
     @Override
     public boolean changePermission(String player, int change) {
-        TrustedPlayer entry = getTrustedPlayer(player);
-        if (entry == null) {
-            return false;
-        }
-        AccessLevel newLevel = core.getProfile().step(entry.getAccessLevel().toCore(), change);
-        return newLevel != null && changeLevel(player, newLevel);
+        return changeEach(player, (trust, actor, uuid) -> trust.changeAccessLevel(actor, uuid, change));
     }
 
-    private boolean changeLevel(String name, AccessLevel level) {
-        List<omtteam.omlib.core.security.TrustedPlayer> entries = copyEntries();
-        boolean found = false;
-        for (int i = 0; i < entries.size(); i++) {
-            if (entries.get(i).getName().equalsIgnoreCase(name)) {
-                entries.set(i, new omtteam.omlib.core.security.TrustedPlayer(entries.get(i).getIdentity(), level));
-                found = true;
+    /** A change of one trust-list entry through the core. */
+    private interface EntryChange {
+        TrustResult apply(TrustManager trust, PlayerInfo actor, UUID player);
+    }
+
+    /** Applies the change to every entry with this name; true if it succeeded for at least one. */
+    private boolean changeEach(String name, EntryChange change) {
+        List<UUID> matches = new ArrayList<>();
+        for (omtteam.omlib.core.security.TrustedPlayer entry : core.getTrustedPlayers()) {
+            if (entry.getName().equalsIgnoreCase(name)) {
+                matches.add(entry.getUuid());
             }
         }
-        if (found) {
-            core.load(core.getOwner(), entries);
+        boolean changed = false;
+        for (UUID uuid : matches) {
+            changed |= change((trust, actor) -> change.apply(trust, actor, uuid));
         }
-        return found;
+        return changed;
     }
 
-    private boolean isOwner(PlayerIdentity player) {
+    /**
+     * Runs a change of the core's change methods with the owner as the acting player. A list without owner (an
+     * unowned block) has no admin in the core, so the change runs on a copy managed by a placeholder owner and is
+     * loaded back if it succeeded.
+     *
+     * @return whether the change succeeded
+     */
+    private boolean change(BiFunction<TrustManager, PlayerInfo, TrustResult> change) {
         PlayerIdentity coreOwner = core.getOwner();
-        return coreOwner != null && (coreOwner.is(player.uuid())
-                || (environment.offlineModeSupport() && coreOwner.name().equalsIgnoreCase(player.name())));
+        if (coreOwner != null) {
+            return change.apply(core, new PlayerInfo(coreOwner.uuid(), coreOwner.name(), false)) == TrustResult.SUCCESS;
+        }
+        TrustManager copy = new TrustManager(environment, () -> {
+        }, core.getProfile());
+        copy.load(PLACEHOLDER_OWNER, copyEntries(core));
+        if (change.apply(copy, new PlayerInfo(PLACEHOLDER_OWNER.uuid(), PLACEHOLDER_OWNER.name(), false))
+                != TrustResult.SUCCESS) {
+            return false;
+        }
+        core.load(null, copyEntries(copy));
+        return true;
     }
 
     private List<omtteam.omlib.core.security.TrustedPlayer> copyEntries() {
+        return copyEntries(core);
+    }
+
+    private static List<omtteam.omlib.core.security.TrustedPlayer> copyEntries(TrustManager trust) {
         List<omtteam.omlib.core.security.TrustedPlayer> entries = new ArrayList<>();
-        for (omtteam.omlib.core.security.TrustedPlayer entry : core.getTrustedPlayers()) {
+        for (omtteam.omlib.core.security.TrustedPlayer entry : trust.getTrustedPlayers()) {
             entries.add(entry.copy());
         }
         return entries;

@@ -5,7 +5,9 @@ import omtteam.omlib.api.permission.EnumAccessLevel;
 import omtteam.omlib.api.permission.TrustedPlayer;
 import omtteam.omlib.api.permission.TrustedPlayersManager;
 import omtteam.omlib.config.OMConfig;
+import omtteam.omlib.core.security.AccessProfile;
 import omtteam.omlib.util.RandomUtil;
+import omtteam.omlib.util.player.OMLibSecurityEnvironment;
 import omtteam.omlib.util.player.Player;
 import net.minecraft.nbt.NBTTagList;
 import org.junit.jupiter.api.AfterEach;
@@ -171,5 +173,54 @@ class TrustedPlayersManagerTest {
         assertEquals(EnumAccessLevel.NONE, loadLevel(-1));
         assertEquals(EnumAccessLevel.NONE, loadLevel(levels.length));
         assertEquals(EnumAccessLevel.NONE, loadLevel(99));
+    }
+
+    /** A trust list that uses only the levels NONE and ADMIN, as the camouflage trap's. */
+    private TrustedPlayersManager trustedAndAdmin() {
+        return new TrustedPlayersManager(owner, null, OMLibSecurityEnvironment.INSTANCE,
+                AccessProfile.TRUSTED_AND_ADMIN);
+    }
+
+    @Test
+    void aLevelTheBlockDoesNotUseIsRefused() {
+        TrustedPlayersManager manager = trustedAndAdmin();
+        assertTrue(manager.addTrustedPlayer(new TrustedPlayer(alice, EnumAccessLevel.NONE)));
+
+        assertFalse(manager.changePermission("Alice", EnumAccessLevel.OPEN_GUI), "refused, not lowered to NONE");
+        assertEquals(EnumAccessLevel.NONE, manager.getTrustedPlayer(alice.getUuid()).getAccessLevel());
+        assertTrue(manager.changePermission("alice", EnumAccessLevel.ADMIN));
+        assertEquals(EnumAccessLevel.ADMIN, manager.getTrustedPlayer(alice.getUuid()).getAccessLevel());
+
+        assertFalse(manager.addTrustedPlayer(new TrustedPlayer(bob, EnumAccessLevel.CHANGE_SETTINGS)));
+        assertNull(manager.getTrustedPlayer(bob.getUuid()), "nothing added");
+    }
+
+    @Test
+    void stepsFollowTheProfile() {
+        TrustedPlayersManager manager = new TrustedPlayersManager(owner);
+        manager.addTrustedPlayer(new TrustedPlayer(alice, EnumAccessLevel.NONE));
+        assertFalse(manager.changePermission("Alice", -1), "no level below NONE");
+        assertTrue(manager.changePermission("Alice", 1));
+        assertEquals(EnumAccessLevel.OPEN_GUI, manager.getTrustedPlayer(alice.getUuid()).getAccessLevel());
+
+        TrustedPlayersManager trap = trustedAndAdmin();
+        trap.addTrustedPlayer(new TrustedPlayer(alice, EnumAccessLevel.NONE));
+        assertTrue(trap.changePermission("Alice", 1));
+        assertEquals(EnumAccessLevel.ADMIN, trap.getTrustedPlayer(alice.getUuid()).getAccessLevel());
+        assertFalse(trap.changePermission("Alice", 1), "no level above ADMIN");
+        assertFalse(trap.changePermission("Carol", 1), "not on the list");
+    }
+
+    @Test
+    void aListWithoutOwnerCanBeChanged() {
+        TrustedPlayersManager manager = new TrustedPlayersManager(null);
+        assertTrue(manager.addTrustedPlayer(new TrustedPlayer(alice, EnumAccessLevel.CHANGE_SETTINGS)));
+        assertTrue(manager.addTrustedPlayer(new TrustedPlayer(bob, EnumAccessLevel.NONE)));
+        assertTrue(manager.changePermission("Bob", EnumAccessLevel.ADMIN));
+        assertTrue(manager.removeTrustedPlayer("Alice"));
+
+        assertNull(manager.core().getOwner(), "still without owner");
+        assertEquals(1, manager.getTrustedPlayers().size());
+        assertEquals(EnumAccessLevel.ADMIN, manager.getTrustedPlayer(bob.getUuid()).getAccessLevel());
     }
 }

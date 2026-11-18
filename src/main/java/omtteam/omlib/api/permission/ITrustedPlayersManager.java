@@ -23,7 +23,10 @@ public interface ITrustedPlayersManager extends IHasOwner {
     /** Adds the player with this name (looked up in the username cache) at {@link EnumAccessLevel#NONE}. */
     boolean addTrustedPlayer(String name);
 
-    /** Adds the player at its access level; false if it has no UUID, is the owner or is already on the list. */
+    /**
+     * Adds the player at its access level; false if it has no UUID, is the owner, is already on the list, or the
+     * block does not use its level (see {@link omtteam.omlib.core.security.AccessProfile}).
+     */
     boolean addTrustedPlayer(TrustedPlayer player);
 
     /** Removes the player with this name (ignoring case). */
@@ -61,7 +64,10 @@ public interface ITrustedPlayersManager extends IHasOwner {
 
     void writeToByteBuf(ByteBuf buf);
 
-    /** Sets the level of the player with this name (ignoring case). */
+    /**
+     * Sets the level of the player with this name (ignoring case); false if the block does not use that level (see
+     * {@link omtteam.omlib.core.security.AccessProfile}).
+     */
     boolean changePermission(String player, EnumAccessLevel level);
 
     /** Raises ({@code +1}) or lowers ({@code -1}) the level of the player with this name (ignoring case). */
