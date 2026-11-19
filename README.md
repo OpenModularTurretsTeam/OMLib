@@ -8,7 +8,7 @@ This branch starts from a clean history; the Minecraft 1.12 library lives on the
 ## What is in it
 
 - `src/main/java/omtteam/omlib/` and `src/client/java/omtteam/omlib/client/` are the library code, in the same package layout the mods had before.
-  The game rules without Minecraft, `omtteam.omlib.core` (trust lists, access levels and profiles, energy buffer, camouflage light and permissions, machine mode and targeting settings, faces, positions and flood fill), are not in this repository: they come from the shared core, module `omlib-core` of [OpenModularCore](https://github.com/OpenModularTurretsTeam/OpenModularCore), the same on every Minecraft version, and are bundled into the library's jar (see "The shared core").
+  The game rules without Minecraft, `omtteam.omlib.core` (trust lists, access levels and profiles, energy buffer, camouflage light and permissions, machine mode and targeting settings, memory card data and the copy rules of the trust list, faces, positions and flood fill), are not in this repository: they come from the shared core, module `omlib-core` of [OpenModularCore](https://github.com/OpenModularTurretsTeam/OpenModularCore), the same on every Minecraft version, and are bundled into the library's jar (see "The shared core").
   - `platform` is the loader abstraction (`Platform`, `LoaderInfo`, `Fuel`, `Network`, `Menus`, `Energy`) with the Fabric, NeoForge and Forge implementations in `platform/<loader>`.
     The services are created on first use, so it does not matter which mod starts first.
   - `compat` hides the differences between Minecraft versions (`VersionCompat`, `NbtCompat`, `BlockCompat`, `NetworkCompat`, `MenuCompat`, `CompatBlockEntity`, `CompatEntityBlock` with `BlockCodec`, `CommonTags`); `client.compat` has the client side (`ClientCompat`).
@@ -34,7 +34,7 @@ The library and each mod build against one module of OpenModularCore, published 
 
 ```properties
 core_module=omlib-core      # omt-core in OpenModularTurrets, oml-core in OpenModularLighting
-core_version=1.0.0          # the same in every mod and on every Minecraft version
+core_version=2.0.0          # the same in every mod and on every Minecraft version
 ```
 
 - The JitPack repository is added with a content filter, so Gradle asks it only for the core.
