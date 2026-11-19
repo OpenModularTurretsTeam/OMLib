@@ -55,7 +55,7 @@ The game-layer classes own one core object each and forward to it (1.12 spelling
 | --- | --- |
 | `core.security.TrustManager` | `api.permission.TrustedPlayersManager` (implements `ITrustedPlayersManager`; changes through the core's change methods, with the owner acting), used by the tile entities of the owned blocks |
 | `core.energy.EnergyStore` | `power.OMEnergyStorage`, the Forge Energy adapter; `power.EnergyCapabilities` exposes it (and RF / Tesla) for a tile entity |
-| `core.machine.MachineMode`, `TargetingSettings` | `util.EnumMachineMode` (also reads the saved 3.x ordinals, `byOrdinal`), `util.TargetingSettings`, the 3.x facades |
+| `core.machine.MachineMode`, `TargetingSettings` | `util.EnumMachineMode`, `util.TargetingSettings`, the 3.x facades |
 
 ## Where things live
 
@@ -77,8 +77,9 @@ Packages below `omtteam.omlib` (the `core` ones come from OpenModularCore):
 | (root) | `OMLib` (the `@Mod`), `CommonProxy` (server side of the proxy; supplies the client message handlers and GUIs through overridable methods) |
 | `core.security` | `TrustManager` (owner, trust list, claim, disown, access check), `AccessLevel`, `AccessProfile` (which levels count as what), `PlayerIdentity`, `PlayerInfo`, `TrustedPlayer`, `TrustResult`, `SecurityEnvironment` |
 | `core.energy` | `EnergyStore` (the buffer) and `EnergyAccess` (what other blocks may do with it) |
-| `core.machine` | `MachineMode` (redstone control mode, the 3.x ordinals), `TargetingSettings` |
-| `core.camo`, `core.world` | `CamoLight` and `CamoPermissions`; `FloodFill`, `BlockPosition` (the claim spread) and `Face` (the memory card rules are part of OMT's core) |
+| `core.machine` | `MachineMode` (redstone control mode, the 3.x ordinals; `byOrdinal` reads a saved one), `TargetingSettings` |
+| `core.camo`, `core.world` | `CamoLight` and `CamoPermissions`; `FloodFill`, `BlockPosition` (the claim spread) and `Face` |
+| `core.card` | `MemoryCardData` (what a memory card holds) and `MemoryCardRules` (who may copy and paste, the trust list part), shared by turret bases and camouflage traps; the base part is OMT's `core.card.BaseCardRules` |
 | `api` | what other mods use: `api.permission` (`IHasOwner`, `IOwnedHost`, `ITrustedPlayersManager`, `TrustedPlayersManager`, `EnumAccessLevel`, the owner-share register), `api.tile` (`IHasTrustManager`, `IOwnedBlockAddon`, `IDebugTile`, `IHasTargetingSettings`), `api.render.camo` (`ICamoSupport`, `DisguiseRules`), `api.block` (`IHasItemBlock`, `IPlainLookingBlock`), `api.network` (`ISyncable`) |
 | `block` | `BlockAbstract`, `BlockAbstractTileEntity` (drops the inventory on break), `BlockAbstractCamoTileEntity` (the camouflage block with its unlisted `RENDERBLOCKSTATE` property), the abstract wall and pane, `UnownedMarker` |
 | `tileentity` | `TileEntitySynced` (read/write data and the client copy), `TileEntityBase` (the 3.x `saveToNBT` / `loadFromNBT` hooks on top of it), `TileEntityOwnedBlock` (owner, claim, disown), `InventoryNbt` |

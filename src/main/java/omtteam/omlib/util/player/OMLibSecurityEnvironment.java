@@ -39,8 +39,24 @@ public class OMLibSecurityEnvironment implements SecurityEnvironment {
         return OMConfig.GENERAL.canOPAccessOwnedBlocks;
     }
 
+    /**
+     * Whether turret damage hits trusted players: {@link #turretsDamageTrustedPlayers()}, off here. Subclasses may
+     * override this method directly; OMT's turret bases do.
+     */
     @Override
     public boolean damageTrustedPlayers() {
+        return turretsDamageTrustedPlayers();
+    }
+
+    /**
+     * The name of {@link #damageTrustedPlayers()} in OMLib 4.0.1, kept as a hook so that a subclass compiled against
+     * it (OMT 4.0.1's turret bases) still takes effect. Only {@link #damageTrustedPlayers()} calls it: read that
+     * method, and override that one in new code.
+     *
+     * @deprecated override {@link #damageTrustedPlayers()} instead
+     */
+    @Deprecated
+    public boolean turretsDamageTrustedPlayers() {
         return false;
     }
 

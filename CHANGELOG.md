@@ -10,7 +10,8 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 
 ### Changed
 
-- The game rules (`omtteam.omlib.core`) come from the shared core OpenModularCore 1.0.0, the same on every Minecraft version, and are part of the OMLib jar; the memory card rules (`core.card`) are part of OMT's core now
+- The game rules (`omtteam.omlib.core`) come from the shared core OpenModularCore 2.0.0, the same on every Minecraft version, and are part of the OMLib jar; Open Modular Turrets 4.0.1, Open Modular Passive Defense 4.0.0 and Open Modular Lighting 1.0.0 run with it unchanged
+- API: `OMLibSecurityEnvironment.turretsDamageTrustedPlayers()` is deprecated: override `damageTrustedPlayers()`, the shared core's name, instead (an override of the old name still takes effect)
 - API: `ITrustedPlayersManager.addTrustedPlayer(TrustedPlayer)` and `changePermission(String, EnumAccessLevel)` refuse an access level the block's access profile does not use instead of lowering it, as on 1.20.1, 1.21.1 and 1.21.11
 
 ## [4.0.1] - 2026-11-04

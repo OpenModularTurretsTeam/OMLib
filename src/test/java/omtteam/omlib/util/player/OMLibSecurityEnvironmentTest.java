@@ -45,6 +45,24 @@ class OMLibSecurityEnvironmentTest {
     }
 
     @Test
+    void trustedPlayersAreSafeFromTurretsByDefault() {
+        assertFalse(ENVIRONMENT.damageTrustedPlayers());
+    }
+
+    /** OMT 4.0.1's turret bases override the 4.0.1 name only; the core asks {@code damageTrustedPlayers}. */
+    @Test
+    @SuppressWarnings("deprecation")
+    void aSubclassOfOMLib401StillDecidesTurretDamage() {
+        OMLibSecurityEnvironment environment = new OMLibSecurityEnvironment() {
+            @Override
+            public boolean turretsDamageTrustedPlayers() {
+                return true;
+            }
+        };
+        assertTrue(environment.damageTrustedPlayers());
+    }
+
+    @Test
     void convertsBetweenPlayersAndIdentities() {
         Player player = OMLibSecurityEnvironment.toPlayer(owner);
         assertEquals(owner.uuid(), player.getUuid());
