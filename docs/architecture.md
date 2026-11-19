@@ -14,6 +14,7 @@ OMLib gives the other mods **owned blocks**: a block has an owner, a list of tru
 The rules (who may do what, how energy is buffered, how the claiming of connected blocks spreads) are plain Java in `core`, without any Minecraft class, so they are unit-tested in milliseconds.
 The core is not part of this repository: it comes from the shared core, [OpenModularCore](https://github.com/OpenModularTurretsTeam/OpenModularCore) (module `omlib-core-j8`, version `core_version` in `gradle.properties`, from JitPack), the same rules as on every other Minecraft version, downgraded to Java 8.
 The OMLib jars carry its classes (`omtteam/omlib/core`) and the stubs of the Java 9+ API it uses (`omtteam/omlib/jvmdg`), and OMT, OMPD and OML compile against it through OMLib.
+A checkout of OpenModularCore in a folder above this repository (`../../OpenModularCore` in the team's dev layout) replaces the JitPack artifact: `settings.gradle` includes it, so a core change can be built and tested here before it is released; `-Pomm.noLocalCore` or `OMM_NO_LOCAL_CORE=1` builds against JitPack again.
 Around it, the game layer translates between Minecraft and the core: tile entity base classes, abstract blocks, the network messages with their server-side validation, the camouflage menu, the energy capabilities and the shared GUI code.
 The 3.x API (`TrustedPlayersManager`, `PlayerUtil`, `TileEntityBase`, …) is kept as a **facade** over the core, so the other mods and their worlds of version 3.x keep working.
 
