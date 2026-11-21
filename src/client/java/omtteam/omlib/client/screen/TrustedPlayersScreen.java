@@ -8,9 +8,6 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-//? if >=1.21.11 {
-/*import net.minecraft.client.input.KeyEvent;
-*///?}
 import omtteam.omlib.OMLib;
 import omtteam.omlib.client.compat.ClientCompat;
 import omtteam.omlib.client.compat.ClientNetworkCompat;
@@ -153,17 +150,10 @@ public class TrustedPlayersScreen extends CompatScreen {
         refreshList();
     }
 
-    //? if >=1.21.11 {
-    /*@Override
-    public boolean keyPressed(KeyEvent event) {
-        return addOnEnter(event.key()) || super.keyPressed(event);
-    }
-    *///?} else {
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         return addOnEnter(keyCode) || super.keyPressed(keyCode, scanCode, modifiers);
     }
-    //?}
 
     /** Enter in the name field adds the player. */
     private boolean addOnEnter(int keyCode) {

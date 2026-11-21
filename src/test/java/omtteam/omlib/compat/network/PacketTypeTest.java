@@ -1,10 +1,6 @@
 package omtteam.omlib.compat.network;
 
 import io.netty.buffer.Unpooled;
-//? if >=1.21 {
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-//?}
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import omtteam.omlib.compat.VersionCompat;
@@ -43,18 +39,4 @@ class PacketTypeTest {
         assertEquals(ID, type.id());
     }
 
-    //? if >=1.21 {
-    @Test
-    void payloadsCarryThePacketThroughTheStreamCodec() {
-        PacketType<Ping> type = type();
-        RegistryFriendlyByteBuf buf = new RegistryFriendlyByteBuf(Unpooled.buffer(), RegistryAccess.EMPTY);
-        type.codec().encode(buf, type.wrap(PING));
-        PacketType.Payload<Ping> payload = type.codec().decode(buf);
-        assertEquals(0, buf.readableBytes(), "everything written is read");
-        assertEquals(PING, payload.packet());
-        assertSame(type, payload.packetType());
-        assertSame(type.payloadType(), payload.type());
-        assertEquals(ID, type.payloadType().id());
-    }
-    //?}
 }

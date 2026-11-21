@@ -11,9 +11,6 @@ import omtteam.omlib.OMLib;
 import omtteam.omlib.client.OMLibClient;
 import omtteam.omlib.client.camo.CamoModels;
 import omtteam.omlib.client.platform.ClientPlatform;
-//? if >=1.21.11 {
-/*import omtteam.omlib.camo.CamoBlock;
-*///?}
 
 /**
  * NeoForge client entrypoint of the library: installs the client platform services for all mods that use it, registers
@@ -27,12 +24,7 @@ public final class OMLibNeoForgeClient {
         OMLibClient.init();
         modBus.addListener((RegisterMenuScreensEvent event) -> OMLibClient.registerScreens(event::register));
         NeoForge.EVENT_BUS.addListener((ClientPlayerNetworkEvent.LoggingOut event) -> OMLibClient.onDisconnect());
-        //? if >=1.21.11 {
-        /*modBus.addListener((ModelEvent.ModifyBakingResult event) -> event.getBakingResult().blockStateModels()
-                .replaceAll((state, model) -> state.getBlock() instanceof CamoBlock ? new NeoForgeCamoModel(model) : model));
-        *///?} else {
         modBus.addListener((ModelEvent.ModifyBakingResult event) -> event.getModels().replaceAll((id, model) ->
                 CamoModels.isCamoModel(id.id()) ? new NeoForgeCamoModel(model) : model));
-        //?}
     }
 }

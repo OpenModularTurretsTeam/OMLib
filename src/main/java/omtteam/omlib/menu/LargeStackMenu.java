@@ -7,15 +7,13 @@ import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
-//? if <1.21 {
-/*import net.minecraft.core.NonNullList;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.inventory.ContainerSynchronizer;
 import net.minecraft.world.inventory.Slot;
 import omtteam.omlib.compat.nbt.NbtCompat;
 
 import java.util.List;
-*///?}
 
 /**
  * A menu with {@link LargeStackSlot}s: it handles the clicks a slot cannot limit by itself and, on 1.20.1, syncs
@@ -29,10 +27,8 @@ import java.util.List;
  * </ul>
  */
 public abstract class LargeStackMenu extends AbstractContainerMenu {
-    //? if <1.21 {
-    /*/^* Key of the real count in a stack sent to the client; never stays on a stack. ^/
+    /** Key of the real count in a stack sent to the client; never stays on a stack. */
     private static final String COUNT_KEY = "OMLibCount";
-    *///?}
 
     protected LargeStackMenu(@Nullable MenuType<?> type, int containerId) {
         super(type, containerId);
@@ -60,8 +56,7 @@ public abstract class LargeStackMenu extends AbstractContainerMenu {
         inventory.setItem(button, slot.safeTake(slot.getItem().getMaxStackSize(), Integer.MAX_VALUE, player));
     }
 
-    //? if <1.21 {
-    /*/^* 1.21's {@code moveItemStackTo}: it asks the slot for the limit of the moved item. ^/
+    /** 1.21's {@code moveItemStackTo}: it asks the slot for the limit of the moved item. */
     @Override
     protected boolean moveItemStackTo(ItemStack stack, int start, int end, boolean reverse) {
         boolean moved = false;
@@ -116,7 +111,7 @@ public abstract class LargeStackMenu extends AbstractContainerMenu {
         super.initializeContents(stateId, items, carried);
     }
 
-    /^* Server: a stack above one stack as one stack with its real count in its data. ^/
+    /** Server: a stack above one stack as one stack with its real count in its data. */
     private static ItemStack withCountInData(ItemStack stack) {
         if (!isLarge(stack)) return stack;
         ItemStack sent = stack.copyWithCount(stack.getMaxStackSize());
@@ -124,7 +119,7 @@ public abstract class LargeStackMenu extends AbstractContainerMenu {
         return sent;
     }
 
-    /^* Client: takes the real count back out of a stack sent by {@link #withCountInData}. ^/
+    /** Client: takes the real count back out of a stack sent by {@link #withCountInData}. */
     private static ItemStack restoreCount(ItemStack stack) {
         CompoundTag tag = stack.getTag();
         if (tag == null || !NbtCompat.hasNumber(tag, COUNT_KEY)) return stack;
@@ -135,7 +130,7 @@ public abstract class LargeStackMenu extends AbstractContainerMenu {
         return stack;
     }
 
-    /^* Sends stacks above one stack through {@link #withCountInData}, everything else unchanged. ^/
+    /** Sends stacks above one stack through {@link #withCountInData}, everything else unchanged. */
     private record CountSynchronizer(ContainerSynchronizer delegate) implements ContainerSynchronizer {
         @Override
         public void sendInitialData(AbstractContainerMenu menu, NonNullList<ItemStack> items, ItemStack carried, int[] data) {
@@ -161,5 +156,4 @@ public abstract class LargeStackMenu extends AbstractContainerMenu {
             delegate.sendDataChange(menu, id, value);
         }
     }
-    *///?}
 }

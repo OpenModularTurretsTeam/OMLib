@@ -8,9 +8,6 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
-//? if >=1.21.11 {
-/*import net.minecraft.client.input.MouseButtonEvent;
-*///?}
 import omtteam.omlib.camo.CamoHost;
 import omtteam.omlib.client.compat.ClientCompat;
 import omtteam.omlib.client.compat.ClientNetworkCompat;
@@ -165,18 +162,10 @@ public class CamoScreen extends AbstractContainerScreen<CamoMenu> {
             value = level() / (double) CamoLight.MAX;
         }
 
-        //? if >=1.21.11 {
-        /*@Override
-        public void onRelease(MouseButtonEvent event) {
-            super.onRelease(event);
-            onChange.run();
-        }
-        *///?} else {
         @Override
         public void onRelease(double mouseX, double mouseY) {
             super.onRelease(mouseX, mouseY);
             onChange.run();
         }
-        //?}
     }
 }

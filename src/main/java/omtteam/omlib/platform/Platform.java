@@ -7,13 +7,6 @@ import omtteam.omlib.platform.fabric.FabricLoaderInfo;
 import omtteam.omlib.platform.fabric.FabricMenus;
 import omtteam.omlib.platform.fabric.FabricNetwork;
 //?}
-//? if neoforge {
-/*import omtteam.omlib.platform.neoforge.NeoForgeEnergy;
-import omtteam.omlib.platform.neoforge.NeoForgeFuel;
-import omtteam.omlib.platform.neoforge.NeoForgeLoaderInfo;
-import omtteam.omlib.platform.neoforge.NeoForgeMenus;
-import omtteam.omlib.platform.neoforge.NeoForgeNetwork;
-*///?}
 //? if forge {
 /*import omtteam.omlib.platform.forge.ForgeEnergy;
 import omtteam.omlib.platform.forge.ForgeFuel;
@@ -69,10 +62,7 @@ public final class Platform {
         //? if fabric {
         return new PlatformServices(new FabricLoaderInfo(), new FabricFuel(), new FabricNetwork(), new FabricMenus(),
                 new FabricEnergy());
-        //?} else if neoforge {
-        /*return new PlatformServices(new NeoForgeLoaderInfo(), new NeoForgeFuel(), new NeoForgeNetwork(),
-                new NeoForgeMenus(), new NeoForgeEnergy());
-        *///?} else {
+        //?} else {
         /*return new PlatformServices(new ForgeLoaderInfo(), new ForgeFuel(), new ForgeNetwork(), new ForgeMenus(),
                 new ForgeEnergy());
         *///?}

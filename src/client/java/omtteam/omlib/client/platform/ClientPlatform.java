@@ -3,11 +3,6 @@ package omtteam.omlib.client.platform;
 //? if fabric {
 import omtteam.omlib.client.platform.fabric.FabricClientNetwork;
 //?}
-//? if neoforge {
-/*import omtteam.omlib.client.platform.neoforge.NeoForgeClientNetwork;
-import omtteam.omlib.platform.Platform;
-import omtteam.omlib.platform.neoforge.NeoForgeNetwork;
-*///?}
 //? if forge {
 /*import omtteam.omlib.client.platform.forge.ForgeClientNetwork;
 import omtteam.omlib.platform.Platform;
@@ -43,9 +38,7 @@ public final class ClientPlatform {
     private static ClientPlatformServices loaderServices() {
         //? if fabric {
         return new ClientPlatformServices(new FabricClientNetwork());
-        //?} else if neoforge {
-        /*return new ClientPlatformServices(new NeoForgeClientNetwork((NeoForgeNetwork) Platform.network()));
-        *///?} else {
+        //?} else {
         /*return new ClientPlatformServices(new ForgeClientNetwork((ForgeNetwork) Platform.network()));
         *///?}
     }

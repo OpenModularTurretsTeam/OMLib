@@ -13,24 +13,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-//? if neoforge && >=1.21.11 {
-/*import net.neoforged.neoforge.model.data.ModelData;
-import net.neoforged.neoforge.model.data.ModelProperty;
-*///?} else if neoforge {
-/*import net.neoforged.neoforge.client.model.data.ModelData;
-import net.neoforged.neoforge.client.model.data.ModelProperty;
-*///?}
 //? if forge {
 /*import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.data.ModelProperty;
 *///?}
-//? if <1.21 || >=1.21.11 {
-/*import net.minecraft.core.RegistryAccess;
-*///?}
-//? if >=1.21.11 {
-/*import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-*///?}
+import net.minecraft.core.RegistryAccess;
 
 /**
  * Version-independent base class for all mod block entities.
@@ -40,7 +27,7 @@ import net.minecraft.world.level.storage.ValueOutput;
  * clients (initial chunk data and {@link #syncToClient()}); override {@link #writeClientData} to send less.
  */
 public abstract class CompatBlockEntity extends BlockEntity {
-    //? if neoforge || forge {
+    //? if forge {
     /*/^* The {@link #renderData()} in the block entity's model data on NeoForge and Forge. ^/
     public static final ModelProperty<Object> RENDER_DATA = new ModelProperty<>();
     *///?}
@@ -102,7 +89,7 @@ public abstract class CompatBlockEntity extends BlockEntity {
     /** Makes the client redraw the block, e.g. after its {@link #renderData()} changed (no effect on the server). */
     public void remesh() {
         if (level != null && level.isClientSide()) {
-            //? if neoforge || forge {
+            //? if forge {
             /*requestModelDataUpdate();
             *///?}
             BlockState state = getBlockState();
@@ -118,15 +105,6 @@ public abstract class CompatBlockEntity extends BlockEntity {
     protected void onBlockRemoved(Level level) {
     }
 
-    //? if >=1.21.11 {
-    /*@Override
-    public void preRemoveSideEffects(BlockPos pos, BlockState state) {
-        super.preRemoveSideEffects(pos, state);
-        if (level != null) {
-            onBlockRemoved(level);
-        }
-    }
-    *///?} else {
     /**
      * Forwards a block's {@code onRemove} to {@link #onBlockRemoved} with the same conditions as vanilla 1.21.11.
      * Call it first thing in {@code onRemove}, before {@code super.onRemove} removes the block entity.
@@ -137,62 +115,13 @@ public abstract class CompatBlockEntity extends BlockEntity {
             blockEntity.onBlockRemoved(level);
         }
     }
-    //?}
 
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    //? if >=1.21.11 {
-    /*// 1.21.11 saves through ValueInput / ValueOutput; the whole compound passes through unchanged, so the saved format
-    // stays the same as on the older versions.
     @Override
-    protected void loadAdditional(ValueInput input) {
-        super.loadAdditional(input);
-        readData(input.read(VersionCompat.WHOLE_TAG).orElseGet(CompoundTag::new), input.lookup());
-    }
-
-    @Override
-    protected void saveAdditional(ValueOutput output) {
-        super.saveAdditional(output);
-        CompoundTag tag = new CompoundTag();
-        writeData(tag, registries());
-        output.store(VersionCompat.WHOLE_TAG, tag);
-    }
-
-    @Override
-    public @NotNull CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        CompoundTag tag = new CompoundTag();
-        writeClientData(tag, registries);
-        return tag;
-    }
-
-    // ValueOutput has no registry lookup; the level is set whenever a block entity is saved.
-    private HolderLookup.Provider registries() {
-        return level != null ? level.registryAccess() : RegistryAccess.EMPTY;
-    }
-    *///?} else if >=1.21 {
-    @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        readData(tag, registries);
-    }
-
-    @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
-        writeData(tag, registries);
-    }
-
-    @Override
-    public @NotNull CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        CompoundTag tag = new CompoundTag();
-        writeClientData(tag, registries);
-        return tag;
-    }
-    //?} else {
-    /*@Override
     public void load(CompoundTag tag) {
         super.load(tag);
         readData(tag, registries());
@@ -215,5 +144,4 @@ public abstract class CompatBlockEntity extends BlockEntity {
     private HolderLookup.Provider registries() {
         return level != null ? level.registryAccess() : RegistryAccess.EMPTY;
     }
-    *///?}
 }
