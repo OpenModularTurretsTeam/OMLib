@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * Right-click handling through the loader's block-use event (Fabric {@code UseBlockCallback}, NeoForge and Forge
- * {@code PlayerInteractEvent.RightClickBlock}), which is the same on 1.20.1 and 1.21 (vanilla's {@code use} /
- * {@code useWithoutItem} / {@code useItemOn} differ). Runs before vanilla, also while sneaking; returning
+ * Right-click handling through the loader's block-use event (Fabric {@code UseBlockCallback}, NeoForge
+ * {@code PlayerInteractEvent.RightClickBlock}) instead of vanilla's {@code useWithoutItem} / {@code useItemOn}, so it
+ * is the same on every version branch. Runs before vanilla, also while sneaking; returning
  * {@link InteractionResult#PASS} lets vanilla continue (e.g. placing a held block).
  * <p>
  * The library's loader entrypoints register that event once for all mods. A click goes to the {@link Interceptor}s first

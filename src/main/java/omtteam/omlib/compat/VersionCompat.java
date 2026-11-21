@@ -56,10 +56,10 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 /**
- * Hides differences between the supported Minecraft versions.
- * Version-conditional (Stonecutter) code should live here instead of in gameplay code.
+ * Minecraft API calls behind one set of signatures, so that gameplay code is the same on every version branch.
+ * Loader-conditional (Stonecutter) code should live here instead of in gameplay code.
  * <p>
- * Methods taking a {@link HolderLookup.Provider} need it on 1.21+; on 1.20.1 it is ignored.
+ * Methods taking a {@link HolderLookup.Provider} need it to read and write registry-dependent data.
  */
 public final class VersionCompat {
     private VersionCompat() {
@@ -72,7 +72,7 @@ public final class VersionCompat {
         return ResourceLocation.fromNamespaceAndPath(namespace, path);
     }
 
-    // ---- Registration (1.21.11 needs the registry id in the properties before a block or item is created) ----
+    // ---- Registration (the properties need no registry id on this version) ----
 
     /** Properties of the block that will be registered as {@code id}. */
     public static BlockBehaviour.Properties blockProperties(BlockBehaviour.Properties properties, ResourceLocation id) {
@@ -86,29 +86,28 @@ public final class VersionCompat {
 
     /**
      * Properties of the block item that will be registered as {@code id}. It keeps the block's name
-     * ({@code block.<mod>.<id>}); 1.21.11 would otherwise name it like an item.
+     * ({@code block.<mod>.<id>}).
      */
     public static Item.Properties blockItemProperties(Item.Properties properties, ResourceLocation id) {
         return itemProperties(properties, id);
     }
 
     /**
-     * A block entity type for these blocks (1.21.11 removed {@code BlockEntityType.Builder}; vanilla's factory interface
-     * is only accessible on NeoForge there, Fabric has its own builder).
+     * A block entity type for these blocks.
      */
     public static <T extends BlockEntity> BlockEntityType<T> blockEntityType(BiFunction<BlockPos, BlockState, T> factory,
                                                                              Block... blocks) {
         return BlockEntityType.Builder.of(factory::apply, blocks).build(null);
     }
 
-    /** The entity type of a builder, to be registered as {@code id} (1.21.11 builds it with the registry key). */
+    /** The entity type of a builder, to be registered as {@code id}. */
     public static <T extends Entity> EntityType<T> buildEntityType(EntityType.Builder<T> builder, ResourceLocation id) {
         return builder.build(id.toString());
     }
 
     // ---- Entities and players ----
 
-    /** A new entity of this type in the level (1.21.11 asks for the reason), {@code null} if it cannot be created. */
+    /** A new entity of this type in the level, {@code null} if it cannot be created. */
     public static <T extends Entity> T createEntity(EntityType<T> type, Level level) {
         return type.create(level);
     }
@@ -118,7 +117,7 @@ public final class VersionCompat {
         return entity.getOwnerUUID();
     }
 
-    /** Whether the level is in daylight (1.21.11 asks for {@code isBrightOutside}). */
+    /** Whether the level is in daylight. */
     public static boolean isDay(Level level) {
         return level.isDay();
     }
@@ -158,7 +157,7 @@ public final class VersionCompat {
         return player.hasPermissions(4);
     }
 
-    /** Damages an entity (server side; 1.21.11 replaced {@code Entity#hurt} with {@code hurtServer}). */
+    /** Damages an entity (server side). */
     public static boolean hurt(Entity entity, DamageSource source, float amount) {
         return entity.hurt(source, amount);
     }
@@ -175,7 +174,7 @@ public final class VersionCompat {
 
     // ---- Enchantments ----
 
-    /** Maximum level of the Looting enchantment (data-driven on 1.21, so a datapack may change it). */
+    /** Maximum level of the Looting enchantment (data-driven, so a datapack may change it). */
     public static int maxLootingLevel(Level level) {
         return level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.LOOTING)
                 .value().getMaxLevel();
@@ -207,7 +206,7 @@ public final class VersionCompat {
     /**
      * Writes a slot list to {@code tag} under {@code "Items"} (vanilla container format). A stack above its max stack
      * size (in a {@link omtteam.omlib.inventory.LargeStackContainer}) is written with count 1, and its entry gets the
-     * real count under {@value #LARGE_COUNT_KEY}: vanilla's own count stops at 99 (127 on 1.20.1).
+     * real count under {@value #LARGE_COUNT_KEY}: vanilla's own count stops at 99.
      */
     public static void saveItems(CompoundTag tag, NonNullList<ItemStack> items, HolderLookup.Provider registries) {
         NonNullList<ItemStack> saved = items;
@@ -259,7 +258,7 @@ public final class VersionCompat {
         return NbtCompat.getInt(entry, "Slot", 0) & 0xFF;
     }
 
-    // ---- Custom item data (NBT on 1.20.1, CUSTOM_DATA component on 1.21+) ----
+    // ---- Custom item data (the CUSTOM_DATA component) ----
 
     public static boolean hasCustomData(ItemStack stack) {
         return stack.has(DataComponents.CUSTOM_DATA);
@@ -291,12 +290,12 @@ public final class VersionCompat {
 
     // ---- Blocks ----
 
-    /** Whether bonemeal would work on this block (1.20.1 had an extra {@code isClient} parameter). */
+    /** Whether bonemeal would work on this block. */
     public static boolean isValidBonemealTarget(BonemealableBlock block, LevelReader level, BlockPos pos, BlockState state) {
         return block.isValidBonemealTarget(level, pos, state);
     }
 
-    // ---- Block entity data on block items (BlockEntityTag on 1.20.1, BLOCK_ENTITY_DATA component on 1.21+) ----
+    // ---- Block entity data on block items (the BLOCK_ENTITY_DATA component) ----
 
     /**
      * Stores block entity data on a block item; vanilla loads it into the block entity when the block is placed.
@@ -334,7 +333,7 @@ public final class VersionCompat {
         *///?}
     }
 
-    /** Whether the player is one of the loader's fake players (machines such as Create's deployer). */
+    /** Whether the player is one of the loader's fake players (automation machines such as deployers). */
     public static boolean isFakePlayer(Player player) {
         return player instanceof FakePlayer;
     }

@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * Item and energy capabilities of the {@link TransferHost}s, on the sides each host exposes ({@code IItemHandler} and
- * {@code IEnergyStorage}, NeoForge before its transfer API; the same as the Fabric lookups).
+ * {@code IEnergyStorage}; the same as the Fabric lookups).
  */
 public final class NeoForgeCapabilities {
     private NeoForgeCapabilities() {

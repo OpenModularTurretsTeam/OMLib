@@ -18,18 +18,17 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.level.LevelReader;
 
 /**
- * Version-independent base class for all mod blocks with a block entity (the counterpart of {@link CompatBlockEntity}).
+ * Base class for all mod blocks with a block entity, the same on every version branch (the counterpart of
+ * {@link CompatBlockEntity}).
  * <p>
- * It hides what differs between 1.20.1 and 1.21 for blocks:
+ * It gives blocks one set of hooks:
  * <ul>
- *     <li>the block codec (1.21 only): create one with {@link #codecOf} in a static field and pass it to the
- *     constructor</li>
- *     <li>pick block ({@code getCloneItemStack} takes a {@code LevelReader} on 1.21, a {@code BlockGetter} on
- *     1.20.1, and takes a flag on 1.21.11): override {@link #pickItem} instead</li>
- *     <li>neighbour updates ({@code neighborChanged} gets an {@code Orientation} instead of the neighbour's position on
- *     1.21.11): override {@link #onNeighborChanged}</li>
- *     <li>light absorption ({@code getLightBlock} and {@code propagatesSkylightDown} lost their level and position
- *     parameters on 1.21.11): override {@link #lightAbsorbed} / {@link #skylightPropagates}</li>
+ *     <li>the block codec (the game registers the block type through it): create one with {@link #codecOf} in a
+ *     static field and pass it to the constructor</li>
+ *     <li>pick block ({@code getCloneItemStack} takes a {@code LevelReader}): override {@link #pickItem} instead</li>
+ *     <li>neighbour updates: override {@link #onNeighborChanged}</li>
+ *     <li>light absorption ({@code getLightBlock} and {@code propagatesSkylightDown}): override
+ *     {@link #lightAbsorbed} / {@link #skylightPropagates}</li>
  * </ul>
  */
 public abstract class CompatEntityBlock extends BaseEntityBlock {
@@ -83,7 +82,7 @@ public abstract class CompatEntityBlock extends BaseEntityBlock {
     /**
      * A neighbouring block changed (or the block was told to check).
      *
-     * @param neighbourPos the position of the neighbour that changed, {@code null} on 1.21.11, which does not tell
+     * @param neighbourPos the position of the neighbour that changed
      */
     protected void onNeighborChanged(BlockState state, Level level, BlockPos pos, @Nullable BlockPos neighbourPos) {
     }

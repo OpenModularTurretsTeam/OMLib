@@ -4,7 +4,8 @@ import java.io.File
 /**
  * Checks that the recipes of [namespace] in the processed resources [resources] of a node match its items.
  * The items are the item models (assets/<namespace>/models/item/<id>.json, so blocks without an item such as technical
- * blocks are left out); the recipes are data/<namespace>/recipe (1.21+) or recipes (1.20.1), any type, by their result.
+ * blocks are left out); the recipes are data/<namespace>/recipe or recipes (named by the Minecraft version), any
+ * type, by their result.
  * [exemptions] is the mod's recipe-exempt.txt (one "<id> # <reason>" per line, `#` lines are comments; may be missing):
  * items that have no recipe on purpose (creative only, game masters only).
  * Returns the problems, empty if there are none:
@@ -24,7 +25,7 @@ fun recipeCoverageProblems(resources: File, namespace: String, exemptions: File)
     listOf("recipe", "recipes").map { resources.resolve("data/$namespace/$it") }.filter { it.isDirectory }.forEach { dir ->
         dir.walkTopDown().filter { it.isFile && it.extension == "json" }.forEach { file ->
             val result = (JsonSlurper().parse(file) as? Map<*, *>)?.get("result")
-            // 1.20.1 cooking recipes: "result": "<id>"; crafting: {"item": ...} (1.20.1) or {"id": ...} (1.21+)
+            // "result" is a plain id string or an object with "id" or "item", by recipe type and Minecraft version
             val id = when (result) {
                 is String -> result
                 is Map<*, *> -> (result["id"] ?: result["item"]) as? String

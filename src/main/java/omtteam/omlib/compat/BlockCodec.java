@@ -4,8 +4,8 @@ import net.minecraft.world.level.block.BaseEntityBlock;
 import com.mojang.serialization.MapCodec;
 
 /**
- * Version-independent handle on the codec of a block.
- * 1.21 needs one per block (it registers the block type, see {@code BaseEntityBlock#codec()}), 1.20.1 has none.
+ * Handle on the codec of a block, the same on every version branch.
+ * The game needs one per block (it registers the block type, see {@code BaseEntityBlock#codec()}).
  * Create it with {@link CompatEntityBlock}'s {@code codecOf} helpers and pass it to its constructor.
  */
 public final class BlockCodec<T extends BaseEntityBlock> {
