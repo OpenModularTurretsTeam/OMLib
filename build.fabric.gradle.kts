@@ -106,7 +106,7 @@ tasks.check {
     dependsOn(tasks.jacocoTestReport)
 }
 
-// ---- Mutation testing (PIT): ./gradlew :1.21.1-fabric:pitest, on demand ----
+// ---- Mutation testing (PIT): ./gradlew :1.21.11-fabric:pitest, on demand ----
 // Plants small mistakes (flipped conditions, changed boundaries, removed calls) and checks whether a unit test
 // fails. Surviving mistakes show behaviour the tests do not pin down. Report only, not part of check.
 // Only the code the unit tests are written for: the rest (blocks, screens, menus, packet handlers, platform) needs a
