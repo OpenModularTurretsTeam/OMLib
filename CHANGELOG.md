@@ -12,7 +12,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
-- The core classes (`omtteam.omlib.core`) come from the shared OpenModularCore 2.0.0 (module `omlib-core`, the same on every Minecraft version) and are bundled into the jar; `PlayerInfo` refuses a null UUID or name
+- The core classes (`omtteam.omlib.core`) come from the shared OpenModularCore 2.1.0 (module `omlib-core`, the same on every Minecraft version) and are bundled into the jar; `PlayerInfo` refuses a null UUID or name
 
 ### Fixed
 
