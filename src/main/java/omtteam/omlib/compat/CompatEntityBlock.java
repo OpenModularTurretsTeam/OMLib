@@ -13,14 +13,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
-//? if >=1.21.11 {
-/*import net.minecraft.world.level.redstone.Orientation;
-*///?}
-//? if >=1.21 {
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.level.LevelReader;
-//?}
 
 /**
  * Version-independent base class for all mod blocks with a block entity (the counterpart of {@link CompatBlockEntity}).
@@ -51,11 +46,7 @@ public abstract class CompatEntityBlock extends BaseEntityBlock {
      * @param factory the block's constructor
      */
     protected static <T extends BaseEntityBlock> BlockCodec<T> codecOf(Function<Properties, T> factory) {
-        //? if >=1.21 {
         return new BlockCodec<>(simpleCodec(factory));
-        //?} else {
-        /*return new BlockCodec<>();
-        *///?}
     }
 
     /**
@@ -68,22 +59,16 @@ public abstract class CompatEntityBlock extends BaseEntityBlock {
      */
     protected static <T extends BaseEntityBlock, A> BlockCodec<T> codecOf(String name, Codec<A> field, Function<T, A> getter,
                                                                           BiFunction<A, Properties, T> factory) {
-        //? if >=1.21 {
         return new BlockCodec<>(RecordCodecBuilder.mapCodec(instance -> instance.group(
                 field.fieldOf(name).forGetter(getter),
                 propertiesCodec()
         ).apply(instance, factory)));
-        //?} else {
-        /*return new BlockCodec<>();
-        *///?}
     }
 
-    //? if >=1.21 {
     @Override
     protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
         return blockCodec.codec();
     }
-    //?}
 
     /**
      * What picking the block gives (middle click), e.g. a camouflage instead of the block itself.
@@ -103,21 +88,12 @@ public abstract class CompatEntityBlock extends BaseEntityBlock {
     protected void onNeighborChanged(BlockState state, Level level, BlockPos pos, @Nullable BlockPos neighbourPos) {
     }
 
-    //? if >=1.21.11 {
-    /*@Override
-    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighbourBlock,
-                                   @Nullable Orientation orientation, boolean movedByPiston) {
-        super.neighborChanged(state, level, pos, neighbourBlock, orientation, movedByPiston);
-        onNeighborChanged(state, level, pos, null);
-    }
-    *///?} else {
     @Override
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighbourBlock, BlockPos neighbourPos,
                                 boolean movedByPiston) {
         super.neighborChanged(state, level, pos, neighbourBlock, neighbourPos, movedByPiston);
         onNeighborChanged(state, level, pos, neighbourPos);
     }
-    //?}
 
     /** How much light the block absorbs (0 to 15); {@code vanilla} is what the block would absorb by default. */
     protected int lightAbsorbed(BlockState state, int vanilla) {
@@ -129,17 +105,6 @@ public abstract class CompatEntityBlock extends BaseEntityBlock {
         return vanilla;
     }
 
-    //? if >=1.21.11 {
-    /*@Override
-    protected int getLightBlock(BlockState state) {
-        return lightAbsorbed(state, super.getLightBlock(state));
-    }
-
-    @Override
-    protected boolean propagatesSkylightDown(BlockState state) {
-        return skylightPropagates(state, super.propagatesSkylightDown(state));
-    }
-    *///?} else {
     @Override
     @SuppressWarnings({"deprecation", "RedundantSuppression"})
     public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos) {
@@ -151,22 +116,9 @@ public abstract class CompatEntityBlock extends BaseEntityBlock {
     public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
         return skylightPropagates(state, super.propagatesSkylightDown(state, level, pos));
     }
-    //?}
 
-    //? if >=1.21.11 {
-    /*@Override
-    protected @NotNull ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
-        return pickItem(level, pos, super.getCloneItemStack(level, pos, state, includeData));
-    }
-    *///?} else if >=1.21 {
     @Override
     public @NotNull ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
         return pickItem(level, pos, super.getCloneItemStack(level, pos, state));
     }
-    //?} else {
-    /*@Override
-    public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
-        return pickItem(level, pos, super.getCloneItemStack(level, pos, state));
-    }
-    *///?}
 }

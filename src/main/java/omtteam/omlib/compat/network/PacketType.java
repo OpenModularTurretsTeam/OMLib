@@ -2,12 +2,10 @@ package omtteam.omlib.compat.network;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-//? if >=1.21 {
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import org.jetbrains.annotations.NotNull;
-//?}
 
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -21,20 +19,16 @@ public final class PacketType<T> {
     private final ResourceLocation id;
     private final BiConsumer<FriendlyByteBuf, T> encoder;
     private final Function<FriendlyByteBuf, T> decoder;
-    //? if >=1.21 {
     private final CustomPacketPayload.Type<Payload<T>> payloadType;
     private final StreamCodec<RegistryFriendlyByteBuf, Payload<T>> codec;
-    //?}
 
     PacketType(ResourceLocation id, BiConsumer<FriendlyByteBuf, T> encoder, Function<FriendlyByteBuf, T> decoder) {
         this.id = id;
         this.encoder = encoder;
         this.decoder = decoder;
-        //? if >=1.21 {
         this.payloadType = new CustomPacketPayload.Type<>(id);
         this.codec = StreamCodec.of((buf, payload) -> encoder.accept(buf, payload.packet()),
                 buf -> new Payload<>(this, decoder.apply(buf)));
-        //?}
     }
 
     public ResourceLocation id() {
@@ -51,7 +45,6 @@ public final class PacketType<T> {
         return decoder.apply(buf);
     }
 
-    //? if >=1.21 {
     public CustomPacketPayload.Type<Payload<T>> payloadType() {
         return payloadType;
     }
@@ -73,5 +66,4 @@ public final class PacketType<T> {
             return packetType.payloadType;
         }
     }
-    //?}
 }

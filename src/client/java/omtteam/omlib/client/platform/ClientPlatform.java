@@ -8,11 +8,6 @@ import omtteam.omlib.client.platform.fabric.FabricClientNetwork;
 import omtteam.omlib.platform.Platform;
 import omtteam.omlib.platform.neoforge.NeoForgeNetwork;
 *///?}
-//? if forge {
-/*import omtteam.omlib.client.platform.forge.ForgeClientNetwork;
-import omtteam.omlib.platform.Platform;
-import omtteam.omlib.platform.forge.ForgeNetwork;
-*///?}
 
 /**
  * Holds the {@link ClientPlatformServices} of the running loader; the client counterpart of
@@ -43,10 +38,8 @@ public final class ClientPlatform {
     private static ClientPlatformServices loaderServices() {
         //? if fabric {
         return new ClientPlatformServices(new FabricClientNetwork());
-        //?} else if neoforge {
+        //?} else {
         /*return new ClientPlatformServices(new NeoForgeClientNetwork((NeoForgeNetwork) Platform.network()));
-        *///?} else {
-        /*return new ClientPlatformServices(new ForgeClientNetwork((ForgeNetwork) Platform.network()));
         *///?}
     }
 }

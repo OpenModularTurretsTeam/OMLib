@@ -14,7 +14,6 @@ import net.minecraft.world.item.Item;
  * ({@code Items.REDSTONE_BLOCK}, {@code Items.LAPIS_BLOCK}, {@code Items.CHEST}).
  */
 public final class CommonTags {
-    //? if >=1.21 {
     /** Wrenches of other mods: {@code c:wrenches} on 1.20.1, {@code c:tools/wrench} on 1.21. */
     public static final TagKey<Item> WRENCHES = tag("tools/wrench");
     /** Ore dictionary {@code ingotIron}. */
@@ -27,20 +26,6 @@ public final class CommonTags {
     public static final TagKey<Item> QUARTZ_GEMS = tag("gems/quartz");
     /** Ore dictionary {@code gemDiamond}. */
     public static final TagKey<Item> DIAMOND_GEMS = tag("gems/diamond");
-    //?} else {
-    /*/^* Wrenches of other mods: {@code c:wrenches} on 1.20.1, {@code c:tools/wrench} on 1.21. ^/
-    public static final TagKey<Item> WRENCHES = tag("wrenches");
-    /^* Ore dictionary {@code ingotIron}. ^/
-    public static final TagKey<Item> IRON_INGOTS = tag("iron_ingots");
-    /^* Ore dictionary {@code dustRedstone}. ^/
-    public static final TagKey<Item> REDSTONE_DUSTS = tag("redstone_dusts");
-    /^* Ore dictionary {@code ingotGold}. ^/
-    public static final TagKey<Item> GOLD_INGOTS = tag("gold_ingots");
-    /^* Ore dictionary {@code gemQuartz}. ^/
-    public static final TagKey<Item> QUARTZ_GEMS = tag("quartz");
-    /^* Ore dictionary {@code gemDiamond}. ^/
-    public static final TagKey<Item> DIAMOND_GEMS = tag("diamonds");
-    *///?}
     /** Ore dictionary {@code paneGlass}. */
     public static final TagKey<Item> GLASS_PANES = tag("glass_panes");
 

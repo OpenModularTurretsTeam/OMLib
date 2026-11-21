@@ -39,21 +39,10 @@ public abstract class LargeStackScreen<T extends AbstractContainerMenu> extends 
         } finally {
             setLargeSlotsHidden(false);
         }
-        //? if <1.21.11 {
         // after vanilla's slots; the carried item and tooltips lie above by their depth
         renderLargeSlots(graphics, leftPos, topPos);
-        //?}
     }
 
-    //? if >=1.21.11 {
-    /*/^* 1.21.11 draws in strata: the large slots go right after the other slots, below highlight and carried item. ^/
-    @Override
-    protected void renderSlots(GuiGraphics graphics, int mouseX, int mouseY) {
-        super.renderSlots(graphics, mouseX, mouseY);
-        setLargeSlotsHidden(false);
-        renderLargeSlots(graphics, 0, 0);
-    }
-    *///?}
 
     @Override
     protected @NotNull List<Component> getTooltipFromContainerItem(ItemStack stack) {
@@ -88,18 +77,6 @@ public abstract class LargeStackScreen<T extends AbstractContainerMenu> extends 
         String count = stack.getCount() == 1 ? null : Integer.toString(stack.getCount());
         int width = count == null ? 0 : font.width(count);
         boolean small = width > COUNT_WIDTH;
-        //? if >=1.21.11 {
-        /*graphics.renderItem(stack, x, y);
-        graphics.renderItemDecorations(font, stack, x, y, small ? "" : count);
-        if (small) {
-            float scale = (float) COUNT_WIDTH / width;
-            graphics.pose().pushMatrix();
-            graphics.pose().translate(x + COUNT_RIGHT, y + 17);
-            graphics.pose().scale(scale, scale);
-            graphics.drawString(font, count, -width, -font.lineHeight + 1, 0xFFFFFFFF, true);
-            graphics.pose().popMatrix();
-        }
-        *///?} else {
         // the depths of vanilla's renderSlot (100) and renderItemDecorations (+200)
         graphics.pose().pushPose();
         graphics.pose().translate(0.0F, 0.0F, 100.0F);
@@ -112,6 +89,5 @@ public abstract class LargeStackScreen<T extends AbstractContainerMenu> extends 
             graphics.drawString(font, count, -width, -font.lineHeight + 1, 0xFFFFFFFF, true);
         }
         graphics.pose().popPose();
-        //?}
     }
 }

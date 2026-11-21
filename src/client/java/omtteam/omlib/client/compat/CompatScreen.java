@@ -26,14 +26,9 @@ public abstract class CompatScreen extends Screen {
         return false;
     }
 
-    //? if >=1.21 {
     @Override
     public void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-        //? if >=1.21.11 {
-        /*super.renderBackground(graphics, mouseX, mouseY, partialTick);
-        *///?} else {
         renderTransparentBackground(graphics);
-        //?}
         renderPanel(graphics, mouseX, mouseY, partialTick);
     }
 
@@ -47,28 +42,7 @@ public abstract class CompatScreen extends Screen {
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
         return onScroll(mouseX, mouseY, scrollY) || super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
     }
-    //?} else {
-    /*@Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-        renderBackground(graphics);
-        renderPanel(graphics, mouseX, mouseY, partialTick);
-        super.render(graphics, mouseX, mouseY, partialTick);
-        renderForeground(graphics, mouseX, mouseY, partialTick);
-    }
 
-    @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-        return onScroll(mouseX, mouseY, delta) || super.mouseScrolled(mouseX, mouseY, delta);
-    }
-    *///?}
-
-    //? if >=1.21.11 {
-    /*// Dims the world like a container screen, without the blur.
-    @Override
-    public boolean isInGameUi() {
-        return true;
-    }
-    *///?}
 
     @Override
     public boolean isPauseScreen() {

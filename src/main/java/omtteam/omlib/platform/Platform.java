@@ -14,13 +14,6 @@ import omtteam.omlib.platform.neoforge.NeoForgeLoaderInfo;
 import omtteam.omlib.platform.neoforge.NeoForgeMenus;
 import omtteam.omlib.platform.neoforge.NeoForgeNetwork;
 *///?}
-//? if forge {
-/*import omtteam.omlib.platform.forge.ForgeEnergy;
-import omtteam.omlib.platform.forge.ForgeFuel;
-import omtteam.omlib.platform.forge.ForgeLoaderInfo;
-import omtteam.omlib.platform.forge.ForgeMenus;
-import omtteam.omlib.platform.forge.ForgeNetwork;
-*///?}
 
 /**
  * Holds the {@link PlatformServices} of the running loader, shared by all mods that use the library. The services are
@@ -69,12 +62,9 @@ public final class Platform {
         //? if fabric {
         return new PlatformServices(new FabricLoaderInfo(), new FabricFuel(), new FabricNetwork(), new FabricMenus(),
                 new FabricEnergy());
-        //?} else if neoforge {
+        //?} else {
         /*return new PlatformServices(new NeoForgeLoaderInfo(), new NeoForgeFuel(), new NeoForgeNetwork(),
                 new NeoForgeMenus(), new NeoForgeEnergy());
-        *///?} else {
-        /*return new PlatformServices(new ForgeLoaderInfo(), new ForgeFuel(), new ForgeNetwork(), new ForgeMenus(),
-                new ForgeEnergy());
         *///?}
     }
 }
