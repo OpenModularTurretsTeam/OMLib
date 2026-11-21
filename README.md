@@ -163,10 +163,9 @@ Code that needs a world (claiming, the wand, the packet handlers, the menus, the
 `./gradlew :1.21.11-fabric:pitest` (on demand, not part of `check`) runs mutation testing (PIT) on the code the unit tests are written for (`config`, `compat.nbt`, the packet codecs, `LongContainerData`, `SecurityNbt`; the list is `pitestTargets` in `build.fabric.gradle.kts`); report in `versions/1.21.11-fabric/build/reports/pitest/index.html`.
 It plants small mistakes (a flipped condition, `<` instead of `<=`, a removed call) and runs the unit tests against each one; a mistake no test notices ("survived") marks behaviour the tests do not pin down.
 When one survives, add the missing assertion to the unit test of that class; if it cannot be noticed, add it to the list below with the reason.
-It fails when the results get worse than the thresholds in `gradle.properties` (`pitest_mutation_threshold`, `pitest_coverage_threshold`, `pitest_max_surviving`, the state of 2026-11-18); tighten them when a test kills a survivor (lower `pitest_max_surviving`), and raise it only for a survivor that no test can notice, listed below with its reason.
+It fails when the results get worse than the thresholds in `gradle.properties` (`pitest_mutation_threshold`, `pitest_coverage_threshold`, `pitest_max_surviving`, the state of 2026-11-21); tighten them when a test kills a survivor (lower `pitest_max_surviving`), and raise it only for a survivor that no test can notice, listed below with its reason.
 
-State on 2026-11-18 (since the core moved to OpenModularCore, without it): 245 of 249 mutations detected (98 %), 352 of 375 lines of the mutated classes covered (94 %).
-It was measured on the old `1.20.1+` branch (node `1.21.1-fabric`) and not yet on this branch.
+State on 2026-11-21 (on this branch, without the core, which OpenModularCore tests): 241 of 245 mutations detected (98 %), 352 of 375 lines of the mutated classes covered (94 %).
 The survivors cannot be noticed:
 
 - `ConfigValidator.filter`: an empty immutable list for a missing list (the validated lists are only assigned to config fields, never changed).

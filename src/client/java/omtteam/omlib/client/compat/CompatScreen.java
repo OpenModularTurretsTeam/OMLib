@@ -5,7 +5,8 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
 /**
- * Screen base class hiding the rendering and scrolling differences between 1.20.1 and 1.21.
+ * Screen base class with one set of rendering and scrolling hooks, so that screens are the same on every version
+ * branch.
  * Subclasses draw their panel in {@link #renderPanel} (behind widgets) and extras in {@link #renderForeground}
  * (above widgets), and handle the mouse wheel in {@link #onScroll}.
  */

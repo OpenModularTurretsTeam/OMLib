@@ -9,7 +9,7 @@ plugins {
     id("me.modmuss50.mod-publish-plugin")
 }
 
-/** The loaders this setup knows; the node name ends with one of them ("1.21.1-neoforge"). */
+/** The loaders this setup knows; the node name ends with one of them ("<minecraft version>-neoforge"). */
 val loaders = listOf("fabric", "neoforge", "forge")
 val loader = project.name.substringAfterLast('-')
 require(loader in loaders) { "Stonecutter node '${project.name}' must end with one of $loaders" }
@@ -71,7 +71,7 @@ if (!isLibrary) {
 // - every jar starts from main's output, so the mod's jar bundles them on every loader (Loom remapJar, ModDevGradle
 //   jar, legacy ModDevGradle jar and reobfJar; the core has no Minecraft names, so remapping leaves it alone);
 // - the dev runs, game tests and unit tests load them as part of the mod (Loom's classpath group, ModDevGradle's mod
-//   folders), so no loader needs a plain library on its classpath (NeoForge 1.21.1 and Forge would not load one).
+//   folders), so no loader needs a plain library on its classpath (not every loader would load one).
 // Only that module goes into the jar (omt-core's dependency on omlib-core comes with OMLib's jar), and only its
 // <base package>.core classes. For compiling, the module is a compileOnly dependency (compileOnlyApi in the library: its
 // published metadata names omlib-core for the mods' compile classpath, while the classes come with its jar); it is never
@@ -157,8 +157,8 @@ sourceSets.configureEach {
     }
 }
 
-// One Minecraft version per branch: whole classes that differ between versions no longer live in version
-// source folders (src/<source set>/mc<first>-<last>/java). Fail on one instead of leaving it out silently.
+// A branch builds one Minecraft version and has no version source folders (src/<source set>/mc<first>-<last>/java):
+// fail on one instead of leaving it out silently.
 rootProject.file("src").listFiles()?.flatMap { it.listFiles()?.toList() ?: emptyList() }
     ?.filter { it.isDirectory && it.name.startsWith("mc") }
     ?.let { require(it.isEmpty()) { "Version source folders are not used on a one-version branch: $it" } }
@@ -222,7 +222,7 @@ tasks {
 
     // The core game logic lives in OpenModularCore (its build checks that it stays free of Minecraft). A class in the
     // mod's own core package would end up next to the bundled core classes (or replace one of them), so the mod's
-    // sources (any source set, any version folder) must have none.
+    // sources (any source set) must have none.
     val verifyNoCoreSources = register("verifyNoCoreSources") {
         group = "verification"
         description = "Fails if the sources have files in the core package, which comes from OpenModularCore"

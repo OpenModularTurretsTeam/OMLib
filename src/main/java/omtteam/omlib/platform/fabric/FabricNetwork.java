@@ -11,7 +11,7 @@ public final class FabricNetwork implements Network {
     @Override
     public <T> void registerC2S(PacketType<T> type, NetworkCompat.ServerHandler<T> handler) {
         PayloadTypeRegistry.playC2S().register(type.payloadType(), type.codec());
-        // Fabric runs payload handlers on the server thread on 1.20.5+
+        // Fabric runs payload handlers on the server thread
         ServerPlayNetworking.registerGlobalReceiver(type.payloadType(),
                 (payload, context) -> handler.handle(payload.packet(), context.player()));
     }

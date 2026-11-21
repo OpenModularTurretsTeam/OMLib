@@ -28,7 +28,7 @@ import java.util.function.Predicate;
  * Tinted quads (grass, leaves, water...) get the colour of the disguise at the host's position, taken from the level
  * view of the chunk being meshed, so the client's biome blend setting applies like on the real block.
  * <p>
- * The variant for 1.21.11 (Fabric's block state model API); {@code OMLibFabricClient} wraps the models.
+ * Built on Fabric's block state model API; {@code OMLibFabricClient} wraps the models.
  */
 public final class FabricCamoModel extends WrapperBlockStateModel {
     public FabricCamoModel(BlockStateModel wrapped) {

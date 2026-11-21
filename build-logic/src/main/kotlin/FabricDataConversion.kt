@@ -6,7 +6,7 @@ import java.io.File
 /**
  * Copies the Fabric datagen output [fabricData] into [output] for a loader without datagen of its own (NeoForge, Forge).
  * The data only differs in its load conditions: "fabric:load_conditions" becomes [conditionsKey] ("neoforge:conditions"
- * on NeoForge, "conditions" on Forge 1.20.1), with "condition" -> "type" in each entry.
+ * on NeoForge, "conditions" on Forge), with "condition" -> "type" in each entry.
  * Only conditions in [namespace] convert: the mod registers them under the same id on every loader. Any other condition
  * (e.g. fabric:all_mods_loaded) fails the build instead of producing wrong data.
  */

@@ -39,7 +39,7 @@ public final class CamoModels {
      * registry path (only namespace and path of the id are compared).
      */
     public static boolean isCamoModel(Identifier id) {
-        // a plain id: on 1.20.1 model ids can be ModelResourceLocations, which never equal a registry key
+        // a plain id of namespace and path: that is what the block registry is keyed by
         return BuiltInRegistries.BLOCK.getOptional(VersionCompat.id(id.getNamespace(), id.getPath()))
                 .map(block -> block instanceof CamoBlock).orElse(false);
     }

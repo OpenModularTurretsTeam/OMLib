@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/** Runs on every node, so it checks that each version's branch reads NBT the same way. */
+/** Runs on every node, so it checks that {@link NbtCompat} reads NBT the same way on each of them. */
 class NbtCompatTest {
     private static CompoundTag tag() {
         CompoundTag tag = new CompoundTag();
@@ -125,7 +125,7 @@ class NbtCompatTest {
         assertEquals(uuid, NbtCompat.getUuid(tag, "UUID"));
     }
 
-    /** The format of 1.20.1's {@code putUUID}, which older saves have: an array of four ints. */
+    /** The format older saves have (the old {@code putUUID}): an array of four ints. */
     @Test
     void uuidsAreStoredAsFourInts() {
         UUID uuid = new UUID(0x0000000100000002L, 0x0000000300000004L);

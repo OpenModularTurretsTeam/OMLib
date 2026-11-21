@@ -12,7 +12,7 @@ import java.util.function.Function;
 
 /**
  * A registered packet type. Packets are plain objects (usually records) with an encoder and a decoder;
- * the version-specific transport (raw channel on 1.20.1, {@code CustomPacketPayload} on 1.21+) is hidden here.
+ * the transport ({@code CustomPacketPayload}) is hidden here.
  * Create instances through {@link NetworkCompat}.
  */
 public final class PacketType<T> {
@@ -58,7 +58,7 @@ public final class PacketType<T> {
     }
 
     /**
-     * Carrier for a packet of a given {@link PacketType} on 1.21+.
+     * Carrier for a packet of a given {@link PacketType}.
      */
     public record Payload<T>(PacketType<T> packetType, T packet) implements CustomPacketPayload {
         @Override

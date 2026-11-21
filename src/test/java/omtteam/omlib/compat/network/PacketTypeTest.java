@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
-/** The packet type's own encoder and decoder, and on 1.21+ the payload codec the loaders register. */
+/** The packet type's own encoder and decoder, and the payload codec the loaders register. */
 class PacketTypeTest {
     private record Ping(int value, String text) {
         static void write(FriendlyByteBuf buf, Ping ping) {

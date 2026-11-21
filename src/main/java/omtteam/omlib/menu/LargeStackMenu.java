@@ -9,14 +9,11 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A menu with {@link LargeStackSlot}s: it handles the clicks a slot cannot limit by itself and, on 1.20.1, syncs
- * counts above one stack to the client.
+ * A menu with {@link LargeStackSlot}s: it handles the clicks a slot cannot limit by itself.
  * <ul>
  *     <li>The hotbar swap (number keys) takes one stack out of a slot that holds more (vanilla would move it all).</li>
- *     <li>Shift-click into a large slot fills it up to its limit on every version (1.20.1's
- *     {@code moveItemStackTo} stops at the item's max stack size).</li>
- *     <li>1.20.1 sends stack counts as a byte: a stack above one stack goes out as one stack carrying its real count in
- *     its data, which the client menu takes back out. Later versions send counts in full.</li>
+ *     <li>Shift-click into a large slot fills it up to its limit (vanilla's {@code moveItemStackTo} asks the slot for
+ *     the limit of the moved item).</li>
  * </ul>
  */
 public abstract class LargeStackMenu extends AbstractContainerMenu {

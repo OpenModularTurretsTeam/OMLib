@@ -29,7 +29,7 @@ import java.util.List;
  * Tinted quads keep their tint index; {@link #color} gives the hosts the colour of their disguise, so the vanilla
  * mesher tints them with the client's biome blend like on the real block.
  * <p>
- * The variant for 1.21.11 (block state models made of parts); {@code OMLibNeoForgeClient} wraps the models.
+ * Built on block state models made of parts; {@code OMLibNeoForgeClient} wraps the models.
  */
 public final class NeoForgeCamoModel extends DelegateBlockStateModel {
     public NeoForgeCamoModel(BlockStateModel delegate) {

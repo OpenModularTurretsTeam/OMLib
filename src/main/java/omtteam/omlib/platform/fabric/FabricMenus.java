@@ -14,7 +14,7 @@ import omtteam.omlib.platform.Menus;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Fabric extended screen handlers, whose API differs between 1.20.1 and 1.21.
+ * Fabric extended screen handlers.
  */
 public final class FabricMenus implements Menus {
     @Override

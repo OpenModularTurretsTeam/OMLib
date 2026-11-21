@@ -41,7 +41,7 @@ public abstract class LargeStackScreen<T extends AbstractContainerMenu> extends 
         }
     }
 
-    /** 1.21.11 draws in strata: the large slots go right after the other slots, below highlight and carried item. */
+    /** The game draws in strata: the large slots go right after the other slots, below highlight and carried item. */
     @Override
     protected void renderSlots(GuiGraphics graphics, int mouseX, int mouseY) {
         super.renderSlots(graphics, mouseX, mouseY);

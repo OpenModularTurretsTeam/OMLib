@@ -22,15 +22,15 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 /**
- * Version-independent base class for all mod block entities.
+ * Base class for all mod block entities, the same on every version branch.
  * <p>
- * Subclasses override {@link #readData} / {@link #writeData} instead of the vanilla NBT methods, whose
- * signatures differ between 1.20.1 and 1.21. Everything written by {@link #writeData} is also sent to
- * clients (initial chunk data and {@link #syncToClient()}); override {@link #writeClientData} to send less.
+ * Subclasses override {@link #readData} / {@link #writeData} instead of the vanilla NBT methods. Everything written
+ * by {@link #writeData} is also sent to clients (initial chunk data and {@link #syncToClient()}); override
+ * {@link #writeClientData} to send less.
  */
 public abstract class CompatBlockEntity extends BlockEntity {
     //? if neoforge {
-    /*/^* The {@link #renderData()} in the block entity's model data on NeoForge and Forge. ^/
+    /*/^* The {@link #renderData()} in the block entity's model data. ^/
     public static final ModelProperty<Object> RENDER_DATA = new ModelProperty<>();
     *///?}
 
@@ -68,7 +68,7 @@ public abstract class CompatBlockEntity extends BlockEntity {
 
     /**
      * What the block's model reads while the chunk is meshed (the camouflage), {@code null} for nothing. Fabric reads
-     * it as block entity render data, NeoForge and Forge as {@link #RENDER_DATA} in the model data. Call {@link #remesh} on the
+     * it as block entity render data, NeoForge as {@link #RENDER_DATA} in the model data. Call {@link #remesh} on the
      * client when it changed.
      */
     protected @Nullable Object renderData() {
@@ -101,8 +101,7 @@ public abstract class CompatBlockEntity extends BlockEntity {
 
     /**
      * The block was broken or replaced by another block (not called when only its state changes), just before the
-     * block entity is removed. Server only. Vanilla calls it on 1.21.11 ({@code preRemoveSideEffects}); on older
-     * versions the block's {@code onRemove} has to call {@link #handleRemove}.
+     * block entity is removed. Server only. Vanilla calls it from {@code preRemoveSideEffects}.
      */
     protected void onBlockRemoved(Level level) {
     }
@@ -120,8 +119,8 @@ public abstract class CompatBlockEntity extends BlockEntity {
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    // 1.21.11 saves through ValueInput / ValueOutput; the whole compound passes through unchanged, so the saved format
-    // stays the same as on the older versions.
+    // Block entities save through ValueInput / ValueOutput; the whole compound passes through unchanged, so the saved
+    // format is the same as in older worlds.
     @Override
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);

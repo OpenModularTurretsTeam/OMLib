@@ -12,8 +12,8 @@ import java.util.UUID;
 import net.minecraft.core.UUIDUtil;
 
 /**
- * Reads NBT the same way on every supported version: 1.21.11 returns {@code Optional}s, the older versions defaults.
- * A missing key or a wrong type reads as the fallback (or empty) everywhere. Read NBT only through these methods.
+ * Reads NBT the same way on every version branch: the tag's own getters return {@code Optional}s, these methods give
+ * the fallback (or empty) for a missing key or a wrong type. Read NBT only through these methods.
  * <p>
  * Depends on Minecraft only, so any package may use it (it is outside the package cycle around {@code compat}).
  */

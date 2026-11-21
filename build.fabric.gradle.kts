@@ -61,7 +61,7 @@ publishMods {
 
 // ---- Test coverage (JaCoCo): check prints the line coverage per package ----
 // Only the unit tests record coverage: the library has no game tests, and the mods' game tests run it in their builds.
-// Active version only (all versions share the source); platform/neoforge and platform/forge are not on a Fabric node.
+// Active node only; platform/neoforge is not on a Fabric node.
 // Report: versions/<v>/build/reports/jacoco/test/html/index.html
 val coverageActive = stonecutter.current.isActive
 jacoco {
