@@ -18,10 +18,10 @@ import java.util.function.Function;
 
 /**
  * Items and energy of a block entity for other mods (Forge capabilities, attached in {@code AttachCapabilitiesEvent};
- * the counterpart of the Fabric lookups and NeoForge's block capabilities). Forge attaches it while the block entity is
- * constructed, so the block entity is only asked on a query, and on every query: a side keeps its {@link LazyOptional}
- * while the block entity returns the same access object, and the old one is invalidated when that changes or the block
- * entity is removed ({@link #invalidate}).
+ * the counterpart of the Fabric lookups). Forge attaches it while the block entity is constructed, so the block entity
+ * is only asked on a query, and on every query: a side keeps its {@link LazyOptional} while the block entity returns
+ * the same access object, and the old one is invalidated when that changes or the block entity is removed
+ * ({@link #invalidate}).
  */
 final class ForgeBlockCapabilities implements ICapabilityProvider {
     private final Function<Direction, ItemAccess> items;

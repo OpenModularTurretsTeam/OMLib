@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import net.minecraft.network.FriendlyByteBuf;
 
 /**
- * Fabric extended screen handlers, whose API differs between 1.20.1 and 1.21.
+ * Fabric extended screen handlers.
  */
 public final class FabricMenus implements Menus {
     @Override

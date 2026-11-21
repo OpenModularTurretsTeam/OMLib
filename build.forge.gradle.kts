@@ -1,5 +1,5 @@
-// Forge nodes (1.20.1; legacy ModDevGradle). Shared logic (Java, metadata templating, tests, publishing) is in
-// build-logic/mod-common. Forge 1.20.1 runs on SRG names: the jar is reobfuscated (reobfJar), and the mods take that
+// Forge nodes (legacy ModDevGradle). Shared logic (Java, metadata templating, tests, publishing) is in
+// build-logic/mod-common. Forge runs on SRG names: the jar is reobfuscated (reobfJar), and the mods take that
 // jar and remap it to Mojang names through their mod* configurations.
 plugins {
     id("mod-common")
@@ -30,8 +30,8 @@ legacyForge {
     }
 }
 
-// Forge 1.20.1 only loads a mod's resources as a pack if it has a pack.mcmeta (Fabric and NeoForge 1.21 need none, and
-// a shared one would carry the wrong pack_format there), so this node generates it.
+// Forge only loads a mod's resources as a pack if it has a pack.mcmeta (Fabric needs none, and a shared one would
+// carry the wrong pack_format there), so this node generates it.
 val packMetadata = tasks.register("modPackMetadata") {
     group = "build"
     val output = layout.buildDirectory.dir("generated/modPackMetadata")
@@ -43,8 +43,8 @@ val packMetadata = tasks.register("modPackMetadata") {
 }
 sourceSets.main { resources.srcDir(packMetadata) }
 
-// Forge 1.20.1 has no common (c:) tags, only its own forge: tags; the mods' recipes and CommonTags use the c: ids of
-// Fabric 1.20.1, so the library defines them here from the matching forge: tags (c:wrenches has none and stays empty).
+// Forge has no common (c:) tags, only its own forge: tags; the mods' recipes and CommonTags use the c: ids of Fabric,
+// so the library defines them here from the matching forge: tags (c:wrenches has none and stays empty).
 sourceSets.main { resources.srcDir(rootProject.file("src/main/forge/resources")) }
 
 tasks.jar { from(client.output) }

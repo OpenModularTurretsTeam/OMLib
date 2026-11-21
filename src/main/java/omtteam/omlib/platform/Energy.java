@@ -9,7 +9,7 @@ import omtteam.omlib.core.energy.EnergyStore;
 
 /**
  * Energy of items and of other mods' blocks, through the loader's energy API (Team Reborn Energy on Fabric, FE on
- * NeoForge; 1 E = 1 FE).
+ * Forge; 1 E = 1 FE).
  */
 public interface Energy {
     /**

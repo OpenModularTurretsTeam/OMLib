@@ -7,8 +7,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 
 /**
- * Registers a menu screen through the loader: Fabric passes {@code MenuScreens::register}, NeoForge
- * {@code RegisterMenuScreensEvent::register}. A generic method, so it takes method references, not lambdas.
+ * Registers a menu screen through the loader: Fabric and Forge pass {@code MenuScreens::register}. A generic method,
+ * so it takes method references, not lambdas.
  */
 public interface ScreenRegistrar {
     <M extends AbstractContainerMenu, S extends Screen & MenuAccess<M>> void register(

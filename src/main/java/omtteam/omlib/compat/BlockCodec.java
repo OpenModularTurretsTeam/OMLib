@@ -3,8 +3,8 @@ package omtteam.omlib.compat;
 import net.minecraft.world.level.block.BaseEntityBlock;
 
 /**
- * Version-independent handle on the codec of a block.
- * 1.21 needs one per block (it registers the block type, see {@code BaseEntityBlock#codec()}), 1.20.1 has none.
+ * Handle on the codec of a block, the same on every version branch.
+ * This version has no block codec, so the handle is empty and only keeps the call sites the same.
  * Create it with {@link CompatEntityBlock}'s {@code codecOf} helpers and pass it to its constructor.
  */
 public final class BlockCodec<T extends BaseEntityBlock> {

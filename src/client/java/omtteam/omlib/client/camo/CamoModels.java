@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * Which models show a disguise: those of the {@link CamoBlock}s. The loader client entrypoints wrap them in their
- * camouflage model ({@code FabricCamoModel}, {@code NeoForgeCamoModel}); the block entity hands the disguise to the
+ * camouflage model ({@code FabricCamoModel}, {@code ForgeCamoModel}); the block entity hands the disguise to the
  * model through {@code CompatBlockEntity#renderData}. A block with a {@link CamoBlock#overlayTintIndex} also keeps
  * those quads of its own model over the disguise.
  */
@@ -39,7 +39,7 @@ public final class CamoModels {
      * registry path (only namespace and path of the id are compared).
      */
     public static boolean isCamoModel(ResourceLocation id) {
-        // a plain id: on 1.20.1 model ids can be ModelResourceLocations, which never equal a registry key
+        // a plain id: model ids can be ModelResourceLocations, which never equal a registry key
         return BuiltInRegistries.BLOCK.getOptional(VersionCompat.id(id.getNamespace(), id.getPath()))
                 .map(block -> block instanceof CamoBlock).orElse(false);
     }

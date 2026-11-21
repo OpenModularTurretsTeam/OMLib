@@ -22,12 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Model of a camouflage host ({@code CamoHost}) on Forge, the same as {@code NeoForgeCamoModel} (whose Forge 1.20.1 API
- * it shares): without a disguise it is the block's own model, with one it returns the quads and render types of the
- * disguise's model, so the disguise is meshed like the real block (transparent ones in their own layer). The block
- * entity hands the disguise over as {@link CompatBlockEntity#RENDER_DATA} in its model data.
+ * Model of a camouflage host ({@code CamoHost}) on Forge (the Fabric counterpart is {@code FabricCamoModel}): without a
+ * disguise it is the block's own model, with one it returns the quads and render types of the disguise's model, so the
+ * disguise is meshed like the real block (transparent ones in their own layer). The block entity hands the disguise
+ * over as {@link CompatBlockEntity#RENDER_DATA} in its model data.
  * <p>
- * Unlike on NeoForge, ambient occlusion stays the block's own: Forge 1.20.1 does not pass the model data there.
+ * Ambient occlusion stays the block's own: Forge does not pass the model data there.
  * Tinted quads keep their tint index; {@link #color} gives the hosts the colour of their disguise.
  */
 public final class ForgeCamoModel extends BakedModelWrapper<BakedModel> {

@@ -9,8 +9,8 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Menu slot of a {@link LargeStackContainer}: it accepts items up to the container's slot limit, but hands out at
  * most one normal stack at a time, so the cursor and the player's inventory never hold more than vanilla allows.
- * Used in a {@link LargeStackMenu}, which handles the clicks a slot cannot (hotbar swap, shift-click on 1.20.1) and
- * syncs the counts.
+ * Used in a {@link LargeStackMenu}, which handles the clicks a slot cannot (hotbar swap, shift-click) and syncs the
+ * counts.
  */
 public class LargeStackSlot extends Slot {
     private boolean hidden;

@@ -20,15 +20,15 @@ import net.minecraftforge.client.model.data.ModelProperty;
 import net.minecraft.core.RegistryAccess;
 
 /**
- * Version-independent base class for all mod block entities.
+ * Base class for all mod block entities, the same on every version branch.
  * <p>
- * Subclasses override {@link #readData} / {@link #writeData} instead of the vanilla NBT methods, whose
- * signatures differ between 1.20.1 and 1.21. Everything written by {@link #writeData} is also sent to
- * clients (initial chunk data and {@link #syncToClient()}); override {@link #writeClientData} to send less.
+ * Subclasses override {@link #readData} / {@link #writeData} instead of the vanilla NBT methods. Everything written
+ * by {@link #writeData} is also sent to clients (initial chunk data and {@link #syncToClient()}); override
+ * {@link #writeClientData} to send less.
  */
 public abstract class CompatBlockEntity extends BlockEntity {
     //? if forge {
-    /*/^* The {@link #renderData()} in the block entity's model data on NeoForge and Forge. ^/
+    /*/^* The {@link #renderData()} in the block entity's model data. ^/
     public static final ModelProperty<Object> RENDER_DATA = new ModelProperty<>();
     *///?}
 
@@ -66,7 +66,7 @@ public abstract class CompatBlockEntity extends BlockEntity {
 
     /**
      * What the block's model reads while the chunk is meshed (the camouflage), {@code null} for nothing. Fabric reads
-     * it as block entity render data, NeoForge and Forge as {@link #RENDER_DATA} in the model data. Call {@link #remesh} on the
+     * it as block entity render data, Forge as {@link #RENDER_DATA} in the model data. Call {@link #remesh} on the
      * client when it changed.
      */
     protected @Nullable Object renderData() {
@@ -99,14 +99,13 @@ public abstract class CompatBlockEntity extends BlockEntity {
 
     /**
      * The block was broken or replaced by another block (not called when only its state changes), just before the
-     * block entity is removed. Server only. Vanilla calls it on 1.21.11 ({@code preRemoveSideEffects}); on older
-     * versions the block's {@code onRemove} has to call {@link #handleRemove}.
+     * block entity is removed. Server only. The block's {@code onRemove} has to call {@link #handleRemove}.
      */
     protected void onBlockRemoved(Level level) {
     }
 
     /**
-     * Forwards a block's {@code onRemove} to {@link #onBlockRemoved} with the same conditions as vanilla 1.21.11.
+     * Forwards a block's {@code onRemove} to {@link #onBlockRemoved} when another block replaced it, on the server.
      * Call it first thing in {@code onRemove}, before {@code super.onRemove} removes the block entity.
      */
     public static void handleRemove(BlockState state, Level level, BlockPos pos, BlockState newState) {
@@ -140,7 +139,7 @@ public abstract class CompatBlockEntity extends BlockEntity {
         return tag;
     }
 
-    // Only passed through on 1.20.1; the level may not be set yet while loading.
+    // The provider is ignored on this version and only passed through; the level may not be set yet while loading.
     private HolderLookup.Provider registries() {
         return level != null ? level.registryAccess() : RegistryAccess.EMPTY;
     }

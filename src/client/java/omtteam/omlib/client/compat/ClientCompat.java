@@ -20,15 +20,15 @@ import org.joml.Matrix4f;
 import java.util.List;
 
 /**
- * Hides client-side API differences between the supported Minecraft versions.
+ * Client-side Minecraft API calls behind one set of signatures, so that call sites are the same on every version
+ * branch.
  */
 public final class ClientCompat {
     private ClientCompat() {
     }
 
     /**
-     * Draws the dimmed background of a container screen. Only needed on 1.20.1; on 1.21 {@code Screen.render}
-     * already does it.
+     * Draws the dimmed background of a container screen ({@code Screen.render} does not do it).
      */
     @SuppressWarnings("unused")
     public static void renderContainerBackground(Screen screen, GuiGraphics graphics, int mouseX, int mouseY,
@@ -36,13 +36,13 @@ public final class ClientCompat {
         screen.renderBackground(graphics);
     }
 
-    /** Draws a part of a 256 × 256 GUI texture (1.21.11 also takes the render pipeline and the texture size). */
+    /** Draws a part of a 256 × 256 GUI texture. */
     public static void blit(GuiGraphics graphics, ResourceLocation texture, int x, int y, int u, int v, int width,
                             int height) {
         graphics.blit(texture, x, y, u, v, width, height);
     }
 
-    /** Shows a tooltip at the mouse; 1.21.11 draws it at the end of the frame. */
+    /** Shows a tooltip at the mouse. */
     public static void renderTooltip(GuiGraphics graphics, Font font, Component text, int mouseX, int mouseY) {
         graphics.renderTooltip(font, text, mouseX, mouseY);
     }
@@ -59,14 +59,14 @@ public final class ClientCompat {
     }
 
     /**
-     * Shows a tooltip-styled box that stays on screen next to other tooltips. Up to 1.21.1 tooltips are drawn at once,
-     * so this is a plain tooltip; 1.21.11 keeps only one tooltip per frame, so the box is drawn by hand.
+     * Shows a tooltip-styled box that stays on screen next to other tooltips. Tooltips are drawn at once, so this is
+     * a plain tooltip.
      */
     public static void renderStaticTooltip(GuiGraphics graphics, Font font, List<Component> lines, int x, int y) {
         graphics.renderComponentTooltip(font, lines, x, y);
     }
 
-    /** The render type of lines in the world ({@code RenderTypes} on 1.21.11). */
+    /** The render type of lines in the world. */
     public static RenderType lines() {
         return RenderType.lines();
     }
@@ -83,12 +83,12 @@ public final class ClientCompat {
         LevelRenderer.renderLineBox(poseStack, lines, minX, minY, minZ, maxX, maxY, maxZ, red, green, blue, alpha);
     }
 
-    /** Whether a shift key is held (1.21.11 asks the game instead of {@code Screen}). */
+    /** Whether a shift key is held. */
     public static boolean hasShiftDown() {
         return Screen.hasShiftDown();
     }
 
-    /** Adds a position + colour vertex (the {@code VertexConsumer} API changed in 1.21). */
+    /** Adds a position + colour vertex. */
     public static void vertex(VertexConsumer consumer, Matrix4f pose, float x, float y, float z, int argb) {
         consumer.vertex(pose, x, y, z).color((argb >> 16) & 0xFF, (argb >> 8) & 0xFF, argb & 0xFF, (argb >>> 24) & 0xFF)
                 .endVertex();
@@ -111,7 +111,7 @@ public final class ClientCompat {
 
     /**
      * Turns the pose towards the camera and scales it for text, like a name tag: x right, y down. The camera rotation
-     * changed in 1.20.5, so 1.20.1 mirrors x and 1.21 does not (a mirrored label faces away and is culled).
+     * needs x mirrored for that on this version.
      */
     public static void faceCamera(PoseStack poseStack, Camera camera, float scale) {
         poseStack.mulPose(camera.rotation());

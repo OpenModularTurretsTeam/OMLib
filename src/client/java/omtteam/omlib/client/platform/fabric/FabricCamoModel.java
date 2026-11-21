@@ -21,15 +21,15 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Supplier;
 
 /**
- * Model of a camouflage host ({@code CamoHost}) on Fabric (the NeoForge counterpart is {@code NeoForgeCamoModel}):
- * without a disguise it is the block's own model, with one it emits
- * the quads of the disguise's model into the normal chunk mesh. That gives the disguise proper ambient occlusion and
- * face culling, and transparent blocks (glass, leaves, ice) are drawn in their own render layer.
+ * Model of a camouflage host ({@code CamoHost}) on Fabric (the Forge counterpart is {@code ForgeCamoModel}):
+ * without a disguise it is the block's own model, with one it emits the quads of the disguise's model into the normal
+ * chunk mesh, in the render layer of the disguise. That gives the disguise proper ambient occlusion and face culling,
+ * and transparent blocks (glass, leaves, ice) are drawn in their own render layer.
  * <p>
- * Tinted quads (grass, leaves, water...) get the colour of the disguise at the host's position, taken from the
- * level view of the chunk being meshed, so the client's biome blend setting applies like on the real block.
+ * Tinted quads (grass, leaves, water...) get the colour of the disguise at the host's position, taken from the level
+ * view of the chunk being meshed, so the client's biome blend setting applies like on the real block.
  * <p>
- * The variant up to 1.21.1 (baked models); {@code OMLibFabricClient} wraps the models.
+ * Built on baked models; {@code OMLibFabricClient} wraps the models.
  */
 public final class FabricCamoModel extends ForwardingBakedModel {
     public FabricCamoModel(BakedModel wrapped) {
@@ -47,7 +47,7 @@ public final class FabricCamoModel extends ForwardingBakedModel {
         BlockState camo = camoAt(view, pos);
         Renderer renderer = RendererAccess.INSTANCE.getRenderer();
         if (camo == null || renderer == null) {
-            // no renderer implementation (e.g. Sodium on 1.20.1 without Indium): the block's own look
+            // no renderer implementation (e.g. Sodium without Indium): the block's own look
             super.emitBlockQuads(view, state, pos, randomSupplier, context);
             return;
         }
@@ -76,8 +76,8 @@ public final class FabricCamoModel extends ForwardingBakedModel {
     }
 
     /**
-     * Puts the quads of the disguise into the render layer of the disguise (the host block's layer is the solid
-     * one) and applies its tint.
+     * Puts the quads of the disguise into the render layer of the disguise (the host block's layer is the solid one) and
+     * applies its tint.
      */
     private static final class DisguiseTransform implements RenderContext.QuadTransform {
         private final BlockAndTintGetter view;

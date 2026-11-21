@@ -10,13 +10,11 @@ import omtteam.omlib.compat.network.PacketType;
 public interface Network {
     /**
      * Registers a client-to-server packet; the handler runs on the server thread.
-     * On NeoForge this must happen before {@code RegisterPayloadHandlersEvent}, otherwise it throws.
      */
     <T> void registerC2S(PacketType<T> type, NetworkCompat.ServerHandler<T> handler);
 
     /**
      * Registers a server-to-client packet; its handler comes from {@code ClientNetwork#registerHandler}.
-     * On NeoForge this must happen before {@code RegisterPayloadHandlersEvent}, otherwise it throws.
      */
     <T> void registerS2C(PacketType<T> type);
 

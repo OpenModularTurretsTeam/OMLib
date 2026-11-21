@@ -11,8 +11,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 /**
- * Reads NBT the same way on every supported version: 1.21.11 returns {@code Optional}s, the older versions defaults.
- * A missing key or a wrong type reads as the fallback (or empty) everywhere. Read NBT only through these methods.
+ * Reads NBT the same way on every version branch. A missing key or a wrong type reads as the fallback (or empty).
+ * Read NBT only through these methods.
  * <p>
  * Depends on Minecraft only, so any package may use it (it is outside the package cycle around {@code compat}).
  */

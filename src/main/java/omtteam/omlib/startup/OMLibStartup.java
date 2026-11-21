@@ -16,7 +16,7 @@ public final class OMLibStartup {
     private OMLibStartup() {
     }
 
-    /** Registers the packets (NeoForge accepts packets only until its payload registration event). */
+    /** Registers the packets. */
     public static void init() {
         OMLib.LOGGER.info("Initializing OMLib");
         OMLibPackets.init();

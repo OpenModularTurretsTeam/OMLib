@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 /**
- * One Forge event channel per packet type, named by its id (like the raw channels on Fabric 1.20.1). Channels accept a
+ * One Forge event channel per packet type, named by its id (like the raw channels on Fabric). Channels accept a
  * missing remote, so, like on Fabric, a client or server without the mod can still connect. Packets are decoded on the
  * network thread and handled on the main thread. Server-to-client packets are dispatched to the handler the client
  * registers later ({@code ForgeClientNetwork}), so main never touches client code.

@@ -27,8 +27,8 @@ import java.util.Set;
 /**
  * Forge entrypoint of the library: installs the platform services for all mods that use it (the mods declare that they
  * load after it), runs each registration step in the {@link RegisterEvent} of its registry and attaches the item and
- * energy capabilities to every transfer block entity. Forge 1.20.1 has no client-only {@code @Mod} classes, so it also
- * starts the client entrypoint ({@code OMLibForgeClient}) on a client.
+ * energy capabilities to every transfer block entity. Forge has no client-only {@code @Mod} classes, so it also starts
+ * the client entrypoint ({@code OMLibForgeClient}) on a client.
  */
 @Mod(OMLib.MOD_ID)
 public final class OMLibForge {

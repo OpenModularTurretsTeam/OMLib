@@ -8,7 +8,7 @@ import java.util.function.Function;
 
 /**
  * A registered packet type. Packets are plain objects (usually records) with an encoder and a decoder;
- * the version-specific transport (raw channel on 1.20.1, {@code CustomPacketPayload} on 1.21+) is hidden here.
+ * the transport (a raw channel on this version) is hidden here.
  * Create instances through {@link NetworkCompat}.
  */
 public final class PacketType<T> {

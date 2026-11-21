@@ -6,15 +6,14 @@ import net.minecraft.world.item.Item;
 
 /**
  * Common ({@code c:}) item tags replacing the 1.12.2 ore dictionary entries, as plain tag keys (the same ids on Fabric
- * and NeoForge). The ids differ between versions ({@code c:iron_ingots} on 1.20.1, {@code c:ingots/iron} on 1.21).
- * Forge 1.20.1 has no common tags; the library's Forge jar defines them from the matching {@code forge:} tags
- * ({@code src/main/forge/resources}), except {@link #WRENCHES}.
+ * and Forge, e.g. {@code c:iron_ingots}). Forge has no common tags; the library's Forge jar defines them from the
+ * matching {@code forge:} tags ({@code src/main/forge/resources}), except {@link #WRENCHES}.
  * <p>
- * 1.20.1 has no common tags for redstone/lapis blocks and wooden chests; recipes use the vanilla items there
+ * There are no common tags for redstone/lapis blocks and wooden chests; recipes use the vanilla items there
  * ({@code Items.REDSTONE_BLOCK}, {@code Items.LAPIS_BLOCK}, {@code Items.CHEST}).
  */
 public final class CommonTags {
-    /** Wrenches of other mods: {@code c:wrenches} on 1.20.1, {@code c:tools/wrench} on 1.21. */
+    /** Wrenches of other mods ({@code c:wrenches}). */
     public static final TagKey<Item> WRENCHES = tag("wrenches");
     /** Ore dictionary {@code ingotIron}. */
     public static final TagKey<Item> IRON_INGOTS = tag("iron_ingots");

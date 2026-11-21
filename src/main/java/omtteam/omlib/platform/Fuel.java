@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
 public interface Fuel {
     /**
      * Burn time of one item of this stack in ticks, as in a furnace; 0 if empty or no fuel, never negative. The level
-     * holds the fuel values on 1.21.11 (they depend on its data and enabled features); older versions ignore it.
+     * is ignored on this version; it only keeps the call sites the same on every version branch.
      */
     int burnTime(Level level, ItemStack stack);
 
