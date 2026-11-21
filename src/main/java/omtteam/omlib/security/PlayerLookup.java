@@ -1,7 +1,7 @@
 package omtteam.omlib.security;
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import omtteam.omlib.OMLib;

@@ -1,6 +1,6 @@
 package omtteam.omlib;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import omtteam.omlib.compat.VersionCompat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ public final class OMLib {
     }
 
     /** An id in the library's namespace (its menu type, its packets, ...). */
-    public static ResourceLocation id(String path) {
+    public static Identifier id(String path) {
         return VersionCompat.id(MOD_ID, path);
     }
 }

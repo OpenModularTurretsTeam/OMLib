@@ -1,7 +1,7 @@
 package omtteam.omlib.compat.network;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import omtteam.omlib.platform.Platform;
 
@@ -29,7 +29,7 @@ public final class NetworkCompat {
     /**
      * Registers a client-to-server packet and its server-side handler. Call from common init.
      */
-    public static <T> PacketType<T> registerC2S(ResourceLocation id, BiConsumer<FriendlyByteBuf, T> encoder,
+    public static <T> PacketType<T> registerC2S(Identifier id, BiConsumer<FriendlyByteBuf, T> encoder,
                                                 Function<FriendlyByteBuf, T> decoder, ServerHandler<T> handler) {
         PacketType<T> type = new PacketType<>(id, encoder, decoder);
         Platform.network().registerC2S(type, handler);
@@ -40,7 +40,7 @@ public final class NetworkCompat {
      * Registers a server-to-client packet. Call from common init; register the client handler with
      * {@code ClientNetworkCompat#registerHandler} from client init.
      */
-    public static <T> PacketType<T> registerS2C(ResourceLocation id, BiConsumer<FriendlyByteBuf, T> encoder,
+    public static <T> PacketType<T> registerS2C(Identifier id, BiConsumer<FriendlyByteBuf, T> encoder,
                                                 Function<FriendlyByteBuf, T> decoder) {
         PacketType<T> type = new PacketType<>(id, encoder, decoder);
         Platform.network().registerS2C(type);

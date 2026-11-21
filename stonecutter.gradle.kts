@@ -8,7 +8,7 @@ plugins {
     id("net.neoforged.moddev.legacyforge") version "2.0.148" apply false
 }
 
-stonecutter active "1.21.1-fabric"
+stonecutter active "1.21.11-fabric"
 
 // Loader constants for conditions: //? if fabric { ... //? if neoforge { ... //? if forge {
 // Prefer whole classes in platform/<loader>/ packages (left out of the other loaders' builds) over conditions.

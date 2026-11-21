@@ -1,9 +1,7 @@
 package omtteam.omlib.compat;
 
 import net.minecraft.world.level.block.BaseEntityBlock;
-//? if >=1.21 {
 import com.mojang.serialization.MapCodec;
-//?}
 
 /**
  * Version-independent handle on the codec of a block.
@@ -11,7 +9,6 @@ import com.mojang.serialization.MapCodec;
  * Create it with {@link CompatEntityBlock}'s {@code codecOf} helpers and pass it to its constructor.
  */
 public final class BlockCodec<T extends BaseEntityBlock> {
-    //? if >=1.21 {
     private final MapCodec<T> codec;
 
     BlockCodec(MapCodec<T> codec) {
@@ -21,8 +18,4 @@ public final class BlockCodec<T extends BaseEntityBlock> {
     MapCodec<T> codec() {
         return codec;
     }
-    //?} else {
-    /*BlockCodec() {
-    }
-    *///?}
 }

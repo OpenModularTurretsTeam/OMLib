@@ -7,9 +7,7 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
-//? if >=1.21.11 {
-/*import net.minecraft.client.input.MouseButtonEvent;
-*///?}
+import net.minecraft.client.input.MouseButtonEvent;
 import omtteam.omlib.core.security.AccessLevel;
 import omtteam.omlib.core.security.TrustedPlayer;
 
@@ -70,17 +68,10 @@ public class TrustedPlayerList extends AbstractWidget {
         return true;
     }
 
-    //? if >=1.21.11 {
-    /*@Override
+    @Override
     public void onClick(MouseButtonEvent event, boolean doubleClick) {
         select(event.y());
     }
-    *///?} else {
-    @Override
-    public void onClick(double mouseX, double mouseY) {
-        select(mouseY);
-    }
-    //?}
 
     private void select(double mouseY) {
         int row = (int) ((mouseY - getY() - PADDING) / ROW_HEIGHT) + scrollRows;

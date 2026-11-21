@@ -2,11 +2,7 @@ package omtteam.omlib.item;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
-//? if >=1.21.11 {
-/*import net.minecraft.world.InteractionResult;
-*///?} else {
-import net.minecraft.world.InteractionResultHolder;
-//?}
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -56,8 +52,7 @@ public class OwnershipWandItem extends Item {
     }
 
     /** Sneak-right-click into the air switches spreading. */
-    //? if >=1.21.11 {
-    /*@Override
+    @Override
     @SuppressWarnings("NullableProblems")
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (toggleSpreading(level, player, player.getItemInHand(hand))) {
@@ -65,17 +60,6 @@ public class OwnershipWandItem extends Item {
         }
         return super.use(level, player, hand);
     }
-    *///?} else {
-    @Override
-    @SuppressWarnings("NullableProblems")
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
-        if (toggleSpreading(level, player, stack)) {
-            return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
-        }
-        return super.use(level, player, hand);
-    }
-    //?}
 
     /** @return whether this was the sneak-click into the air, which toggled the setting (or told why not) */
     private boolean toggleSpreading(Level level, Player player, ItemStack stack) {

@@ -1,12 +1,10 @@
 package omtteam.omlib.compat.network;
 
 import io.netty.buffer.Unpooled;
-//? if >=1.21 {
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-//?}
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import omtteam.omlib.compat.VersionCompat;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +24,7 @@ class PacketTypeTest {
         }
     }
 
-    private static final ResourceLocation ID = VersionCompat.id("omlib", "ping");
+    private static final Identifier ID = VersionCompat.id("omlib", "ping");
     private static final Ping PING = new Ping(-300, "pong");
 
     private static PacketType<Ping> type() {
@@ -43,7 +41,6 @@ class PacketTypeTest {
         assertEquals(ID, type.id());
     }
 
-    //? if >=1.21 {
     @Test
     void payloadsCarryThePacketThroughTheStreamCodec() {
         PacketType<Ping> type = type();
@@ -56,5 +53,4 @@ class PacketTypeTest {
         assertSame(type.payloadType(), payload.type());
         assertEquals(ID, type.payloadType().id());
     }
-    //?}
 }

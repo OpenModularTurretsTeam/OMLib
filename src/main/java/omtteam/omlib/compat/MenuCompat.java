@@ -4,7 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -32,7 +32,7 @@ public final class MenuCompat {
         AbstractContainerMenu create(int containerId, Inventory inventory, Player player);
     }
 
-    public static <T extends AbstractContainerMenu> MenuType<T> register(ResourceLocation id, ClientFactory<T> factory) {
+    public static <T extends AbstractContainerMenu> MenuType<T> register(Identifier id, ClientFactory<T> factory) {
         return Registry.register(BuiltInRegistries.MENU, id, Platform.menus().createBlockMenuType(factory));
     }
 

@@ -1,7 +1,7 @@
 package omtteam.omlib.client.camo;
 
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import omtteam.omlib.camo.CamoBlock;
@@ -38,7 +38,7 @@ public final class CamoModels {
      * Whether the model with this id belongs to a camouflage host: block state and item models share the block's
      * registry path (only namespace and path of the id are compared).
      */
-    public static boolean isCamoModel(ResourceLocation id) {
+    public static boolean isCamoModel(Identifier id) {
         // a plain id: on 1.20.1 model ids can be ModelResourceLocations, which never equal a registry key
         return BuiltInRegistries.BLOCK.getOptional(VersionCompat.id(id.getNamespace(), id.getPath()))
                 .map(block -> block instanceof CamoBlock).orElse(false);

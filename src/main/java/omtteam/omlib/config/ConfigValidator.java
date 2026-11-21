@@ -1,6 +1,6 @@
 package omtteam.omlib.config;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import omtteam.omlib.OMLib;
 
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public final class ConfigValidator {
 
     /** Removes null entries and entries that are not valid resource locations. */
     public List<String> ids(String name, List<String> ids) {
-        return filter(name, ids, entry -> ResourceLocation.tryParse(entry) != null);
+        return filter(name, ids, entry -> Identifier.tryParse(entry) != null);
     }
 
     /** Keeps the entries that are not null and pass {@code valid}; logs and counts as a correction what it drops. */

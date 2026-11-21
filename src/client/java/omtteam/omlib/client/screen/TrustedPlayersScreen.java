@@ -7,10 +7,8 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-//? if >=1.21.11 {
-/*import net.minecraft.client.input.KeyEvent;
-*///?}
+import net.minecraft.resources.Identifier;
+import net.minecraft.client.input.KeyEvent;
 import omtteam.omlib.OMLib;
 import omtteam.omlib.client.compat.ClientCompat;
 import omtteam.omlib.client.compat.ClientNetworkCompat;
@@ -34,7 +32,7 @@ import java.util.Optional;
  * server checks the permission and the change comes back through the block entity sync.
  */
 public class TrustedPlayersScreen extends CompatScreen {
-    private static final ResourceLocation TEXTURE = OMLib.id("textures/gui/trusted_players.png");
+    private static final Identifier TEXTURE = OMLib.id("textures/gui/trusted_players.png");
     private static final int WIDTH = 256;
     private static final int HEIGHT = 256;
 
@@ -153,17 +151,10 @@ public class TrustedPlayersScreen extends CompatScreen {
         refreshList();
     }
 
-    //? if >=1.21.11 {
-    /*@Override
+    @Override
     public boolean keyPressed(KeyEvent event) {
         return addOnEnter(event.key()) || super.keyPressed(event);
     }
-    *///?} else {
-    @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        return addOnEnter(keyCode) || super.keyPressed(keyCode, scanCode, modifiers);
-    }
-    //?}
 
     /** Enter in the name field adds the player. */
     private boolean addOnEnter(int keyCode) {
