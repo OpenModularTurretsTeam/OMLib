@@ -1,17 +1,18 @@
-# OMLib (1.20.1+)
+# OMLib (1.21.1)
 
-The library of the Open Modular mods (OpenModularTurrets, OpenModularLighting and later ones) for Minecraft 1.20.1 and newer.
-It is a mod of its own (mod id `omlib`), built for the same six nodes as the mods (1.20.1 Fabric and Forge, 1.21.1 Fabric and NeoForge, 1.21.11 Fabric and NeoForge) with the same Stonecutter setup.
+The library of the Open Modular mods (OpenModularTurrets, OpenModularLighting and later ones) for Minecraft 1.21.1.
+It is a mod of its own (mod id `omlib`), built for the same two nodes as the mods (`1.21.1-fabric` and `1.21.1-neoforge`) with the same Stonecutter setup.
 Every mod mounts this repository as its `omlib` git submodule and bundles the library into its own jar (jar-in-jar), so players install one file per mod.
-This branch starts from a clean history; the Minecraft 1.12 library lives on the `1.12` branch.
+This branch starts from a clean history and was split off the former `1.20.1+` branch, which is frozen and will be retired after the first release from the new branches.
+The other Minecraft versions are on the sibling branches `1.20.1` (Fabric and Forge) and `1.21.11` (Fabric and NeoForge); the Minecraft 1.12 library lives on the `1.12` branch.
 
 ## What is in it
 
 - `src/main/java/omtteam/omlib/` and `src/client/java/omtteam/omlib/client/` are the library code, in the same package layout the mods had before.
   The game rules without Minecraft, `omtteam.omlib.core` (trust lists, access levels and profiles, energy buffer, camouflage light and permissions, machine mode and targeting settings, memory card data and the copy rules of the trust list, faces, positions and flood fill), are not in this repository: they come from the shared core, module `omlib-core` of [OpenModularCore](https://github.com/OpenModularTurretsTeam/OpenModularCore), the same on every Minecraft version, and are bundled into the library's jar (see "The shared core").
-  - `platform` is the loader abstraction (`Platform`, `LoaderInfo`, `Fuel`, `Network`, `Menus`, `Energy`) with the Fabric, NeoForge and Forge implementations in `platform/<loader>`.
+  - `platform` is the loader abstraction (`Platform`, `LoaderInfo`, `Fuel`, `Network`, `Menus`, `Energy`) with the Fabric and NeoForge implementations in `platform/<loader>`.
     The services are created on first use, so it does not matter which mod starts first.
-  - `compat` hides the differences between Minecraft versions (`VersionCompat`, `NbtCompat`, `BlockCompat`, `NetworkCompat`, `MenuCompat`, `CompatBlockEntity`, `CompatEntityBlock` with `BlockCodec`, `CommonTags`); `client.compat` has the client side (`ClientCompat`).
+  - `compat` is the porting layer between the version branches: it keeps the call sites in the game code identical on every branch (`VersionCompat`, `NbtCompat`, `BlockCompat`, `NetworkCompat`, `MenuCompat`, `CompatBlockEntity`, `CompatEntityBlock` with `BlockCodec`, `CommonTags`); `client.compat` has the client side (`ClientCompat`).
   - `block.InteractiveBlock` is the right-click handling for all mods: blocks implement `onUse`, and mods add `Interceptor`s that see every click first (a wand, a settings card); the library registers the loader's event once.
   - `core.energy` (`EnergyStore`, `EnergyAccess`, `EnergyGroup`, from the core) and `inventory.ItemAccess` describe energy and items other blocks may use, and `blockentity.TransferHost` marks the block entities that expose them; the loaders' lookups and capabilities are registered from the mod's list of such block entity types.
   - `config` is the annotation-based JSON config (`@Comment`, `@Range`, `ConfigWriter`, `ConfigRanges`, `ConfigValidator`, `ConfigMigration`) and `ConfigManager<T>`, which loads, migrates, validates and writes a mod's file and holds the server's config on clients.
@@ -21,7 +22,7 @@ This branch starts from a clean history; the Minecraft 1.12 library lives on the
   - `camo`, `menu`, `network` and `client` hold the camouflage menu: `CamoHost`, `CamoBlock`, `CamoData`, `DisguiseRules`, the menu, its packets and screen, and the models that draw a disguise.
     The library registers the menu type and the packets (namespace `omlib`) itself; a mod provides its rules and hosts.
   - `inventory.LargeStackContainer`, `menu.LargeStackSlot`, `menu.LargeStackMenu` and `client.screen.LargeStackScreen` are containers whose slots hold more than one stack: the container names each slot's limit (`getSlotLimit`), which the menu slots, the loader adapters of `ItemAccess` and `VersionCompat.saveItems` / `loadItems` follow.
-    The cursor and the player's inventory only ever get normal stacks out of such a slot; the menu syncs the counts on 1.20.1 (the stack's data carries the real count there) and the screen draws counts from four digits on in a smaller font, with count and limit in the tooltip.
+    The cursor and the player's inventory only ever get normal stacks out of such a slot; the screen draws counts from four digits on in a smaller font, with count and limit in the tooltip.
 - `src/main/resources/assets/omlib/lang/` has the texts of the library's screens and messages.
 - `build-logic/` is a Gradle included build with the shared build logic of this repository and of the mods: the `mod-common` convention plugin (including the wiring of the shared core) and `convertFabricData`.
 - `tools/shared_sources.py` and `shared-sources.txt` keep the few source files that the mods still copy from each other identical (see below).
@@ -40,7 +41,7 @@ core_version=2.0.0          # the same in every mod and on every Minecraft versi
 - The JitPack repository is added with a content filter, so Gradle asks it only for the core.
 - The module is a compile-only dependency (`compileOnlyApi` in the library, so its published metadata names `omlib-core` for compiling a mod against it; `compileOnly` in a mod).
 - `extractCore` unpacks the module's `<base package>.core` classes into `build/core/classes`, a classes folder of the main source set.
-  So every jar bundles them (Loom's `remapJar`, ModDevGradle's `jar`, legacy ModDevGradle's `jar` and `reobfJar`; the core has no Minecraft names, so remapping leaves it alone), and dev runs, game tests and unit tests load them as part of the mod on every loader, without a plain library on the classpath.
+  So every jar bundles them (Loom's `remapJar` and ModDevGradle's `jar`; the core has no Minecraft names, so remapping leaves it alone), and dev runs, game tests and unit tests load them as part of the mod on every loader, without a plain library on the classpath.
   Only that module's classes go into the jar: a mod gets `omlib-core` with the library's jar.
 - `verifyNoCoreSources` (part of `check`) fails if the sources have files in the core package: a core change is made in OpenModularCore, never as a copy here.
 
@@ -51,7 +52,7 @@ Without `core_module` there is no core wiring.
 The mod mounts this repository as a git submodule:
 
 ```bash
-git submodule add -b 1.20.1+ ../OMLib.git omlib
+git submodule add -b 1.21.1 ../OMLib.git omlib
 ```
 
 and its `settings.gradle.kts` builds the library first and includes its build logic:
@@ -80,15 +81,13 @@ The build scripts then get the library's coordinates from `mod-common` (`project
 
 - Fabric: `modImplementation(omlib)` and `"include"(omlib) { isTransitive = false }`.
 - NeoForge: `implementation(omlib)` plus `jarJar("omtteam.omlib:omlib")` with the version range `[<omlib version>,)`; the client and game test source sets get it as `clientCompileOnly` / `gametestCompileOnly`.
-- Forge 1.20.1: the same with `modImplementation` (the jar is SRG-named and gets remapped).
 
-The mod's metadata declares the dependency (`omlib` in `fabric.mod.json`, `[[dependencies.<mod>]]` with `ordering = "AFTER"` on NeoForge and Forge); `${omlib_version}` is filled in by `mod-common`.
+The mod's metadata declares the dependency (`omlib` in `fabric.mod.json`, `[[dependencies.<mod>]]` with `ordering = "AFTER"` on NeoForge); `${omlib_version}` is filled in by `mod-common`.
 The mod's own core module is set in its `gradle.properties` (see "The shared core"); the library's jar brings `omlib-core`.
 
 What the mod provides to the library:
 
 - **Entrypoints:** the mod no longer installs the platform services, the right-click event, the join and disconnect events or the config sync packet; it calls `FabricBlockLookups.register(ModBlockEntities.transferTypes())` (Fabric), `NeoForgeCapabilities.register(event, types)` in its own `RegisterCapabilitiesEvent` (NeoForge) and, on NeoForge, applies its packets in its own `RegisterPayloadHandlersEvent` with `((NeoForgeNetwork) Platform.network()).applyRegistrations(event, MOD_ID)`.
-  Forge attaches the capabilities to every `TransferHost` from the library's own entrypoint.
 - **Camouflage:** a block that can be disguised implements `CamoBlock` (with `overlayTintIndex()` if part of its own model stays visible on top); its block entity implements `CamoHost` and returns its `DisguiseRules`.
   The library registers the menu, packets, screen and model wrapping once for all mods.
 - **Config:** a mod's config object is a plain class with `@Comment` / `@Range` fields; its sections are the classes in the same package.
@@ -104,19 +103,19 @@ What the mod provides to the library:
 
 - Git, and a POSIX `sh` with `find`, `sort`, `xargs` and `sha256sum` on the `PATH`: a mod's `settings.gradle.kts` runs `omlib/tools/bootstrap.sh` with `sh` (on Windows, a POSIX shell such as Git Bash).
 - Java 25 or newer to run Gradle (Fabric Loom 1.18 requires it): set `JAVA_HOME`, or the Gradle JVM in your IDE, to it.
-- The compile toolchains, Java 17 for 1.20.1 and Java 21 for 1.21.1 and 1.21.11 (`java_version` in `versions/<node>/gradle.properties`): Gradle uses installed JDKs and downloads missing ones (foojay resolver in `settings.gradle.kts`).
+- The compile toolchain, Java 21 (`java_version` in `versions/<node>/gradle.properties`): Gradle uses installed JDKs and downloads missing ones (foojay resolver in `settings.gradle.kts`).
 - Nothing else: `./gradlew` fetches Gradle 9.8.1, Stonecutter, Loom, ModDevGradle and Minecraft.
-  The first build sets up Minecraft for all six nodes, so it takes a while.
+  The first build sets up Minecraft for both nodes, so it takes a while.
 
 ### Getting the code
 
 Clone the repositories you work on side by side in one folder of their own:
 
 ```bash
-git clone -b 1.20.1+ https://github.com/OpenModularTurretsTeam/OMLib.git
+git clone -b 1.21.1 https://github.com/OpenModularTurretsTeam/OMLib.git
 git clone https://github.com/OpenModularTurretsTeam/OpenModularCore.git       # optional: the shared core from source (see below)
-git clone --recurse-submodules -b 1.20.1+ https://github.com/OpenModularTurretsTeam/OpenModularTurrets.git    # optional: a mod, with its omlib submodule
-git clone --recurse-submodules -b 1.20.1+ https://github.com/OpenModularTurretsTeam/OpenModularLighting.git   # optional
+git clone --recurse-submodules -b 1.21.1 https://github.com/OpenModularTurretsTeam/OpenModularTurrets.git    # optional: a mod, with its omlib submodule
+git clone --recurse-submodules -b 1.21.1 https://github.com/OpenModularTurretsTeam/OpenModularLighting.git   # optional
 ```
 
 The library builds on its own; the mods are only needed to try a library change in a game (see "Changing the library").
@@ -124,12 +123,12 @@ The library builds on its own; the mods are only needed to try a library change 
 ### Commands
 
 ```bash
-./gradlew chiseledBuild                # builds and tests all six nodes (unit tests, verifyNoCoreSources, checkRecipes, coverage)
-./gradlew check --continue             # the checks of all six nodes, what CI runs
+./gradlew chiseledBuild                # builds and tests both nodes (unit tests, verifyNoCoreSources, checkRecipes, coverage)
+./gradlew check --continue             # the checks of both nodes, what CI runs
 ./gradlew :1.21.1-fabric:build         # one node
 ./gradlew :1.21.1-fabric:test          # the unit tests of one node
 ./gradlew chiseledPublishLocal         # puts the jar of every node into build/maven (what the mods' bootstrap does)
-./gradlew "Set active project to 1.20.1-fabric"   # Stonecutter: switch the active node
+./gradlew "Set active project to 1.21.1-neoforge"   # Stonecutter: switch the active node
 ./gradlew "Reset active project"       # back to 1.21.1-fabric: run this before committing
 ```
 
@@ -156,7 +155,7 @@ A core change is made and tested in OpenModularCore (`./gradlew check` there, se
 
 ### Tests
 
-The unit tests (`src/test`) run on every node, so the version-specific code they reach (`NbtCompat`, the packet codecs, `FaceTest`: the core's `Face` against Minecraft's `Direction`) is checked on each Minecraft version.
+The unit tests (`src/test`) run on every node, so the code they reach (`NbtCompat`, the packet codecs, `FaceTest`: the core's `Face` against Minecraft's `Direction`) is checked on both loaders.
 The core's own tests, isolation check, architecture rules, coverage and mutation testing run in OpenModularCore.
 `check` also prints the line coverage per package of the library's own classes (JaCoCo, only when the active node is a Fabric node, by default `1.21.1-fabric`; report in `versions/<active node>/build/reports/jacoco/test/html/index.html`).
 Code that needs a world (claiming, the wand, the packet handlers, the menus, the loader adapters) is tested by the mods' game tests.
@@ -167,6 +166,7 @@ When one survives, add the missing assertion to the unit test of that class; if 
 It fails when the results get worse than the thresholds in `gradle.properties` (`pitest_mutation_threshold`, `pitest_coverage_threshold`, `pitest_max_surviving`, the state of 2026-11-18); tighten them when a test kills a survivor (lower `pitest_max_surviving`), and raise it only for a survivor that no test can notice, listed below with its reason.
 
 State on 2026-11-18 (since the core moved to OpenModularCore, without it): 245 of 249 mutations detected (98 %), 352 of 375 lines of the mutated classes covered (94 %).
+It was measured on the old `1.20.1+` branch (node `1.21.1-fabric`) and not yet on this branch.
 The survivors cannot be noticed:
 
 - `ConfigValidator.filter`: an empty immutable list for a missing list (the validated lists are only assigned to config fields, never changed).
@@ -181,7 +181,7 @@ Two mutations are not reached: the public `ConfigManager` constructor (its folde
 ## Changing the library
 
 A mod never builds against your OMLib clone: it builds against its own `omlib` submodule, which its `settings.gradle.kts` builds with `tools/bootstrap.sh` into `omlib/build/maven` before anything else is configured.
-The bootstrap hashes the library's sources (and, with a local core, the core's `omlib-core` and build files) and rebuilds all six nodes only when that hash differs from `omlib/build/maven/.stamp`; it then prints `OMLib: building the library for all nodes into omlib/build/maven (core: <path or jitpack>)`.
+The bootstrap hashes the library's sources (and, with a local core, the core's `omlib-core` and build files) and rebuilds both nodes only when that hash differs from `omlib/build/maven/.stamp`; it then prints `OMLib: building the library for all nodes into omlib/build/maven (core: <path or jitpack>)`.
 After a rebuild the mod's settings drop Loom's remapped copy of the old library, which has the same version.
 `OMLIB_SKIP_BUILD` set to any value skips the bootstrap, so the mod keeps the jars that are in `omlib/build/maven`.
 
@@ -194,9 +194,9 @@ To try a library change in a mod before anything is pushed:
 
    ```bash
    # from the mod's root, with OMLib cloned next to the mod
-   git -C omlib fetch ../../OMLib 1.20.1+      # or the branch you work on
+   git -C omlib fetch ../../OMLib 1.21.1       # or the branch you work on
    git -C omlib checkout FETCH_HEAD
-   ./gradlew chiseledBuild                     # the first configuration rebuilds the library for all six nodes
+   ./gradlew chiseledBuild                     # the first configuration rebuilds the library for both nodes
    ./gradlew :1.21.1-fabric:runClient          # a dev client of one node (see the mod's CONTRIBUTING.md)
    ```
 
@@ -211,7 +211,7 @@ Cloning a mod needs the submodule: `git clone --recurse-submodules <mod url>` or
 
 ## Shared sources
 
-A few files are still copies in the mods (the game test stand-ins for Minecraft 1.21.11 and their registration classes, the game test mod's `mods.toml` and `neoforge.mods.toml`, the PMD ruleset, the Gradle wrapper properties).
+A few files are still copies in the mods (the game test mod's `neoforge.mods.toml`, the PMD ruleset, the Gradle wrapper properties).
 They differ only by the mod's package, id, name and class prefix, which the tool normalises before comparing; `shared-sources.txt` lists them.
 
 ```bash
