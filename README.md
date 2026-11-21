@@ -23,6 +23,7 @@ The other Minecraft versions are on the sibling branches `1.21.1` (Fabric and Ne
     The library registers the menu type and the packets (namespace `omlib`) itself; a mod provides its rules and hosts.
   - `inventory.LargeStackContainer`, `menu.LargeStackSlot`, `menu.LargeStackMenu` and `client.screen.LargeStackScreen` are containers whose slots hold more than one stack: the container names each slot's limit (`getSlotLimit`), which the menu slots, the loader adapters of `ItemAccess` and `VersionCompat.saveItems` / `loadItems` follow.
     The cursor and the player's inventory only ever get normal stacks out of such a slot; the menu syncs the counts (the stack's data carries the real count) and the screen draws counts from four digits on in a smaller font, with count and limit in the tooltip.
+  - `client.render.fx` has glow effects drawn with `ClientCompat.lightning()`: `GlowGeometry` (spheres and double-sided quads of position and colour) and `OrbitTrailRenderer`, a sphere circling on a `WavyRing` (`client.render.fx.WavyRing`, no Minecraft) with a fading trail (configured with a builder).
 - `src/main/resources/assets/omlib/lang/` has the texts of the library's screens and messages.
 - `build-logic/` is a Gradle included build with the shared build logic of this repository and of the mods: the `mod-common` convention plugin (including the wiring of the shared core) and `convertFabricData`.
 - `tools/shared_sources.py` and `shared-sources.txt` keep the few source files that the mods still copy from each other identical (see below).

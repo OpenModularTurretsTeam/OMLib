@@ -47,6 +47,9 @@ sourceSets.main { resources.srcDir(packMetadata) }
 // so the library defines them here from the matching forge: tags (c:wrenches has none and stays empty).
 sourceSets.main { resources.srcDir(rootProject.file("src/main/forge/resources")) }
 
+// The unit tests cover client classes too (WavyRing)
+dependencies { testImplementation(client.output) }
+
 tasks.jar { from(client.output) }
 tasks.named<Jar>("sourcesJar") { from(client.allSource) }
 
