@@ -4,10 +4,9 @@
 # The mod's package, id, name and class prefix (OMT, OML ...) are normalised before comparing.
 # "path | mod_id,mod_id" limits an entry to those mods.
 gradle/wrapper/gradle-wrapper.properties
-src/gametest/mc1.21.11-/java/@pkg@/gametest/GameTest.java
-src/gametest/mc1.21.11-/java/@pkg@/gametest/GameTestCases.java
-src/gametest/mc1.21.11-/java/@pkg@/gametest/platform/fabric/FabricGameTestRegistration.java
-src/gametest/mc1.21.11-/java/@pkg@/gametest/platform/neoforge/NeoForgeGameTestRegistration.java
-src/gametest/resources/META-INF/mods.toml
+src/gametest/java/@pkg@/gametest/GameTest.java
+src/gametest/java/@pkg@/gametest/GameTestCases.java
+src/gametest/java/@pkg@/gametest/platform/fabric/FabricGameTestRegistration.java
+src/gametest/java/@pkg@/gametest/platform/neoforge/NeoForgeGameTestRegistration.java
 src/gametest/resources/META-INF/neoforge.mods.toml
 gradle/pmd/ruleset.xml
