@@ -8,6 +8,10 @@ Before a release, `./gradlew releaseChangelog` turns *Unreleased* into the secti
 
 ## [Unreleased]
 
+### Added
+
+- API: `omtteam.omlib.power.ItemEnergy.of(IInventory, int)`, a live view of the Forge Energy of the item in an inventory slot (for Open Modular Turrets' energy drain turret)
+
 ### Changed
 
 - The game rules (`omtteam.omlib.core`) come from the shared core OpenModularCore 2.2.0, the same on every Minecraft version, and are part of the OMLib jar; it keeps every OMLib class and method that the released Open Modular Turrets 4.0.1, Open Modular Passive Defense 4.0.0 and Open Modular Lighting 1.0.0 jars call
