@@ -27,6 +27,9 @@ neoForge {
     }
 }
 
+// The unit tests cover client classes too (WavyRing)
+dependencies { testImplementation(client.output) }
+
 tasks.jar { from(client.output) }
 tasks.named<Jar>("sourcesJar") { from(client.allSource) }
 
